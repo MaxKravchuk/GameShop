@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameShop", "GameShop\GameShop.csproj", "{354DF3B4-E6D1-4937-9DE2-3404C24F08E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAL", "BAL\BAL.csproj", "{CE449A0E-5CAC-4BB2-B67D-E6E8793EDDA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{354DF3B4-E6D1-4937-9DE2-3404C24F08E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{354DF3B4-E6D1-4937-9DE2-3404C24F08E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{354DF3B4-E6D1-4937-9DE2-3404C24F08E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE449A0E-5CAC-4BB2-B67D-E6E8793EDDA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE449A0E-5CAC-4BB2-B67D-E6E8793EDDA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE449A0E-5CAC-4BB2-B67D-E6E8793EDDA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE449A0E-5CAC-4BB2-B67D-E6E8793EDDA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
