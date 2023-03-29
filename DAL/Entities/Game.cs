@@ -12,6 +12,7 @@ namespace DAL.Entities
         public string Key { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public bool isDeleted { get; set; } = false;
 
         public ICollection<Coment> Coments { get; set; } = new List<Coment>();
         public ICollection<GameGenre> GameGenres { get; set; } = new List<GameGenre>();

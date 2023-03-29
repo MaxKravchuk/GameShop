@@ -12,6 +12,7 @@ namespace DAL.Entities
         public string Name { get; set; }
         public string Body { get; set; }
         public string ParentName { get; set; } = null;
+        public bool isDeleted { get; set; } = false;
 
         public Game Game { get; set; }
         public int GameId { get; set; }

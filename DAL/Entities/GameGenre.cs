@@ -9,7 +9,7 @@ namespace DAL.Entities
     public class GameGenre
     {
         public Game Game { get; set; }
-        public int GameId { get; set; }
+        public string GameKey { get; set; }
 
         public Genre Genre { get; set; }
         public string GenreName { get; set; }
