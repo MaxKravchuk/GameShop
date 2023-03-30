@@ -12,6 +12,6 @@ namespace DAL.Entities
         public string Type { get; set; }
         public bool isDeleted { get; set; } = false;
 
-        public ICollection<GamePlatformType> GamePlatformTypes { get; set; }
+        public virtual ICollection<Game> GamePlatformTypes { get; set; } = new List<Game>();
     }
 }

@@ -11,11 +11,10 @@ namespace DAL.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string Body { get; set; }
-        public string ParentName { get; set; } = null;
         public bool isDeleted { get; set; } = false;
 
-        public Game Game { get; set; }
-        public int GameId { get; set; }
+        public virtual Game Game { get; set; }
+        public string GameKey { get; set; }
 
     }
 }

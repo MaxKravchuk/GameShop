@@ -10,16 +10,21 @@ namespace DAL.Context
 {
     public class GameShopContext : DbContext
     {
-        DbSet<Coment> Coments { get; set; }
-        DbSet<Game> Games { get; set; }
-        DbSet<GameGenre> GameGenres { get; set; }
-        DbSet<GamePlatformType> GamePlatformTypes { get; set; }
-        DbSet<Genre> Genres { get; set; }
-        DbSet<PlatformType> PlatformTypes { get; set; }
+        public DbSet<Coment> Coments { get; set; }
+        public DbSet<Game> Games { get; set; }
+        public DbSet<Genre> Genres { get; set; }
+        public DbSet<PlatformType> PlatformTypes { get; set; }
+
 
         public GameShopContext() : base("name=DefaultConnectingString")
         {
-            Database.SetInitializer<GameShopContext>(new DataSeeder());
+            Database.SetInitializer<GameShopContext>(new DropCreateDatabaseIfModelChanges<GameShopContext>());
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Configurations.AddFromAssembly(GetType().Assembly);
         }
     }
 }

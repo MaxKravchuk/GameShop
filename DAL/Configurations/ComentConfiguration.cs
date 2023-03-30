@@ -14,6 +14,22 @@ namespace DAL.Configurations
         {
             this.ToTable("Coments");
 
+            this.HasKey(x => x.Id);
+
+            this
+                .Property(x => x.Name)
+                .HasMaxLength(50)
+                .IsRequired();
+
+            this
+                .Property(x => x.Body)
+                .HasMaxLength(255)
+                .IsRequired();
+
+            this
+                .HasOptional<Game>(g => g.Game)
+                .WithMany(g => g.Coments)
+                .HasForeignKey<string>(g => g.GameKey);
         }
     }
 }
