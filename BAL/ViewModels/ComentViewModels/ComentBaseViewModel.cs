@@ -4,15 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Entities
+namespace BAL.ViewModels.ComentViewModels
 {
-    public class Coment : BaseEntity
+    public class ComentBaseViewModel
     {
         public string Name { get; set; }
         public string Body { get; set; }
-
-        public virtual Game Game { get; set; }
-        public string GameKey { get; set; }
-
     }
 }

@@ -1,7 +1,9 @@
 ﻿using DAL.Entities;
+using EntityFramework.Filters;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure.Interception;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +26,10 @@ namespace DAL.Context
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            DbInterception.Add(new FilterInterceptor());
+            var softDeleteFilter = FilterConvention.Create<BaseEntity>("SoftDelete", e => e.IsDeleted == false);
             modelBuilder.Configurations.AddFromAssembly(GetType().Assembly);
+            modelBuilder.Conventions.Add(softDeleteFilter);
         }
     }
 }

@@ -1,5 +1,6 @@
-﻿using BAL.Interfaces.Repositories;
-using DAL.Context;
+﻿using DAL.Context;
+using DAL.Repository.Interfaces;
+using EntityFramework.Filters;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -20,10 +21,11 @@ namespace DAL.Repository
             GameShopContext context)
         {
             _context = context;
+            _context.EnableFilter("SoftDelete");
             _dbSet = context.Set<T>();
         }
 
-        public virtual IEnumerable<T> Get(
+        public virtual async Task<IEnumerable<T>> GetAsync(
             Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             string includeProperties = "")
@@ -43,43 +45,46 @@ namespace DAL.Repository
 
             if (orderBy != null)
             {
-                return orderBy(query).ToList();
+                return await orderBy(query).ToListAsync();
             }
             else
             {
-                return query.ToList();
+                return await query.ToListAsync();
             }
         }
 
-        public virtual async Task<T> GetByIDAsync(object id)
+        public virtual async Task<T> GetAsync(object id)
         {
-            return await _dbSet.FindAsync(id);
+            return await _context.Set<T>().FindAsync(id);
         }
 
         public virtual void Insert(T entity)
         {
-            _dbSet.Add(entity);
-        }
-
-        public virtual void Delete(object id)
-        {
-            T entityToDelete = _dbSet.Find(id);
-            Delete(entityToDelete);
+            _context.Set<T>().Add(entity);
         }
 
         public virtual void Delete(T entityToDelete)
         {
-            if (_context.Entry(entityToDelete).State == EntityState.Detached)
+            if (_context.Entry(entityToDelete).State == EntityState.Deleted)
             {
-                _dbSet.Attach(entityToDelete);
+                _context.Set<T>().Attach(entityToDelete);
             }
-            _dbSet.Remove(entityToDelete);
+            _context.Entry(entityToDelete).State = EntityState.Deleted;
         }
 
         public virtual void Update(T entityToUpdate)
         {
-            _dbSet.Attach(entityToUpdate);
+            if (_context.Entry(entityToUpdate).State == EntityState.Detached)
+            {
+                _context.Set<T>().Attach(entityToUpdate);
+            }
+
             _context.Entry(entityToUpdate).State = EntityState.Modified;
+        }
+
+        public virtual async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -9,14 +9,15 @@ namespace DAL.Repository.Interfaces
 {
     public interface IRepository<T> where T : class
     {
-        IEnumerable<T> Get(
+        Task<IEnumerable<T>> GetAsync(
             Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             string includeProperties = "");
 
-        Task<T> GetByIDAsync(object id);
-        void Delete(object id);
+        Task<T> GetAsync(object id);
+        void Insert(T entity);
         void Delete(T entityToDelete);
         void Update(T entityToUpdate);
+        Task SaveChangesAsync();
     }
 }
