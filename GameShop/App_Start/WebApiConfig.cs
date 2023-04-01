@@ -13,6 +13,8 @@ namespace GameShop
 
             // Маршруты Web API
             config.MapHttpAttributeRoutes();
+
+            config.Routes.MapHttpRoute("Default", "api/{controller}");
         }
     }
 }

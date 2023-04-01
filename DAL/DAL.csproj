@@ -34,12 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.3.1.0\lib\net40\Autofac.dll</HintPath>
-    </Reference>
-    <Reference Include="Autofac.Integration.WebApi, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.WebApi.3.1.0\lib\net40\Autofac.Integration.WebApi.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -60,7 +54,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Autofac\AutofacConfig.cs" />
     <Compile Include="Configurations\PlatformTypeConfiguration.cs" />
     <Compile Include="Configurations\GenreConfiguration.cs" />
     <Compile Include="Configurations\GameConfiguration.cs" />
@@ -71,9 +64,13 @@
     <Compile Include="Entities\Game.cs" />
     <Compile Include="Entities\PlatformType.cs" />
     <Compile Include="Entities\Genre.cs" />
-    <Compile Include="Migrations\202303302134514_init.cs" />
-    <Compile Include="Migrations\202303302134514_init.designer.cs">
-      <DependentUpon>202303302134514_init.cs</DependentUpon>
+    <Compile Include="Migrations\202304011558362_init.cs" />
+    <Compile Include="Migrations\202304011558362_init.designer.cs">
+      <DependentUpon>202304011558362_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202304011721092_init2.cs" />
+    <Compile Include="Migrations\202304011721092_init2.designer.cs">
+      <DependentUpon>202304011721092_init2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -87,8 +84,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202303302134514_init.resx">
-      <DependentUpon>202303302134514_init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202304011558362_init.resx">
+      <DependentUpon>202304011558362_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202304011721092_init2.resx">
+      <DependentUpon>202304011721092_init2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

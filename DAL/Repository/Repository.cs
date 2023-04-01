@@ -1,4 +1,5 @@
 ﻿using DAL.Context;
+using DAL.Entities;
 using DAL.Repository.Interfaces;
 using EntityFramework.Filters;
 using System;
@@ -12,16 +13,15 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : BaseEntity
     {
-        internal GameShopContext _context;
-        internal DbSet<T> _dbSet;
+        private readonly GameShopContext _context;
+        private readonly DbSet<T> _dbSet;
 
         public Repository(
             GameShopContext context)
         {
             _context = context;
-            _context.EnableFilter("SoftDelete");
             _dbSet = context.Set<T>();
         }
 
@@ -34,7 +34,7 @@ namespace DAL.Repository
 
             if (filter != null)
             {
-                query = query.Where(filter);
+                query = query.Where(filter).Where(x=>x.IsDeleted==false);
             }
 
             foreach (var includeProperty in includeProperties.Split
@@ -65,11 +65,8 @@ namespace DAL.Repository
 
         public virtual void Delete(T entityToDelete)
         {
-            if (_context.Entry(entityToDelete).State == EntityState.Deleted)
-            {
-                _context.Set<T>().Attach(entityToDelete);
-            }
-            _context.Entry(entityToDelete).State = EntityState.Deleted;
+            entityToDelete.IsDeleted = true;
+            Update(entityToDelete);
         }
 
         public virtual void Update(T entityToUpdate)

@@ -19,6 +19,13 @@ namespace DAL.Repository
         private Repository<PlatformType> _platformTypeRepository;
         private bool disposed = false;
 
+        public UnitOfWork(
+            GameShopContext context
+            )
+        {
+            _context = context;
+        }
+
         public Repository<Coment> ComentRepository
         {
             get

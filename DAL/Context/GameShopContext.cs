@@ -26,10 +26,7 @@ namespace DAL.Context
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            DbInterception.Add(new FilterInterceptor());
-            var softDeleteFilter = FilterConvention.Create<BaseEntity>("SoftDelete", e => e.IsDeleted == false);
             modelBuilder.Configurations.AddFromAssembly(GetType().Assembly);
-            modelBuilder.Conventions.Add(softDeleteFilter);
         }
     }
 }

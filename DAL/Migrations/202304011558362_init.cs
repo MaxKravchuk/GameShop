@@ -1,6 +1,8 @@
 ﻿namespace DAL.Migrations
 {
     using System;
+    using System.Collections.Generic;
+    using System.Data.Entity.Infrastructure.Annotations;
     using System.Data.Entity.Migrations;
     
     public partial class init : DbMigration
@@ -14,9 +16,13 @@
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 50),
                         Body = c.String(nullable: false, maxLength: 255),
-                        isDeleted = c.Boolean(nullable: false),
                         GameKey = c.String(maxLength: 128),
-                    })
+                        IsDeleted = c.Boolean(nullable: false),
+                    },
+                annotations: new Dictionary<string, object>
+                {
+                    { "globalFilter_SoftDelete", "EntityFramework.Filters.FilterDefinition" },
+                })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Games", t => t.GameKey)
                 .Index(t => t.GameKey);
@@ -26,11 +32,15 @@
                 c => new
                     {
                         Key = c.String(nullable: false, maxLength: 128),
-                        Id = c.Int(nullable: false),
                         Name = c.String(nullable: false, maxLength: 100),
                         Description = c.String(maxLength: 255),
-                        isDeleted = c.Boolean(nullable: false),
-                    })
+                        Id = c.Int(nullable: false),
+                        IsDeleted = c.Boolean(nullable: false),
+                    },
+                annotations: new Dictionary<string, object>
+                {
+                    { "globalFilter_SoftDelete", "EntityFramework.Filters.FilterDefinition" },
+                })
                 .PrimaryKey(t => t.Key);
             
             CreateTable(
@@ -38,10 +48,14 @@
                 c => new
                     {
                         Name = c.String(nullable: false, maxLength: 50),
-                        Id = c.Int(nullable: false),
-                        isDeleted = c.Boolean(nullable: false),
                         ParentGenreName = c.String(maxLength: 50),
-                    })
+                        Id = c.Int(nullable: false),
+                        IsDeleted = c.Boolean(nullable: false),
+                    },
+                annotations: new Dictionary<string, object>
+                {
+                    { "globalFilter_SoftDelete", "EntityFramework.Filters.FilterDefinition" },
+                })
                 .PrimaryKey(t => t.Name)
                 .ForeignKey("dbo.Genres", t => t.ParentGenreName)
                 .Index(t => t.ParentGenreName);
@@ -52,8 +66,12 @@
                     {
                         Type = c.String(nullable: false, maxLength: 50),
                         Id = c.Int(nullable: false),
-                        isDeleted = c.Boolean(nullable: false),
-                    })
+                        IsDeleted = c.Boolean(nullable: false),
+                    },
+                annotations: new Dictionary<string, object>
+                {
+                    { "globalFilter_SoftDelete", "EntityFramework.Filters.FilterDefinition" },
+                })
                 .PrimaryKey(t => t.Type);
             
             CreateTable(
@@ -100,10 +118,26 @@
             DropIndex("dbo.Coments", new[] { "GameKey" });
             DropTable("dbo.GamePlatformType");
             DropTable("dbo.GameGenre");
-            DropTable("dbo.PlatformTypes");
-            DropTable("dbo.Genres");
-            DropTable("dbo.Games");
-            DropTable("dbo.Coments");
+            DropTable("dbo.PlatformTypes",
+                removedAnnotations: new Dictionary<string, object>
+                {
+                    { "globalFilter_SoftDelete", "EntityFramework.Filters.FilterDefinition" },
+                });
+            DropTable("dbo.Genres",
+                removedAnnotations: new Dictionary<string, object>
+                {
+                    { "globalFilter_SoftDelete", "EntityFramework.Filters.FilterDefinition" },
+                });
+            DropTable("dbo.Games",
+                removedAnnotations: new Dictionary<string, object>
+                {
+                    { "globalFilter_SoftDelete", "EntityFramework.Filters.FilterDefinition" },
+                });
+            DropTable("dbo.Coments",
+                removedAnnotations: new Dictionary<string, object>
+                {
+                    { "globalFilter_SoftDelete", "EntityFramework.Filters.FilterDefinition" },
+                });
         }
     }
 }
