@@ -1,4 +1,5 @@
 ﻿using BAL.ViewModels.GameViewModels;
+using DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace BAL.Services.Interfaces
 {
     public interface IGameService
     {
-        void Create();
-        Task<GameReadListViewModel> GetAsync();
-        Task<GameReadViewModel> GetAsync(string key);
-        void Update();
-        void Delete();
+        Task Create(Game game);
+        Task<IEnumerable<Game>> GetAsync();
+        Task<IEnumerable<Game>> GetAsync(string filter);
+        Task Update(Game game);
+        Task Delete(object id);
     }
 }
