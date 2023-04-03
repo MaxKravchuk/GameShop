@@ -1,5 +1,3 @@
-using Ninject.Modules;
-using Ninject;
 using System.Web.Http;
 using System.Web.Mvc;
 using GameShop.App_Start;

@@ -53,9 +53,22 @@ namespace DAL.Repository
             }
         }
 
-        public virtual async Task<T> GetAsync(object id)
+        public async Task<T> GetAsync(object id, string includeProperties = "")
         {
-            return await _context.Set<T>().FindAsync(id);
+            if (string.IsNullOrEmpty(includeProperties))
+            {
+                return await _context.Set<T>().FindAsync(id);
+            }
+
+            var result = await _context.Set<T>().FindAsync(id);
+
+            IQueryable<T> set = _context.Set<T>();
+
+            set = includeProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Aggregate(set, (current, includeProperty)
+                        => current.Include(includeProperty));
+
+            return await set.FirstOrDefaultAsync(entity => entity == result);
         }
 
         public virtual void Insert(T entity)

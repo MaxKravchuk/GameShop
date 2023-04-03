@@ -1,4 +1,5 @@
-﻿using BAL.Services.Interfaces;
+﻿using BAL.Exceptions;
+using BAL.Services.Interfaces;
 using BAL.ViewModels.ComentViewModels;
 using DAL.Entities;
 using DAL.Repository.Interfaces;
@@ -41,13 +42,25 @@ namespace BAL.Services
         public async Task<IEnumerable<Coment>> GetAsync(string gameKey)
         {
             var filter = GetFilterQuery(gameKey);
-
             var coments = await _comentRepository.GetAsync(filter: filter);
+
+            if (coments == null)
+            {
+                throw new NotFoundException();
+            }
+
             return coments;
         }
         public async Task<Coment> GetAsync(int comentId)
         {
-            var coment = await _comentRepository.GetAsync(comentId);
+            var coment = await _comentRepository.GetAsync(comentId,
+                includeProperties: "Game,Game.Coments,Game.GameGenres,Game.GamePlatformTypes");
+
+            if (coment == null)
+            {
+                throw new NotFoundException();
+            }
+
             return coment;
         }
 

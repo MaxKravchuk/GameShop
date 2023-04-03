@@ -11,8 +11,8 @@ namespace BAL.Services.Interfaces
     public interface IGameService
     {
         Task Create(Game game);
-        Task<IEnumerable<Game>> GetAsync();
-        Task<IEnumerable<Game>> GetAsync(string filter);
+        Task<Game> GetAsync(object key);
+        Task<IEnumerable<Game>> GetAsync(string search);
         Task Update(Game game);
         Task Delete(object id);
     }

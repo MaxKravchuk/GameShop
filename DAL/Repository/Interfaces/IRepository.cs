@@ -14,8 +14,7 @@ namespace DAL.Repository.Interfaces
             Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             string includeProperties = "");
-
-        Task<T> GetAsync(object id);
+        Task<T> GetAsync(object id, string includeProperties = "");
         void Insert(T entity);
         void Delete(T entityToDelete);
         void Update(T entityToUpdate);

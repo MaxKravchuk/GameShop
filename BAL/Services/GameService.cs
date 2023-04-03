@@ -1,4 +1,5 @@
-﻿using BAL.Services.Interfaces;
+﻿using BAL.Exceptions;
+using BAL.Services.Interfaces;
 using DAL.Entities;
 using DAL.Repository.Interfaces;
 using System;
@@ -33,19 +34,31 @@ namespace BAL.Services
 
         }
 
-        public async Task<IEnumerable<Game>> GetAsync()
+        public async Task<Game> GetAsync(object key)
         {
-            var games = await _gameRepository.GetAsync();
-            return games;
+            var game = await _gameRepository.GetAsync(key, 
+                includeProperties: "Game.Coments,Game.GameGenres,Game.GamePlatformTypes");
+
+            if(game == null)
+            {
+                throw new NotFoundException();
+            }
+
+            return game;
         }
 
-        public Task<IEnumerable<Game>> GetAsync(string search)
+        public async Task<IEnumerable<Game>> GetAsync(string search)
         {
             var filter = GetFilterQuery(search);
 
-            var games = _gameRepository.GetAsync(
+            var games = await _gameRepository.GetAsync(
                 filter: filter,
-                includeProperties: "Game.Coments,Game.GameGenres,Game.GamePlatformTypes");
+                includeProperties: "Game.GameGenres,Game.GamePlatformTypes");
+
+            if (games == null)
+            {
+                throw new NotFoundException();
+            }
 
             return games;
         }
