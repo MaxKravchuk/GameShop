@@ -11,7 +11,7 @@ namespace DAL.Entities
         public string Name { get; set; }
         public string Body { get; set; }
 
-        public virtual Game Game { get; set; }
+        public Game Game { get; set; }
         public string GameKey { get; set; }
 
     }

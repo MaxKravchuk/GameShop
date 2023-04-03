@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace DAL.Entities
 {
-    public class PlatformType : BaseEntity
+    public class GamePlatformType
     {
+        public string GameKey { get; set; }
+        public Game Game { get; set; }
         public string Type { get; set; }
-
-        public ICollection<GamePlatformType> GamePlatformTypes { get; set; } = new List<GamePlatformType>();
+        public PlatformType PlatformType { get; set; }
     }
 }

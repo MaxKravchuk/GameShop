@@ -12,8 +12,8 @@ namespace DAL.Entities
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public virtual ICollection<Coment> Coments { get; set; } = new List<Coment>();
-        public virtual ICollection<Genre> GameGenres { get; set; } = new List<Genre>();
-        public virtual ICollection<PlatformType> GamePlatformTypes{ get; set; } = new List<PlatformType>();
+        public ICollection<Coment> Coments { get; set; } = new List<Coment>();
+        public ICollection<GameGenre> GameGenres { get; set; } = new List<GameGenre>();
+        public ICollection<GamePlatformType> GamePlatformTypes{ get; set; } = new List<GamePlatformType>();
     }
 }

@@ -53,8 +53,7 @@ namespace BAL.Services
         }
         public async Task<Coment> GetAsync(int comentId)
         {
-            var coment = await _comentRepository.GetAsync(comentId,
-                includeProperties: "Game,Game.Coments,Game.GameGenres,Game.GamePlatformTypes");
+            var coment = await _comentRepository.GetAsync(comentId);
 
             if (coment == null)
             {

@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Entities
+namespace BAL.ViewModels.Helpers
 {
-    public class PlatformType : BaseEntity
+    public class GamePlatformTypeViewModel
     {
+        public int Id { get; set; }
         public string Type { get; set; }
-
-        public ICollection<GamePlatformType> GamePlatformTypes { get; set; } = new List<GamePlatformType>();
     }
 }

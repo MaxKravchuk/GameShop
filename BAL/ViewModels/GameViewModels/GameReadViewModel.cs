@@ -12,9 +12,9 @@ namespace BAL.ViewModels.GameViewModels
     {
         public int Id { get; set; }
         public string Description { get; set; }
-        public IEnumerable<GamePropsViewModel> Genres { get; set; } = new List<GamePropsViewModel>();
-        public IEnumerable<GamePropsViewModel> PlatformTypes { get; set; } = new List<GamePropsViewModel>();
-        public IEnumerable<ComentReadViewModel> Coments { get; set; } = new List<ComentReadViewModel>();
+        public IEnumerable<GameGenreViewModel> Genres { get; set; }
+        public IEnumerable<GamePlatformTypeViewModel> PlatformTypes { get; set; }
+        public IEnumerable<ComentReadViewModel> Coments { get; set; }
 
     }
 }

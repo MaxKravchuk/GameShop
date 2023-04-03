@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BAL.ViewModels.Helpers
+namespace DAL.Entities
 {
-    public class GamePropsViewModel
+    public class GameGenre
     {
-        public int Id { get; set; }
+        public string GameKey { get; set; }
+        public Game Game { get; set; }
+
         public string Name { get; set; }
+        public Genre Genre { get; set; }
     }
 }

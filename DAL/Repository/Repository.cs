@@ -57,18 +57,22 @@ namespace DAL.Repository
         {
             if (string.IsNullOrEmpty(includeProperties))
             {
-                return await _context.Set<T>().FindAsync(id);
+                return await _dbSet.FindAsync(id);
             }
 
-            var result = await _context.Set<T>().FindAsync(id);
+            var result = await _dbSet.FindAsync(id);
+            
+            IQueryable<T> set = _dbSet;
 
-            IQueryable<T> set = _context.Set<T>();
+            foreach (var includeProperty in includeProperties.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                set = set.Include(includeProperty);
+            }
+            
+            var x = await set.ToListAsync();
 
-            set = includeProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Aggregate(set, (current, includeProperty)
-                        => current.Include(includeProperty));
-
-            return await set.FirstOrDefaultAsync(entity => entity == result);
+            return x.FirstOrDefault(en=> en == result);
         }
 
         public virtual void Insert(T entity)
@@ -96,5 +100,6 @@ namespace DAL.Repository
         {
             await _context.SaveChangesAsync();
         }
+
     }
 }

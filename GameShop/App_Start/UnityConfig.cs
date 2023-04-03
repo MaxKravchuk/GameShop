@@ -5,6 +5,8 @@ using DAL.Repository.Interfaces;
 using DAL.Repository;
 using System;
 using Unity;
+using AutoMapper;
+using Unity.Injection;
 
 namespace GameShop.App_Start
 {
@@ -49,6 +51,12 @@ namespace GameShop.App_Start
             container.RegisterType<IUnitOfWork, UnitOfWork>();
             container.RegisterType<IComentService, ComentService>();
             container.RegisterType<IGameService, GameService>();
+
+            container.RegisterType<IMapper>(new InjectionFactory(c => new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new AutoMapperConfiguration());
+            }).CreateMapper()));
+
         }
     }
 }

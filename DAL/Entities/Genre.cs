@@ -11,8 +11,8 @@ namespace DAL.Entities
         public string Name { get; set; }
 
         public string ParentGenreName { get; set; }
-        public virtual Genre ParentGenre { get; set; }
-        public virtual ICollection<Genre> SubGenres { get; set; } = new List<Genre>();
-        public virtual ICollection<Game> GameGenres { get; set; } = new List<Game>();
+        public Genre ParentGenre { get; set; }
+        public ICollection<Genre> SubGenres { get; set; } = new List<Genre>();
+        public ICollection<GameGenre> GameGenres { get; set; } = new List<GameGenre>();
     }
 }

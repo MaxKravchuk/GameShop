@@ -13,7 +13,7 @@ namespace BAL.Services.Interfaces
     {
         Task Create(Coment coment);
         Task Delete(object id);
-        Task<IEnumerable<Coment>> GetAsync();
+        Task<IEnumerable<Coment>> GetAsync(string gameKey);
         Task<Coment> GetAsync(int comentId);
         Task Update(Coment coment);
     }

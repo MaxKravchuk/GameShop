@@ -26,27 +26,27 @@ namespace DAL.Configurations
                 .Property(x => x.Description)
                 .HasMaxLength(255);
 
-            this
-                .HasMany(gen => gen.GameGenres)
-                .WithMany(g => g.GameGenres)
-                .Map(gg =>
-                {
-                    gg.MapLeftKey("GameRefKey");
-                    gg.MapRightKey("GenreRefName");
-                    gg.ToTable("GameGenre");
+            //this
+            //    .HasMany(gen => gen.GameGenres)
+            //    .WithMany(g => g.GameGenres)
+            //    .Map(gg =>
+            //    {
+            //        gg.MapLeftKey("GameRefKey");
+            //        gg.MapRightKey("GenreRefName");
+            //        gg.ToTable("GameGenre");
 
-                });
+            //    });
 
-            this
-                .HasMany<PlatformType>(pt => pt.GamePlatformTypes)
-                .WithMany(g => g.GamePlatformTypes)
-                .Map(gg =>
-                {
-                    gg.MapLeftKey("GameRefKey");
-                    gg.MapRightKey("PlatformTypeRefType");
-                    gg.ToTable("GamePlatformType");
+            //this
+            //    .HasMany<PlatformType>(pt => pt.GamePlatformTypes)
+            //    .WithMany(g => g.GamePlatformTypes)
+            //    .Map(gg =>
+            //    {
+            //        gg.MapLeftKey("GameRefKey");
+            //        gg.MapRightKey("PlatformTypeRefType");
+            //        gg.ToTable("GamePlatformType");
 
-                });
+            //    });
         }
     }
 }

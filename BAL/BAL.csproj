@@ -63,7 +63,8 @@
     <Compile Include="ViewModels\GenreViewModels\GenreReadListViewModel.cs" />
     <Compile Include="ViewModels\GenreViewModels\GenreReadViewModel.cs" />
     <Compile Include="ViewModels\GenreViewModels\GenreUpdateViewModel.cs" />
-    <Compile Include="ViewModels\Helpers\GamePropsViewModel.cs" />
+    <Compile Include="ViewModels\Helpers\GamePlatformTypeViewModel.cs" />
+    <Compile Include="ViewModels\Helpers\GameGenreViewModel.cs" />
     <Compile Include="ViewModels\PlatformTypeViewModels\PlatformTypeCreateViewModel.cs" />
     <Compile Include="ViewModels\PlatformTypeViewModels\PlatformTypeReadListViewModel.cs" />
     <Compile Include="ViewModels\PlatformTypeViewModels\PlatformTypeReadViewModel.cs" />
