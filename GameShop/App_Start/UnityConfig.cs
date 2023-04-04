@@ -51,6 +51,8 @@ namespace GameShop.App_Start
             container.RegisterType<IUnitOfWork, UnitOfWork>();
             container.RegisterType<IComentService, ComentService>();
             container.RegisterType<IGameService, GameService>();
+            container.RegisterType<IGenreService, GenreService>();
+            container.RegisterType<IPlatformTypeService, PlatformTypeService>();
 
             container.RegisterType<IMapper>(new InjectionFactory(c => new MapperConfiguration(cfg =>
             {

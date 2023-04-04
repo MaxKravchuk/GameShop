@@ -15,14 +15,38 @@ namespace BAL.Services
     public class GameService : IGameService
     {
         private readonly IRepository<Game> _gameRepository;
+        private readonly IGenreService _genreService;
+        private readonly IPlatformTypeService _platformTypeService;
 
-        public GameService(IUnitOfWork unitOfWork)
+        public GameService(
+            IUnitOfWork unitOfWork,
+            IGenreService genreService,
+            IPlatformTypeService platformTypeService)
         {
             _gameRepository = unitOfWork.GameRepository;
+            _genreService = genreService;
+            _platformTypeService = platformTypeService;
         }
 
-        public async Task Create(Game game)
+        public async Task Create(Game game, IEnumerable<string> gameGenres, IEnumerable<string> gamePlatformTypes)
         {
+            foreach(var genre in gameGenres)
+            {
+                game.GameGenres.Add(new GameGenre
+                {
+                    Game = game,
+                    Genre = await _genreService.GetByNameAsync(genre)
+                }) ;
+            }
+            foreach(var glt in gamePlatformTypes)
+            {
+                game.GamePlatformTypes.Add(new GamePlatformType
+                {
+                    Game = game,
+                    PlatformType = await _platformTypeService.GetByTypeAsync(glt)
+                });
+            }
+
             _gameRepository.Insert(game);
             await _gameRepository.SaveChangesAsync();
         }

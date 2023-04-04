@@ -1,5 +1,6 @@
 ﻿using BAL.ViewModels.GameViewModels;
 using BAL.ViewModels.GenreViewModels;
+using DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace BAL.Services.Interfaces
     {
         void Create();
         Task<GenreReadListViewModel> GetAsync();
-        Task<GenreReadViewModel> GetAsync(string name);
+        Task<Genre> GetByNameAsync(object key);
         void Update();
         void Delete();
     }

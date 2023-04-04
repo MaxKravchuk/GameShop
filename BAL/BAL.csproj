@@ -45,11 +45,13 @@
     <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Services\ComentService.cs" />
     <Compile Include="Services\GameService.cs" />
+    <Compile Include="Services\GenreService.cs" />
     <Compile Include="Services\Interfaces\IComentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Interfaces\IPlatformTypeService.cs" />
     <Compile Include="Services\Interfaces\IGenreService.cs" />
     <Compile Include="Services\Interfaces\IGameService.cs" />
+    <Compile Include="Services\PlatformTypeService.cs" />
     <Compile Include="ViewModels\ComentViewModels\ComentBaseViewModel.cs" />
     <Compile Include="ViewModels\ComentViewModels\ComentCreateViewModel.cs" />
     <Compile Include="ViewModels\ComentViewModels\ComentReadViewModel.cs" />

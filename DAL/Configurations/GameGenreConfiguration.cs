@@ -13,7 +13,12 @@ namespace DAL.Configurations
         public GameGenreConfiguration()
         {
             this.ToTable("GameGenre");
-            this.HasKey(x => new { x.GameKey, x.Name });
+
+            this.HasKey(x => new
+            {
+                x.GameKey, x.Name
+            });
+
             this
                 .HasRequired<Game>(x => x.Game)
                 .WithMany(x => x.GameGenres)

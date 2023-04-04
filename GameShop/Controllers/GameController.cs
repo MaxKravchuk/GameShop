@@ -35,7 +35,7 @@ namespace GameShop.Controllers
         public async Task CreateGameAsync([FromBody] GameCreateViewModel gameCreateViewModel)
         {
             var gameToCreate = _mapper.Map<Game>(gameCreateViewModel);
-            await _gameService.Create(gameToCreate);
+            await _gameService.Create(gameToCreate, gameCreateViewModel.GenresName, gameCreateViewModel.PlatformTypeName);
         }
 
         [HttpPut]

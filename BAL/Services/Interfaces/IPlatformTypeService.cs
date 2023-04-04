@@ -1,5 +1,6 @@
 ﻿using BAL.ViewModels.GameViewModels;
 using BAL.ViewModels.PlatformTypeViewModels;
+using DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace BAL.Services.Interfaces
     {
         void Create();
         Task<PlatformTypeReadListViewModel> GetAsync();
-        Task<PlatformTypeReadViewModel> GetAsync(string type);
+        Task<PlatformType> GetByTypeAsync(string type);
         void Update();
         void Delete();
     }
