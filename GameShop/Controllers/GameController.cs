@@ -2,16 +2,10 @@
 using BAL.Services.Interfaces;
 using BAL.ViewModels.GameViewModels;
 using DAL.Entities;
-using Swashbuckle.Swagger;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 
 namespace GameShop.Controllers

@@ -14,7 +14,7 @@ namespace GameShop
             var thisAssembly = typeof(SwaggerConfig).Assembly;
 
             GlobalConfiguration.Configuration
-                .EnableSwagger(c => c.SingleApiVersion("v1", "GameShop"))
+                .EnableSwagger(c => c.SingleApiVersion("v1", "GameShop1"))
                 .EnableSwaggerUi();
         }
     }

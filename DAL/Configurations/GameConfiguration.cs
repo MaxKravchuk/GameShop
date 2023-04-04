@@ -20,7 +20,14 @@ namespace DAL.Configurations
             this.HasKey(x => x.Id);
 
             this.Property(x => x.Key)
-            .HasMaxLength(50);
+            .HasMaxLength(50)
+            .IsRequired();
+
+            this
+                .Property(x => x.Key)
+                .HasMaxLength(50)
+                .HasColumnType("varchar")
+                .HasColumnAnnotation("IX_Key", new IndexAnnotation(new IndexAttribute("IX_Key") { IsUnique = true }));
 
             this
                 .Property(x => x.Name)
@@ -38,28 +45,6 @@ namespace DAL.Configurations
             this
                 .HasMany<PlatformType>(game=>game.GamePlatformTypes)
                 .WithMany(platformType=>platformType.GamePlatformTypes);
-
-            //this
-            //    .HasMany(gen => gen.GameGenres)
-            //    .WithMany(g => g.GameGenres)
-            //    .Map(gg =>
-            //    {
-            //        gg.MapLeftKey("GameRefKey");
-            //        gg.MapRightKey("GenreRefName");
-            //        gg.ToTable("GameGenre");
-
-            //    });
-
-            //this
-            //    .HasMany<PlatformType>(pt => pt.GamePlatformTypes)
-            //    .WithMany(g => g.GamePlatformTypes)
-            //    .Map(gg =>
-            //    {
-            //        gg.MapLeftKey("GameRefKey");
-            //        gg.MapRightKey("PlatformTypeRefType");
-            //        gg.ToTable("GamePlatformType");
-
-            //    });
         }
     }
 }

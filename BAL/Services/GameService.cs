@@ -30,15 +30,14 @@ namespace BAL.Services
 
         public async Task Create(Game game, IEnumerable<int> gameGenres, IEnumerable<int> gamePlatformTypes)
         {
-            foreach(var genre in gameGenres)
+            foreach (var genre in gameGenres)
             {
                 var genreToAdd = await _genreService.GetByIdAsync(genre);
                 game.GameGenres.Add(genreToAdd);
             }
-            foreach(var glt in gamePlatformTypes)
+            foreach (var glt in gamePlatformTypes)
             {
-                var pltToAdd = await _platformTypeService.GetByIdAsync(glt);
-                game.GamePlatformTypes.Add(pltToAdd);
+                game.GamePlatformTypes.Add(await _platformTypeService.GetByIdAsync(glt));
             }
 
             _gameRepository.Insert(game);
@@ -55,7 +54,7 @@ namespace BAL.Services
         public async Task<Game> GetByIdAsync(int id)
         {
             var game = await _gameRepository.GetByIdAsync(id, 
-                includeProperties: "GameGenres.Genre,GamePlatformTypes.PlatformType");
+                includeProperties: "GameGenres,GamePlatformTypes");
 
             if(game == null)
             {

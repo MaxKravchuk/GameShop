@@ -68,6 +68,18 @@
     <Compile Include="Migrations\202304041509191_newConfig.designer.cs">
       <DependentUpon>202304041509191_newConfig.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202304041940501_int.cs" />
+    <Compile Include="Migrations\202304041940501_int.designer.cs">
+      <DependentUpon>202304041940501_int.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202304041944448_addIndexToGame.cs" />
+    <Compile Include="Migrations\202304041944448_addIndexToGame.designer.cs">
+      <DependentUpon>202304041944448_addIndexToGame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202304042047341_virtual.cs" />
+    <Compile Include="Migrations\202304042047341_virtual.designer.cs">
+      <DependentUpon>202304042047341_virtual.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Interfaces\IRepository.cs" />
@@ -82,6 +94,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202304041509191_newConfig.resx">
       <DependentUpon>202304041509191_newConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202304041940501_int.resx">
+      <DependentUpon>202304041940501_int.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202304041944448_addIndexToGame.resx">
+      <DependentUpon>202304041944448_addIndexToGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202304042047341_virtual.resx">
+      <DependentUpon>202304042047341_virtual.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
