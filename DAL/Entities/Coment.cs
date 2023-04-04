@@ -12,7 +12,7 @@ namespace DAL.Entities
         public string Body { get; set; }
 
         public Game Game { get; set; }
-        public string GameKey { get; set; }
+        public int GameId { get; set; }
 
     }
 }

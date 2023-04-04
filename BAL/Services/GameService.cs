@@ -28,41 +28,34 @@ namespace BAL.Services
             _platformTypeService = platformTypeService;
         }
 
-        public async Task Create(Game game, IEnumerable<string> gameGenres, IEnumerable<string> gamePlatformTypes)
+        public async Task Create(Game game, IEnumerable<int> gameGenres, IEnumerable<int> gamePlatformTypes)
         {
             foreach(var genre in gameGenres)
             {
-                game.GameGenres.Add(new GameGenre
-                {
-                    Game = game,
-                    Genre = await _genreService.GetByNameAsync(genre)
-                }) ;
+                var genreToAdd = await _genreService.GetByIdAsync(genre);
+                game.GameGenres.Add(genreToAdd);
             }
             foreach(var glt in gamePlatformTypes)
             {
-                game.GamePlatformTypes.Add(new GamePlatformType
-                {
-                    Game = game,
-                    PlatformType = await _platformTypeService.GetByTypeAsync(glt)
-                });
+                var pltToAdd = await _platformTypeService.GetByIdAsync(glt);
+                game.GamePlatformTypes.Add(pltToAdd);
             }
 
             _gameRepository.Insert(game);
             await _gameRepository.SaveChangesAsync();
         }
 
-        public async Task Delete(object id)
+        public async Task Delete(int id)
         {
-            var gameToDelete = await _gameRepository.GetAsync(id);
+            var gameToDelete = await _gameRepository.GetByIdAsync(id);
             _gameRepository.Delete(gameToDelete);
             await _gameRepository.SaveChangesAsync();
-
         }
 
-        public async Task<Game> GetByKeyAsync(object key)
+        public async Task<Game> GetByIdAsync(int id)
         {
-            var game = await _gameRepository.GetAsync(key, 
-                includeProperties: "GameGenres.Genre,GamePlatformTypes.PlatformType,Coments");
+            var game = await _gameRepository.GetByIdAsync(id, 
+                includeProperties: "GameGenres.Genre,GamePlatformTypes.PlatformType");
 
             if(game == null)
             {
@@ -72,11 +65,10 @@ namespace BAL.Services
             return game;
         }
 
-        public async Task<IEnumerable<Game>> GetAsync(string search)
+        public async Task<IEnumerable<Game>> GetAsync(string search = "")
         {
             var filter = GetFilterQuery(search);
-
-            var games = await _gameRepository.GetAsync(filter: filter);
+            var games = await _gameRepository.GetAsync(filter:filter, includeProperties: "GameGenres.Genre,GamePlatformTypes.PlatformType");
 
             if (games == null)
             {
@@ -92,9 +84,9 @@ namespace BAL.Services
             await _gameRepository.SaveChangesAsync();
         }
 
-        public async Task<Stream> GenerateGameFile(object gameKey)
+        public async Task<Stream> GenerateGameFile(int id)
         {
-            var gameToDownload = await GetByKeyAsync(gameKey);
+            var gameToDownload = await GetByIdAsync(id);
 
             string fileName = $"{gameToDownload.Name}.bin";
 
@@ -156,9 +148,7 @@ namespace BAL.Services
 
             var formattedFilter = filterParam.Trim().ToLower();
 
-            filterQuery = u => u.Name.ToLower().Contains(formattedFilter)
-                                    || u.GameGenres.All(g=>g.Name == formattedFilter)
-                                    || u.GamePlatformTypes.All(plt => plt.Type == formattedFilter);
+            filterQuery = u => u.Key.ToLower().Contains(formattedFilter);
 
             return filterQuery;
         }

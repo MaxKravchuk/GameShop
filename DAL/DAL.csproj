@@ -54,8 +54,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configurations\GamePlatformTypeConfiguration.cs" />
-    <Compile Include="Configurations\GameGenreConfiguration.cs" />
     <Compile Include="Configurations\PlatformTypeConfiguration.cs" />
     <Compile Include="Configurations\GenreConfiguration.cs" />
     <Compile Include="Configurations\GameConfiguration.cs" />
@@ -64,13 +62,11 @@
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\Coment.cs" />
     <Compile Include="Entities\Game.cs" />
-    <Compile Include="Entities\GameGenre.cs" />
-    <Compile Include="Entities\GamePlatformType.cs" />
     <Compile Include="Entities\PlatformType.cs" />
     <Compile Include="Entities\Genre.cs" />
-    <Compile Include="Migrations\202304032153056_init.cs" />
-    <Compile Include="Migrations\202304032153056_init.designer.cs">
-      <DependentUpon>202304032153056_init.cs</DependentUpon>
+    <Compile Include="Migrations\202304041509191_newConfig.cs" />
+    <Compile Include="Migrations\202304041509191_newConfig.designer.cs">
+      <DependentUpon>202304041509191_newConfig.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -84,8 +80,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202304032153056_init.resx">
-      <DependentUpon>202304032153056_init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202304041509191_newConfig.resx">
+      <DependentUpon>202304041509191_newConfig.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

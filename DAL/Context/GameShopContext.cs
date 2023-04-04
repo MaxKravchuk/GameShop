@@ -16,8 +16,6 @@ namespace DAL.Context
         public DbSet<Game> Games { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<PlatformType> PlatformTypes { get; set; }
-        public DbSet<GameGenre> GameGenres { get; set; }
-        public DbSet<GamePlatformType> GamePlatformTypes { get; set; }
 
         public GameShopContext() : base("name=DefaultConnectingString")
         {

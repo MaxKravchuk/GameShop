@@ -25,44 +25,58 @@ namespace DAL.Repository
             _dbSet = context.Set<T>();
         }
 
-        public virtual async Task<IEnumerable<T>> GetAsync(
-            Expression<Func<T, bool>> filter = null,
+        public IQueryable<T> GetQuery(
+            Expression<Func<T, bool>> filte,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             string includeProperties = "")
         {
-            IQueryable<T> query = _dbSet;
+            IQueryable<T> set = filte == null ? _context.Set<T>()
+                : _context.Set<T>().Where(filte);
 
-            if (filter != null)
+            if(!string.IsNullOrEmpty(includeProperties))
             {
-                query = query.Where(filter).Where(x=>x.IsDeleted==false);
-            }
-
-            foreach (var includeProperty in includeProperties.Split
-                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
+                set = includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Aggregate(set, (current, includeProperty)
+                        => current.Include(includeProperty));
             }
 
-            if (orderBy != null)
+            if(orderBy != null)
             {
-                return await orderBy(query).ToListAsync();
+                set = orderBy(set);
             }
-            else
-            {
-                return await query.ToListAsync();
-            }
+
+            return set;
         }
 
-        public async Task<T> GetAsync(object id, string includeProperties = "")
+        public virtual async Task<IEnumerable<T>> GetAsync(
+            Expression<Func<T, bool>> filter = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            string includeProperties = "",
+            bool asNoTracking = false)
+        {
+            var query = GetQuery(filter, orderBy, includeProperties);
+
+            if (asNoTracking)
+            {
+                var noTrackingResult = await query.AsNoTracking().ToListAsync();
+
+                return noTrackingResult;
+            }
+
+            var trackingResult = await query.ToListAsync();
+            return trackingResult;
+        }
+
+        public async Task<T> GetByIdAsync(int id, string includeProperties = "")
         {
             if (string.IsNullOrEmpty(includeProperties))
             {
-                return await _dbSet.FindAsync(id);
+                return await _context.Set<T>().FindAsync(id);
             }
 
-            var result = await _dbSet.FindAsync(id);
+            var result = await _context.Set<T>().FindAsync(id);
             
-            IQueryable<T> set = _dbSet;
+            IQueryable<T> set = _context.Set<T>();
 
             foreach (var includeProperty in includeProperties.Split
                 (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
@@ -70,9 +84,9 @@ namespace DAL.Repository
                 set = set.Include(includeProperty);
             }
             
-            var x = await set.ToListAsync();
+            var listedSet = await set.ToListAsync();
 
-            return x.FirstOrDefault(en=> en == result);
+            return listedSet.FirstOrDefault(en => en == result);
         }
 
         public virtual void Insert(T entity)

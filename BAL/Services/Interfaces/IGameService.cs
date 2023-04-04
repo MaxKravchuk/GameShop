@@ -11,11 +11,11 @@ namespace BAL.Services.Interfaces
 {
     public interface IGameService
     {
-        Task Create(Game game, IEnumerable<string> gameGenres, IEnumerable<string> gamePlatformTypes);
-        Task<Game> GetByKeyAsync(object key);
-        Task<IEnumerable<Game>> GetAsync(string search);
+        Task Create(Game game, IEnumerable<int> gameGenres, IEnumerable<int> gamePlatformTypes);
+        Task<Game> GetByIdAsync(int id);
+        Task<IEnumerable<Game>> GetAsync(string search = "");
         Task Update(Game game);
-        Task Delete(object id);
-        Task<Stream> GenerateGameFile(object gameKey);
+        Task Delete(int id);
+        Task<Stream> GenerateGameFile(int id);
     }
 }

@@ -27,9 +27,9 @@ namespace BAL.Services
             await _comentRepository.SaveChangesAsync();
         }
 
-        public async Task Delete(object id)
+        public async Task Delete(int id)
         {
-            var comentToDelete = await _comentRepository.GetAsync(id);
+            var comentToDelete = await _comentRepository.GetByIdAsync(id);
             _comentRepository.Delete(comentToDelete);
             await _comentRepository.SaveChangesAsync();
         }
@@ -53,7 +53,7 @@ namespace BAL.Services
         }
         public async Task<Coment> GetAsync(int comentId)
         {
-            var coment = await _comentRepository.GetAsync(comentId);
+            var coment = await _comentRepository.GetByIdAsync(comentId);
 
             if (coment == null)
             {
@@ -77,7 +77,7 @@ namespace BAL.Services
 
             var formattedFilter = filterParam.Trim().ToLower();
 
-            filterQuery = u => u.GameKey.ToLower().Contains(formattedFilter);
+            filterQuery = u => u.Game.Key.ToLower().Contains(formattedFilter);
 
             return filterQuery;
         }

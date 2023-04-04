@@ -21,24 +21,33 @@ namespace BAL.Services
             _platformTypeRepository = unitOfWork.PlatformTypeRepository;
         }
 
-        public void Create()
+        public async Task Create(PlatformType platformType)
         {
-            throw new NotImplementedException();
+            _platformTypeRepository.Insert(platformType);
+            await _platformTypeRepository.SaveChangesAsync();
         }
 
-        public void Delete()
+        public async Task Delete(PlatformType platformType)
         {
-            throw new NotImplementedException();
+            _platformTypeRepository.Delete(platformType);
+            await _platformTypeRepository.SaveChangesAsync();
         }
 
-        public Task<PlatformTypeReadListViewModel> GetAsync()
+        public async Task<IEnumerable<PlatformType>> GetAsync()
         {
-            throw new NotImplementedException();
+            var plt = await _platformTypeRepository.GetAsync();
+
+            if( plt == null )
+            {
+                throw new NotFoundException();
+            }
+            
+            return plt;
         }
 
-        public Task<PlatformType> GetByTypeAsync(string type)
+        public async Task<PlatformType> GetByIdAsync(int id)
         {
-            var plt = _platformTypeRepository.GetAsync(type);
+            var plt = await _platformTypeRepository.GetByIdAsync(id);
 
             if( plt == null )
             {
@@ -48,9 +57,10 @@ namespace BAL.Services
             return plt;
         }
 
-        public void Update()
+        public async Task Update(PlatformType platformType)
         {
-            throw new NotImplementedException();
+            _platformTypeRepository.Update(platformType);
+            await _platformTypeRepository.SaveChangesAsync();
         }
     }
 }

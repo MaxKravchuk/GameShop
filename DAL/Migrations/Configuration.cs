@@ -18,9 +18,9 @@
         {
             List<Coment> dComents = new List<Coment>
             {
-                new Coment {Id = 1, Name = "Admin", Body = "First comment",GameKey = "game1"},
-                new Coment {Id = 2, Name = "Bob", Body = "[Admin]Reply to admin", GameKey = "game1"},
-                new Coment {Id = 3, Name = "Bob", Body = "BlaBLa", GameKey = "game2"}
+                new Coment {Id = 1, Name = "Admin", Body = "First comment",GameId = 1},
+                new Coment {Id = 2, Name = "Bob", Body = "[Admin]Reply to admin", GameId = 1},
+                new Coment {Id = 3, Name = "Bob", Body = "BlaBLa", GameId = 2}
             };
 
             List<Genre> dGenres = new List<Genre>
@@ -44,33 +44,26 @@
                 {
                     dComents[0],
                     dComents[1]
+                },
+                GameGenres = new List<Genre>{
+                    dGenres[0]
+                },GamePlatformTypes = new List<PlatformType>{
+                    dPt[0]
                 }},
                 new Game {Id = 2, Key = "game2", Name = "SecGame", Description="The Best game", Coments = new List<Coment>
                 {
                     dComents[2]
+                },GameGenres = new List<Genre>{
+                    dGenres[1]
+                },GamePlatformTypes = new List<PlatformType>{
+                    dPt[0], dPt[1]
                 }},
-            };
-
-            List<GameGenre> gameGenres = new List<GameGenre>
-            {
-                new GameGenre{GameKey = "game1", Name = "Test1"},
-                new GameGenre{GameKey="game2", Name="Test3"},
-                new GameGenre{GameKey="game2", Name="Test2"},
-            };
-
-            List<GamePlatformType> gamePlatformTypes = new List<GamePlatformType>
-            {
-                new GamePlatformType{GameKey = "game1", Type = "Type1"},
-                new GamePlatformType{GameKey = "game2", Type = "Type2"},
-                new GamePlatformType{GameKey = "game2", Type = "Type1"},
             };
 
             context.Coments.AddRange(dComents);
             context.Genres.AddRange(dGenres);
             context.PlatformTypes.AddRange(dPt);
             context.Games.AddRange(dGames);
-            context.GameGenres.AddRange(gameGenres);
-            context.GamePlatformTypes.AddRange(gamePlatformTypes);
             context.SaveChanges();
         }
     }

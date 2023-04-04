@@ -10,6 +10,6 @@ namespace DAL.Entities
     {
         public string Type { get; set; }
 
-        public ICollection<GamePlatformType> GamePlatformTypes { get; set; } = new List<GamePlatformType>();
+        public ICollection<Game> GamePlatformTypes { get; set; } = new List<Game>();
     }
 }

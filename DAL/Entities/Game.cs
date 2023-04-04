@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace DAL.Entities
         public string Description { get; set; }
 
         public ICollection<Coment> Coments { get; set; } = new List<Coment>();
-        public ICollection<GameGenre> GameGenres { get; set; } = new List<GameGenre>();
-        public ICollection<GamePlatformType> GamePlatformTypes{ get; set; } = new List<GamePlatformType>();
+        public ICollection<Genre> GameGenres { get; set; } = new List<Genre>();
+        public ICollection<PlatformType> GamePlatformTypes{ get; set; } = new List<PlatformType>();
     }
 }

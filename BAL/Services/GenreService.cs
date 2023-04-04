@@ -6,6 +6,7 @@ using DAL.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,29 +21,36 @@ namespace BAL.Services
             _genreRepository = unitOfWork.GenreRepository;
         }
 
-        public void Create()
+        public async Task Create(Genre genre)
         {
-            throw new NotImplementedException();
+            _genreRepository.Insert(genre);
+            await _genreRepository.SaveChangesAsync();
         }
 
-        public void Delete()
+        public async Task Delete(Genre genre)
         {
-            throw new NotImplementedException();
+            _genreRepository.Delete(genre);
+            await _genreRepository.SaveChangesAsync();
+
         }
 
-        public Task<GenreReadListViewModel> GetAsync()
+        public async Task<IEnumerable<Genre>> GetAsync(string gameKey = "")
         {
-            throw new NotImplementedException();
+
+            var filter = GetFilterQuery(gameKey);
+            var genres = await _genreRepository.GetAsync(filter:filter);
+
+            if(genres == null)
+            {
+                throw new NotFoundException();
+            }
+
+            return genres;
         }
 
-        public Task<GenreReadViewModel> GetAsync(string name)
+        public async Task<Genre> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Genre> GetByNameAsync(object key)
-        {
-            var genre = await _genreRepository.GetAsync(key,
+            var genre = await _genreRepository.GetByIdAsync(id,
                 includeProperties: "ParentGenre,SubGenres");
 
             if(genre == null)
@@ -53,9 +61,23 @@ namespace BAL.Services
             return genre;
         }
 
-        public void Update()
+        public async Task Update(Genre genre)
         {
-            throw new NotImplementedException();
+            _genreRepository.Update(genre);
+            await _genreRepository.SaveChangesAsync();
+        }
+
+        private static Expression<Func<Genre, bool>> GetFilterQuery(string filterParam)
+        {
+            Expression<Func<Genre, bool>> filterQuery = null;
+
+            if (filterParam is null) return filterQuery;
+
+            var formattedFilter = filterParam.Trim().ToLower();
+
+            filterQuery = u => u.GameGenres.All(gg=>gg.Key.ToLower().Contains(formattedFilter));
+
+            return filterQuery;
         }
     }
 }

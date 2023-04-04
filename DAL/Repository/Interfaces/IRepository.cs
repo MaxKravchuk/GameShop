@@ -10,11 +10,16 @@ namespace DAL.Repository.Interfaces
 {
     public interface IRepository<T> where T : BaseEntity
     {
+        IQueryable<T> GetQuery(
+              Expression<Func<T, bool>> filte,
+              Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+              string includeProperties = "");
         Task<IEnumerable<T>> GetAsync(
             Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            string includeProperties = "");
-        Task<T> GetAsync(object id, string includeProperties = "");
+            string includeProperties = "",
+            bool asNoTracking = false);
+        Task<T> GetByIdAsync(int id, string includeProperties = "");
         void Insert(T entity);
         void Delete(T entityToDelete);
         void Update(T entityToUpdate);

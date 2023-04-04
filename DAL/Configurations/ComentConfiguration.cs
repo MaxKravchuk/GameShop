@@ -27,9 +27,10 @@ namespace DAL.Configurations
                 .IsRequired();
 
             this
-                .HasOptional<Game>(g => g.Game)
-                .WithMany(g => g.Coments)
-                .HasForeignKey<string>(g => g.GameKey);
+                .HasRequired(x => x.Game)
+                .WithMany(x => x.Coments)
+                .HasForeignKey(x => x.GameId)
+                .WillCascadeOnDelete(false);
         }
     }
 }

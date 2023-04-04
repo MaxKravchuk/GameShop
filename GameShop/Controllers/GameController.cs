@@ -48,9 +48,9 @@ namespace GameShop.Controllers
 
         [HttpGet]
         [Route("getDetailsByKey")]
-        public async Task<GameReadViewModel> GetGameDetailsByKeyAsync([FromUri] string gameKey)
+        public async Task<GameReadViewModel> GetGameDetailsByKeyAsync([FromUri] int gameId)
         {
-            var game = await _gameService.GetByKeyAsync(gameKey);
+            var game = await _gameService.GetByIdAsync(gameId);
             var model = _mapper.Map<GameReadViewModel>(game);
             return model;
         }
@@ -66,17 +66,17 @@ namespace GameShop.Controllers
 
         [HttpDelete]
         [Route("delete")]
-        public async Task DeleteGameAsync([FromUri] string gameKey)
+        public async Task DeleteGameAsync([FromUri] int gameId)
         {
-            await _gameService.Delete(gameKey);
+            await _gameService.Delete(gameId);
         }
 
         [HttpGet]
         [Route("downloadGame")]
-        public async Task<HttpResponseMessage> DownloadGame(string gameKey)
+        public async Task<HttpResponseMessage> DownloadGame(int gameId)
         {
-            var game = await _gameService.GenerateGameFile(gameKey);
-            string fileName = string.Format($"{gameKey}.bin");
+            var game = await _gameService.GenerateGameFile(gameId);
+            string fileName = string.Format($"{gameId}.bin");
 
             HttpResponseMessage response = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
             response.Content = new StreamContent(game);

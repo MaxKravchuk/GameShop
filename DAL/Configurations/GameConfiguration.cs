@@ -1,6 +1,8 @@
 ﻿using DAL.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -15,7 +17,10 @@ namespace DAL.Configurations
         {
             this.ToTable("Games");
 
-            this.HasKey(x => x.Key);
+            this.HasKey(x => x.Id);
+
+            this.Property(x => x.Key)
+            .HasMaxLength(50);
 
             this
                 .Property(x => x.Name)
@@ -25,6 +30,14 @@ namespace DAL.Configurations
             this
                 .Property(x => x.Description)
                 .HasMaxLength(255);
+
+            this
+                .HasMany<Genre>(game => game.GameGenres)
+                .WithMany(genre => genre.GameGenres);
+
+            this
+                .HasMany<PlatformType>(game=>game.GamePlatformTypes)
+                .WithMany(platformType=>platformType.GamePlatformTypes);
 
             //this
             //    .HasMany(gen => gen.GameGenres)

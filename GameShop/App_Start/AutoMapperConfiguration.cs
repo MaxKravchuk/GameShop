@@ -20,9 +20,7 @@ namespace GameShop.App_Start
             CreateMap<GameCreateViewModel, Game>();
             CreateMap<Genre, GameGenreViewModel>();
             CreateMap<PlatformType, GamePlatformTypeViewModel>();
-            CreateMap<Game, GameReadViewModel>()
-                .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.GameGenres.Select(gg => gg.Genre)))
-                .ForMember(dest => dest.PlatformTypes, opt => opt.MapFrom(src => src.GamePlatformTypes.Select(gpt => gpt.PlatformType)));
+            CreateMap<Game, GameReadViewModel>();
             CreateMap<Game, GameReadListViewModel>();
             CreateMap<GameUpdateViewModel, Game>();
         }

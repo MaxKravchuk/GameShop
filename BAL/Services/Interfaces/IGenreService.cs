@@ -11,10 +11,10 @@ namespace BAL.Services.Interfaces
 {
     public interface IGenreService
     {
-        void Create();
-        Task<GenreReadListViewModel> GetAsync();
-        Task<Genre> GetByNameAsync(object key);
-        void Update();
-        void Delete();
+        Task Create(Genre genre);
+        Task<IEnumerable<Genre>> GetAsync(string gameKey = "");
+        Task<Genre> GetByIdAsync(int id);
+        Task Update(Genre genre);
+        Task Delete(Genre genre);
     }
 }

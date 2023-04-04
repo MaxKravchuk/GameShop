@@ -11,10 +11,10 @@ namespace BAL.Services.Interfaces
 {
     public interface IPlatformTypeService
     {
-        void Create();
-        Task<PlatformTypeReadListViewModel> GetAsync();
-        Task<PlatformType> GetByTypeAsync(string type);
-        void Update();
-        void Delete();
+        Task Create(PlatformType platformType);
+        Task<IEnumerable<PlatformType>> GetAsync();
+        Task<PlatformType> GetByIdAsync(int id);
+        Task Update(PlatformType platformType);
+        Task Delete(PlatformType platformType);
     }
 }
