@@ -29,7 +29,7 @@ namespace BAL.Services
 
         public async Task Delete(Genre genre)
         {
-            _genreRepository.Delete(genre);
+            _genreRepository.Update(genre);
             await _genreRepository.SaveChangesAsync();
 
         }
@@ -50,8 +50,7 @@ namespace BAL.Services
 
         public async Task<Genre> GetByIdAsync(int id)
         {
-            var genre = await _genreRepository.GetByIdAsync(id,
-                includeProperties: "ParentGenre,SubGenres");
+            var genre = await _genreRepository.GetByIdAsync(id);
 
             if(genre == null)
             {

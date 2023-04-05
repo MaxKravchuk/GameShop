@@ -35,9 +35,9 @@ namespace GameShop.Controllers
 
         [HttpGet]
         [Route("getAllByGameKey")]
-        public async Task<IEnumerable<ComentReadViewModel>> GetAllComentsByGameKey([FromUri] string gameKey)
+        public async Task<IEnumerable<ComentReadViewModel>> GetAllComentsByGameKey([FromUri] int gameKey)
         {
-            var coments = await _comentService.GetAsync(gameKey);
+            var coments = await _comentService.GetAllAsync(gameKey);
             var model = _mapper.Map<IEnumerable<ComentReadViewModel>>(coments);
             return model;
         }

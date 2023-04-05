@@ -2,11 +2,14 @@
 using BAL.Services.Interfaces;
 using BAL.ViewModels.GameViewModels;
 using DAL.Entities;
+using DAL.Models;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.WebPages;
 
 namespace GameShop.Controllers
 {
@@ -29,7 +32,7 @@ namespace GameShop.Controllers
         public async Task CreateGameAsync([FromBody] GameCreateViewModel gameCreateViewModel)
         {
             var gameToCreate = _mapper.Map<Game>(gameCreateViewModel);
-            await _gameService.Create(gameToCreate, gameCreateViewModel.GenresName, gameCreateViewModel.PlatformTypeName);
+            await _gameService.Create(gameToCreate, gameCreateViewModel.GenresId, gameCreateViewModel.PlatformTypeId);
         }
 
         [HttpPut]
@@ -37,23 +40,32 @@ namespace GameShop.Controllers
         public async Task UpdateGameAsync([FromBody] GameUpdateViewModel gameUpdateViewModel)
         {
             var gameToUpdate = _mapper.Map<Game>(gameUpdateViewModel);
-            await _gameService.Update(gameToUpdate);
+            await _gameService.Update(gameToUpdate, gameUpdateViewModel.GenresId,gameUpdateViewModel.PlatformTypeId);
         }
 
         [HttpGet]
-        [Route("getDetailsByKey")]
-        public async Task<GameReadViewModel> GetGameDetailsByKeyAsync([FromUri] int gameId)
+        [Route("getDetailsById")]
+        public async Task<GameReadViewModel> GetGameDetailsByKeyAsync([FromUri] string gameKey)
         {
-            var game = await _gameService.GetByIdAsync(gameId);
+            var game = await _gameService.GetByKeyGameAsync(gameKey);
             var model = _mapper.Map<GameReadViewModel>(game);
             return model;
         }
 
         [HttpGet]
-        [Route("getAll")]
-        public async Task<IEnumerable<GameReadListViewModel>> GetAllGamesAsync(string search = null)
+        [Route("getall")]
+        public async Task<IEnumerable<GameReadListViewModel>> GetAllGamesAsync()
         {
-            var games = await _gameService.GetAsync(search);
+            var games = await _gameService.GetAllGamesAsync();
+            var model = _mapper.Map<IEnumerable<GameReadListViewModel>>(games);
+            return model;
+        }
+
+        [HttpGet]
+        [Route("getByGenreOrPlatformType")]
+        public async Task<IEnumerable<GameReadListViewModel>> GetAllGamesByParameterAsync([FromUri]GameParameters gameParameters)
+        {
+            var games = await _gameService.GetGameByGenreOrPltAsync(gameParameters);
             var model = _mapper.Map<IEnumerable<GameReadListViewModel>>(games);
             return model;
         }
@@ -67,17 +79,12 @@ namespace GameShop.Controllers
 
         [HttpGet]
         [Route("downloadGame")]
-        public async Task<HttpResponseMessage> DownloadGame(int gameId)
+        public HttpResponseMessage DownloadGame()
         {
-            var game = await _gameService.GenerateGameFile(gameId);
-            string fileName = string.Format($"{gameId}.bin");
+            string Rpath = @"C:\DiscD\";
+            string path = Path.Combine(Rpath, "game.bin");
 
-            HttpResponseMessage response = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
-            response.Content = new StreamContent(game);
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-            response.Content.Headers.ContentDisposition.FileName = fileName;
-            return response;
+            return _gameService.GenerateGameFile(path);
         }
     }
 }

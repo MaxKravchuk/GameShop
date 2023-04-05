@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class newConfig : DbMigration
+    public partial class init : DbMigration
     {
         public override void Up()
         {
@@ -20,26 +20,26 @@
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Games", t => t.GameId)
                 .Index(t => t.GameId);
-
+            
             CreateTable(
                 "dbo.Games",
                 c => new
-                {
-                    Id = c.Int(nullable: false, identity: true),
-                    Key = c.String(nullable: false, maxLength: 50),
-                    Name = c.String(nullable: false, maxLength: 100),
-                    Description = c.String(maxLength: 255),
-                    IsDeleted = c.Boolean(nullable: false),
-                })
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Key = c.String(nullable: false, maxLength: 255, unicode: false),
+                        Name = c.String(nullable: false, maxLength: 100),
+                        Description = c.String(maxLength: 255),
+                        IsDeleted = c.Boolean(nullable: false),
+                    })
                 .PrimaryKey(t => t.Id)
-                .Index(t=>t.Key, unique: true);
+                .Index(t => t.Key, unique: true, name: "Index");
             
             CreateTable(
                 "dbo.Genres",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false, maxLength: 50),
+                        Name = c.String(nullable: false, maxLength: 50, unicode: false),
                         ParentGenreId = c.Int(),
                         IsDeleted = c.Boolean(nullable: false),
                     })
@@ -53,7 +53,7 @@
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Type = c.String(nullable: false, maxLength: 50),
+                        Type = c.String(nullable: false, maxLength: 50, unicode: false),
                         IsDeleted = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
@@ -102,7 +102,7 @@
             DropIndex("dbo.PlatformTypes", new[] { "Type" });
             DropIndex("dbo.Genres", new[] { "ParentGenreId" });
             DropIndex("dbo.Genres", new[] { "Name" });
-            DropIndex("dbo.Games", new[] { "Key" });
+            DropIndex("dbo.Games", "Index");
             DropIndex("dbo.Coments", new[] { "GameId" });
             DropTable("dbo.GamePlatformTypes");
             DropTable("dbo.GameGenres");

@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using GameShop.Filters;
+using System.Web;
 using System.Web.Mvc;
 
 namespace GameShop
@@ -8,6 +9,7 @@ namespace GameShop
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new LogIPFilter());
         }
     }
 }

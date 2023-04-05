@@ -5,6 +5,7 @@ using EntityFramework.Filters;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Remoting.Contexts;
@@ -31,7 +32,7 @@ namespace DAL.Repository
             string includeProperties = "")
         {
             IQueryable<T> set = filte == null ? _context.Set<T>()
-                : _context.Set<T>().Where(filte);
+                : _context.Set<T>().Where(filte).Where(x=>x.IsDeleted==false);
 
             if(!string.IsNullOrEmpty(includeProperties))
             {
@@ -78,15 +79,29 @@ namespace DAL.Repository
             
             IQueryable<T> set = _context.Set<T>();
 
+            //set = includeProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+            //        .Aggregate(set, (current, includeProperty)
+            //            => current.Include(includeProperty));
+
             foreach (var includeProperty in includeProperties.Split
                 (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 set = set.Include(includeProperty);
             }
-            
-            var listedSet = await set.ToListAsync();
 
-            return listedSet.FirstOrDefault(en => en == result);
+            return await set.FirstOrDefaultAsync(en => en == result);
+        }
+
+        public async Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _context.Set<T>();
+            
+            foreach(var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public virtual void Insert(T entity)

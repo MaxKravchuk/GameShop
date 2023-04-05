@@ -20,6 +20,7 @@ namespace DAL.Repository.Interfaces
             string includeProperties = "",
             bool asNoTracking = false);
         Task<T> GetByIdAsync(int id, string includeProperties = "");
+        Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes);
         void Insert(T entity);
         void Delete(T entityToDelete);
         void Update(T entityToUpdate);

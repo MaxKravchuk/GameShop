@@ -19,15 +19,16 @@ namespace DAL.Configurations
 
             this.HasKey(x => x.Id);
 
-            this.Property(x => x.Key)
-            .HasMaxLength(50)
-            .IsRequired();
-
             this
-                .Property(x => x.Key)
-                .HasMaxLength(50)
-                .HasColumnType("varchar")
-                .HasColumnAnnotation("IX_Key", new IndexAnnotation(new IndexAttribute("IX_Key") { IsUnique = true }));
+               .Property(x => x.Key)
+               .HasColumnType("varchar")
+               .HasMaxLength(255)
+               .HasColumnAnnotation(
+                "Index", new IndexAnnotation(new[]
+                {
+                    new IndexAttribute("Index") { IsUnique = true }
+                }))
+                .IsRequired();
 
             this
                 .Property(x => x.Name)

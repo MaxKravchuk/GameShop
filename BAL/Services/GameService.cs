@@ -1,12 +1,16 @@
 ﻿using BAL.Exceptions;
 using BAL.Services.Interfaces;
 using DAL.Entities;
+using DAL.Models;
 using DAL.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,8 +19,8 @@ namespace BAL.Services
     public class GameService : IGameService
     {
         private readonly IRepository<Game> _gameRepository;
-        private readonly IGenreService _genreService;
-        private readonly IPlatformTypeService _platformTypeService;
+        private readonly IRepository<Genre> _genreRepository;
+        private readonly IRepository<PlatformType> _platformTypeRepository;
 
         public GameService(
             IUnitOfWork unitOfWork,
@@ -24,20 +28,21 @@ namespace BAL.Services
             IPlatformTypeService platformTypeService)
         {
             _gameRepository = unitOfWork.GameRepository;
-            _genreService = genreService;
-            _platformTypeService = platformTypeService;
+            _genreRepository = unitOfWork.GenreRepository;
+            _platformTypeRepository = unitOfWork.PlatformTypeRepository;
         }
 
         public async Task Create(Game game, IEnumerable<int> gameGenres, IEnumerable<int> gamePlatformTypes)
         {
             foreach (var genre in gameGenres)
             {
-                var genreToAdd = await _genreService.GetByIdAsync(genre);
+                var genreToAdd = await _genreRepository.GetByIdAsync(genre);
                 game.GameGenres.Add(genreToAdd);
             }
             foreach (var glt in gamePlatformTypes)
             {
-                game.GamePlatformTypes.Add(await _platformTypeService.GetByIdAsync(glt));
+                var gltToAdd = await _platformTypeRepository.GetByIdAsync(glt);
+                game.GamePlatformTypes.Add(gltToAdd); 
             }
 
             _gameRepository.Insert(game);
@@ -51,23 +56,21 @@ namespace BAL.Services
             await _gameRepository.SaveChangesAsync();
         }
 
-        public async Task<Game> GetByIdAsync(int id)
+        public async Task<Game> GetByKeyGameAsync(string gameKey)
         {
-            var game = await _gameRepository.GetByIdAsync(id, 
-                includeProperties: "GameGenres,GamePlatformTypes");
+            var game = await _gameRepository.GetAsync(filter:g=>g.Key==gameKey,includeProperties: "GamePlatformTypes,GameGenres");
 
             if(game == null)
             {
                 throw new NotFoundException();
             }
 
-            return game;
+            return game.SingleOrDefault();
         }
 
-        public async Task<IEnumerable<Game>> GetAsync(string search = "")
+        public async Task<IEnumerable<Game>> GetAllGamesAsync()
         {
-            var filter = GetFilterQuery(search);
-            var games = await _gameRepository.GetAsync(filter:filter, includeProperties: "GameGenres.Genre,GamePlatformTypes.PlatformType");
+            var games = await _gameRepository.GetAsync();
 
             if (games == null)
             {
@@ -77,78 +80,98 @@ namespace BAL.Services
             return games;
         }
 
-        public async Task Update(Game game)
+        public async Task<IEnumerable<Game>> GetGameByGenreOrPltAsync(GameParameters gameParameters)
         {
-            _gameRepository.Update(game);
+            if (!string.IsNullOrEmpty(gameParameters.PlatformType))
+            {
+                var games = await _gameRepository.GetAsync(filter:
+                    g => g.GamePlatformTypes.Any(gg => gg.Type == gameParameters.GenreName.Trim().ToLower()));
+
+                if (games == null)
+                {
+                    throw new NotFoundException();
+                }
+
+                return games;
+            }
+            else if (!string.IsNullOrEmpty(gameParameters.GenreName))
+            {
+                var games = await _gameRepository.GetAsync(filter:
+                    g => g.GameGenres.Any(gg => gg.Name == gameParameters.GenreName.Trim().ToLower()));
+
+                if (games == null)
+                {
+                    throw new NotFoundException();
+                }
+
+                return games;
+            }
+            else
+            {
+                throw new BadRequestException();
+            }
+        }
+
+        public async Task Update(Game game, IEnumerable<int> genresId, IEnumerable<int> platformTypesId)
+        {
+            var exGame = await _gameRepository.GetByIdAsync(game.Id, q => q.GameGenres, q => q.GamePlatformTypes);
+
+            exGame.GamePlatformTypes.Clear();
+            exGame.GameGenres.Clear();
+
+            foreach (var genre in genresId)
+            {
+                var genreToAdd = await _genreRepository.GetByIdAsync(genre);
+                exGame.GameGenres.Add(genreToAdd);
+            }
+            foreach (var glt in platformTypesId)
+            {
+                var gltToAdd = await _platformTypeRepository.GetByIdAsync(glt);
+                exGame.GamePlatformTypes.Add(gltToAdd);
+            }
+
+            _gameRepository.Update(exGame);
             await _gameRepository.SaveChangesAsync();
         }
 
-        public async Task<Stream> GenerateGameFile(int id)
+        public HttpResponseMessage GenerateGameFile(string path)
         {
-            var gameToDownload = await GetByIdAsync(id);
+            HttpResponseMessage res = new HttpResponseMessage(HttpStatusCode.OK);
 
-            string fileName = $"{gameToDownload.Name}.bin";
+            var stream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
-            byte[] binareData = GenerateBinaryData(gameToDownload);
+            res.Content = new StreamContent(stream);
+            res.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octec-stream");
 
-            using(Stream stream = new MemoryStream())
-            {
-                stream.Write(binareData, 0, binareData.Length);
-                stream.Position = 0;
-                stream.Close();
-
-                return stream;
-            }
+            return res;
         }
-
-        private byte[] GenerateBinaryData(Game game)
-        {
-            byte[] binaryData = new byte[1024];
-            for (int i = 0; i < binaryData.Length; i++)
-            {
-                binaryData[i] = (byte)(i % 256);
-            }
-
-            List<string> genresName = new List<string>();
-            List<string> platformTypes = new List<string>();
-
-            foreach (var genre in game.GameGenres)
-            {
-                genresName.Add(genre.Name);
-            }
-            foreach (var platformType in game.GamePlatformTypes)
-            {
-                platformTypes.Add(platformType.Type);
-            }
-
-            // Convert lists to arrays
-            char[] genreChars = String.Concat(genresName).ToCharArray();
-            char[] platformChars = String.Concat(platformTypes).ToCharArray();
-            // Write game details to binary data
-            byte[] gameNameBytes = Encoding.UTF8.GetBytes(game.Name);
-            byte[] gameGenreBytes = Encoding.UTF8.GetBytes(genreChars);
-            byte[] gamePlatformBytes = Encoding.UTF8.GetBytes(platformChars);
-
-            int offset = 0;
-            Buffer.BlockCopy(gameNameBytes, 0, binaryData, offset, gameNameBytes.Length);
-            offset += gameNameBytes.Length;
-            Buffer.BlockCopy(gameGenreBytes, 0, binaryData, offset, gameGenreBytes.Length);
-            offset += gameGenreBytes.Length;
-            Buffer.BlockCopy(gamePlatformBytes, 0, binaryData, offset, gamePlatformBytes.Length);
-
-            return binaryData;
-        }
-
-        private static Expression<Func<Game, bool>> GetFilterQuery(string filterParam)
+        private static Expression<Func<Game, bool>> GetFilterQuery(string filterParam = "", GameParameters gameParameters = null)
         {
             Expression<Func<Game, bool>> filterQuery = null;
 
-            if (filterParam is null) return filterQuery;
+            if (!string.IsNullOrEmpty(filterParam))
+            {
+                var formattedFilter = filterParam.Trim().ToLower();
 
-            var formattedFilter = filterParam.Trim().ToLower();
+                filterQuery = u => u.Key.ToLower().Contains(formattedFilter);
 
-            filterQuery = u => u.Key.ToLower().Contains(formattedFilter);
-
+                return filterQuery;
+            }
+            else if (gameParameters != null)
+            {
+                if (!string.IsNullOrEmpty(gameParameters.PlatformType))
+                {
+                    var formatedFilter = gameParameters.PlatformType.Trim().ToLower();
+                    filterQuery = u => u.GamePlatformTypes.Any(g=>g.Type == formatedFilter);
+                    return filterQuery;
+                }
+                else if (!string.IsNullOrEmpty(gameParameters.GenreName))
+                {
+                    var formatedFilter = gameParameters.PlatformType.Trim().ToLower();
+                    filterQuery = u => u.GameGenres.Any(g => g.Name == formatedFilter);
+                    return filterQuery;
+                }
+            }
             return filterQuery;
         }
     }
