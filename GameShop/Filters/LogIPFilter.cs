@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net;
 using System.Web;
-using System.Web.Mvc;
+using System.Web.Http.Controllers;
+using System.Web.Http.Filters;
 
 namespace GameShop.Filters
 {
@@ -11,27 +14,29 @@ namespace GameShop.Filters
     {
         private const string LogFilePath = @"C:\DiscD\ip_log.txt";
 
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        public override void OnActionExecuting(HttpActionContext actionContext)
         {
-            try
+            string ipAddress = GetClientIpAddress(actionContext.Request);
+            string logText = $"[{DateTime.Now}] {ipAddress}{Environment.NewLine}";
+            using (var stream = new FileStream(LogFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
-                string ipAddress = filterContext.HttpContext.Request.UserHostAddress;
-                string logText = $"[{DateTime.Now}] {ipAddress}{Environment.NewLine}";
-                using (var stream = new FileStream(LogFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                using (var writer = new StreamWriter(stream))
                 {
-                    using (var writer = new StreamWriter(stream))
-                    {
-                        writer.Write(logText);
-                    }
+                    writer.Write(logText);
                 }
             }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it as appropriate
-                Console.WriteLine($"An error occurred while logging IP address: {ex.Message}");
-            }
 
-            base.OnActionExecuting(filterContext);
+
+            base.OnActionExecuting(actionContext);
+        }
+
+        private string GetClientIpAddress(HttpRequestMessage request)
+        {
+            if (request.Properties.ContainsKey("MS_HttpContext"))
+            {
+                return IPAddress.Parse(((HttpContextBase)request.Properties["MS_HttpContext"]).Request.UserHostAddress).ToString();
+            }
+            return String.Empty;
         }
     }
 }
