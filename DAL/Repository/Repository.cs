@@ -89,7 +89,7 @@ namespace DAL.Repository
                 set = set.Include(includeProperty);
             }
 
-            return await set.FirstOrDefaultAsync(en => en == result);
+            return await set.FirstOrDefaultAsync(en => en == result && en.IsDeleted == false);
         }
 
         public async Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes)
@@ -101,7 +101,7 @@ namespace DAL.Repository
                 query = query.Include(include);
             }
 
-            return await query.FirstOrDefaultAsync(x => x.Id == id);
+            return await query.FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == false);
         }
 
         public virtual void Insert(T entity)
