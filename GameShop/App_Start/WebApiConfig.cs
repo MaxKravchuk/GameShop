@@ -14,6 +14,7 @@ namespace GameShop
             config.MapHttpAttributeRoutes();
             config.Routes.MapHttpRoute("Default", "api/{controller}");
             config.Filters.Add(new LogIPFilter());
+            config.Filters.Add(new LogPerformanceFilter());
         }
     }
 }

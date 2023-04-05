@@ -170,6 +170,7 @@
     <Compile Include="Controllers\ComentController.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Filters\LogIPFilter.cs" />
+    <Compile Include="Filters\LogPerformanceFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
