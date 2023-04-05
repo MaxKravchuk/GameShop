@@ -39,9 +39,9 @@ namespace BAL.Services
             var coments = await _comentRepository.GetAsync();
             return coments;
         }
-        public async Task<IEnumerable<Coment>> GetAllAsync(int gameId)
+        public async Task<IEnumerable<Coment>> GetAllAsync(string gameKey)
         {
-            var coments = await _comentRepository.GetAsync(filter: x=>x.GameId==gameId);
+            var coments = await _comentRepository.GetAsync(filter: x=>x.Game.Key==gameKey);
 
             if (coments == null)
             {
