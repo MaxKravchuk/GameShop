@@ -17,7 +17,6 @@ namespace DAL.Context
         public DbSet<Genre> Genres { get; set; }
         public DbSet<PlatformType> PlatformTypes { get; set; }
 
-
         public GameShopContext() : base("name=DefaultConnectingString")
         {
             Database.SetInitializer<GameShopContext>(new DropCreateDatabaseIfModelChanges<GameShopContext>());

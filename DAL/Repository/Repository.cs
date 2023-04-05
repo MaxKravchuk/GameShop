@@ -5,6 +5,7 @@ using EntityFramework.Filters;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.Remoting.Contexts;
@@ -25,35 +26,49 @@ namespace DAL.Repository
             _dbSet = context.Set<T>();
         }
 
-        public virtual async Task<IEnumerable<T>> GetAsync(
-            Expression<Func<T, bool>> filter = null,
+        public IQueryable<T> GetQuery(
+            Expression<Func<T, bool>> filte,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             string includeProperties = "")
         {
-            IQueryable<T> query = _dbSet;
+            IQueryable<T> set = filte == null ? _context.Set<T>()
+                : _context.Set<T>().Where(filte).Where(x=>x.IsDeleted==false);
 
-            if (filter != null)
+            if(!string.IsNullOrEmpty(includeProperties))
             {
-                query = query.Where(filter).Where(x=>x.IsDeleted==false);
-            }
-
-            foreach (var includeProperty in includeProperties.Split
-                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
+                set = includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Aggregate(set, (current, includeProperty)
+                        => current.Include(includeProperty));
             }
 
-            if (orderBy != null)
+            if(orderBy != null)
             {
-                return await orderBy(query).ToListAsync();
+                set = orderBy(set);
             }
-            else
-            {
-                return await query.ToListAsync();
-            }
+
+            return set;
         }
 
-        public async Task<T> GetAsync(object id, string includeProperties = "")
+        public virtual async Task<IEnumerable<T>> GetAsync(
+            Expression<Func<T, bool>> filter = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            string includeProperties = "",
+            bool asNoTracking = false)
+        {
+            var query = GetQuery(filter, orderBy, includeProperties);
+
+            if (asNoTracking)
+            {
+                var noTrackingResult = await query.AsNoTracking().ToListAsync();
+
+                return noTrackingResult;
+            }
+
+            var trackingResult = await query.ToListAsync();
+            return trackingResult;
+        }
+
+        public async Task<T> GetByIdAsync(int id, string includeProperties = "")
         {
             if (string.IsNullOrEmpty(includeProperties))
             {
@@ -61,14 +76,32 @@ namespace DAL.Repository
             }
 
             var result = await _context.Set<T>().FindAsync(id);
-
+            
             IQueryable<T> set = _context.Set<T>();
 
-            set = includeProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Aggregate(set, (current, includeProperty)
-                        => current.Include(includeProperty));
+            //set = includeProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+            //        .Aggregate(set, (current, includeProperty)
+            //            => current.Include(includeProperty));
 
-            return await set.FirstOrDefaultAsync(entity => entity == result);
+            foreach (var includeProperty in includeProperties.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                set = set.Include(includeProperty);
+            }
+
+            return await set.FirstOrDefaultAsync(en => en == result);
+        }
+
+        public async Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _context.Set<T>();
+            
+            foreach(var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public virtual void Insert(T entity)
@@ -96,5 +129,6 @@ namespace DAL.Repository
         {
             await _context.SaveChangesAsync();
         }
+
     }
 }

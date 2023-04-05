@@ -1,6 +1,8 @@
 ﻿using DAL.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Text;
@@ -14,7 +16,13 @@ namespace DAL.Configurations
         {
             this.ToTable("Genres");
 
-            this.HasKey(x => x.Name);
+            this.HasKey(x => x.Id);
+
+            this
+                .Property(x => x.Name)
+                .HasMaxLength(50)
+                .HasColumnType("varchar")
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Name") { IsUnique = true }));
 
             this
                 .Property(x => x.Name)
@@ -22,9 +30,9 @@ namespace DAL.Configurations
                 .IsRequired();
 
             this
-                .HasOptional(g => g.ParentGenre)
+                .HasOptional<Genre>(g => g.ParentGenre)
                 .WithMany(g => g.SubGenres)
-                .HasForeignKey<string>(g => g.ParentGenreName);
+                .HasForeignKey(g => g.ParentGenreId);
         }
     }
 }

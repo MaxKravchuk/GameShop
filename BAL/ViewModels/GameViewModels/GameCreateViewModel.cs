@@ -9,7 +9,7 @@ namespace BAL.ViewModels.GameViewModels
     public class GameCreateViewModel : GameBaseViewModel
     {
         public string Description { get; set; }
-        public IEnumerable<string> GenresName { get; set; } = new List<string>();
-        public IEnumerable<string> PlatformTypeName { get; set; } = new List<string>();
+        public IEnumerable<int> GenresId { get; set; } = new List<int>();
+        public IEnumerable<int> PlatformTypeId { get; set; } = new List<int>();
     }
 }

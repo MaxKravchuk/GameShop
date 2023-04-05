@@ -12,9 +12,9 @@ namespace BAL.Services.Interfaces
     public interface IComentService
     {
         Task Create(Coment coment);
-        Task Delete(object id);
-        Task<IEnumerable<Coment>> GetAsync();
-        Task<Coment> GetAsync(int comentId);
+        Task Delete(int id);
+        Task<IEnumerable<Coment>> GetAllAsync(int gameKey);
+        Task<Coment> GetByIdAsync(int comentId);
         Task Update(Coment coment);
     }
 }

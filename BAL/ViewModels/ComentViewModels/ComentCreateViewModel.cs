@@ -8,7 +8,7 @@ namespace BAL.ViewModels.ComentViewModels
 {
     public class ComentCreateViewModel : ComentBaseViewModel
     {
-        public string GameKey { get; set; }
+        public int GameId { get; set; }
 
     }
 }

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BAL.ViewModels.GenreViewModels
+namespace BAL.ViewModels.Helpers
 {
-    public class GenreReadListViewModel : GenreBaseViewModel
+    public class GameGenreViewModel
     {
         public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

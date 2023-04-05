@@ -27,9 +27,9 @@ namespace BAL.Services
             await _comentRepository.SaveChangesAsync();
         }
 
-        public async Task Delete(object id)
+        public async Task Delete(int id)
         {
-            var comentToDelete = await _comentRepository.GetAsync(id);
+            var comentToDelete = await _comentRepository.GetByIdAsync(id);
             _comentRepository.Delete(comentToDelete);
             await _comentRepository.SaveChangesAsync();
         }
@@ -39,10 +39,9 @@ namespace BAL.Services
             var coments = await _comentRepository.GetAsync();
             return coments;
         }
-        public async Task<IEnumerable<Coment>> GetAsync(string gameKey)
+        public async Task<IEnumerable<Coment>> GetAllAsync(int gameId)
         {
-            var filter = GetFilterQuery(gameKey);
-            var coments = await _comentRepository.GetAsync(filter: filter);
+            var coments = await _comentRepository.GetAsync(filter: x=>x.GameId==gameId);
 
             if (coments == null)
             {
@@ -51,10 +50,9 @@ namespace BAL.Services
 
             return coments;
         }
-        public async Task<Coment> GetAsync(int comentId)
+        public async Task<Coment> GetByIdAsync(int comentId)
         {
-            var coment = await _comentRepository.GetAsync(comentId,
-                includeProperties: "Game,Game.Coments,Game.GameGenres,Game.GamePlatformTypes");
+            var coment = await _comentRepository.GetByIdAsync(comentId);
 
             if (coment == null)
             {
@@ -68,19 +66,6 @@ namespace BAL.Services
         {
             _comentRepository.Update(coment);
             await _comentRepository.SaveChangesAsync();
-        }
-
-        private static Expression<Func<Coment, bool>> GetFilterQuery(string filterParam)
-        {
-            Expression<Func<Coment, bool>> filterQuery = null;
-
-            if (filterParam is null) return filterQuery;
-
-            var formattedFilter = filterParam.Trim().ToLower();
-
-            filterQuery = u => u.GameKey.ToLower().Contains(formattedFilter);
-
-            return filterQuery;
         }
     }
 }
