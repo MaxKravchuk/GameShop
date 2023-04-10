@@ -1,4 +1,4 @@
-using GameShop.App_Start;
+using GameShop.WebApi.App_Start;
 using System.Web.Http;
 
 using Unity.AspNet.WebApi;
@@ -6,7 +6,7 @@ using Unity.AspNet.WebApi;
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(UnityWebApiActivator), nameof(UnityWebApiActivator.Start))]
 [assembly: WebActivatorEx.ApplicationShutdownMethod(typeof(UnityWebApiActivator), nameof(UnityWebApiActivator.Shutdown))]
 
-namespace GameShop.App_Start
+namespace GameShop.WebApi.App_Start
 {
     /// <summary>
     /// Provides the bootstrapping for integrating Unity with WebApi when it is hosted in ASP.NET.

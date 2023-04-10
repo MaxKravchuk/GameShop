@@ -4,25 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BAL.Exceptions
+namespace GameShop.BLL.Exceptions
 {
     public class BadRequestException : Exception
     {
-        public new string Message { get; set; } = string.Empty;
-
-        public BadRequestException()
+        private const string DefaultMessage = "Illegal request";
+        public BadRequestException() : base(DefaultMessage)
         {
-            Message = "Illegal request";
         }
-
         public BadRequestException(string message) : base(message)
         {
-            Message = message;
         }
-
         public BadRequestException(string message, Exception inner) : base(message, inner)
         {
-            Message = message;
         }
     }
 }

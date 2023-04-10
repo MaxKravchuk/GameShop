@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using BAL.Services.Interfaces;
-using BAL.ViewModels.GameViewModels;
-using DAL.Entities;
-using DAL.Models;
+using GameShop.BLL.Services.Interfaces;
+using GameShop.BLL.DTO.GameDTOs;
+using GameShop.DAL.Entities;
+using GameShop.DAL.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -10,81 +10,91 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.WebPages;
+using System.Net;
+using System.Runtime.InteropServices.ComTypes;
 
-namespace GameShop.Controllers
+namespace GameShop.WebApi.Controllers
 {
-    [RoutePrefix("api/game")]
+    [RoutePrefix("api/games")]
     public class GameController : ApiController
     {
         private readonly IGameService _gameService;
-        private readonly IMapper _mapper;
 
-        public GameController(
-            IGameService gameService,
-            IMapper mapper)
+        public GameController(IGameService gameService)
         {
             _gameService = gameService;
-            _mapper = mapper;
         }
 
         [HttpPost]
-        [Route("create")]
-        public async Task CreateGameAsync([FromBody] GameCreateViewModel gameCreateViewModel)
+        public async Task<IHttpActionResult> CreateGameAsync([FromBody] GameCreateDTO gameCreateViewModel)
         {
-            var gameToCreate = _mapper.Map<Game>(gameCreateViewModel);
-            await _gameService.Create(gameToCreate, gameCreateViewModel.GenresId, gameCreateViewModel.PlatformTypeId);
+            await _gameService.CreateAsync(gameCreateViewModel);
+            return Ok();
         }
 
         [HttpPut]
         [Route("update")]
-        public async Task UpdateGameAsync([FromBody] GameUpdateViewModel gameUpdateViewModel)
+        public async Task<IHttpActionResult> UpdateGameAsync([FromBody] GameUpdateDTO gameUpdateViewModel)
         {
-            var gameToUpdate = _mapper.Map<Game>(gameUpdateViewModel);
-            await _gameService.Update(gameToUpdate, gameUpdateViewModel.GenresId,gameUpdateViewModel.PlatformTypeId);
+            await _gameService.UpdateAsync(gameUpdateViewModel);
+            return Ok();
         }
 
         [HttpGet]
-        [Route("getDetailsById")]
-        public async Task<GameReadViewModel> GetGameDetailsByKeyAsync([FromUri] string gameKey)
+        [Route("getDetailsByKey/{gameKey}")]
+        public async Task<GameReadDTO> GetGameDetailsByKeyAsync(string gameKey)
         {
-            var game = await _gameService.GetByKeyGameAsync(gameKey);
-            var model = _mapper.Map<GameReadViewModel>(game);
-            return model;
+            var game = await _gameService.GetGameByKeyAsync(gameKey);
+            return game;
         }
 
         [HttpGet]
-        [Route("getall")]
-        public async Task<IEnumerable<GameReadListViewModel>> GetAllGamesAsync()
+        [Route("getAll")]
+        public async Task<IEnumerable<GameReadListDTO>> GetAllGamesAsync()
         {
             var games = await _gameService.GetAllGamesAsync();
-            var model = _mapper.Map<IEnumerable<GameReadListViewModel>>(games);
-            return model;
+            return games;
         }
 
         [HttpGet]
-        [Route("getByGenreOrPlatformType")]
-        public async Task<IEnumerable<GameReadListViewModel>> GetAllGamesByParameterAsync([FromUri]GameParameters gameParameters)
+        [Route("getByGenre/{genreId}")]
+        public async Task<IEnumerable<GameReadListDTO>> GetAllGamesByGenre(int genreId)
         {
-            var games = await _gameService.GetGameByGenreOrPltAsync(gameParameters);
-            var model = _mapper.Map<IEnumerable<GameReadListViewModel>>(games);
-            return model;
+            var games = await _gameService.GetGamesByGenreAsync(genreId);
+            return games;
+        }
+
+        [HttpGet]
+        [Route("getByPlatformType/{platformTypeId}")]
+        public async Task<IEnumerable<GameReadListDTO>> GetAllGamesByPlatformType(int platformTypeId)
+        {
+            var games = await _gameService.GetGamesByPlatformTypeAsync(platformTypeId);
+            return games;
         }
 
         [HttpDelete]
-        [Route("delete")]
-        public async Task DeleteGameAsync([FromUri] int gameId)
+        [Route("delete/{gameKey}")]
+        public async Task<IHttpActionResult> DeleteGameAsync(string gameKey)
         {
-            await _gameService.Delete(gameId);
+            await _gameService.DeleteAsync(gameKey);
+            return Ok();
         }
 
         [HttpGet]
-        [Route("downloadGame")]
-        public HttpResponseMessage DownloadGame()
+        [Route("downloadGame/{gameKey}")]
+        public async Task<HttpResponseMessage> DownloadGame(string gameKey)
         {
-            string Rpath = @"C:\DiscD\";
-            string path = Path.Combine(Rpath, "game.bin");
+            var stream = _gameService.GenerateGameFile(gameKey);
 
-            return _gameService.GenerateGameFile(path);
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            result.Content = new StreamContent(stream);
+            result.Content.Headers.ContentLength = stream.Length;
+            result.Content.Headers.ContentType =
+                new MediaTypeHeaderValue("application/octet-stream");
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            result.Content.Headers.ContentDisposition.FileName = $"{gameKey}.bin";
+
+            return result;
         }
     }
 }

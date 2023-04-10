@@ -1,4 +1,4 @@
-﻿using DAL.Entities;
+﻿using GameShop.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,29 +8,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Configurations
+namespace GameShop.DAL.Configurations
 {
     public class GenreConfiguration : EntityTypeConfiguration<Genre>
     {
         public GenreConfiguration()
         {
-            this.ToTable("Genres");
+            ToTable("Genres");
 
-            this.HasKey(x => x.Id);
+            HasKey(x => x.Id);
 
-            this
-                .Property(x => x.Name)
+            Property(x => x.Name)
                 .HasMaxLength(50)
                 .HasColumnType("varchar")
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Name") { IsUnique = true }));
 
-            this
-                .Property(x => x.Name)
+            Property(x => x.Name)
                 .HasMaxLength(50)
                 .IsRequired();
 
-            this
-                .HasOptional<Genre>(g => g.ParentGenre)
+            HasOptional<Genre>(g => g.ParentGenre)
                 .WithMany(g => g.SubGenres)
                 .HasForeignKey(g => g.ParentGenreId);
         }

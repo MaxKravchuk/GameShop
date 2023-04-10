@@ -1,8 +1,9 @@
-﻿using BAL.Exceptions;
-using BAL.Services.Interfaces;
-using BAL.ViewModels.GenreViewModels;
-using DAL.Entities;
-using DAL.Repository.Interfaces;
+﻿using AutoMapper;
+using GameShop.BLL.DTO.GenreDTOs;
+using GameShop.BLL.Exceptions;
+using GameShop.BLL.Services.Interfaces;
+using GameShop.DAL.Entities;
+using GameShop.DAL.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,73 +11,68 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BAL.Services
+namespace GameShop.BLL.Services
 {
     public class GenreService : IGenreService
     {
-        private readonly IRepository<Genre> _genreRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public GenreService(IUnitOfWork unitOfWork)
+        public GenreService(
+            IUnitOfWork unitOfWork,
+            IMapper mapper)
         {
-            _genreRepository = unitOfWork.GenreRepository;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task Create(Genre genre)
+        public async Task CreateAsync(GenreCreateDTO genreToAddDTO)
         {
-            _genreRepository.Insert(genre);
-            await _genreRepository.SaveChangesAsync();
+            var genreToAdd = _mapper.Map<Genre>(genreToAddDTO);
+            _unitOfWork.GenreRepository.Insert(genreToAdd);
+            await _unitOfWork.SaveAsync();
         }
 
-        public async Task Delete(Genre genre)
+        public async Task DeleteAsync(int id)
         {
-            _genreRepository.Update(genre);
-            await _genreRepository.SaveChangesAsync();
-
-        }
-
-        public async Task<IEnumerable<Genre>> GetAsync(string gameKey = "")
-        {
-
-            var filter = GetFilterQuery(gameKey);
-            var genres = await _genreRepository.GetAsync(filter:filter);
-
-            if(genres == null)
+            var genreToDelete = await _unitOfWork.GenreRepository.GetByIdAsync(id);
+            
+            if(genreToDelete == null)
             {
                 throw new NotFoundException();
             }
 
-            return genres;
+            _unitOfWork.GenreRepository.Delete(genreToDelete);
+            await _unitOfWork.SaveAsync();
         }
 
-        public async Task<Genre> GetByIdAsync(int id)
+        public async Task<IEnumerable<GenreReadListDTO>> GetAsync(string gameKey = "")
         {
-            var genre = await _genreRepository.GetByIdAsync(id);
+            var genres = await _unitOfWork.GenreRepository.GetAsync(filter: g=>g.GameGenres.Any(gg=>gg.Key==gameKey));
+            
+            var genresDTO = _mapper.Map<IEnumerable<GenreReadListDTO>>(genres);
+            return genresDTO;
+        }
+
+        public async Task<GenreReadDTO> GetByIdAsync(int id)
+        {
+            var genre = await _unitOfWork.GenreRepository.GetByIdAsync(id);
 
             if(genre == null)
             {
                 throw new NotFoundException();
             }
 
-            return genre;
+            var genreDTO = _mapper.Map<GenreReadDTO>(genre);
+            return genreDTO;
         }
 
-        public async Task Update(Genre genre)
+        public async Task UpdateAsync(GenreUpdateDTO genreToUpdateDTO)
         {
-            _genreRepository.Update(genre);
-            await _genreRepository.SaveChangesAsync();
-        }
+            var genreToUpdate = _mapper.Map<Genre>(genreToUpdateDTO);
 
-        private static Expression<Func<Genre, bool>> GetFilterQuery(string filterParam)
-        {
-            Expression<Func<Genre, bool>> filterQuery = null;
-
-            if (filterParam is null) return filterQuery;
-
-            var formattedFilter = filterParam.Trim().ToLower();
-
-            filterQuery = u => u.GameGenres.All(gg=>gg.Key.ToLower().Contains(formattedFilter));
-
-            return filterQuery;
+            _unitOfWork.GenreRepository.Update(genreToUpdate);
+            await _unitOfWork.SaveAsync();
         }
     }
 }

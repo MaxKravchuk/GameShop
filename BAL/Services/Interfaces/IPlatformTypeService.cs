@@ -1,20 +1,19 @@
-﻿using BAL.ViewModels.GameViewModels;
-using BAL.ViewModels.PlatformTypeViewModels;
-using DAL.Entities;
+﻿using GameShop.BLL.DTO.PlatformTypeDTOs;
+using GameShop.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BAL.Services.Interfaces
+namespace GameShop.BLL.Services.Interfaces
 {
     public interface IPlatformTypeService
     {
-        Task Create(PlatformType platformType);
-        Task<IEnumerable<PlatformType>> GetAsync();
-        Task<PlatformType> GetByIdAsync(int id);
-        Task Update(PlatformType platformType);
-        Task Delete(PlatformType platformType);
+        Task CreateAsync(PlatformTypeCreateDTO platformTypeToAddDTO);
+        Task<IEnumerable<PlatformTypeReadListDTO>> GetAsync();
+        Task<PlatformTypeReadDTO> GetByIdAsync(int id);
+        Task UpdateAsync(PlatformTypeUpdateDTO platformTypeToUpdateDTO);
+        Task DeleteAsync(int id);
     }
 }

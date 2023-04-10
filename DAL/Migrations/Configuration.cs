@@ -1,26 +1,26 @@
 ﻿namespace DAL.Migrations
 {
-    using DAL.Entities;
+    using GameShop.DAL.Entities;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<DAL.Context.GameShopContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<GameShop.DAL.Context.GameShopContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(DAL.Context.GameShopContext context)
+        protected override void Seed(GameShop.DAL.Context.GameShopContext context)
         {
-            List<Coment> dComents = new List<Coment>
+            List<Comment> dComents = new List<Comment>
             {
-                new Coment {Id = 1, Name = "Admin", Body = "First comment",GameId = 1},
-                new Coment {Id = 2, Name = "Bob", Body = "[Admin]Reply to admin", GameId = 1},
-                new Coment {Id = 3, Name = "Bob", Body = "BlaBLa", GameId = 2}
+                new Comment {Id = 1, Name = "Admin", Body = "First comment",GameId = 1},
+                new Comment {Id = 2, Name = "Bob", Body = "[Admin]Reply to admin", GameId = 1},
+                new Comment {Id = 3, Name = "Bob", Body = "BlaBLa", GameId = 2}
             };
 
             List<Genre> dGenres = new List<Genre>

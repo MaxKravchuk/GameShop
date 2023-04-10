@@ -7,12 +7,12 @@ using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-namespace GameShop.Filters
+namespace GameShop.WebApi.Filters
 {
     public class LogPerformanceFilter : ActionFilterAttribute
     {
         private Stopwatch stopwatch;
-        private const string LogFilePath = @"C:\DiscD\spead_log.txt";
+        private static string LogFilePath = HttpContext.Current.Server.MapPath("~/App_Data");
 
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
@@ -33,8 +33,9 @@ namespace GameShop.Filters
 
         private void LogPerformance(long elapsedMilliseconds)
         {
+            string path = Path.Combine(LogFilePath, "perfomancelogs.txt");
             string logText = $"[{DateTime.Now.ToString()}] Elapsed time: {elapsedMilliseconds} ms{Environment.NewLine}";
-            File.AppendAllText(LogFilePath, logText);
+            File.AppendAllText(path, logText);
         }
     }
 }

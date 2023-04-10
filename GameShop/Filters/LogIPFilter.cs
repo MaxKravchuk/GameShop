@@ -8,17 +8,18 @@ using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-namespace GameShop.Filters
+namespace GameShop.WebApi.Filters
 {
     public class LogIPFilter : ActionFilterAttribute
     {
-        private const string LogFilePath = @"C:\DiscD\ip_log.txt";
+        private static string LogFilePath = HttpContext.Current.Server.MapPath("~/App_Data");
 
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
+            string path = Path.Combine(LogFilePath, "iplogs.txt");
             string ipAddress = GetClientIpAddress(actionContext.Request);
-            string logText = $"[{DateTime.Now}] {ipAddress}{Environment.NewLine}";
-            using (var stream = new FileStream(LogFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            string logText = $"[{DateTime.UtcNow}] {ipAddress}{Environment.NewLine}";
+            using (var stream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 using (var writer = new StreamWriter(stream))
                 {

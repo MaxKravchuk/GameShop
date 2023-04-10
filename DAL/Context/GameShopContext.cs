@@ -1,4 +1,4 @@
-﻿using DAL.Entities;
+﻿using GameShop.DAL.Entities;
 using EntityFramework.Filters;
 using System;
 using System.Collections.Generic;
@@ -8,11 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Context
+namespace GameShop.DAL.Context
 {
     public class GameShopContext : DbContext
     {
-        public DbSet<Coment> Coments { get; set; }
+        public DbSet<Comment> Coments { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<PlatformType> PlatformTypes { get; set; }

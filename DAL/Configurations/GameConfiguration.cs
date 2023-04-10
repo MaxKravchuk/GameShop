@@ -1,4 +1,4 @@
-﻿using DAL.Entities;
+﻿using GameShop.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,18 +9,17 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Configurations
+namespace GameShop.DAL.Configurations
 {
     public class GameConfiguration : EntityTypeConfiguration<Game>
     {
         public GameConfiguration()
         {
-            this.ToTable("Games");
+            ToTable("Games");
 
-            this.HasKey(x => x.Id);
-
-            this
-               .Property(x => x.Key)
+            HasKey(x => x.Id);
+            
+            Property(x => x.Key)
                .HasColumnType("varchar")
                .HasMaxLength(255)
                .HasColumnAnnotation(
@@ -30,21 +29,17 @@ namespace DAL.Configurations
                 }))
                 .IsRequired();
 
-            this
-                .Property(x => x.Name)
+            Property(x => x.Name)
                 .HasMaxLength(100)
                 .IsRequired();
 
-            this
-                .Property(x => x.Description)
+            Property(x => x.Description)
                 .HasMaxLength(255);
 
-            this
-                .HasMany<Genre>(game => game.GameGenres)
+            HasMany<Genre>(game => game.GameGenres)
                 .WithMany(genre => genre.GameGenres);
 
-            this
-                .HasMany<PlatformType>(game=>game.GamePlatformTypes)
+            HasMany<PlatformType>(game=>game.GamePlatformTypes)
                 .WithMany(platformType=>platformType.GamePlatformTypes);
         }
     }

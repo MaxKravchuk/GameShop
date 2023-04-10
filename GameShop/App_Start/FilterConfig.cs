@@ -1,8 +1,8 @@
-﻿using GameShop.Filters;
+﻿using GameShop.WebApi.Filters;
 using System.Web;
 using System.Web.Mvc;
 
-namespace GameShop
+namespace GameShop.WebApi.App_Start
 {
     public class FilterConfig
     {

@@ -1,20 +1,19 @@
-﻿using BAL.ViewModels.GameViewModels;
-using BAL.ViewModels.GenreViewModels;
-using DAL.Entities;
+﻿using GameShop.BLL.DTO.GenreDTOs;
+using GameShop.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BAL.Services.Interfaces
+namespace GameShop.BLL.Services.Interfaces
 {
     public interface IGenreService
     {
-        Task Create(Genre genre);
-        Task<IEnumerable<Genre>> GetAsync(string gameKey = "");
-        Task<Genre> GetByIdAsync(int id);
-        Task Update(Genre genre);
-        Task Delete(Genre genre);
+        Task CreateAsync(GenreCreateDTO genreToAddDTO);
+        Task<IEnumerable<GenreReadListDTO>> GetAsync(string gameKey = "");
+        Task<GenreReadDTO> GetByIdAsync(int id);
+        Task UpdateAsync(GenreUpdateDTO genreToUpdateDTO);
+        Task DeleteAsync(int id);
     }
 }

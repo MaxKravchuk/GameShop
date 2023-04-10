@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using BAL.Services;
-using BAL.Services.Interfaces;
-using BAL.ViewModels.ComentViewModels;
-using DAL.Entities;
-using DAL.Repository;
+using GameShop.BLL.Services.Interfaces;
+using GameShop.BLL.DTO.ComentDTOs;
+using GameShop.DAL.Entities;
+using GameShop.DAL.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,35 +10,32 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 
-namespace GameShop.Controllers
+namespace GameShop.WebApi.Controllers
 {
-    [RoutePrefix("api/coment")]
+    [RoutePrefix("api/coments")]
     public class ComentController : ApiController
     {
-        private readonly IComentService _comentService;
-        private readonly IMapper _mapper;
+        private readonly ICommentService _comentService;
 
-        public ComentController(IComentService comentService, IMapper mapper)
+        public ComentController(ICommentService comentService)
         {
             _comentService = comentService;
-            _mapper = mapper;
         }
 
         [HttpPost]
         [Route("leaveComent")]
-        public async Task CreateComentAsync([FromBody] ComentCreateViewModel comentCreateViewModel)
+        public async Task<IHttpActionResult> CreateComentAsync([FromBody] ComentCreateDTO comentCreateViewModel)
         {
-            var comentToCrete = _mapper.Map<Coment>(comentCreateViewModel);
-            await _comentService.Create(comentToCrete);
+            await _comentService.CreateAsync(comentCreateViewModel);
+            return Ok();
         }
 
         [HttpGet]
-        [Route("getAllByGameKey")]
-        public async Task<IEnumerable<ComentReadViewModel>> GetAllComentsByGameKey([FromUri] string gameKey)
+        [Route("getAllByGameKey/{gameKey}")]
+        public async Task<IEnumerable<ComentReadDTO>> GetAllComentsByGameKey([FromUri] string gameKey)
         {
-            var coments = await _comentService.GetAllAsync(gameKey);
-            var model = _mapper.Map<IEnumerable<ComentReadViewModel>>(coments);
-            return model;
+            var coments = await _comentService.GetAllByGameKeyAsync(gameKey);
+            return coments;
         }
     }
 }

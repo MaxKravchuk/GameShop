@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Entities
+namespace GameShop.DAL.Entities
 {
     public class Game : BaseEntity
     {
@@ -13,8 +13,8 @@ namespace DAL.Entities
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public ICollection<Coment> Coments { get; set; } = new List<Coment>();
+        public ICollection<Comment> Coments { get; set; } = new List<Comment>();
         public ICollection<Genre> GameGenres { get; set; } = new List<Genre>();
-        public ICollection<PlatformType> GamePlatformTypes{ get; set; } = new List<PlatformType>();
+        public ICollection<PlatformType> GamePlatformTypes { get; set; } = new List<PlatformType>();
     }
 }

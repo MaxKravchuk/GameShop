@@ -1,4 +1,4 @@
-﻿using DAL.Entities;
+﻿using GameShop.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,24 +8,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Configurations
+namespace GameShop.DAL.Configurations
 {
     public class PlatformTypeConfiguration : EntityTypeConfiguration<PlatformType>
     {
         public PlatformTypeConfiguration()
         {
-            this.ToTable("PlatformTypes");
+            ToTable("PlatformTypes");
 
-            this.HasKey(x => x.Id);
+            HasKey(x => x.Id);
 
-            this
-                .Property(x=>x.Type)
+            Property(x=>x.Type)
                 .HasMaxLength(50)
                 .HasColumnType("varchar")
                 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Type") { IsUnique = true }));
 
-            this
-                .Property(x => x.Type)
+            Property(x => x.Type)
                 .HasMaxLength(50)
                 .IsRequired();
         }

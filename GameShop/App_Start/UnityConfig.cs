@@ -1,14 +1,16 @@
-using BAL.Services.Interfaces;
-using BAL.Services;
-using DAL.Context;
-using DAL.Repository.Interfaces;
-using DAL.Repository;
+using GameShop.BLL.Services.Interfaces;
+using GameShop.BLL.Services;
+using GameShop.DAL.Context;
+using GameShop.DAL.Repository.Interfaces;
+using GameShop.DAL.Repository;
 using System;
 using Unity;
 using AutoMapper;
 using Unity.Injection;
+using Unity.Lifetime;
+using GameShop.DAL.Entities;
 
-namespace GameShop.App_Start
+namespace GameShop.WebApi.App_Start
 {
     /// <summary>
     /// Specifies the Unity configuration for the main container.
@@ -48,16 +50,25 @@ namespace GameShop.App_Start
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
+            container.RegisterType<GameShopContext>(new PerResolveLifetimeManager());
+
+            container.RegisterType<IRepository<Comment>, Repository<Comment>>();
+            container.RegisterType<IRepository<Game>, Repository<Game>>();
+            container.RegisterType<IRepository<Genre>, Repository<Genre>>();
+            container.RegisterType<IRepository<PlatformType>, Repository<PlatformType>>();
+
             container.RegisterType<IUnitOfWork, UnitOfWork>();
-            container.RegisterType<IComentService, ComentService>();
+            container.RegisterType<ICommentService, CommentService>();
             container.RegisterType<IGameService, GameService>();
             container.RegisterType<IGenreService, GenreService>();
             container.RegisterType<IPlatformTypeService, PlatformTypeService>();
 
-            container.RegisterType<IMapper>(new InjectionFactory(c => new MapperConfiguration(cfg =>
+            var mapperConfiguration = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new AutoMapperConfiguration());
-            }).CreateMapper()));
+            });
+
+            container.RegisterInstance<IMapper>(mapperConfiguration.CreateMapper());
 
         }
     }

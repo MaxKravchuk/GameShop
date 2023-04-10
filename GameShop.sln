@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameShop", "GameShop\GameShop.csproj", "{354DF3B4-E6D1-4937-9DE2-3404C24F08E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameShop.WebApi", "GameShop\GameShop.WebApi.csproj", "{354DF3B4-E6D1-4937-9DE2-3404C24F08E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAL", "BAL\BAL.csproj", "{CE449A0E-5CAC-4BB2-B67D-E6E8793EDDA4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameShop.BLL", "BAL\GameShop.BLL.csproj", "{CE449A0E-5CAC-4BB2-B67D-E6E8793EDDA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{9D693047-58AF-4A74-A6CA-BFA20EB0756C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameShop.DAL", "DAL\GameShop.DAL.csproj", "{9D693047-58AF-4A74-A6CA-BFA20EB0756C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

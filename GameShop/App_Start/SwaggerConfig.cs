@@ -1,11 +1,11 @@
 using System.Web.Http;
 using WebActivatorEx;
-using GameShop;
+using GameShop.WebApi.App_Start;
 using Swashbuckle.Application;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
-namespace GameShop
+namespace GameShop.WebApi.App_Start
 {
     public class SwaggerConfig
     {

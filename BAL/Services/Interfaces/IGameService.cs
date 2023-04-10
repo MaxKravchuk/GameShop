@@ -1,6 +1,6 @@
-﻿using BAL.ViewModels.GameViewModels;
-using DAL.Entities;
-using DAL.Models;
+﻿using GameShop.BLL.DTO.GameDTOs;
+using GameShop.DAL.Entities;
+using GameShop.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,16 +9,17 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BAL.Services.Interfaces
+namespace GameShop.BLL.Services.Interfaces
 {
     public interface IGameService
     {
-        Task Create(Game game, IEnumerable<int> gameGenres, IEnumerable<int> gamePlatformTypes);
-        Task<Game> GetByKeyGameAsync(string gameKey);
-        Task<IEnumerable<Game>> GetAllGamesAsync();
-        Task<IEnumerable<Game>> GetGameByGenreOrPltAsync(GameParameters gameParameters);
-        Task Update(Game game, IEnumerable<int> genresId, IEnumerable<int> platformTypesId);
-        Task Delete(int id);
-        HttpResponseMessage GenerateGameFile(string path);
+        Task CreateAsync(GameCreateDTO newGameDTO);
+        Task<GameReadDTO> GetGameByKeyAsync(string gameKey);
+        Task<IEnumerable<GameReadListDTO>> GetAllGamesAsync();
+        Task<IEnumerable<GameReadListDTO>> GetGamesByGenreAsync(int genreId);
+        Task<IEnumerable<GameReadListDTO>> GetGamesByPlatformTypeAsync(int platformTypeId);
+        Task UpdateAsync(GameUpdateDTO updatedGameDTO);
+        Task DeleteAsync(string gameKey);
+        MemoryStream GenerateGameFile(string key);
     }
 }

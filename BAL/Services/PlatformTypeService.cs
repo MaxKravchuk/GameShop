@@ -1,66 +1,74 @@
-﻿using BAL.Exceptions;
-using BAL.Services.Interfaces;
-using BAL.ViewModels.PlatformTypeViewModels;
-using DAL.Entities;
-using DAL.Repository.Interfaces;
+﻿using GameShop.BLL.Exceptions;
+using GameShop.BLL.Services.Interfaces;
+using GameShop.DAL.Entities;
+using GameShop.DAL.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using GameShop.BLL.DTO.PlatformTypeDTOs;
 
-namespace BAL.Services
+namespace GameShop.BLL.Services
 {
     public class PlatformTypeService : IPlatformTypeService
     {
-        private readonly IRepository<PlatformType> _platformTypeRepository;
-
-        public PlatformTypeService(IUnitOfWork unitOfWork
-            )
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        public PlatformTypeService(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _platformTypeRepository = unitOfWork.PlatformTypeRepository;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task Create(PlatformType platformType)
+        public async Task CreateAsync(PlatformTypeCreateDTO platformTypeToAddDTO)
         {
-            _platformTypeRepository.Insert(platformType);
-            await _platformTypeRepository.SaveChangesAsync();
+            var platformTypeToAdd = _mapper.Map<PlatformType>(platformTypeToAddDTO);
+            _unitOfWork.PlatformTypeRepository.Insert(platformTypeToAdd);
+            await _unitOfWork.SaveAsync();
         }
 
-        public async Task Delete(PlatformType platformType)
+        public async Task DeleteAsync(int id)
         {
-            _platformTypeRepository.Delete(platformType);
-            await _platformTypeRepository.SaveChangesAsync();
-        }
+            var platformType = await _unitOfWork.PlatformTypeRepository.GetByIdAsync(id);
 
-        public async Task<IEnumerable<PlatformType>> GetAsync()
-        {
-            var plt = await _platformTypeRepository.GetAsync();
-
-            if( plt == null )
-            {
-                throw new NotFoundException();
-            }
-            
-            return plt;
-        }
-
-        public async Task<PlatformType> GetByIdAsync(int id)
-        {
-            var plt = await _platformTypeRepository.GetByIdAsync(id);
-
-            if( plt == null )
+            if (platformType == null)
             {
                 throw new NotFoundException();
             }
 
-            return plt;
+            _unitOfWork.PlatformTypeRepository.Delete(platformType);
+            await _unitOfWork.SaveAsync();
         }
 
-        public async Task Update(PlatformType platformType)
+        public async Task<IEnumerable<PlatformTypeReadListDTO>> GetAsync()
         {
-            _platformTypeRepository.Update(platformType);
-            await _platformTypeRepository.SaveChangesAsync();
+            var platformTypes = await _unitOfWork.PlatformTypeRepository.GetAsync();
+
+            var platformTypesDTO = _mapper.Map<IEnumerable<PlatformTypeReadListDTO>>(platformTypes);
+            return platformTypesDTO;
+        }
+
+        public async Task<PlatformTypeReadDTO> GetByIdAsync(int id)
+        {
+            var platformType = await _unitOfWork.PlatformTypeRepository.GetByIdAsync(id);
+
+            if (platformType == null)
+            {
+                throw new NotFoundException();
+            }
+
+            var platformTypeDTO = _mapper.Map<PlatformTypeReadDTO>(platformType);
+            return platformTypeDTO;
+        }
+
+        public async Task UpdateAsync(PlatformTypeUpdateDTO platformTypeToUpdateDTO)
+        {
+            var platformTypeToUpdate = _mapper.Map<PlatformType>(platformTypeToUpdateDTO);
+
+            _unitOfWork.PlatformTypeRepository.Update(platformTypeToUpdate);
+            await _unitOfWork.SaveAsync();
         }
     }
 }
