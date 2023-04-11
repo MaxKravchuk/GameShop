@@ -3,7 +3,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using GameShop.WebApi.App_Start;
 
-namespace GameShop
+namespace GameShop.WebApi
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
