@@ -1,6 +1,5 @@
 ﻿using GameShop.BLL.DTO.GameDTOs;
 using GameShop.DAL.Entities;
-using GameShop.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,6 +19,6 @@ namespace GameShop.BLL.Services.Interfaces
         Task<IEnumerable<GameReadListDTO>> GetGamesByPlatformTypeAsync(int platformTypeId);
         Task UpdateAsync(GameUpdateDTO updatedGameDTO);
         Task DeleteAsync(string gameKey);
-        MemoryStream GenerateGameFile(string key);
+        Task<MemoryStream> GenerateGameFileAsync(string key);
     }
 }

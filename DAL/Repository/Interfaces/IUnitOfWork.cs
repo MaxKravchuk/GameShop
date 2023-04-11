@@ -9,7 +9,7 @@ namespace GameShop.DAL.Repository.Interfaces
 {
     public interface IUnitOfWork
     {
-        IRepository<Comment> ComentRepository { get; }
+        IRepository<Comment> CommentRepository { get; }
         IRepository<Game> GameRepository { get; }
         IRepository<Genre> GenreRepository { get; }
         IRepository<PlatformType> PlatformTypeRepository { get; }

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameShop.BLL.DTO.ComentDTOs
+namespace GameShop.BLL.DTO.CommentDTOs
 {
-    public class ComentReadDTO : ComentBaseDTO
+    public class CommentCreateDTO : CommentBaseDTO
     {
-        public int Id { get; set; }
+        public string GameKey { get; set; }
+
     }
 }

@@ -65,7 +65,10 @@ namespace GameShop.BLL.Services
 
         public async Task UpdateAsync(PlatformTypeUpdateDTO platformTypeToUpdateDTO)
         {
-            var platformTypeToUpdate = _mapper.Map<PlatformType>(platformTypeToUpdateDTO);
+            var platformTypeToUpdate = (await _unitOfWork.PlatformTypeRepository.GetAsync(
+                filter: plt => plt.Type == platformTypeToUpdateDTO.Type)).SingleOrDefault();
+
+            _mapper.Map(platformTypeToUpdateDTO, platformTypeToUpdate);
 
             _unitOfWork.PlatformTypeRepository.Update(platformTypeToUpdate);
             await _unitOfWork.SaveAsync();

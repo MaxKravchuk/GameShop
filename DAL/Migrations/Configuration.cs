@@ -16,7 +16,7 @@
 
         protected override void Seed(GameShop.DAL.Context.GameShopContext context)
         {
-            List<Comment> dComents = new List<Comment>
+            List<Comment> dComments = new List<Comment>
             {
                 new Comment {Id = 1, Name = "Admin", Body = "First comment",GameId = 1},
                 new Comment {Id = 2, Name = "Bob", Body = "[Admin]Reply to admin", GameId = 1},
@@ -110,7 +110,7 @@
                 GamePlatformTypes = new List<PlatformType> { dPt[0], dPt[1], dPt[2], dPt[3] }
             });
 
-            context.Coments.AddRange(dComents);
+            context.Comments.AddRange(dComments);
             context.Genres.AddRange(dGenres);
             context.PlatformTypes.AddRange(dPt);
             context.Games.AddRange(games);

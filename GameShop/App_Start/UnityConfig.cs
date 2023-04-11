@@ -50,7 +50,9 @@ namespace GameShop.WebApi.App_Start
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
-            container.RegisterType<GameShopContext>(new PerResolveLifetimeManager());
+
+
+            container.RegisterType<GameShopContext>(new HierarchicalLifetimeManager());
 
             container.RegisterType<IRepository<Comment>, Repository<Comment>>();
             container.RegisterType<IRepository<Game>, Repository<Game>>();

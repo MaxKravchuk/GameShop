@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace GameShop.DAL.Configurations
 {
-    public class ComentConfiguration : EntityTypeConfiguration<Comment>
+    public class CommentConfiguration : EntityTypeConfiguration<Comment>
     {
-        public ComentConfiguration()
+        public CommentConfiguration()
         {
-            ToTable("Coments");
+            ToTable("Comments");
 
             HasKey(x => x.Id);
 
@@ -25,7 +25,7 @@ namespace GameShop.DAL.Configurations
                 .IsRequired();
             
             HasRequired(x => x.Game)
-                .WithMany(x => x.Coments)
+                .WithMany(x => x.Comments)
                 .HasForeignKey(x => x.GameId)
                 .WillCascadeOnDelete(false);
         }

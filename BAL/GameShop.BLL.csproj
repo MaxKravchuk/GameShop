@@ -55,9 +55,9 @@
     <Compile Include="Services\Interfaces\IGenreService.cs" />
     <Compile Include="Services\Interfaces\IGameService.cs" />
     <Compile Include="Services\PlatformTypeService.cs" />
-    <Compile Include="DTO\ComentDTOs\ComentBaseDTO.cs" />
-    <Compile Include="DTO\ComentDTOs\ComentCreateDTO.cs" />
-    <Compile Include="DTO\ComentDTOs\ComentReadDTO.cs" />
+    <Compile Include="DTO\CommentDTOs\CommentBaseDTO.cs" />
+    <Compile Include="DTO\CommentDTOs\CommentCreateDTO.cs" />
+    <Compile Include="DTO\CommentDTOs\CommentReadDTO.cs" />
     <Compile Include="DTO\GameDTOs\GameBaseDTO.cs" />
     <Compile Include="DTO\GameDTOs\GameCreateDTO.cs" />
     <Compile Include="DTO\GameDTOs\GameReadListDTO.cs" />

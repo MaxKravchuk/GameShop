@@ -28,8 +28,8 @@ namespace GameShop.DAL.Repository
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             string includeProperties = "")
         {
-            IQueryable<T> set = filter == null ? _context.Set<T>().Where(x => x.IsDeleted == false)
-                : _context.Set<T>().Where(filter).Where(x=>x.IsDeleted==false);
+            IQueryable<T> set = filter == null ? _context.Set<T>().Where(x => !x.IsDeleted)
+                : _context.Set<T>().Where(filter).Where(x=>!x.IsDeleted);
 
             if(!string.IsNullOrEmpty(includeProperties))
             {

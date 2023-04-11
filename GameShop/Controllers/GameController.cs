@@ -2,7 +2,6 @@
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.DAL.Entities;
-using GameShop.DAL.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -42,34 +41,34 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getDetailsByKey/{gameKey}")]
-        public async Task<GameReadDTO> GetGameDetailsByKeyAsync(string gameKey)
+        public async Task<IHttpActionResult> GetGameDetailsByKeyAsync(string gameKey)
         {
             var game = await _gameService.GetGameByKeyAsync(gameKey);
-            return game;
+            return Json(game);
         }
 
         [HttpGet]
         [Route("getAll")]
-        public async Task<IEnumerable<GameReadListDTO>> GetAllGamesAsync()
+        public async Task<IHttpActionResult> GetAllGamesAsync()
         {
             var games = await _gameService.GetAllGamesAsync();
-            return games;
+            return Json(games);
         }
 
         [HttpGet]
         [Route("getByGenre/{genreId}")]
-        public async Task<IEnumerable<GameReadListDTO>> GetAllGamesByGenre(int genreId)
+        public async Task<IHttpActionResult> GetAllGamesByGenre(int genreId)
         {
             var games = await _gameService.GetGamesByGenreAsync(genreId);
-            return games;
+            return Json(games);
         }
 
         [HttpGet]
         [Route("getByPlatformType/{platformTypeId}")]
-        public async Task<IEnumerable<GameReadListDTO>> GetAllGamesByPlatformType(int platformTypeId)
+        public async Task<IHttpActionResult> GetAllGamesByPlatformType(int platformTypeId)
         {
             var games = await _gameService.GetGamesByPlatformTypeAsync(platformTypeId);
-            return games;
+            return Json(games);
         }
 
         [HttpDelete]
@@ -84,14 +83,15 @@ namespace GameShop.WebApi.Controllers
         [Route("downloadGame/{gameKey}")]
         public async Task<HttpResponseMessage> DownloadGame(string gameKey)
         {
-            var stream = _gameService.GenerateGameFile(gameKey);
+            var stream = await _gameService.GenerateGameFileAsync(gameKey);
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
             result.Content = new StreamContent(stream);
             result.Content.Headers.ContentLength = stream.Length;
             result.Content.Headers.ContentType =
                 new MediaTypeHeaderValue("application/octet-stream");
-            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            result.Content.Headers.ContentDisposition = 
+                new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
             result.Content.Headers.ContentDisposition.FileName = $"{gameKey}.bin";
 
             return result;

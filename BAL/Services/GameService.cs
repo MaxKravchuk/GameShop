@@ -22,7 +22,6 @@ namespace GameShop.BLL.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-
         public GameService(
             IUnitOfWork unitOfWork,
             IMapper mapper)
@@ -35,8 +34,11 @@ namespace GameShop.BLL.Services
         {
             var gameToAdd = _mapper.Map<Game>(newGameDTO);
 
-            var allGenres = await _unitOfWork.GenreRepository.GetAsync(filter: g=>newGameDTO.GenresId.Contains(g.Id));
-            var allPlatformTypes = await _unitOfWork.PlatformTypeRepository.GetAsync(filter: plt => newGameDTO.PlatformTypeId.Contains(plt.Id));
+            var allGenres = await _unitOfWork.GenreRepository.GetAsync(
+                filter: g=>newGameDTO.GenresId.Contains(g.Id));
+
+            var allPlatformTypes = await _unitOfWork.PlatformTypeRepository.GetAsync(
+                filter: plt => newGameDTO.PlatformTypeId.Contains(plt.Id));
 
             foreach (var genreId in newGameDTO.GenresId)
             {
@@ -67,21 +69,24 @@ namespace GameShop.BLL.Services
 
         public async Task DeleteAsync(string gameKey)
         {
-            var gameToDelete = await _unitOfWork.GameRepository.GetAsync(filter: g => g.Key == gameKey, includeProperties: "GamePlatformTypes,GameGenres");
-            ;
+            var gamesToDelete = await _unitOfWork.GameRepository.GetAsync(
+                filter: g => g.Key == gameKey);
+
+            var gameToDelete = gamesToDelete.SingleOrDefault();
 
             if (gameToDelete == null)
             {
                 throw new NotFoundException();
             }
 
-            _unitOfWork.GameRepository.Delete(gameToDelete.SingleOrDefault());
+            _unitOfWork.GameRepository.Delete(gameToDelete);
             await _unitOfWork.SaveAsync();
         }
 
         public async Task<GameReadDTO> GetGameByKeyAsync(string gameKey)
         {
-            var game = await _unitOfWork.GameRepository.GetAsync(filter:g=>g.Key==gameKey,includeProperties: "GamePlatformTypes,GameGenres");
+            var game = await _unitOfWork.GameRepository.GetAsync(
+                filter:g=>g.Key==gameKey,includeProperties: "GamePlatformTypes,GameGenres");
 
             if(game == null)
             {
@@ -102,8 +107,8 @@ namespace GameShop.BLL.Services
 
         public async Task<IEnumerable<GameReadListDTO>> GetGamesByGenreAsync(int genreId)
         {
-            var games = await _unitOfWork.GameRepository.GetAsync(filter:
-                    g => g.GameGenres.Any(gg => gg.Id == genreId));
+            var games = await _unitOfWork.GameRepository.GetAsync(
+                filter: g => g.GameGenres.Any(gg => gg.Id == genreId));
 
             var models = _mapper.Map<IEnumerable<GameReadListDTO>>(games);
             return models;
@@ -120,8 +125,11 @@ namespace GameShop.BLL.Services
 
         public async Task UpdateAsync(GameUpdateDTO updatedGameDTO)
         {
-            var exGame = (await _unitOfWork.GameRepository.GetAsync(filter:game=>game.Key==updatedGameDTO.Key,
+            var exGame = (await _unitOfWork.GameRepository.GetAsync(
+                filter:game=>game.Key==updatedGameDTO.Key,
                 includeProperties: "GameGenres,GamePlatformTypes")).SingleOrDefault();
+
+            _mapper.Map(updatedGameDTO, exGame);
 
             if (exGame == null)
             {
@@ -131,8 +139,11 @@ namespace GameShop.BLL.Services
             exGame.GamePlatformTypes.Clear();
             exGame.GameGenres.Clear();
 
-            var allGenres = await _unitOfWork.GenreRepository.GetAsync(filter: g => updatedGameDTO.GenresId.Contains(g.Id));
-            var allPlatformTypes = await _unitOfWork.PlatformTypeRepository.GetAsync(filter: plt => updatedGameDTO.PlatformTypeId.Contains(plt.Id));
+            var allGenres = await _unitOfWork.GenreRepository.GetAsync(
+                filter: g => updatedGameDTO.GenresId.Contains(g.Id));
+
+            var allPlatformTypes = await _unitOfWork.PlatformTypeRepository.GetAsync(
+                filter: plt => updatedGameDTO.PlatformTypeId.Contains(plt.Id));
 
             foreach (var genreId in updatedGameDTO.GenresId)
             {
@@ -158,13 +169,15 @@ namespace GameShop.BLL.Services
                 exGame.GamePlatformTypes.Add(platformTypeToAdd);
             }
 
+
             _unitOfWork.GameRepository.Update(exGame);
             await _unitOfWork.SaveAsync();
         }
 
-        public MemoryStream GenerateGameFile(string key)
+        public async Task<MemoryStream> GenerateGameFileAsync(string key)
         {
-            MemoryStream stringInMemoryStream = new MemoryStream(ASCIIEncoding.Default.GetBytes(key));
+            var stringInMemoryStream = new MemoryStream(Encoding.ASCII.GetBytes(key));
+            await Task.Yield();
             return stringInMemoryStream;
         }
     }

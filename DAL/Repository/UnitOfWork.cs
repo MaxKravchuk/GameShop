@@ -13,22 +13,26 @@ namespace GameShop.DAL.Repository
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private GameShopContext _context;
-        private Lazy<IRepository<Comment>> _comentRepository;
+        private Lazy<IRepository<Comment>> _commentRepository;
         private Lazy<IRepository<Game>> _gameRepository;
         private Lazy<IRepository<Genre>> _genreRepository;
         private Lazy<IRepository<PlatformType>> _platformTypeRepository;
         private bool disposed = false;
 
-        public UnitOfWork(GameShopContext context)
+        public UnitOfWork(GameShopContext context,
+            Lazy<IRepository<Comment>> commentRepository,
+            Lazy<IRepository<Game>> gameRepository,
+            Lazy<IRepository<Genre>> genreRepository,
+            Lazy<IRepository<PlatformType>> platformTypeRepository)
         {
             _context = context;
-            _comentRepository = new Lazy<IRepository<Comment>>(() => new Repository<Comment>(_context));
-            _gameRepository = new Lazy<IRepository<Game>>(() => new Repository<Game>(_context));
-            _genreRepository = new Lazy<IRepository<Genre>>(() => new Repository<Genre>(_context));
-            _platformTypeRepository = new Lazy<IRepository<PlatformType>>(() => new Repository<PlatformType>(_context));
+            _commentRepository = commentRepository;
+            _gameRepository = gameRepository;
+            _genreRepository = genreRepository;
+            _platformTypeRepository = platformTypeRepository;
         }
 
-        public IRepository<Comment> ComentRepository => _comentRepository.Value;
+        public IRepository<Comment> CommentRepository => _commentRepository.Value;
 
         public IRepository<Game> GameRepository => _gameRepository.Value;
 

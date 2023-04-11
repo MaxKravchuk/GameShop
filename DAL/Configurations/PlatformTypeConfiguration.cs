@@ -21,7 +21,8 @@ namespace GameShop.DAL.Configurations
             Property(x=>x.Type)
                 .HasMaxLength(50)
                 .HasColumnType("varchar")
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("IX_Type") { IsUnique = true }));
+                .HasColumnAnnotation("Index", new IndexAnnotation(
+                    new IndexAttribute("IX_Type") { IsUnique = true }));
 
             Property(x => x.Type)
                 .HasMaxLength(50)

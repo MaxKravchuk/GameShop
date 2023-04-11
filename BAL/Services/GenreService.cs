@@ -48,7 +48,8 @@ namespace GameShop.BLL.Services
 
         public async Task<IEnumerable<GenreReadListDTO>> GetAsync(string gameKey = "")
         {
-            var genres = await _unitOfWork.GenreRepository.GetAsync(filter: g=>g.GameGenres.Any(gg=>gg.Key==gameKey));
+            var genres = await _unitOfWork.GenreRepository.GetAsync(
+                filter: g=>g.GameGenres.Any(gg=>gg.Key==gameKey));
             
             var genresDTO = _mapper.Map<IEnumerable<GenreReadListDTO>>(genres);
             return genresDTO;
@@ -69,8 +70,15 @@ namespace GameShop.BLL.Services
 
         public async Task UpdateAsync(GenreUpdateDTO genreToUpdateDTO)
         {
-            var genreToUpdate = _mapper.Map<Genre>(genreToUpdateDTO);
+            var genreToUpdate = await _unitOfWork.GenreRepository.GetByIdAsync(genreToUpdateDTO.Id);
 
+            if (genreToUpdate == null)
+            {
+                throw new NotFoundException();
+            }
+
+            _mapper.Map(genreToUpdateDTO, genreToUpdate);
+            
             _unitOfWork.GenreRepository.Update(genreToUpdate);
             await _unitOfWork.SaveAsync();
         }

@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Web;
 using AutoMapper;
 using GameShop.BLL.DTO.PlatformTypeDTOs;
-using GameShop.BLL.DTO.ComentDTOs;
+using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.DTO.GenreDTOs;
 using GameShop.DAL.Entities;
@@ -16,8 +16,8 @@ namespace GameShop.WebApi.App_Start
     {
         public AutoMapperConfiguration()
         {
-            CreateMap<ComentCreateDTO, Comment>();
-            CreateMap<Comment, ComentReadDTO>();
+            CreateMap<CommentCreateDTO, Comment>();
+            CreateMap<Comment, CommentReadDTO>();
             CreateMap<GameCreateDTO, Game>();
             CreateMap<Genre, GenreReadListDTO>();
             CreateMap<PlatformType, PlatformTypeReadListDTO>();
