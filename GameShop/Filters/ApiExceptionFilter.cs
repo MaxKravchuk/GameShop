@@ -16,7 +16,7 @@ namespace GameShop.WebApi.Filters
             context.Response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.InternalServerError,
-                Content = new StringContent(DefaultErrorMessage);
+                Content = new StringContent(DefaultErrorMessage)
             };
         }
     }
