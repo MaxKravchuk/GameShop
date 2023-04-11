@@ -10,12 +10,13 @@ namespace GameShop.WebApi.Filters
 {
     public class ApiExceptionFilter : ExceptionFilterAttribute
     {
+        private const string DefaultErrorMessage = "An error occurred while processing your request.";
         public override void OnException(HttpActionExecutedContext context)
         {
             context.Response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.InternalServerError,
-                Content = new StringContent("An error occurred while processing your request.")
+                Content = new StringContent(DefaultErrorMessage);
             };
         }
     }
