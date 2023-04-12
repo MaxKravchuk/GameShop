@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using GameShop.BLL.DTO.PlatformTypeDTOs;
+using GameShop.BLL.DTO.GenreDTOs;
 
 namespace GameShop.BLL.Services
 {
@@ -16,10 +17,15 @@ namespace GameShop.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public PlatformTypeService(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly ILoggerManager _loggerManager;
+        public PlatformTypeService(
+            IUnitOfWork unitOfWork,
+            IMapper mapper,
+            ILoggerManager loggerManager)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _loggerManager = loggerManager;
         }
 
         public async Task CreateAsync(PlatformTypeCreateDTO platformTypeToAddDTO)
@@ -27,6 +33,7 @@ namespace GameShop.BLL.Services
             var platformTypeToAdd = _mapper.Map<PlatformType>(platformTypeToAddDTO);
             _unitOfWork.PlatformTypeRepository.Insert(platformTypeToAdd);
             await _unitOfWork.SaveAsync();
+            _loggerManager.LogInfo($"Platform type with type {platformTypeToAddDTO.Type} was created successfully");
         }
 
         public async Task DeleteAsync(int id)
@@ -35,11 +42,12 @@ namespace GameShop.BLL.Services
 
             if (platformType == null)
             {
-                throw new NotFoundException();
+                throw new NotFoundException($"Platform type with id {id} does not found");
             }
 
             _unitOfWork.PlatformTypeRepository.Delete(platformType);
             await _unitOfWork.SaveAsync();
+            _loggerManager.LogInfo($"Platform type with id {id} was deleted successfully");
         }
 
         public async Task<IEnumerable<PlatformTypeReadListDTO>> GetAsync()
@@ -47,6 +55,9 @@ namespace GameShop.BLL.Services
             var platformTypes = await _unitOfWork.PlatformTypeRepository.GetAsync();
 
             var platformTypesDTO = _mapper.Map<IEnumerable<PlatformTypeReadListDTO>>(platformTypes);
+            
+            _loggerManager.LogInfo(
+                $"Platform types were returned successfully in array size of {platformTypesDTO.Count()}");
             return platformTypesDTO;
         }
 
@@ -56,10 +67,12 @@ namespace GameShop.BLL.Services
 
             if (platformType == null)
             {
-                throw new NotFoundException();
+                throw new NotFoundException($"Platform type with id {id} does not found");
             }
 
             var platformTypeDTO = _mapper.Map<PlatformTypeReadDTO>(platformType);
+
+            _loggerManager.LogInfo($"Platform type with id {id} successfully returned");
             return platformTypeDTO;
         }
 
@@ -70,13 +83,14 @@ namespace GameShop.BLL.Services
 
             if(platformTypeToUpdate == null)
             {
-                throw new NotFoundException();
+                throw new NotFoundException($"Platform type with type {platformTypeToUpdateDTO.Type} does not found");
             }
 
             _mapper.Map(platformTypeToUpdateDTO, platformTypeToUpdate);
 
             _unitOfWork.PlatformTypeRepository.Update(platformTypeToUpdate);
             await _unitOfWork.SaveAsync();
+            _loggerManager.LogInfo($"Platform type with type {platformTypeToUpdate.Type} was updated successfully");
         }
     }
 }

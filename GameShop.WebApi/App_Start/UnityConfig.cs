@@ -9,6 +9,8 @@ using AutoMapper;
 using Unity.Injection;
 using Unity.Lifetime;
 using GameShop.DAL.Entities;
+using log4net;
+using GameShop.WebApi.Filters;
 
 namespace GameShop.WebApi.App_Start
 {
@@ -60,10 +62,16 @@ namespace GameShop.WebApi.App_Start
             container.RegisterType<IRepository<PlatformType>, Repository<PlatformType>>();
 
             container.RegisterType<IUnitOfWork, UnitOfWork>();
+
             container.RegisterType<ICommentService, CommentService>();
             container.RegisterType<IGameService, GameService>();
             container.RegisterType<IGenreService, GenreService>();
             container.RegisterType<IPlatformTypeService, PlatformTypeService>();
+
+            var log = LogManager.GetLogger(typeof(LoggerManager));
+            container.RegisterInstance(typeof(ILog), log);
+
+            container.RegisterType<ILoggerManager, LoggerManager>();
 
             var mapperConfiguration = new MapperConfiguration(cfg =>
             {

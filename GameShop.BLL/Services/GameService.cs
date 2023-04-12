@@ -21,13 +21,16 @@ namespace GameShop.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ILoggerManager _loggerManager;
 
         public GameService(
             IUnitOfWork unitOfWork,
-            IMapper mapper)
+            IMapper mapper,
+            ILoggerManager loggerManager)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _loggerManager = loggerManager;
         }
 
         public async Task CreateAsync(GameCreateDTO newGameDTO)
@@ -46,7 +49,7 @@ namespace GameShop.BLL.Services
                 
                 if(genreToAdd == null)
                 {
-                    throw new NotFoundException();
+                    throw new NotFoundException($"Genre with id {genreId} not found");
                 }
 
                 gameToAdd.GameGenres.Add(genreToAdd);
@@ -57,7 +60,7 @@ namespace GameShop.BLL.Services
                 
                 if(platformTypeToAdd == null)
                 {
-                    throw new NotFoundException();
+                    throw new NotFoundException($"Platform type with id {platformTypeId} not found");
                 }
 
                 gameToAdd.GamePlatformTypes.Add(platformTypeToAdd);
@@ -65,6 +68,7 @@ namespace GameShop.BLL.Services
 
             _unitOfWork.GameRepository.Insert(gameToAdd);
             await _unitOfWork.SaveAsync();
+            _loggerManager.LogInfo($"Game with key {newGameDTO.Key} created successfully");
         }
 
         public async Task DeleteAsync(string gameKey)
@@ -76,11 +80,12 @@ namespace GameShop.BLL.Services
 
             if (gameToDelete == null)
             {
-                throw new NotFoundException();
+                throw new NotFoundException($"Game with key {gameKey} not found");
             }
 
             _unitOfWork.GameRepository.Delete(gameToDelete);
             await _unitOfWork.SaveAsync();
+            _loggerManager.LogInfo($"Game with key {gameToDelete.Key} deleted successfully");
         }
 
         public async Task<GameReadDTO> GetGameByKeyAsync(string gameKey)
@@ -90,10 +95,11 @@ namespace GameShop.BLL.Services
 
             if(game.SingleOrDefault() == null)
             {
-                throw new NotFoundException();
+                throw new NotFoundException($"Game with key {gameKey} not found");
             }
 
             var model = _mapper.Map<GameReadDTO>(game.SingleOrDefault());
+            _loggerManager.LogInfo($"Game with key {gameKey} returned successfully");
             return model;
         }
 
@@ -102,6 +108,8 @@ namespace GameShop.BLL.Services
             var games = await _unitOfWork.GameRepository.GetAsync();
             
             var models = _mapper.Map<IEnumerable<GameReadListDTO>>(games);
+            
+            _loggerManager.LogInfo($"Games successfully returned with array size of {models.Count()}");
             return models;
         }
 
@@ -111,6 +119,9 @@ namespace GameShop.BLL.Services
                 filter: g => g.GameGenres.Any(gg => gg.Id == genreId));
 
             var models = _mapper.Map<IEnumerable<GameReadListDTO>>(games);
+
+            _loggerManager.LogInfo(
+                $"Games with genreId {genreId} successfully returned with array size of {models.Count()}");
             return models;
         }
 
@@ -120,6 +131,9 @@ namespace GameShop.BLL.Services
                     g => g.GamePlatformTypes.Any(gg => gg.Id == platformTypeId));
 
             var models = _mapper.Map<IEnumerable<GameReadListDTO>>(games);
+            
+            _loggerManager.LogInfo(
+                $"Games with platformTypeId {platformTypeId} successfully returned with array size of {models.Count()}");
             return models;
         }
 
@@ -133,7 +147,7 @@ namespace GameShop.BLL.Services
 
             if (exGame == null)
             {
-                throw new BadRequestException();
+                throw new BadRequestException($"Game with key {updatedGameDTO.Key} not found");
             }
 
             exGame.GamePlatformTypes.Clear();
@@ -151,7 +165,7 @@ namespace GameShop.BLL.Services
 
                 if (genreToAdd == null)
                 {
-                    throw new NotFoundException();
+                    throw new NotFoundException($"Genre with id {genreId} not found");
                 }
 
                 exGame.GameGenres.Add(genreToAdd);
@@ -163,7 +177,7 @@ namespace GameShop.BLL.Services
 
                 if (platformTypeToAdd == null)
                 {
-                    throw new NotFoundException();
+                    throw new NotFoundException($"PlatformType with id {platformTypeId} not found");
                 }
 
                 exGame.GamePlatformTypes.Add(platformTypeToAdd);
@@ -172,11 +186,22 @@ namespace GameShop.BLL.Services
 
             _unitOfWork.GameRepository.Update(exGame);
             await _unitOfWork.SaveAsync();
+            _loggerManager.LogInfo($"Game with key {updatedGameDTO.Key} updated successfully");
         }
 
-        public MemoryStream GenerateGameFileAsync(string key)
+        public async Task<MemoryStream> GenerateGameFileAsync(string key)
         {
-            var stringInMemoryStream = new MemoryStream(Encoding.ASCII.GetBytes(key));
+            var game = (await _unitOfWork.GameRepository.GetAsync(filter:g=>g.Key == key)).SingleOrDefault();
+
+            if(game == null)
+            {
+                throw new NotFoundException($"Game with key {key} not found");
+            }
+
+            var dataToDownload = $"Game-{game.Name}|{game.Key}|{game.Description}";
+            var stringInMemoryStream = new MemoryStream(Encoding.ASCII.GetBytes(dataToDownload));
+            
+            _loggerManager.LogInfo($"Upload data successfully created for game with key {game.Key}");
             return stringInMemoryStream;
         }
     }

@@ -19,6 +19,6 @@ namespace GameShop.BLL.Services.Interfaces
         Task<IEnumerable<GameReadListDTO>> GetGamesByPlatformTypeAsync(int platformTypeId);
         Task UpdateAsync(GameUpdateDTO updatedGameDTO);
         Task DeleteAsync(string gameKey);
-        MemoryStream GenerateGameFileAsync(string key);
+        Task<MemoryStream> GenerateGameFileAsync(string key);
     }
 }

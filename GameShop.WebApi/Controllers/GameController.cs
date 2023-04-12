@@ -81,9 +81,9 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("downloadGame/{gameKey}")]
-        public HttpResponseMessage DownloadGame(string gameKey)
+        public async Task<HttpResponseMessage> DownloadGame(string gameKey)
         {
-            var stream = _gameService.GenerateGameFileAsync(gameKey);
+            var stream = await _gameService.GenerateGameFileAsync(gameKey);
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
             result.Content = new StreamContent(stream);

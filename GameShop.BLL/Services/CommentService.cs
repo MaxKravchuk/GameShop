@@ -16,13 +16,16 @@ namespace GameShop.BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ILoggerManager _logger;
 
         public CommentService(
             IUnitOfWork unitOfWork,
-            IMapper mapper)
+            IMapper mapper,
+            ILoggerManager logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task CreateAsync(CommentCreateDTO newCommentDTO)
@@ -32,6 +35,7 @@ namespace GameShop.BLL.Services
 
             _unitOfWork.CommentRepository.Insert(newComment);
             await _unitOfWork.SaveAsync();
+            _logger.LogInfo($"Comment for game`s key {newCommentDTO.GameKey} created successfully");
         }
         public async Task DeleteAsync(int id)
         {
@@ -39,11 +43,12 @@ namespace GameShop.BLL.Services
             
             if(commentToDelete != null)
             {
-                throw new NotFoundException();
+                throw new NotFoundException($"Comment with id {id} not found");
             }
 
             _unitOfWork.CommentRepository.Delete(commentToDelete);
             await _unitOfWork.SaveAsync();
+            _logger.LogInfo($"Comment with id {id} deleted successfully");
         }
         public async Task<IEnumerable<CommentReadDTO>> GetAllByGameKeyAsync(string gameKey)
         {
@@ -51,10 +56,11 @@ namespace GameShop.BLL.Services
 
             if (!comments.Any())
             {
-                throw new NotFoundException();
+                throw new NotFoundException($"Game with key {gameKey} does not exist");
             }
 
             var model = _mapper.Map<IEnumerable<CommentReadDTO>>(comments);
+            _logger.LogInfo($"Comments with game`s key {gameKey} successfully found");
             return model;
         }
         public async Task<CommentReadDTO> GetByIdAsync(int commentId)
@@ -63,23 +69,29 @@ namespace GameShop.BLL.Services
 
             if (comment == null)
             {
-                throw new NotFoundException();
+                throw new NotFoundException($"Comment with id {commentId} not found");
             }
 
             var model = _mapper.Map<CommentReadDTO>(comment);
+            _logger.LogInfo($"Comment with id {commentId} successfully found");
             return model;
         }
         private async Task<int> GetGameIdByKeyAsync(string gameKey)
         {
             if (string.IsNullOrEmpty(gameKey))
             {
-                throw new BadRequestException();
+                throw new BadRequestException("An empty game key is set");
             }
 
             var games = await _unitOfWork.GameRepository.GetAsync(filter: g => g.Key == gameKey);
             var game = games.SingleOrDefault();
             
-            return game == null ? throw new BadRequestException() : game.Id;
+            if(game == null)
+            {
+                throw new NotFoundException($"Game with key {gameKey} not found");
+            }
+
+            return game.Id;
         }
     }
 }
