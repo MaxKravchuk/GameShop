@@ -88,7 +88,7 @@ namespace GameShop.BLL.Services
             var game = await _unitOfWork.GameRepository.GetAsync(
                 filter:g=>g.Key==gameKey,includeProperties: "GamePlatformTypes,GameGenres");
 
-            if(game == null)
+            if(game.SingleOrDefault() == null)
             {
                 throw new NotFoundException();
             }

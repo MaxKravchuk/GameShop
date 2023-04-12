@@ -49,7 +49,7 @@ namespace GameShop.BLL.Services
         {
             var comments = await _unitOfWork.CommentRepository.GetAsync(filter: x=>x.Game.Key==gameKey);
 
-            if (comments == null)
+            if (!comments.Any())
             {
                 throw new NotFoundException();
             }

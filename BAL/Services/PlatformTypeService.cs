@@ -68,6 +68,11 @@ namespace GameShop.BLL.Services
             var platformTypeToUpdate = (await _unitOfWork.PlatformTypeRepository.GetAsync(
                 filter: plt => plt.Type == platformTypeToUpdateDTO.Type)).SingleOrDefault();
 
+            if(platformTypeToUpdate == null)
+            {
+                throw new NotFoundException();
+            }
+
             _mapper.Map(platformTypeToUpdateDTO, platformTypeToUpdate);
 
             _unitOfWork.PlatformTypeRepository.Update(platformTypeToUpdate);
