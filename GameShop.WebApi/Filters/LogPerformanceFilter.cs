@@ -25,7 +25,6 @@ namespace GameShop.WebApi.Filters
             stopwatch.Stop();
             long elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
 
-            // TODO: Implement logging logic here, e.g. write to a text file or a database
             LogPerformance(elapsedMilliseconds);
 
             base.OnActionExecuted(actionExecutedContext);
