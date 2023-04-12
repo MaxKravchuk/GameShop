@@ -174,10 +174,9 @@ namespace GameShop.BLL.Services
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task<MemoryStream> GenerateGameFileAsync(string key)
+        public MemoryStream GenerateGameFileAsync(string key)
         {
             var stringInMemoryStream = new MemoryStream(Encoding.ASCII.GetBytes(key));
-            await Task.Yield();
             return stringInMemoryStream;
         }
     }

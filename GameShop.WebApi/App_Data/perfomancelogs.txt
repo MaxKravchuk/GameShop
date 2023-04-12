@@ -63,3 +63,14 @@
 [11.04.2023 21:58:40] Elapsed time: 5 ms
 [11.04.2023 22:06:33] Elapsed time: 33 ms
 [11.04.2023 22:12:13] Elapsed time: 45 ms
+[12.04.2023 10:56:10] Elapsed time: 2965 ms
+[12.04.2023 10:56:26] Elapsed time: 357 ms
+[12.04.2023 10:56:28] Elapsed time: 7 ms
+[12.04.2023 10:56:49] Elapsed time: 104 ms
+[12.04.2023 10:56:53] Elapsed time: 17 ms
+[12.04.2023 10:57:02] Elapsed time: 195 ms
+[12.04.2023 10:57:15] Elapsed time: 99 ms
+[12.04.2023 10:57:22] Elapsed time: 7 ms
+[12.04.2023 10:57:26] Elapsed time: 17 ms
+[12.04.2023 10:57:33] Elapsed time: 14 ms
+[12.04.2023 10:57:37] Elapsed time: 3 ms
