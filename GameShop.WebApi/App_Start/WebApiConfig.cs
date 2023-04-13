@@ -19,11 +19,7 @@ namespace GameShop.WebApi.App_Start
             config.MapHttpAttributeRoutes();
             config.Filters.Add(new LogIPFilter());
             config.Filters.Add(new LogPerformanceFilter());
-
-            var container = new UnityContainer();
-            UnityConfig.RegisterTypes(container);
-
-            config.Filters.Add(new ApiExceptionFilter(container));
+            config.Filters.Add(new ApiExceptionFilter());
             config.Routes.MapHttpRoute("Main", "api/{controller}");
         }
     }

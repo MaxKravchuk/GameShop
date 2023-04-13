@@ -1,16 +1,12 @@
-﻿using GameShop.DAL.Context;
-using GameShop.DAL.Entities;
-using GameShop.DAL.Repository.Interfaces;
-using EntityFramework.Filters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.Remoting.Contexts;
-using System.Text;
 using System.Threading.Tasks;
+using GameShop.DAL.Context;
+using GameShop.DAL.Entities;
+using GameShop.DAL.Repository.Interfaces;
 
 namespace GameShop.DAL.Repository
 {
@@ -29,16 +25,16 @@ namespace GameShop.DAL.Repository
             string includeProperties = "")
         {
             IQueryable<T> set = filter == null ? _context.Set<T>().Where(x => !x.IsDeleted)
-                : _context.Set<T>().Where(filter).Where(x=>!x.IsDeleted);
+                : _context.Set<T>().Where(filter).Where(x => !x.IsDeleted);
 
-            if(!string.IsNullOrEmpty(includeProperties))
+            if (!string.IsNullOrEmpty(includeProperties))
             {
                 set = includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                     .Aggregate(set, (current, includeProperty)
                         => current.Include(includeProperty));
             }
 
-            if(orderBy != null)
+            if (orderBy != null)
             {
                 set = orderBy(set);
             }
@@ -73,11 +69,11 @@ namespace GameShop.DAL.Repository
             }
 
             var result = await _context.Set<T>().FindAsync(id);
-            
+
             IQueryable<T> set = _context.Set<T>();
 
-            foreach (var includeProperty in includeProperties.Split
-                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var includeProperty in includeProperties.Split(
+                new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 set = set.Include(includeProperty);
             }

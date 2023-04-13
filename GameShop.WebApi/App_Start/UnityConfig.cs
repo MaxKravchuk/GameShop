@@ -1,16 +1,14 @@
-using GameShop.BLL.Services.Interfaces;
-using GameShop.BLL.Services;
-using GameShop.DAL.Context;
-using GameShop.DAL.Repository.Interfaces;
-using GameShop.DAL.Repository;
-using System;
-using Unity;
+﻿using System;
 using AutoMapper;
-using Unity.Injection;
-using Unity.Lifetime;
+using GameShop.BLL.Services;
+using GameShop.BLL.Services.Interfaces;
+using GameShop.DAL.Context;
 using GameShop.DAL.Entities;
+using GameShop.DAL.Repository;
+using GameShop.DAL.Repository.Interfaces;
 using log4net;
-using GameShop.WebApi.Filters;
+using Unity;
+using Unity.Lifetime;
 
 namespace GameShop.WebApi.App_Start
 {
@@ -52,8 +50,6 @@ namespace GameShop.WebApi.App_Start
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
-
-
             container.RegisterType<GameShopContext>(new HierarchicalLifetimeManager());
 
             container.RegisterType<IRepository<Comment>, Repository<Comment>>();
@@ -79,7 +75,6 @@ namespace GameShop.WebApi.App_Start
             });
 
             container.RegisterInstance<IMapper>(mapperConfiguration.CreateMapper());
-
         }
     }
 }

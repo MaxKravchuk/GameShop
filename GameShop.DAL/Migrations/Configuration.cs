@@ -18,44 +18,55 @@
         {
             List<Comment> dComments = new List<Comment>
             {
-                new Comment {Id = 1, Name = "Admin", Body = "First comment",GameId = 1},
-                new Comment {Id = 2, Name = "Bob", Body = "[Admin]Reply to admin", GameId = 1},
-                new Comment {Id = 3, Name = "Bob", Body = "BlaBLa", GameId = 2}
+                new Comment { Id = 1, Name = "Admin", Body = "First comment", GameId = 1 },
+                new Comment { Id = 2, Name = "Bob", Body = "[Admin]Reply to admin", GameId = 1 },
+                new Comment { Id = 3, Name = "Bob", Body = "BlaBLa", GameId = 2 }
             };
 
             List<Genre> dGenres = new List<Genre>
             {
-                new Genre {Id = 1, Name = "Strategy", SubGenres = new List<Genre>
+                new Genre
                 {
-                    new Genre {Id = 8, Name = "RTS"},
-                    new Genre {Id = 9, Name = "TBS"},
-                }},
-                new Genre {Id = 2, Name = "RPG"},
-                new Genre {Id = 3, Name = "Sports"},
-                new Genre {Id = 4, Name = "Races", SubGenres = new List<Genre>
+                    Id = 1, Name = "Strategy",
+                    SubGenres = new List<Genre>
+                    {
+                        new Genre { Id = 8, Name = "RTS" },
+                        new Genre { Id = 9, Name = "TBS" },
+                    }
+                },
+                new Genre { Id = 2, Name = "RPG" },
+                new Genre { Id = 3, Name = "Sports" },
+                new Genre
                 {
-                    new Genre {Id = 10, Name = "Rally"},
-                    new Genre {Id = 11, Name = "Arcade"},
-                    new Genre {Id = 12, Name = "Formula"},
-                    new Genre {Id = 13, Name = "Off-road"},
-                } },
-                new Genre {Id = 5, Name = "Action", SubGenres = new List<Genre>
+                    Id = 4, Name = "Races",
+                    SubGenres = new List<Genre>
+                    {
+                        new Genre { Id = 10, Name = "Rally" },
+                        new Genre { Id = 11, Name = "Arcade" },
+                        new Genre { Id = 12, Name = "Formula" },
+                        new Genre { Id = 13, Name = "Off-road" },
+                    }
+                },
+                new Genre
                 {
-                    new Genre {Id = 14, Name = "FPS"},
-                    new Genre {Id = 15, Name = "TPS"},
-                    new Genre {Id = 16, Name = "Misc"},
-                } },
-                new Genre {Id = 6, Name = "Adventure"},
-                new Genre {Id = 7, Name = "Puzzle&Skill"},
-
+                    Id = 5, Name = "Action",
+                    SubGenres = new List<Genre>
+                    {
+                        new Genre { Id = 14, Name = "FPS" },
+                        new Genre { Id = 15, Name = "TPS" },
+                        new Genre { Id = 16, Name = "Misc" },
+                    }
+                },
+                new Genre { Id = 6, Name = "Adventure" },
+                new Genre { Id = 7, Name = "Puzzle&Skill" },
             };
 
             List<PlatformType> dPt = new List<PlatformType>
             {
-                new PlatformType{Id = 1, Type = "Mobile"},
-                new PlatformType{Id = 2, Type = "Browser"},
-                new PlatformType{Id = 3, Type = "Desktop"},
-                new PlatformType{Id = 4, Type = "Console"},
+                new PlatformType { Id = 1, Type = "Mobile" },
+                new PlatformType { Id = 2, Type = "Browser" },
+                new PlatformType { Id = 3, Type = "Desktop" },
+                new PlatformType { Id = 4, Type = "Console" },
             };
 
             List<Game> games = new List<Game>();
@@ -66,7 +77,7 @@
                 Key = "halo5",
                 Name = "Halo 5: Guardians",
                 Description = "A first-person shooter game set in a sci-fi universe",
-                GameGenres = new List<Genre> { dGenres[4], dGenres[4], dGenres[0].SubGenres.Where(x=>x.Id == 14).SingleOrDefault() },
+                GameGenres = new List<Genre> { dGenres[4], dGenres[4], dGenres[0].SubGenres.Where(x => x.Id == 14).SingleOrDefault() },
                 GamePlatformTypes = new List<PlatformType> { dPt[3] }
             });
 

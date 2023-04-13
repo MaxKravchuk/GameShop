@@ -21,6 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\stylecop.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -88,6 +90,10 @@
       <Project>{9d693047-58af-4a74-a6ca-bfa20eb0756c}</Project>
       <Name>GameShop.DAL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

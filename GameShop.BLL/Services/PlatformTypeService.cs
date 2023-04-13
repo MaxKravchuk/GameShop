@@ -1,15 +1,15 @@
-﻿using GameShop.BLL.Exceptions;
-using GameShop.BLL.Services.Interfaces;
-using GameShop.DAL.Entities;
-using GameShop.DAL.Repository.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using GameShop.BLL.DTO.PlatformTypeDTOs;
 using GameShop.BLL.DTO.GenreDTOs;
+using GameShop.BLL.DTO.PlatformTypeDTOs;
+using GameShop.BLL.Exceptions;
+using GameShop.BLL.Services.Interfaces;
+using GameShop.DAL.Entities;
+using GameShop.DAL.Repository.Interfaces;
 
 namespace GameShop.BLL.Services
 {
@@ -18,6 +18,7 @@ namespace GameShop.BLL.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
+
         public PlatformTypeService(
             IUnitOfWork unitOfWork,
             IMapper mapper,
@@ -55,7 +56,7 @@ namespace GameShop.BLL.Services
             var platformTypes = await _unitOfWork.PlatformTypeRepository.GetAsync();
 
             var platformTypesDTO = _mapper.Map<IEnumerable<PlatformTypeReadListDTO>>(platformTypes);
-            
+
             _loggerManager.LogInfo(
                 $"Platform types were returned successfully in array size of {platformTypesDTO.Count()}");
             return platformTypesDTO;
@@ -81,7 +82,7 @@ namespace GameShop.BLL.Services
             var platformTypeToUpdate = (await _unitOfWork.PlatformTypeRepository.GetAsync(
                 filter: plt => plt.Type == platformTypeToUpdateDTO.Type)).SingleOrDefault();
 
-            if(platformTypeToUpdate == null)
+            if (platformTypeToUpdate == null)
             {
                 throw new NotFoundException($"Platform type with type {platformTypeToUpdateDTO.Type} does not found");
             }

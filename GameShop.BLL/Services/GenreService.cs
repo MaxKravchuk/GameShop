@@ -41,8 +41,8 @@ namespace GameShop.BLL.Services
         public async Task DeleteAsync(int id)
         {
             var genreToDelete = await _unitOfWork.GenreRepository.GetByIdAsync(id);
-            
-            if(genreToDelete == null)
+
+            if (genreToDelete == null)
             {
                 throw new NotFoundException($"Genre with id {id} does not found");
             }
@@ -55,7 +55,7 @@ namespace GameShop.BLL.Services
         public async Task<IEnumerable<GenreReadListDTO>> GetAsync()
         {
             var genres = await _unitOfWork.GenreRepository.GetAsync();
-            
+
             var genresDTO = _mapper.Map<IEnumerable<GenreReadListDTO>>(genres);
 
             _loggerManager.LogInfo(
@@ -67,7 +67,7 @@ namespace GameShop.BLL.Services
         {
             var genre = await _unitOfWork.GenreRepository.GetByIdAsync(id);
 
-            if(genre == null)
+            if (genre == null)
             {
                 throw new NotFoundException($"Genre with id {id} does not found");
             }
@@ -88,7 +88,7 @@ namespace GameShop.BLL.Services
             }
 
             _mapper.Map(genreToUpdateDTO, genreToUpdate);
-            
+
             _unitOfWork.GenreRepository.Update(genreToUpdate);
             await _unitOfWork.SaveAsync();
             _loggerManager.LogInfo($"Genre with id {genreToUpdateDTO.Id} was updated successfully");

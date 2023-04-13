@@ -1,15 +1,13 @@
-﻿using GameShop.BLL.DTO.CommentDTOs;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+
 namespace GameShop.BLL.Services
 {
     public class CommentService : ICommentService
@@ -37,11 +35,12 @@ namespace GameShop.BLL.Services
             await _unitOfWork.SaveAsync();
             _logger.LogInfo($"Comment for game`s key {newCommentDTO.GameKey} created successfully");
         }
+
         public async Task DeleteAsync(int id)
         {
             var commentToDelete = await _unitOfWork.CommentRepository.GetByIdAsync(id);
-            
-            if(commentToDelete != null)
+
+            if (commentToDelete != null)
             {
                 throw new NotFoundException($"Comment with id {id} not found");
             }
@@ -50,9 +49,10 @@ namespace GameShop.BLL.Services
             await _unitOfWork.SaveAsync();
             _logger.LogInfo($"Comment with id {id} deleted successfully");
         }
+
         public async Task<IEnumerable<CommentReadDTO>> GetAllByGameKeyAsync(string gameKey)
         {
-            var comments = await _unitOfWork.CommentRepository.GetAsync(filter: x=>x.Game.Key==gameKey);
+            var comments = await _unitOfWork.CommentRepository.GetAsync(filter: x => x.Game.Key == gameKey);
 
             if (!comments.Any())
             {
@@ -63,6 +63,7 @@ namespace GameShop.BLL.Services
             _logger.LogInfo($"Comments with game`s key {gameKey} successfully found");
             return model;
         }
+
         public async Task<CommentReadDTO> GetByIdAsync(int commentId)
         {
             var comment = await _unitOfWork.CommentRepository.GetByIdAsync(commentId);
@@ -76,6 +77,7 @@ namespace GameShop.BLL.Services
             _logger.LogInfo($"Comment with id {commentId} successfully found");
             return model;
         }
+
         private async Task<int> GetGameIdByKeyAsync(string gameKey)
         {
             if (string.IsNullOrEmpty(gameKey))
@@ -85,8 +87,8 @@ namespace GameShop.BLL.Services
 
             var games = await _unitOfWork.GameRepository.GetAsync(filter: g => g.Key == gameKey);
             var game = games.SingleOrDefault();
-            
-            if(game == null)
+
+            if (game == null)
             {
                 throw new NotFoundException($"Game with key {gameKey} not found");
             }

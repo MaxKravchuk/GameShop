@@ -1,16 +1,16 @@
-﻿using AutoMapper;
-using GameShop.BLL.Services.Interfaces;
-using GameShop.BLL.DTO.GameDTOs;
-using GameShop.DAL.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.WebPages;
-using System.Net;
-using System.Runtime.InteropServices.ComTypes;
+using AutoMapper;
+using GameShop.BLL.DTO.GameDTOs;
+using GameShop.BLL.Services.Interfaces;
+using GameShop.DAL.Entities;
 
 namespace GameShop.WebApi.Controllers
 {
@@ -90,7 +90,7 @@ namespace GameShop.WebApi.Controllers
             result.Content.Headers.ContentLength = stream.Length;
             result.Content.Headers.ContentType =
                 new MediaTypeHeaderValue("application/octet-stream");
-            result.Content.Headers.ContentDisposition = 
+            result.Content.Headers.ContentDisposition =
                 new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
             result.Content.Headers.ContentDisposition.FileName = $"{gameKey}.bin";
 

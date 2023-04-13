@@ -1,13 +1,7 @@
-﻿using GameShop.DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+using GameShop.DAL.Entities;
 
 namespace GameShop.DAL.Configurations
 {
@@ -18,7 +12,7 @@ namespace GameShop.DAL.Configurations
             ToTable("Games");
 
             HasKey(x => x.Id);
-            
+
             Property(x => x.Key)
                .HasColumnType("varchar")
                .HasMaxLength(255)
@@ -39,8 +33,8 @@ namespace GameShop.DAL.Configurations
             HasMany<Genre>(game => game.GameGenres)
                 .WithMany(genre => genre.GameGenres);
 
-            HasMany<PlatformType>(game=>game.GamePlatformTypes)
-                .WithMany(platformType=>platformType.GamePlatformTypes);
+            HasMany<PlatformType>(game => game.GamePlatformTypes)
+                .WithMany(platformType => platformType.GamePlatformTypes);
         }
     }
 }
