@@ -40,7 +40,7 @@ namespace GameShop.BLL.Services
         {
             var commentToDelete = await _unitOfWork.CommentRepository.GetByIdAsync(id);
 
-            if (commentToDelete != null)
+            if (commentToDelete == null)
             {
                 throw new NotFoundException($"Comment with id {id} not found");
             }
