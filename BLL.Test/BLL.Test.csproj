@@ -85,6 +85,8 @@
   <ItemGroup>
     <Compile Include="CommentServiceTests.cs" />
     <Compile Include="GameServiceTests.cs" />
+    <Compile Include="PlatformTypeServiceTests.cs" />
+    <Compile Include="GenreServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
