@@ -19,16 +19,17 @@ namespace BLL.Test
     public class GameServiceTests : IDisposable
     {
         private readonly Mock<IGameService> MockService;
-
         private readonly Mock<IUnitOfWork> MockUnitOfWork;
-
         private readonly GameService gameService;
-
         private readonly Mock<IMapper> MockMapper;
-
         private readonly Mock<ILoggerManager> MockLogger;
 
         private bool _disposed;
+
+        private GameCreateDTO _gameCreateDTO;
+        private Game _game;
+        private List<Genre> _listOfGenres;
+        private List<PlatformType> _listOfPlatformTypes;
 
         public GameServiceTests()
         {
@@ -36,6 +37,11 @@ namespace BLL.Test
             MockUnitOfWork = new Mock<IUnitOfWork>();
             MockMapper = new Mock<IMapper>();
             MockLogger = new Mock<ILoggerManager>();
+
+            _gameCreateDTO = GetGameCreateDTO();
+            _game = GetGame();
+            _listOfGenres = GetListOfGenres();
+            _listOfPlatformTypes = GetListOfPlatformTypes();
 
             gameService = new GameService(
                 MockUnitOfWork.Object,
@@ -71,27 +77,10 @@ namespace BLL.Test
         public async Task CreateGame_ShouldCreateGameAndLogInfo()
         {
             // Arrange
-            var newGameDTO = new GameCreateDTO
-            {
-                Key = "new_game_key",
-                GenresId = new List<int> { 1 },
-                PlatformTypeId = new List<int> { 1 }
-            };
-
-            var newGame = new Game
-            {
-                Key = "new_game_key",
-            };
-
-            var allGenres = new List<Genre>
-            {
-                new Genre { Id = 1 },
-            };
-
-            var allPlatformTypes = new List<PlatformType>
-            {
-                new PlatformType { Id = 1 },
-            };
+            var newGameDTO = _gameCreateDTO;
+            var newGame = _game;
+            var allGenres = _listOfGenres;
+            var allPlatformTypes = _listOfPlatformTypes;
 
             MockMapper.Setup(m => m.Map<Game>(newGameDTO)).Returns(newGame);
 
@@ -129,27 +118,11 @@ namespace BLL.Test
         public async Task CreateGame_ShouldThrowNotFoundExceptionForGenres()
         {
             // Arrange
-            var newGameDTO = new GameCreateDTO
-            {
-                Key = "new_game_key",
-                GenresId = new List<int> { 0 },
-                PlatformTypeId = new List<int> { 1 }
-            };
-
-            var newGame = new Game
-            {
-                Key = "new_game_key",
-            };
-
-            var allGenres = new List<Genre>
-            {
-                new Genre { Id = 1 },
-            };
-
-            var allPlatformTypes = new List<PlatformType>
-            {
-                new PlatformType { Id = 1 },
-            };
+            var newGameDTO = _gameCreateDTO;
+            newGameDTO.GenresId = new List<int> { 0 };
+            var newGame = _game;
+            var allGenres = _listOfGenres;
+            var allPlatformTypes = _listOfPlatformTypes;
 
             MockMapper.Setup(m => m.Map<Game>(newGameDTO)).Returns(newGame);
 
@@ -184,27 +157,11 @@ namespace BLL.Test
         public async Task CreateGame_ShouldThrowNotFoundExceptionForPlatformTypes()
         {
             // Arrange
-            var newGameDTO = new GameCreateDTO
-            {
-                Key = "new_game_key",
-                GenresId = new List<int> { 1 },
-                PlatformTypeId = new List<int> { 0 }
-            };
-
-            var newGame = new Game
-            {
-                Key = "new_game_key",
-            };
-
-            var allGenres = new List<Genre>
-            {
-                new Genre { Id = 1 },
-            };
-
-            var allPlatformTypes = new List<PlatformType>
-            {
-                new PlatformType { Id = 1 },
-            };
+            var newGameDTO = _gameCreateDTO;
+            newGameDTO.PlatformTypeId = new List<int> { 0 };
+            var newGame = _game;
+            var allGenres = _listOfGenres;
+            var allPlatformTypes = _listOfPlatformTypes;
 
             MockMapper.Setup(m => m.Map<Game>(newGameDTO)).Returns(newGame);
 
@@ -239,8 +196,8 @@ namespace BLL.Test
         public async Task DeleteAsync__WithCorrectGameKey_ShouldDeleteGameAndLogInfo()
         {
             // Arrange
-            var gameKey = "test";
-            var gameToDelete = new Game() { Key = gameKey };
+            var gameToDelete = _game;
+            var gameKey = _game.Key;
             var games = new List<Game> { gameToDelete };
 
             MockUnitOfWork
@@ -293,8 +250,8 @@ namespace BLL.Test
         public async Task GetGameByKeyAsync_WithCorrectGameKey_ShouldReturnGame()
         {
             // Arrange
-            var gameKey = "test";
-            var game = new Game() { Key = gameKey };
+            var expectedGame = _game;
+            var gameKey = _game.Key;
             var gameDTO = new GameReadDTO();
 
             MockUnitOfWork
@@ -304,10 +261,10 @@ namespace BLL.Test
                         It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
                         It.IsAny<string>(),
                         It.IsAny<bool>()))
-                .ReturnsAsync(new List<Game> { game });
+                .ReturnsAsync(new List<Game> { _game });
 
             MockMapper
-                .Setup(m => m.Map<GameReadDTO>(game)).Returns(gameDTO);
+                .Setup(m => m.Map<GameReadDTO>(_game)).Returns(gameDTO);
 
             // Act
             var result = await gameService.GetGameByKeyAsync(gameKey);
@@ -346,7 +303,7 @@ namespace BLL.Test
         public async Task GetAllGamesAsync_ShouldReturnFilledGameList()
         {
             // Arrange
-            var gameList = new List<Game> { new Game() };
+            var gameList = new List<Game> { _game };
             var gameListDTO = new List<GameReadListDTO> { new GameReadListDTO() };
 
             MockUnitOfWork
@@ -527,15 +484,9 @@ namespace BLL.Test
         {
             // Arrange
             var gameToUpdate = new GameUpdateDTO() { GenresId = new List<int> { 1 }, PlatformTypeId = new List<int> { 1 } };
-            var exGame = new Game() { Id = 1 };
-            var allGenres = new List<Genre>
-            {
-                new Genre { Id = 1 },
-            };
-            var allPlatformTypes = new List<PlatformType>
-            {
-                new PlatformType { Id = 1 },
-            };
+            var exGame = _game;
+            var allGenres = _listOfGenres;
+            var allPlatformTypes = _listOfPlatformTypes;
 
             MockUnitOfWork
                 .Setup(u => u.GameRepository
@@ -604,17 +555,9 @@ namespace BLL.Test
         {
             // Arrange
             var gameToUpdate = new GameUpdateDTO() { GenresId = new List<int> { 0 }, PlatformTypeId = new List<int> { 1 } };
-            var exGame = new Game() { Id = 1 };
-
-            var allGenres = new List<Genre>
-            {
-                new Genre { Id = 1 },
-            };
-
-            var allPlatformTypes = new List<PlatformType>
-            {
-                new PlatformType { Id = 1 },
-            };
+            var exGame = _game;
+            var allGenres = _listOfGenres;
+            var allPlatformTypes = _listOfPlatformTypes;
 
             MockUnitOfWork
                 .Setup(u => u.GameRepository
@@ -654,17 +597,9 @@ namespace BLL.Test
         {
             // Arrange
             var gameToUpdate = new GameUpdateDTO() { GenresId = new List<int> { 1 }, PlatformTypeId = new List<int> { 0 } };
-            var exGame = new Game() { Id = 1 };
-
-            var allGenres = new List<Genre>
-            {
-                new Genre { Id = 1 },
-            };
-
-            var allPlatformTypes = new List<PlatformType>
-            {
-                new PlatformType { Id = 1 },
-            };
+            var exGame = _game;
+            var allGenres = _listOfGenres;
+            var allPlatformTypes = _listOfPlatformTypes;
 
             MockUnitOfWork
                 .Setup(u => u.GameRepository
@@ -703,8 +638,8 @@ namespace BLL.Test
         public async Task GenerateGameFileAsync_WithCorrectKey_ShouldReturnMemoryStreamAndLog()
         {
             // Arrange
-            var gameKey = "game1";
-            var game = new Game { Key = gameKey };
+            var expectedGame = _game;
+            var gameKey = expectedGame.Key;
 
             MockUnitOfWork
                 .Setup(u => u.GameRepository
@@ -713,7 +648,7 @@ namespace BLL.Test
                         It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
                         It.IsAny<string>(),
                         It.IsAny<bool>()))
-                .ReturnsAsync(new List<Game> { game });
+                .ReturnsAsync(new List<Game> { _game });
 
             // Act
             var result = await gameService.GenerateGameFileAsync(gameKey);
@@ -722,7 +657,7 @@ namespace BLL.Test
             MockLogger.Verify(
                 l => l.LogInfo($"Upload data successfully created for game with key {gameKey}"), Times.Once);
             var bytes = result.ToArray();
-            var dataToDownload = $"Game-{game.Name}|{game.Key}|{game.Description}";
+            var dataToDownload = $"Game-{_game.Name}|{_game.Key}|{_game.Description}";
             var expectedBytes = Encoding.ASCII.GetBytes(dataToDownload);
             Assert.Equal(expectedBytes, bytes);
         }
@@ -744,6 +679,38 @@ namespace BLL.Test
 
             // Act + Assert
             await Assert.ThrowsAsync<NotFoundException>(() => gameService.GenerateGameFileAsync(nonExistingGameKey));
+        }
+
+        private GameCreateDTO GetGameCreateDTO()
+        {
+            return new GameCreateDTO
+            {
+                Key = "new_game_key",
+                GenresId = new List<int> { 1 },
+                PlatformTypeId = new List<int> { 1 }
+            };
+        }
+
+        private Game GetGame()
+        {
+            return new Game()
+            {
+                Key = "new_game_key",
+            };
+        }
+        private List<Genre> GetListOfGenres()
+        {
+            return new List<Genre>
+            {
+                new Genre { Id = 1 },
+            };
+        }
+        private List<PlatformType> GetListOfPlatformTypes()
+        {
+            return new List<PlatformType>
+            {
+                new PlatformType { Id = 1 },
+            };
         }
     }
 }

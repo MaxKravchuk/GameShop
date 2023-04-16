@@ -20,13 +20,9 @@ namespace BLL.Test
     public class CommentServiceTests : IDisposable
     {
         private readonly Mock<ICommentService> MockService;
-
         private readonly Mock<IUnitOfWork> MockUnitOfWork;
-
         private readonly CommentService commentService;
-
         private readonly Mock<IMapper> MockMapper;
-
         private readonly Mock<ILoggerManager> MockLogger;
 
         private bool _disposed;
