@@ -1,15 +1,15 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using AutoMapper;
-using Xunit;
-using GameShop.WebApi.App_Start;
 using GameShop.BLL.DTO.CommentDTOs;
-using GameShop.DAL.Entities;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.DTO.GenreDTOs;
 using GameShop.BLL.DTO.PlatformTypeDTOs;
-using System.Runtime.Serialization;
+using GameShop.DAL.Entities;
+using GameShop.WebApi.App_Start;
+using Xunit;
 
-namespace BLL.Test
+namespace GameShop.BLL.Tests
 {
     public class MappingTests
     {
@@ -48,7 +48,9 @@ namespace BLL.Test
         private object GetInstanceOf(Type type)
         {
             if (type.GetConstructor(Type.EmptyTypes) != null)
+            {
                 return Activator.CreateInstance(type);
+            }
 
             return FormatterServices.GetUninitializedObject(type);
         }

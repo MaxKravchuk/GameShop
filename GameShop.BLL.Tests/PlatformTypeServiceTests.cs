@@ -14,48 +14,29 @@ using GameShop.DAL.Repository.Interfaces;
 using Moq;
 using Xunit;
 
-namespace BLL.Test
+namespace GameShop.BLL.Tests
 {
     public class PlatformTypeServiceTests : IDisposable
     {
-        private readonly Mock<IPlatformTypeService> MockService;
-        private readonly Mock<IUnitOfWork> MockUnitOfWork;
-        private readonly PlatformTypeService PlatformTypeService;
-        private readonly Mock<IMapper> MockMapper;
-        private readonly Mock<ILoggerManager> MockLogger;
+        private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+        private readonly PlatformTypeService _platformTypeService;
+        private readonly Mock<IMapper> _mockMapper;
+        private readonly Mock<ILoggerManager> _mockLogger;
 
         private bool _disposed;
 
         public PlatformTypeServiceTests()
         {
-            MockService = new Mock<IPlatformTypeService>();
-            MockUnitOfWork = new Mock<IUnitOfWork>();
-            MockMapper = new Mock<IMapper>();
-            MockLogger = new Mock<ILoggerManager>();
+            _mockUnitOfWork = new Mock<IUnitOfWork>();
+            _mockMapper = new Mock<IMapper>();
+            _mockLogger = new Mock<ILoggerManager>();
 
-            PlatformTypeService = new PlatformTypeService(
-                MockUnitOfWork.Object,
-                MockMapper.Object,
-                MockLogger.Object);
+            _platformTypeService = new PlatformTypeService(
+                _mockUnitOfWork.Object,
+                _mockMapper.Object,
+                _mockLogger.Object);
         }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                MockUnitOfWork.Invocations.Clear();
-                MockService.Invocations.Clear();
-                MockMapper.Invocations.Clear();
-                MockLogger.Invocations.Clear();
-            }
-
-            _disposed = true;
-        }
         public void Dispose()
         {
             Dispose(true);
@@ -69,21 +50,21 @@ namespace BLL.Test
             var platformTypeToAddDTO = new PlatformTypeCreateDTO();
             var platformToAdd = new PlatformType();
 
-            MockMapper
+            _mockMapper
                 .Setup(m => m.Map<PlatformType>(platformTypeToAddDTO)).Returns(platformToAdd);
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.PlatformTypeRepository
                     .Insert(platformToAdd)).Verifiable();
 
             // Act
-            await PlatformTypeService.CreateAsync(platformTypeToAddDTO);
+            await _platformTypeService.CreateAsync(platformTypeToAddDTO);
 
             // Assert
-            MockUnitOfWork.Verify(u => u.PlatformTypeRepository.Insert(platformToAdd), Times.Once);
-            MockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
-            MockLogger.Verify(l => l
-            .LogInfo($"Platform type with type {platformTypeToAddDTO.Type} was created successfully"), Times.Once);
+            _mockUnitOfWork.Verify(u => u.PlatformTypeRepository.Insert(platformToAdd), Times.Once);
+            _mockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
+            _mockLogger.Verify(
+                l => l.LogInfo($"Platform type with type {platformTypeToAddDTO.Type} was created successfully"), Times.Once);
         }
 
         [Fact]
@@ -93,26 +74,26 @@ namespace BLL.Test
             var id = 1;
             var platformTypeToDelete = new PlatformType { Id = 1 };
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.PlatformTypeRepository
                     .GetByIdAsync(
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .ReturnsAsync(platformTypeToDelete);
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.PlatformTypeRepository
                     .Delete(platformTypeToDelete))
                 .Verifiable();
 
             // Act
-            await PlatformTypeService.DeleteAsync(id);
+            await _platformTypeService.DeleteAsync(id);
 
             // Assert
-            MockUnitOfWork.Verify(u => u.PlatformTypeRepository.Delete(platformTypeToDelete), Times.Once);
-            MockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
-            MockLogger.Verify(l => l
-            .LogInfo($"Platform type with id {id} was deleted successfully"), Times.Once);
+            _mockUnitOfWork.Verify(u => u.PlatformTypeRepository.Delete(platformTypeToDelete), Times.Once);
+            _mockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
+            _mockLogger.Verify(
+                l => l.LogInfo($"Platform type with id {id} was deleted successfully"), Times.Once);
         }
 
         [Fact]
@@ -122,7 +103,7 @@ namespace BLL.Test
             var id = -1;
             PlatformType platformTypeToDelete = null;
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.PlatformTypeRepository
                     .GetByIdAsync(
                     It.IsAny<int>(),
@@ -130,7 +111,7 @@ namespace BLL.Test
                 .ReturnsAsync(platformTypeToDelete);
 
             // Act
-            var result = PlatformTypeService.DeleteAsync(id);
+            var result = _platformTypeService.DeleteAsync(id);
 
             // Assert
             await Assert.ThrowsAsync<NotFoundException>(() => result);
@@ -143,7 +124,7 @@ namespace BLL.Test
             var platformTypeList = new List<PlatformType> { new PlatformType() };
             var platformTypeListDTO = new List<PlatformTypeReadListDTO> { new PlatformTypeReadListDTO() };
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.PlatformTypeRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<PlatformType, bool>>>(),
@@ -152,15 +133,15 @@ namespace BLL.Test
                         It.IsAny<bool>()))
                 .ReturnsAsync(platformTypeList);
 
-            MockMapper
+            _mockMapper
                 .Setup(m => m.Map<IEnumerable<PlatformTypeReadListDTO>>(platformTypeList))
                 .Returns(platformTypeListDTO);
 
             // Act
-            var result = await PlatformTypeService.GetAsync();
+            var result = await _platformTypeService.GetAsync();
 
             // Assert
-            MockLogger.Verify(
+            _mockLogger.Verify(
                 l => l.LogInfo($"Platform types were returned successfully in array size of {platformTypeListDTO.Count()}"),
                 Times.Once);
             Assert.IsAssignableFrom<IEnumerable<PlatformTypeReadListDTO>>(result);
@@ -174,7 +155,7 @@ namespace BLL.Test
             var platformTypeList = new List<PlatformType>();
             var platformTypeListDTO = new List<PlatformTypeReadListDTO>();
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.PlatformTypeRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<PlatformType, bool>>>(),
@@ -183,15 +164,15 @@ namespace BLL.Test
                         It.IsAny<bool>()))
                 .ReturnsAsync(platformTypeList);
 
-            MockMapper
+            _mockMapper
                 .Setup(m => m.Map<IEnumerable<PlatformTypeReadListDTO>>(platformTypeList))
                 .Returns(platformTypeListDTO);
 
             // Act
-            var result = await PlatformTypeService.GetAsync();
+            var result = await _platformTypeService.GetAsync();
 
             // Assert
-            MockLogger.Verify(
+            _mockLogger.Verify(
                 l => l.LogInfo($"Platform types were returned successfully in array size of {platformTypeListDTO.Count()}"),
                 Times.Once);
             Assert.IsAssignableFrom<IEnumerable<PlatformTypeReadListDTO>>(result);
@@ -206,23 +187,23 @@ namespace BLL.Test
             var platformType = new PlatformType { Id = id };
             var platfromTypeDTO = new PlatformTypeReadDTO { Id = id };
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.PlatformTypeRepository
                     .GetByIdAsync(It.IsAny<int>(), It.IsAny<string>()))
                 .ReturnsAsync(platformType);
 
-            MockMapper
+            _mockMapper
                 .Setup(m => m.Map<PlatformTypeReadDTO>(platformType))
                 .Returns(platfromTypeDTO);
 
             // Act
-            var result = await PlatformTypeService.GetByIdAsync(id);
+            var result = await _platformTypeService.GetByIdAsync(id);
 
             // Assert
             Assert.NotNull(result);
             Assert.IsType<PlatformTypeReadDTO>(result);
-            MockLogger.Verify(l => l.LogInfo(
-                $"Platform type with id {id} successfully returned"), Times.Once);
+            _mockLogger.Verify(
+                l => l.LogInfo($"Platform type with id {id} successfully returned"), Times.Once);
         }
 
         [Fact]
@@ -232,13 +213,13 @@ namespace BLL.Test
             var id = 0;
             PlatformType genre = null;
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.PlatformTypeRepository
                     .GetByIdAsync(It.IsAny<int>(), It.IsAny<string>()))
                 .ReturnsAsync(genre);
 
             // Act
-            var result = PlatformTypeService.GetByIdAsync(id);
+            var result = _platformTypeService.GetByIdAsync(id);
 
             // Assert
             await Assert.ThrowsAsync<NotFoundException>(() => result);
@@ -251,7 +232,7 @@ namespace BLL.Test
             var platformTypeToUpdate = new PlatformType { Type = "test" };
             var platformTypeToUpdateDTO = new PlatformTypeUpdateDTO { Type = "test" };
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.PlatformTypeRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<PlatformType, bool>>>(),
@@ -260,27 +241,27 @@ namespace BLL.Test
                         It.IsAny<bool>()))
                 .ReturnsAsync(new List<PlatformType> { platformTypeToUpdate });
 
-            MockMapper
+            _mockMapper
                 .Setup(m => m.Map(platformTypeToUpdateDTO, platformTypeToUpdate)).Verifiable();
 
             // Act
-            await PlatformTypeService.UpdateAsync(platformTypeToUpdateDTO);
+            await _platformTypeService.UpdateAsync(platformTypeToUpdateDTO);
 
             // Assert
-            MockUnitOfWork.Verify(u => u.PlatformTypeRepository.Update(platformTypeToUpdate), Times.Once);
-            MockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
-            MockLogger.Verify(l => l
-                .LogInfo($"Platform type with type {platformTypeToUpdate.Type} was updated successfully"), Times.Once);
+            _mockUnitOfWork.Verify(u => u.PlatformTypeRepository.Update(platformTypeToUpdate), Times.Once);
+            _mockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
+            _mockLogger.Verify(
+                l => l.LogInfo($"Platform type with type {platformTypeToUpdate.Type} was updated successfully"), Times.Once);
         }
 
         [Fact]
         public async Task UpdatePlatformTypeAsync_WithWrongModel_ShouldThrowNotFoundException()
         {
             // Arrange
-            PlatformType platformTypeToUpdate = null; 
+            PlatformType platformTypeToUpdate = null;
             var platformTypeToUpdateDTO = new PlatformTypeUpdateDTO { Type = "wrongType" };
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.PlatformTypeRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<PlatformType, bool>>>(),
@@ -290,10 +271,27 @@ namespace BLL.Test
                 .ReturnsAsync(new List<PlatformType> { platformTypeToUpdate });
 
             // Act
-            var result = PlatformTypeService.UpdateAsync(platformTypeToUpdateDTO);
+            var result = _platformTypeService.UpdateAsync(platformTypeToUpdateDTO);
 
             // Assert
             await Assert.ThrowsAsync<NotFoundException>(() => result);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                _mockUnitOfWork.Invocations.Clear();
+                _mockMapper.Invocations.Clear();
+                _mockLogger.Invocations.Clear();
+            }
+
+            _disposed = true;
         }
     }
 }

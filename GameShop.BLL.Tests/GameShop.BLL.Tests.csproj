@@ -91,19 +91,22 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
     <Analyzer Include="..\packages\xunit.analyzers.1.0.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
     <Analyzer Include="..\packages\xunit.analyzers.1.0.0\analyzers\dotnet\cs\xunit.analyzers.fixes.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameShop.BLL\GameShop.BLL.csproj">
-      <Project>{CE449A0E-5CAC-4BB2-B67D-E6E8793EDDA4}</Project>
+      <Project>{ce449a0e-5cac-4bb2-b67d-e6e8793edda4}</Project>
       <Name>GameShop.BLL</Name>
     </ProjectReference>
     <ProjectReference Include="..\GameShop.DAL\GameShop.DAL.csproj">
-      <Project>{9D693047-58AF-4A74-A6CA-BFA20EB0756C}</Project>
+      <Project>{9d693047-58af-4a74-a6ca-bfa20eb0756c}</Project>
       <Name>GameShop.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\GameShop.WebApi\GameShop.WebApi.csproj">

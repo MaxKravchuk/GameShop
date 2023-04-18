@@ -14,15 +14,14 @@ using GameShop.DAL.Repository.Interfaces;
 using Moq;
 using Xunit;
 
-namespace BLL.Test
+namespace GameShop.BLL.Tests
 {
     public class GameServiceTests : IDisposable
     {
-        private readonly Mock<IGameService> MockService;
-        private readonly Mock<IUnitOfWork> MockUnitOfWork;
-        private readonly GameService gameService;
-        private readonly Mock<IMapper> MockMapper;
-        private readonly Mock<ILoggerManager> MockLogger;
+        private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+        private readonly GameService _gameService;
+        private readonly Mock<IMapper> _mockMapper;
+        private readonly Mock<ILoggerManager> _mockLogger;
 
         private bool _disposed;
 
@@ -33,38 +32,19 @@ namespace BLL.Test
 
         public GameServiceTests()
         {
-            MockService = new Mock<IGameService>();
-            MockUnitOfWork = new Mock<IUnitOfWork>();
-            MockMapper = new Mock<IMapper>();
-            MockLogger = new Mock<ILoggerManager>();
+            _mockUnitOfWork = new Mock<IUnitOfWork>();
+            _mockMapper = new Mock<IMapper>();
+            _mockLogger = new Mock<ILoggerManager>();
 
             _gameCreateDTO = GetGameCreateDTO();
             _game = GetGame();
             _listOfGenres = GetListOfGenres();
             _listOfPlatformTypes = GetListOfPlatformTypes();
 
-            gameService = new GameService(
-                MockUnitOfWork.Object,
-                MockMapper.Object,
-                MockLogger.Object);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                MockUnitOfWork.Invocations.Clear();
-                MockService.Invocations.Clear();
-                MockMapper.Invocations.Clear();
-                MockLogger.Invocations.Clear();
-            }
-
-            _disposed = true;
+            _gameService = new GameService(
+                _mockUnitOfWork.Object,
+                _mockMapper.Object,
+                _mockLogger.Object);
         }
 
         public void Dispose()
@@ -82,9 +62,9 @@ namespace BLL.Test
             var allGenres = _listOfGenres;
             var allPlatformTypes = _listOfPlatformTypes;
 
-            MockMapper.Setup(m => m.Map<Game>(newGameDTO)).Returns(newGame);
+            _mockMapper.Setup(m => m.Map<Game>(newGameDTO)).Returns(newGame);
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GenreRepository
                 .GetAsync(
                 It.IsAny<Expression<Func<Genre, bool>>>(),
@@ -93,7 +73,7 @@ namespace BLL.Test
                 It.IsAny<bool>()))
             .ReturnsAsync(allGenres);
 
-            MockUnitOfWork.Setup(u => u.PlatformTypeRepository
+            _mockUnitOfWork.Setup(u => u.PlatformTypeRepository
             .GetAsync(
                 It.IsAny<Expression<Func<PlatformType, bool>>>(),
                 It.IsAny<Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>>>(),
@@ -101,17 +81,17 @@ namespace BLL.Test
                 It.IsAny<bool>()))
             .ReturnsAsync(allPlatformTypes);
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository.Insert(newGame)).Verifiable();
 
             // Act
-            await gameService.CreateAsync(newGameDTO);
+            await _gameService.CreateAsync(newGameDTO);
 
             // Assert
-            MockUnitOfWork.Verify(u => u.GameRepository.Insert(newGame), Times.Once);
-            MockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
-            MockLogger.Verify(l => l
-            .LogInfo($"Game with key {newGameDTO.Key} created successfully"), Times.Once);
+            _mockUnitOfWork.Verify(u => u.GameRepository.Insert(newGame), Times.Once);
+            _mockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
+            _mockLogger.Verify(
+                l => l.LogInfo($"Game with key {newGameDTO.Key} created successfully"), Times.Once);
         }
 
         [Fact]
@@ -124,9 +104,9 @@ namespace BLL.Test
             var allGenres = _listOfGenres;
             var allPlatformTypes = _listOfPlatformTypes;
 
-            MockMapper.Setup(m => m.Map<Game>(newGameDTO)).Returns(newGame);
+            _mockMapper.Setup(m => m.Map<Game>(newGameDTO)).Returns(newGame);
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GenreRepository
                 .GetAsync(
                 It.IsAny<Expression<Func<Genre, bool>>>(),
@@ -135,7 +115,7 @@ namespace BLL.Test
                 It.IsAny<bool>()))
             .ReturnsAsync(allGenres);
 
-            MockUnitOfWork.Setup(u => u.PlatformTypeRepository
+            _mockUnitOfWork.Setup(u => u.PlatformTypeRepository
             .GetAsync(
                 It.IsAny<Expression<Func<PlatformType, bool>>>(),
                 It.IsAny<Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>>>(),
@@ -143,11 +123,11 @@ namespace BLL.Test
                 It.IsAny<bool>()))
             .ReturnsAsync(allPlatformTypes);
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository.Insert(newGame)).Verifiable();
 
             // Act
-            var result = gameService.CreateAsync(newGameDTO);
+            var result = _gameService.CreateAsync(newGameDTO);
 
             // Assert
             await Assert.ThrowsAsync<NotFoundException>(() => result);
@@ -163,9 +143,9 @@ namespace BLL.Test
             var allGenres = _listOfGenres;
             var allPlatformTypes = _listOfPlatformTypes;
 
-            MockMapper.Setup(m => m.Map<Game>(newGameDTO)).Returns(newGame);
+            _mockMapper.Setup(m => m.Map<Game>(newGameDTO)).Returns(newGame);
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GenreRepository
                 .GetAsync(
                 It.IsAny<Expression<Func<Genre, bool>>>(),
@@ -174,7 +154,7 @@ namespace BLL.Test
                 It.IsAny<bool>()))
             .ReturnsAsync(allGenres);
 
-            MockUnitOfWork.Setup(u => u.PlatformTypeRepository
+            _mockUnitOfWork.Setup(u => u.PlatformTypeRepository
             .GetAsync(
                 It.IsAny<Expression<Func<PlatformType, bool>>>(),
                 It.IsAny<Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>>>(),
@@ -182,11 +162,11 @@ namespace BLL.Test
                 It.IsAny<bool>()))
             .ReturnsAsync(allPlatformTypes);
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository.Insert(newGame)).Verifiable();
 
             // Act
-            var result = gameService.CreateAsync(newGameDTO);
+            var result = _gameService.CreateAsync(newGameDTO);
 
             // Assert
             await Assert.ThrowsAsync<NotFoundException>(() => result);
@@ -200,7 +180,7 @@ namespace BLL.Test
             var gameKey = _game.Key;
             var games = new List<Game> { gameToDelete };
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -209,17 +189,17 @@ namespace BLL.Test
                         It.IsAny<bool>()))
                 .ReturnsAsync(games);
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository.Delete(gameToDelete)).Verifiable();
 
             // Act
-            await gameService.DeleteAsync(gameKey);
+            await _gameService.DeleteAsync(gameKey);
 
             // Assert
-            MockUnitOfWork.Verify(u => u.GameRepository.Delete(gameToDelete), Times.Once);
-            MockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
-            MockLogger.Verify(l => l
-            .LogInfo($"Game with key {gameToDelete.Key} deleted successfully"), Times.Once);
+            _mockUnitOfWork.Verify(u => u.GameRepository.Delete(gameToDelete), Times.Once);
+            _mockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
+            _mockLogger.Verify(
+                l => l.LogInfo($"Game with key {gameToDelete.Key} deleted successfully"), Times.Once);
         }
 
         [Fact]
@@ -230,7 +210,7 @@ namespace BLL.Test
             Game gameToDelete = null;
             var games = new List<Game> { gameToDelete };
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -240,7 +220,7 @@ namespace BLL.Test
                 .ReturnsAsync(games);
 
             // Act
-            var result = gameService.DeleteAsync(gameKey);
+            var result = _gameService.DeleteAsync(gameKey);
 
             // Assert
             await Assert.ThrowsAsync<NotFoundException>(() => result);
@@ -254,7 +234,7 @@ namespace BLL.Test
             var gameKey = _game.Key;
             var gameDTO = new GameReadDTO();
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -263,14 +243,14 @@ namespace BLL.Test
                         It.IsAny<bool>()))
                 .ReturnsAsync(new List<Game> { _game });
 
-            MockMapper
+            _mockMapper
                 .Setup(m => m.Map<GameReadDTO>(_game)).Returns(gameDTO);
 
             // Act
-            var result = await gameService.GetGameByKeyAsync(gameKey);
+            var result = await _gameService.GetGameByKeyAsync(gameKey);
 
             // Assert
-            MockLogger.Verify(
+            _mockLogger.Verify(
                 l => l.LogInfo($"Game with key {gameKey} returned successfully"), Times.Once);
             Assert.IsType<GameReadDTO>(result);
             Assert.Equal(gameDTO, result);
@@ -283,7 +263,7 @@ namespace BLL.Test
             var gameKey = "test";
             Game game = null;
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -293,7 +273,7 @@ namespace BLL.Test
                 .ReturnsAsync(new List<Game> { game });
 
             // Act
-            var result = gameService.GetGameByKeyAsync(gameKey);
+            var result = _gameService.GetGameByKeyAsync(gameKey);
 
             // Assert
             await Assert.ThrowsAsync<NotFoundException>(() => result);
@@ -306,7 +286,7 @@ namespace BLL.Test
             var gameList = new List<Game> { _game };
             var gameListDTO = new List<GameReadListDTO> { new GameReadListDTO() };
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -315,14 +295,14 @@ namespace BLL.Test
                         It.IsAny<bool>()))
                 .ReturnsAsync(gameList);
 
-            MockMapper
+            _mockMapper
                 .Setup(m => m.Map<IEnumerable<GameReadListDTO>>(gameList)).Returns(gameListDTO);
 
             // Act
-            var result = await gameService.GetAllGamesAsync();
+            var result = await _gameService.GetAllGamesAsync();
 
             // Assert
-            MockLogger.Verify(
+            _mockLogger.Verify(
                 l => l.LogInfo($"Games successfully returned with array size of {gameListDTO.Count()}"), Times.Once);
             Assert.IsAssignableFrom<IEnumerable<GameReadListDTO>>(result);
             Assert.True(result.Any());
@@ -335,7 +315,7 @@ namespace BLL.Test
             var gameList = new List<Game>();
             var gameListDTO = new List<GameReadListDTO>();
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -344,14 +324,14 @@ namespace BLL.Test
                         It.IsAny<bool>()))
                 .ReturnsAsync(gameList);
 
-            MockMapper
+            _mockMapper
                 .Setup(m => m.Map<IEnumerable<GameReadListDTO>>(gameList)).Returns(gameListDTO);
 
             // Act
-            var result = await gameService.GetAllGamesAsync();
+            var result = await _gameService.GetAllGamesAsync();
 
             // Assert
-            MockLogger.Verify(
+            _mockLogger.Verify(
                 l => l.LogInfo($"Games successfully returned with array size of {gameListDTO.Count()}"), Times.Once);
             Assert.IsAssignableFrom<IEnumerable<GameReadListDTO>>(result);
             Assert.False(result.Any());
@@ -369,7 +349,7 @@ namespace BLL.Test
                 new Game { Id = 3, GameGenres = new List<Genre> { new Genre { Id = 2 } } },
             };
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -378,20 +358,22 @@ namespace BLL.Test
                         It.IsAny<bool>()))
                 .ReturnsAsync(games.Where(g => g.GameGenres.Any(gg => gg.Id == genreId)));
 
-            MockMapper
+            _mockMapper
                 .Setup(m => m.Map<IEnumerable<GameReadListDTO>>(It.IsAny<IEnumerable<Game>>()))
                 .Returns(
                     (IEnumerable<Game> source) =>
                     {
                         return source.Select(g => new GameReadListDTO { Id = g.Id });
                     });
+
             // Act
-            var result = await gameService.GetGamesByGenreAsync(genreId);
+            var result = await _gameService.GetGamesByGenreAsync(genreId);
 
             // Assert
             Assert.Equal(2, result.Count());
-            MockLogger.Verify(l => l.LogInfo(
-                $"Games with genreId {genreId} successfully returned with array size of {result.Count()}"), Times.Once);
+            _mockLogger.Verify(
+                l => l.LogInfo(
+                    $"Games with genreId {genreId} successfully returned with array size of {result.Count()}"), Times.Once);
         }
 
         [Fact]
@@ -401,7 +383,7 @@ namespace BLL.Test
             var genreId = 1;
             var games = new List<Game>();
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -411,7 +393,7 @@ namespace BLL.Test
                 .ReturnsAsync(games);
 
             // Act
-            var result = await gameService.GetGamesByGenreAsync(genreId);
+            var result = await _gameService.GetGamesByGenreAsync(genreId);
 
             // Assert
             Assert.NotNull(result);
@@ -430,7 +412,7 @@ namespace BLL.Test
                 new Game { Id = 3, GamePlatformTypes = new List<PlatformType> { new PlatformType { Id = 2 } } },
             };
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -439,19 +421,21 @@ namespace BLL.Test
                         It.IsAny<bool>()))
                 .ReturnsAsync(games.Where(g => g.GamePlatformTypes.Any(gg => gg.Id == platformTypeId)));
 
-            MockMapper
+            _mockMapper
                 .Setup(m => m.Map<IEnumerable<GameReadListDTO>>(It.IsAny<IEnumerable<Game>>()))
                 .Returns(
                     (IEnumerable<Game> source) =>
                     {
                         return source.Select(g => new GameReadListDTO { Id = g.Id });
                     });
+
             // Act
-            var result = await gameService.GetGamesByGenreAsync(platformTypeId);
+            var result = await _gameService.GetGamesByGenreAsync(platformTypeId);
 
             // Assert
             Assert.Equal(2, result.Count());
-            MockLogger.Verify(l => l.LogInfo(
+            _mockLogger.Verify(
+                l => l.LogInfo(
                 $"Games with genreId {platformTypeId} successfully returned with array size of {result.Count()}"), Times.Once);
         }
 
@@ -462,7 +446,7 @@ namespace BLL.Test
             var platformTypeId = 1;
             var games = new List<Game>();
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -472,7 +456,7 @@ namespace BLL.Test
                 .ReturnsAsync(games);
 
             // Act
-            var result = await gameService.GetGamesByGenreAsync(platformTypeId);
+            var result = await _gameService.GetGamesByGenreAsync(platformTypeId);
 
             // Assert
             Assert.NotNull(result);
@@ -488,7 +472,7 @@ namespace BLL.Test
             var allGenres = _listOfGenres;
             var allPlatformTypes = _listOfPlatformTypes;
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -497,7 +481,7 @@ namespace BLL.Test
                         It.IsAny<bool>()))
                 .ReturnsAsync(new List<Game> { exGame });
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GenreRepository
                 .GetAsync(
                 It.IsAny<Expression<Func<Genre, bool>>>(),
@@ -506,7 +490,7 @@ namespace BLL.Test
                 It.IsAny<bool>()))
             .ReturnsAsync(allGenres);
 
-            MockUnitOfWork.Setup(u => u.PlatformTypeRepository
+            _mockUnitOfWork.Setup(u => u.PlatformTypeRepository
             .GetAsync(
                 It.IsAny<Expression<Func<PlatformType, bool>>>(),
                 It.IsAny<Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>>>(),
@@ -514,17 +498,17 @@ namespace BLL.Test
                 It.IsAny<bool>()))
             .ReturnsAsync(allPlatformTypes);
 
-            MockMapper
+            _mockMapper
                 .Setup(m => m.Map(gameToUpdate, exGame)).Verifiable();
 
             // Act
-            await gameService.UpdateAsync(gameToUpdate);
+            await _gameService.UpdateAsync(gameToUpdate);
 
             // Assert
-            MockUnitOfWork.Verify(u => u.GameRepository.Update(exGame), Times.Once);
-            MockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
-            MockLogger.Verify(l => l
-            .LogInfo($"Game with key {gameToUpdate.Key} updated successfully"), Times.Once);
+            _mockUnitOfWork.Verify(u => u.GameRepository.Update(exGame), Times.Once);
+            _mockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
+            _mockLogger.Verify(
+                l => l.LogInfo($"Game with key {gameToUpdate.Key} updated successfully"), Times.Once);
         }
 
         [Fact]
@@ -534,7 +518,7 @@ namespace BLL.Test
             var gameToUpdate = new GameUpdateDTO() { GenresId = new List<int> { 1 }, PlatformTypeId = new List<int> { 1 } };
             Game exGame = null;
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -544,7 +528,7 @@ namespace BLL.Test
                 .ReturnsAsync(new List<Game> { exGame });
 
             // Act
-            var result = gameService.UpdateAsync(gameToUpdate);
+            var result = _gameService.UpdateAsync(gameToUpdate);
 
             // Assert
             await Assert.ThrowsAsync<BadRequestException>(() => result);
@@ -559,7 +543,7 @@ namespace BLL.Test
             var allGenres = _listOfGenres;
             var allPlatformTypes = _listOfPlatformTypes;
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -568,7 +552,7 @@ namespace BLL.Test
                         It.IsAny<bool>()))
                 .ReturnsAsync(new List<Game> { exGame });
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GenreRepository
                 .GetAsync(
                 It.IsAny<Expression<Func<Genre, bool>>>(),
@@ -577,7 +561,7 @@ namespace BLL.Test
                 It.IsAny<bool>()))
             .ReturnsAsync(allGenres);
 
-            MockUnitOfWork.Setup(u => u.PlatformTypeRepository
+            _mockUnitOfWork.Setup(u => u.PlatformTypeRepository
             .GetAsync(
                 It.IsAny<Expression<Func<PlatformType, bool>>>(),
                 It.IsAny<Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>>>(),
@@ -586,7 +570,7 @@ namespace BLL.Test
             .ReturnsAsync(allPlatformTypes);
 
             // Act
-            var result = gameService.UpdateAsync(gameToUpdate);
+            var result = _gameService.UpdateAsync(gameToUpdate);
 
             // Assert
             await Assert.ThrowsAsync<NotFoundException>(() => result);
@@ -601,7 +585,7 @@ namespace BLL.Test
             var allGenres = _listOfGenres;
             var allPlatformTypes = _listOfPlatformTypes;
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -610,7 +594,7 @@ namespace BLL.Test
                         It.IsAny<bool>()))
                 .ReturnsAsync(new List<Game> { exGame });
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GenreRepository
                 .GetAsync(
                 It.IsAny<Expression<Func<Genre, bool>>>(),
@@ -619,7 +603,7 @@ namespace BLL.Test
                 It.IsAny<bool>()))
             .ReturnsAsync(allGenres);
 
-            MockUnitOfWork.Setup(u => u.PlatformTypeRepository
+            _mockUnitOfWork.Setup(u => u.PlatformTypeRepository
             .GetAsync(
                 It.IsAny<Expression<Func<PlatformType, bool>>>(),
                 It.IsAny<Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>>>(),
@@ -628,7 +612,7 @@ namespace BLL.Test
             .ReturnsAsync(allPlatformTypes);
 
             // Act
-            var result = gameService.UpdateAsync(gameToUpdate);
+            var result = _gameService.UpdateAsync(gameToUpdate);
 
             // Assert
             await Assert.ThrowsAsync<NotFoundException>(() => result);
@@ -641,7 +625,7 @@ namespace BLL.Test
             var expectedGame = _game;
             var gameKey = expectedGame.Key;
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -651,10 +635,10 @@ namespace BLL.Test
                 .ReturnsAsync(new List<Game> { _game });
 
             // Act
-            var result = await gameService.GenerateGameFileAsync(gameKey);
+            var result = await _gameService.GenerateGameFileAsync(gameKey);
 
             // Assert
-            MockLogger.Verify(
+            _mockLogger.Verify(
                 l => l.LogInfo($"Upload data successfully created for game with key {gameKey}"), Times.Once);
             var bytes = result.ToArray();
             var dataToDownload = $"Game-{_game.Name}|{_game.Key}|{_game.Description}";
@@ -668,7 +652,7 @@ namespace BLL.Test
             // Arrange
             string nonExistingGameKey = "NonExistingKey";
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -678,7 +662,24 @@ namespace BLL.Test
                 .ReturnsAsync(new List<Game>());
 
             // Act + Assert
-            await Assert.ThrowsAsync<NotFoundException>(() => gameService.GenerateGameFileAsync(nonExistingGameKey));
+            await Assert.ThrowsAsync<NotFoundException>(() => _gameService.GenerateGameFileAsync(nonExistingGameKey));
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                _mockUnitOfWork.Invocations.Clear();
+                _mockMapper.Invocations.Clear();
+                _mockLogger.Invocations.Clear();
+            }
+
+            _disposed = true;
         }
 
         private GameCreateDTO GetGameCreateDTO()
@@ -698,6 +699,7 @@ namespace BLL.Test
                 Key = "new_game_key",
             };
         }
+
         private List<Genre> GetListOfGenres()
         {
             return new List<Genre>
@@ -705,6 +707,7 @@ namespace BLL.Test
                 new Genre { Id = 1 },
             };
         }
+
         private List<PlatformType> GetListOfPlatformTypes()
         {
             return new List<PlatformType>

@@ -1,61 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
-using GameShop.BLL.Services;
-using GameShop.DAL.Entities;
-using Xunit;
-using Moq;
-using GameShop.BLL.Services.Interfaces;
 using AutoMapper;
 using GameShop.BLL.DTO.CommentDTOs;
-using GameShop.DAL.Repository.Interfaces;
-using System.Linq.Expressions;
 using GameShop.BLL.Exceptions;
+using GameShop.BLL.Services;
+using GameShop.BLL.Services.Interfaces;
+using GameShop.DAL.Entities;
+using GameShop.DAL.Repository.Interfaces;
+using Moq;
+using Xunit;
 
-namespace BLL.Test
+namespace GameShop.BLL.Tests
 {
     public class CommentServiceTests : IDisposable
     {
-        private readonly Mock<ICommentService> MockService;
-        private readonly Mock<IUnitOfWork> MockUnitOfWork;
-        private readonly CommentService commentService;
-        private readonly Mock<IMapper> MockMapper;
-        private readonly Mock<ILoggerManager> MockLogger;
+        private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+        private readonly CommentService _commentService;
+        private readonly Mock<IMapper> _mockMapper;
+        private readonly Mock<ILoggerManager> _mockLogger;
 
         private bool _disposed;
 
         public CommentServiceTests()
         {
-            MockService = new Mock<ICommentService>();
-            MockUnitOfWork = new Mock<IUnitOfWork>();
-            MockMapper = new Mock<IMapper>();
-            MockLogger = new Mock<ILoggerManager>();
+            _mockUnitOfWork = new Mock<IUnitOfWork>();
+            _mockMapper = new Mock<IMapper>();
+            _mockLogger = new Mock<ILoggerManager>();
 
-            commentService = new CommentService(
-                MockUnitOfWork.Object,
-                MockMapper.Object,
-                MockLogger.Object);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                MockUnitOfWork.Invocations.Clear();
-                MockService.Invocations.Clear();
-                MockMapper.Invocations.Clear();
-                MockLogger.Invocations.Clear();
-            }
-
-            _disposed = true;
+            _commentService = new CommentService(
+                _mockUnitOfWork.Object,
+                _mockMapper.Object,
+                _mockLogger.Object);
         }
 
         public void Dispose()
@@ -72,7 +50,7 @@ namespace BLL.Test
             var comments = new List<Comment> { new Comment() };
             var commentReadDTOs = new List<CommentReadDTO> { new CommentReadDTO() };
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(x => x.CommentRepository.GetAsync(
                     It.IsAny<Expression<Func<Comment, bool>>>(),
                     It.IsAny<Func<IQueryable<Comment>, IOrderedQueryable<Comment>>>(),
@@ -80,26 +58,26 @@ namespace BLL.Test
                     It.IsAny<bool>()))
                 .ReturnsAsync(comments);
 
-            MockMapper
+            _mockMapper
                 .Setup(x => x.Map<IEnumerable<CommentReadDTO>>(comments))
                 .Returns(commentReadDTOs);
 
             // Act
-            var result = await commentService.GetAllByGameKeyAsync(gameKey);
+            var result = await _commentService.GetAllByGameKeyAsync(gameKey);
 
             // Assert
             Assert.Equal(commentReadDTOs, result);
-            MockLogger.Verify(x => x.LogInfo($"Comments with game`s key {gameKey} successfully found"), Times.Once);
+            _mockLogger.Verify(x => x.LogInfo($"Comments with game`s key {gameKey} successfully found"), Times.Once);
         }
 
         [Fact]
         public async Task GetAllByGameKeyAsync_WithNonExistingGameKey_ThrowsNotFoundException()
         {
-            //Arrange
+            // Arrange
             var gameKey = "wrongKey";
             var comments = new List<Comment>();
 
-            MockUnitOfWork
+            _mockUnitOfWork
             .Setup(x => x.CommentRepository.GetAsync(
                     It.IsAny<Expression<Func<Comment, bool>>>(),
                     It.IsAny<Func<IQueryable<Comment>, IOrderedQueryable<Comment>>>(),
@@ -108,30 +86,30 @@ namespace BLL.Test
             .ReturnsAsync(comments);
 
             // Act & Assert
-            await Assert.ThrowsAsync<NotFoundException>(() => commentService.GetAllByGameKeyAsync(gameKey));
+            await Assert.ThrowsAsync<NotFoundException>(() => _commentService.GetAllByGameKeyAsync(gameKey));
         }
 
         [Fact]
         public async Task GetCommentByIdAsync_WithCorrectId_ReturnsCommet()
         {
-            //Arrange
+            // Arrange
             var commentId = 1;
             var comment = new Comment();
             var commentReadDTO = new CommentReadDTO();
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(x => x.CommentRepository.GetByIdAsync(
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .ReturnsAsync(comment);
-            MockMapper
+            _mockMapper
                 .Setup(x => x.Map<CommentReadDTO>(comment))
                 .Returns(commentReadDTO);
 
-            //Act
-            var result = await commentService.GetByIdAsync(commentId);
+            // Act
+            var result = await _commentService.GetByIdAsync(commentId);
 
-            //Assert
+            // Assert
             Assert.NotNull(result);
             Assert.IsType<CommentReadDTO>(result);
             Assert.Equal(commentReadDTO, result);
@@ -140,20 +118,20 @@ namespace BLL.Test
         [Fact]
         public async Task GetCommentByIdAsync_WithWrongId_ThrowNotFoundException()
         {
-            //Arrange
+            // Arrange
             var commentId = 0;
             Comment comment = null;
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(x => x.CommentRepository.GetByIdAsync(
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .ReturnsAsync(comment);
 
-            //Act
-            var result = commentService.GetByIdAsync(commentId);
+            // Act
+            var result = _commentService.GetByIdAsync(commentId);
 
-            //Assert
+            // Assert
             await Assert.ThrowsAsync<NotFoundException>(() => result);
         }
 
@@ -161,14 +139,14 @@ namespace BLL.Test
         public async Task CreateAsync_ShouldCreateCommentAndLogInfo()
         {
             // Arrange
-            var commentCreateDto = new CommentCreateDTO() { GameKey = "gameKey"};
-            var game = new Game() { Id = 1, Key = "gameKey"};
+            var commentCreateDto = new CommentCreateDTO() { GameKey = "gameKey" };
+            var game = new Game() { Id = 1, Key = "gameKey" };
             var comment = new Comment();
 
-            MockMapper.Setup(m => m.Map<Comment>(commentCreateDto))
+            _mockMapper.Setup(m => m.Map<Comment>(commentCreateDto))
                       .Returns(comment);
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -177,17 +155,17 @@ namespace BLL.Test
                         It.IsAny<bool>()))
                 .ReturnsAsync(new List<Game> { game });
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.CommentRepository.Insert(comment)).Verifiable();
 
             // Act
-            await commentService.CreateAsync(commentCreateDto);
+            await _commentService.CreateAsync(commentCreateDto);
 
             // Assert
-            MockUnitOfWork.Verify(u => u.CommentRepository.Insert(comment), Times.Once);
-            MockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
-            MockLogger.Verify(l => l
-            .LogInfo($"Comment for game`s key {commentCreateDto.GameKey} created successfully"), Times.Once);
+            _mockUnitOfWork.Verify(u => u.CommentRepository.Insert(comment), Times.Once);
+            _mockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
+            _mockLogger.Verify(
+                l => l.LogInfo($"Comment for game`s key {commentCreateDto.GameKey} created successfully"), Times.Once);
         }
 
         [Fact]
@@ -198,10 +176,10 @@ namespace BLL.Test
             var game = new Game();
             var comment = new Comment();
 
-            MockMapper.Setup(m => m.Map<Comment>(commentCreateDto))
+            _mockMapper.Setup(m => m.Map<Comment>(commentCreateDto))
                       .Returns(comment);
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -210,11 +188,11 @@ namespace BLL.Test
                         It.IsAny<bool>()))
                 .ReturnsAsync(new List<Game> { game });
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.CommentRepository.Insert(comment)).Verifiable();
 
             // Act
-            var result = commentService.CreateAsync(commentCreateDto);
+            var result = _commentService.CreateAsync(commentCreateDto);
 
             // Assert
             await Assert.ThrowsAsync<BadRequestException>(() => result);
@@ -225,13 +203,13 @@ namespace BLL.Test
         {
             // Arrange
             var commentCreateDto = new CommentCreateDTO() { GameKey = "black" };
-            var game = new Game() { Key = "white"};
+            var game = new Game() { Key = "white" };
             var comment = new Comment();
 
-            MockMapper.Setup(m => m.Map<Comment>(commentCreateDto))
+            _mockMapper.Setup(m => m.Map<Comment>(commentCreateDto))
                       .Returns(comment);
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.GameRepository
                     .GetAsync(
                         It.IsAny<Expression<Func<Game, bool>>>(),
@@ -240,11 +218,11 @@ namespace BLL.Test
                         It.IsAny<bool>()))
                 .ReturnsAsync(new List<Game>());
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.CommentRepository.Insert(comment)).Verifiable();
 
             // Act
-            var result = commentService.CreateAsync(commentCreateDto);
+            var result = _commentService.CreateAsync(commentCreateDto);
 
             // Assert
             await Assert.ThrowsAsync<NotFoundException>(() => result);
@@ -253,52 +231,68 @@ namespace BLL.Test
         [Fact]
         public async Task DeleteAsync_WithCorrectId_ShouldDelete()
         {
-            //Arrange
+            // Arrange
             var commentId = 1;
-            var comment = new Comment() { Id = commentId};
+            var comment = new Comment() { Id = commentId };
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.CommentRepository
                     .GetByIdAsync(
                         It.Is<int>(id => id == commentId),
                         It.IsAny<string>()))
                 .ReturnsAsync(comment);
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.CommentRepository
                     .Delete(comment))
                 .Verifiable();
 
-            //Act
-            await commentService.DeleteAsync(commentId);
+            // Act
+            await _commentService.DeleteAsync(commentId);
 
-            //Assert
-            MockUnitOfWork.Verify(u => u.CommentRepository.Delete(comment), Times.Once);
-            MockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
-            MockLogger.Verify(l => l
-            .LogInfo($"Comment with id {commentId} deleted successfully"), Times.Once);
+            // Assert
+            _mockUnitOfWork.Verify(u => u.CommentRepository.Delete(comment), Times.Once);
+            _mockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
+            _mockLogger.Verify(
+                l => l.LogInfo($"Comment with id {commentId} deleted successfully"), Times.Once);
         }
 
         [Fact]
         public async Task DeleteAsync_WithWrongId_ShouldThrowNotFoundException()
         {
-            //Arrange
+            // Arrange
             var commentId = 0;
             Comment comment = null;
 
-            MockUnitOfWork
+            _mockUnitOfWork
                 .Setup(u => u.CommentRepository
                     .GetByIdAsync(
                         It.Is<int>(id => id == commentId),
                         It.IsAny<string>()))
                 .ReturnsAsync(comment);
 
+            // Act
+            var result = _commentService.DeleteAsync(commentId);
 
-            //Act
-            var result = commentService.DeleteAsync(commentId);
-
-            //Assert
+            // Assert
             await Assert.ThrowsAsync<NotFoundException>(() => result);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                _mockUnitOfWork.Invocations.Clear();
+                _mockMapper.Invocations.Clear();
+                _mockLogger.Invocations.Clear();
+            }
+
+            _disposed = true;
         }
     }
 }
