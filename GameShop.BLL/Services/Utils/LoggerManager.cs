@@ -1,4 +1,4 @@
-﻿using GameShop.BLL.Services.Interfaces;
+﻿using GameShop.BLL.Services.Interfaces.Utils;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameShop.BLL.Services
+namespace GameShop.BLL.Services.Utils
 {
     public class LoggerManager : ILoggerManager
     {

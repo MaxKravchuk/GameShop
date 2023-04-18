@@ -8,6 +8,7 @@ using GameShop.BLL.DTO.GenreDTOs;
 using GameShop.BLL.DTO.PlatformTypeDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services.Interfaces;
+using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository.Interfaces;
 

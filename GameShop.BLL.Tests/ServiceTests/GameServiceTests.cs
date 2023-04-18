@@ -9,12 +9,13 @@ using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services;
 using GameShop.BLL.Services.Interfaces;
+using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository.Interfaces;
 using Moq;
 using Xunit;
 
-namespace GameShop.BLL.Tests
+namespace GameShop.BLL.Tests.ServiceTests
 {
     public class GameServiceTests : IDisposable
     {
@@ -481,22 +482,8 @@ namespace GameShop.BLL.Tests
                         It.IsAny<bool>()))
                 .ReturnsAsync(new List<Game> { exGame });
 
-            _mockUnitOfWork
-                .Setup(u => u.GenreRepository
-                .GetAsync(
-                It.IsAny<Expression<Func<Genre, bool>>>(),
-                It.IsAny<Func<IQueryable<Genre>, IOrderedQueryable<Genre>>>(),
-                It.IsAny<string>(),
-                It.IsAny<bool>()))
-            .ReturnsAsync(allGenres);
-
-            _mockUnitOfWork.Setup(u => u.PlatformTypeRepository
-            .GetAsync(
-                It.IsAny<Expression<Func<PlatformType, bool>>>(),
-                It.IsAny<Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>>>(),
-                It.IsAny<string>(),
-                It.IsAny<bool>()))
-            .ReturnsAsync(allPlatformTypes);
+            MockSetupForGenres(allGenres);
+            MockSetupForPlatformTypes(allPlatformTypes);
 
             _mockMapper
                 .Setup(m => m.Map(gameToUpdate, exGame)).Verifiable();
@@ -552,22 +539,8 @@ namespace GameShop.BLL.Tests
                         It.IsAny<bool>()))
                 .ReturnsAsync(new List<Game> { exGame });
 
-            _mockUnitOfWork
-                .Setup(u => u.GenreRepository
-                .GetAsync(
-                It.IsAny<Expression<Func<Genre, bool>>>(),
-                It.IsAny<Func<IQueryable<Genre>, IOrderedQueryable<Genre>>>(),
-                It.IsAny<string>(),
-                It.IsAny<bool>()))
-            .ReturnsAsync(allGenres);
-
-            _mockUnitOfWork.Setup(u => u.PlatformTypeRepository
-            .GetAsync(
-                It.IsAny<Expression<Func<PlatformType, bool>>>(),
-                It.IsAny<Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>>>(),
-                It.IsAny<string>(),
-                It.IsAny<bool>()))
-            .ReturnsAsync(allPlatformTypes);
+            MockSetupForGenres(allGenres);
+            MockSetupForPlatformTypes(allPlatformTypes);
 
             // Act
             var result = _gameService.UpdateAsync(gameToUpdate);
@@ -594,22 +567,8 @@ namespace GameShop.BLL.Tests
                         It.IsAny<bool>()))
                 .ReturnsAsync(new List<Game> { exGame });
 
-            _mockUnitOfWork
-                .Setup(u => u.GenreRepository
-                .GetAsync(
-                It.IsAny<Expression<Func<Genre, bool>>>(),
-                It.IsAny<Func<IQueryable<Genre>, IOrderedQueryable<Genre>>>(),
-                It.IsAny<string>(),
-                It.IsAny<bool>()))
-            .ReturnsAsync(allGenres);
-
-            _mockUnitOfWork.Setup(u => u.PlatformTypeRepository
-            .GetAsync(
-                It.IsAny<Expression<Func<PlatformType, bool>>>(),
-                It.IsAny<Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>>>(),
-                It.IsAny<string>(),
-                It.IsAny<bool>()))
-            .ReturnsAsync(allPlatformTypes);
+            MockSetupForGenres(allGenres);
+            MockSetupForPlatformTypes(allPlatformTypes);
 
             // Act
             var result = _gameService.UpdateAsync(gameToUpdate);
@@ -714,6 +673,29 @@ namespace GameShop.BLL.Tests
             {
                 new PlatformType { Id = 1 },
             };
+        }
+
+        private void MockSetupForGenres(List<Genre> allGenres)
+        {
+            _mockUnitOfWork
+                .Setup(u => u.GenreRepository
+                .GetAsync(
+                It.IsAny<Expression<Func<Genre, bool>>>(),
+                It.IsAny<Func<IQueryable<Genre>, IOrderedQueryable<Genre>>>(),
+                It.IsAny<string>(),
+                It.IsAny<bool>()))
+            .ReturnsAsync(allGenres);
+        }
+
+        private void MockSetupForPlatformTypes(List<PlatformType> allPlatformTypes)
+        {
+            _mockUnitOfWork.Setup(u => u.PlatformTypeRepository
+            .GetAsync(
+                It.IsAny<Expression<Func<PlatformType, bool>>>(),
+                It.IsAny<Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>>>(),
+                It.IsAny<string>(),
+                It.IsAny<bool>()))
+            .ReturnsAsync(allPlatformTypes);
         }
     }
 }

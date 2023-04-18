@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using GameShop.BLL.Services.Utils;
 using GameShop.BLL.Services;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.DAL.Context;
@@ -9,6 +10,7 @@ using GameShop.DAL.Repository.Interfaces;
 using log4net;
 using Unity;
 using Unity.Lifetime;
+using GameShop.BLL.Services.Interfaces.Utils;
 
 namespace GameShop.WebApi.App_Start
 {

@@ -9,7 +9,7 @@ using GameShop.DAL.Entities;
 using GameShop.WebApi.App_Start;
 using Xunit;
 
-namespace GameShop.BLL.Tests
+namespace GameShop.BLL.Tests.UtilTests
 {
     public class MappingTests
     {

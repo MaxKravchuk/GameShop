@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Http.Filters;
 using GameShop.BLL.Services.Interfaces;
+using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.WebApi.App_Start;
 using log4net;
 using Unity;

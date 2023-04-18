@@ -12,11 +12,11 @@ namespace GameShop.DAL.Repository
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private GameShopContext _context;
-        private Lazy<IRepository<Comment>> _commentRepository;
-        private Lazy<IRepository<Game>> _gameRepository;
-        private Lazy<IRepository<Genre>> _genreRepository;
-        private Lazy<IRepository<PlatformType>> _platformTypeRepository;
+        private readonly GameShopContext _context;
+        private readonly Lazy<IRepository<Comment>> _commentRepository;
+        private readonly Lazy<IRepository<Game>> _gameRepository;
+        private readonly Lazy<IRepository<Genre>> _genreRepository;
+        private readonly Lazy<IRepository<PlatformType>> _platformTypeRepository;
         private bool _disposed = false;
 
         public UnitOfWork(

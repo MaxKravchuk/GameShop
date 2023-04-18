@@ -8,12 +8,13 @@ using GameShop.BLL.DTO.GenreDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services;
 using GameShop.BLL.Services.Interfaces;
+using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository.Interfaces;
 using Moq;
 using Xunit;
 
-namespace GameShop.BLL.Tests
+namespace GameShop.BLL.Tests.ServiceTests
 {
     public class GenreServiceTests : IDisposable
     {

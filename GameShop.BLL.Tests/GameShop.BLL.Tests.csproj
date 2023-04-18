@@ -83,11 +83,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommentServiceTests.cs" />
-    <Compile Include="GameServiceTests.cs" />
-    <Compile Include="MappingTests.cs" />
-    <Compile Include="PlatformTypeServiceTests.cs" />
-    <Compile Include="GenreServiceTests.cs" />
+    <Compile Include="ServiceTests\CommentServiceTests.cs" />
+    <Compile Include="ServiceTests\GameServiceTests.cs" />
+    <Compile Include="UtilTests\MappingTests.cs" />
+    <Compile Include="ServiceTests\PlatformTypeServiceTests.cs" />
+    <Compile Include="ServiceTests\GenreServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

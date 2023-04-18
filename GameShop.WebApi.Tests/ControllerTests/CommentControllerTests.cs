@@ -8,7 +8,7 @@ using GameShop.WebApi.Controllers;
 using Moq;
 using Xunit;
 
-namespace GameShop.WebApi.Tests
+namespace GameShop.WebApi.Tests.ControllerTests
 {
     public class CommentControllerTests
     {

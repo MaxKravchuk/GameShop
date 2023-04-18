@@ -113,8 +113,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommentControllerTests.cs" />
-    <Compile Include="GameControllerTests.cs" />
+    <Compile Include="ControllerTests\CommentControllerTests.cs" />
+    <Compile Include="ControllerTests\GameControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
