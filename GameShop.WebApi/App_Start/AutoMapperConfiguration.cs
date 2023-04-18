@@ -11,16 +11,41 @@ namespace GameShop.WebApi.App_Start
     {
         public AutoMapperConfiguration()
         {
-            CreateMap<CommentCreateDTO, Comment>();
-            CreateMap<Comment, CommentReadDTO>();
-            CreateMap<GameCreateDTO, Game>();
+            CreateMap<CommentCreateDTO, Comment>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Body, opt => opt.MapFrom(src => src.Body))
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.Game, opt => opt.Ignore())
+                .ForMember(dest => dest.GameId, opt => opt.Ignore())
+                .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
+
+            CreateMap<Comment, CommentReadDTO>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Body, opt => opt.MapFrom(src => src.Body));
+
+            CreateMap<GameCreateDTO, Game>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
+                .ForMember(dest => dest.Comments, opt => opt.Ignore())
+                .ForMember(dest => dest.GameGenres, opt => opt.Ignore())
+                .ForMember(dest => dest.GamePlatformTypes, opt => opt.Ignore());
+
             CreateMap<Genre, GenreReadListDTO>();
+
             CreateMap<PlatformType, PlatformTypeReadListDTO>();
+
             CreateMap<Game, GameReadDTO>()
                 .ForMember(dest => dest.PlatformTypes, opt => opt.MapFrom(src => src.GamePlatformTypes))
                 .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.GameGenres));
             CreateMap<Game, GameReadListDTO>();
-            CreateMap<GameUpdateDTO, Game>();
+
+            CreateMap<GameUpdateDTO, Game>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
+                .ForMember(dest => dest.Comments, opt => opt.Ignore())
+                .ForMember(dest => dest.GameGenres, opt => opt.Ignore())
+                .ForMember(dest => dest.GamePlatformTypes, opt => opt.Ignore());
         }
     }
 }

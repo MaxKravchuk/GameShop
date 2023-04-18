@@ -85,6 +85,7 @@
   <ItemGroup>
     <Compile Include="CommentServiceTests.cs" />
     <Compile Include="GameServiceTests.cs" />
+    <Compile Include="MappingTests.cs" />
     <Compile Include="PlatformTypeServiceTests.cs" />
     <Compile Include="GenreServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -104,6 +105,10 @@
     <ProjectReference Include="..\GameShop.DAL\GameShop.DAL.csproj">
       <Project>{9D693047-58AF-4A74-A6CA-BFA20EB0756C}</Project>
       <Name>GameShop.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GameShop.WebApi\GameShop.WebApi.csproj">
+      <Project>{354df3b4-e6d1-4937-9de2-3404c24f08e9}</Project>
+      <Name>GameShop.WebApi</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
