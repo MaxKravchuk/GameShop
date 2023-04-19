@@ -1,41 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
+using System.Net.Http;
 using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
+using GameShop.BLL.Services.Interfaces;
+using GameShop.BLL.Services.Interfaces.Utils;
 
 namespace GameShop.WebApi.Filters
 {
     public class LogPerformanceFilter : ActionFilterAttribute
     {
-        private Stopwatch stopwatch;
-        private static string LogFilePath = HttpContext.Current.Server.MapPath("~/App_Data");
+        private static string logFilePath = HttpContext.Current.Server.MapPath("~/App_Data");
+        private Stopwatch _stopwatch;
 
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
-            stopwatch = Stopwatch.StartNew();
+            _stopwatch = Stopwatch.StartNew();
             base.OnActionExecuting(actionContext);
         }
 
         public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
         {
-            stopwatch.Stop();
-            long elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
+            _stopwatch.Stop();
 
-            // TODO: Implement logging logic here, e.g. write to a text file or a database
-            LogPerformance(elapsedMilliseconds);
+            var loggerManager = actionExecutedContext.Request.GetConfiguration()
+                .DependencyResolver.GetService(typeof(ILoggerManager)) as ILoggerManager;
+
+            long elapsedMilliseconds = _stopwatch.ElapsedMilliseconds;
+            string logText = $"[{DateTime.UtcNow}] Elapsed time: {elapsedMilliseconds} ms{Environment.NewLine}";
+            loggerManager.LogDebug(logText);
 
             base.OnActionExecuted(actionExecutedContext);
-        }
-
-        private void LogPerformance(long elapsedMilliseconds)
-        {
-            string path = Path.Combine(LogFilePath, "perfomancelogs.txt");
-            string logText = $"[{DateTime.Now.ToString()}] Elapsed time: {elapsedMilliseconds} ms{Environment.NewLine}";
-            File.AppendAllText(path, logText);
         }
     }
 }

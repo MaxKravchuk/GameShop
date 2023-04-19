@@ -10,10 +10,13 @@ namespace GameShop.DAL.Repository.Interfaces
     public interface IUnitOfWork
     {
         IRepository<Comment> CommentRepository { get; }
-        IRepository<Game> GameRepository { get; }
-        IRepository<Genre> GenreRepository { get; }
-        IRepository<PlatformType> PlatformTypeRepository { get; }
-        Task SaveAsync();
 
+        IRepository<Game> GameRepository { get; }
+
+        IRepository<Genre> GenreRepository { get; }
+
+        IRepository<PlatformType> PlatformTypeRepository { get; }
+
+        Task SaveAsync();
     }
 }

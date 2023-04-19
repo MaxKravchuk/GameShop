@@ -1,14 +1,16 @@
-using GameShop.BLL.Services.Interfaces;
-using GameShop.BLL.Services;
-using GameShop.DAL.Context;
-using GameShop.DAL.Repository.Interfaces;
-using GameShop.DAL.Repository;
-using System;
-using Unity;
+﻿using System;
 using AutoMapper;
-using Unity.Injection;
-using Unity.Lifetime;
+using GameShop.BLL.Services.Utils;
+using GameShop.BLL.Services;
+using GameShop.BLL.Services.Interfaces;
+using GameShop.DAL.Context;
 using GameShop.DAL.Entities;
+using GameShop.DAL.Repository;
+using GameShop.DAL.Repository.Interfaces;
+using log4net;
+using Unity;
+using Unity.Lifetime;
+using GameShop.BLL.Services.Interfaces.Utils;
 
 namespace GameShop.WebApi.App_Start
 {
@@ -50,8 +52,6 @@ namespace GameShop.WebApi.App_Start
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
-
-
             container.RegisterType<GameShopContext>(new HierarchicalLifetimeManager());
 
             container.RegisterType<IRepository<Comment>, Repository<Comment>>();
@@ -60,10 +60,16 @@ namespace GameShop.WebApi.App_Start
             container.RegisterType<IRepository<PlatformType>, Repository<PlatformType>>();
 
             container.RegisterType<IUnitOfWork, UnitOfWork>();
+
             container.RegisterType<ICommentService, CommentService>();
             container.RegisterType<IGameService, GameService>();
             container.RegisterType<IGenreService, GenreService>();
             container.RegisterType<IPlatformTypeService, PlatformTypeService>();
+
+            var log = LogManager.GetLogger(typeof(LoggerManager));
+            container.RegisterInstance(typeof(ILog), log);
+
+            container.RegisterType<ILoggerManager, LoggerManager>();
 
             var mapperConfiguration = new MapperConfiguration(cfg =>
             {
@@ -71,7 +77,6 @@ namespace GameShop.WebApi.App_Start
             });
 
             container.RegisterInstance<IMapper>(mapperConfiguration.CreateMapper());
-
         }
     }
 }

@@ -12,14 +12,15 @@ namespace GameShop.DAL.Repository
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private GameShopContext _context;
-        private Lazy<IRepository<Comment>> _commentRepository;
-        private Lazy<IRepository<Game>> _gameRepository;
-        private Lazy<IRepository<Genre>> _genreRepository;
-        private Lazy<IRepository<PlatformType>> _platformTypeRepository;
-        private bool disposed = false;
+        private readonly GameShopContext _context;
+        private readonly Lazy<IRepository<Comment>> _commentRepository;
+        private readonly Lazy<IRepository<Game>> _gameRepository;
+        private readonly Lazy<IRepository<Genre>> _genreRepository;
+        private readonly Lazy<IRepository<PlatformType>> _platformTypeRepository;
+        private bool _disposed = false;
 
-        public UnitOfWork(GameShopContext context,
+        public UnitOfWork(
+            GameShopContext context,
             Lazy<IRepository<Comment>> commentRepository,
             Lazy<IRepository<Game>> gameRepository,
             Lazy<IRepository<Genre>> genreRepository,
@@ -44,21 +45,24 @@ namespace GameShop.DAL.Repository
         {
             await _context.SaveChangesAsync();
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
                     _context.Dispose();
                 }
             }
-            this.disposed = true;
-        }
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+
+            _disposed = true;
         }
     }
 }

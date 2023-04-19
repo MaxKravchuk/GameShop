@@ -1,4 +1,4 @@
-using GameShop.WebApi.App_Start;
+﻿using GameShop.WebApi.App_Start;
 using System.Web.Http;
 
 using Unity.AspNet.WebApi;
@@ -16,7 +16,7 @@ namespace GameShop.WebApi.App_Start
         /// <summary>
         /// Integrates Unity when the application starts.
         /// </summary>
-        public static void Start() 
+        public static void Start()
         {
             // Use UnityHierarchicalDependencyResolver if you want to use
             // a new child container for each IHttpController resolution.

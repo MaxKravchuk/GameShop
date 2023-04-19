@@ -1,14 +1,7 @@
-﻿using AutoMapper;
-using GameShop.BLL.Services.Interfaces;
-using GameShop.BLL.DTO.CommentDTOs;
-using GameShop.DAL.Entities;
-using GameShop.DAL.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
+using GameShop.BLL.DTO.CommentDTOs;
+using GameShop.BLL.Services.Interfaces;
 
 namespace GameShop.WebApi.Controllers
 {
