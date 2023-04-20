@@ -3,4 +3,7 @@
   <p>{{game!.Description}}</p>
   <a mat-button color="primary" (click)="(downloadGame())">Download</a>
 </div>
+<div class="comments">
+  <app-game-comment [gameKey]="game?.Key"></app-game-comment>
+</div>
 

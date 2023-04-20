@@ -8,6 +8,7 @@ import {RouterModule, Routes} from "@angular/router";
 import { MainComponent } from './layout/main/main.component';
 import {LayoutModule} from "./layout/layout.module";
 import {AppRoutingModule} from "../app-routing.module";
+import { GameCommentComponent } from './features/comment/components/game-comment/game-comment.component';
 
 const appRoutes: Routes = [
   {
@@ -18,7 +19,7 @@ const appRoutes: Routes = [
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

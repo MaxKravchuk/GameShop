@@ -9,10 +9,11 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {MatInputModule} from "@angular/material/input";
+import {CommentModule} from "../comment/comment.module";
 @NgModule({
   declarations: [
     GameDetailsComponent,
-    GameCreateComponent
+    GameCreateComponent,
   ],
   imports: [
     CommonModule,
@@ -24,6 +25,7 @@ import {MatInputModule} from "@angular/material/input";
     ReactiveFormsModule,
     MatSelectModule,
     MatInputModule,
+    CommentModule
   ]
 })
 export class GameModule { }
