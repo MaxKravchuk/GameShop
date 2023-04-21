@@ -36,6 +36,9 @@
     <Reference Include="AutoMapper, Version=10.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.10.1.1\lib\net461\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="FluentValidation, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.9.5.4\lib\net461\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.15\lib\net45\log4net.dll</HintPath>
     </Reference>
@@ -81,6 +84,8 @@
     <Compile Include="DTO\PlatformTypeDTOs\PlatformTypeReadListDTO.cs" />
     <Compile Include="DTO\PlatformTypeDTOs\PlatformTypeReadDTO.cs" />
     <Compile Include="DTO\PlatformTypeDTOs\PlatformTypeUpdateDTO.cs" />
+    <Compile Include="Services\Utils\Validators\CommentCreateDTOValidator.cs" />
+    <Compile Include="Services\Utils\Validators\GameCreateDTOValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

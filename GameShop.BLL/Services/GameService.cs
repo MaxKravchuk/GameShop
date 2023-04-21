@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services.Interfaces;
@@ -18,19 +19,24 @@ namespace GameShop.BLL.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
+        private readonly IValidator<GameCreateDTO> _validator;
 
         public GameService(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            ILoggerManager loggerManager)
+            ILoggerManager loggerManager,
+            IValidator<GameCreateDTO> validator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _loggerManager = loggerManager;
+            _validator = validator;
         }
 
         public async Task CreateAsync(GameCreateDTO newGameDTO)
         {
+            await _validator.ValidateAndThrowAsync(newGameDTO);
+
             var gameToAdd = _mapper.Map<Game>(newGameDTO);
 
             var allGenres = await _unitOfWork.GenreRepository.GetAsync(
@@ -136,6 +142,8 @@ namespace GameShop.BLL.Services
 
         public async Task UpdateAsync(GameUpdateDTO updatedGameDTO)
         {
+            await _validator.ValidateAndThrowAsync(updatedGameDTO);
+
             var exGame = (await _unitOfWork.GameRepository.GetAsync(
                 filter: game => game.Key == updatedGameDTO.Key,
                 includeProperties: "GameGenres,GamePlatformTypes")).SingleOrDefault();

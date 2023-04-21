@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services;
@@ -23,6 +24,7 @@ namespace GameShop.BLL.Tests.ServiceTests
         private readonly GameService _gameService;
         private readonly Mock<IMapper> _mockMapper;
         private readonly Mock<ILoggerManager> _mockLogger;
+        private readonly Mock<IValidator<GameCreateDTO>> _mockValidator;
 
         private bool _disposed;
 
@@ -36,6 +38,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _mockMapper = new Mock<IMapper>();
             _mockLogger = new Mock<ILoggerManager>();
+            _mockValidator = new Mock<IValidator<GameCreateDTO>>();
 
             _gameCreateDTO = GetGameCreateDTO();
             _game = GetGame();
@@ -45,7 +48,8 @@ namespace GameShop.BLL.Tests.ServiceTests
             _gameService = new GameService(
                 _mockUnitOfWork.Object,
                 _mockMapper.Object,
-                _mockLogger.Object);
+                _mockLogger.Object,
+                _mockValidator.Object);
         }
 
         public void Dispose()

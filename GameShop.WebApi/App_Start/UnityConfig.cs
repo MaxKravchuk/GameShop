@@ -11,6 +11,10 @@ using log4net;
 using Unity;
 using Unity.Lifetime;
 using GameShop.BLL.Services.Interfaces.Utils;
+using FluentValidation;
+using GameShop.BLL.DTO.GameDTOs;
+using GameShop.BLL.Services.Utils.Validators;
+using GameShop.BLL.DTO.CommentDTOs;
 
 namespace GameShop.WebApi.App_Start
 {
@@ -68,15 +72,20 @@ namespace GameShop.WebApi.App_Start
 
             var log = LogManager.GetLogger(typeof(LoggerManager));
             container.RegisterInstance(typeof(ILog), log);
-
             container.RegisterType<ILoggerManager, LoggerManager>();
 
             var mapperConfiguration = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new AutoMapperConfiguration());
             });
-
             container.RegisterInstance<IMapper>(mapperConfiguration.CreateMapper());
+
+            container.RegisterType<IValidatorFactory, UnityValidatorFactory>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IValidator<GameCreateDTO>, GameCreateDTOValidator>
+                (new ContainerControlledLifetimeManager());
+            container.RegisterType<IValidator<CommentCreateDTO>, CommentCreateDTOValidator>
+                (new ContainerControlledLifetimeManager());
+
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services;
@@ -22,6 +23,7 @@ namespace GameShop.BLL.Tests.ServiceTests
         private readonly CommentService _commentService;
         private readonly Mock<IMapper> _mockMapper;
         private readonly Mock<ILoggerManager> _mockLogger;
+        private readonly Mock<IValidator<CommentCreateDTO>> _mockValidator;
 
         private bool _disposed;
 
@@ -30,11 +32,13 @@ namespace GameShop.BLL.Tests.ServiceTests
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _mockMapper = new Mock<IMapper>();
             _mockLogger = new Mock<ILoggerManager>();
+            _mockValidator = new Mock<IValidator<CommentCreateDTO>>();
 
             _commentService = new CommentService(
                 _mockUnitOfWork.Object,
                 _mockMapper.Object,
-                _mockLogger.Object);
+                _mockLogger.Object,
+                _mockValidator.Object);
         }
 
         public void Dispose()
