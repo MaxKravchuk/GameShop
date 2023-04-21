@@ -27,5 +27,7 @@ namespace GameShop.BLL.Services.Interfaces
         Task DeleteAsync(string gameKey);
 
         Task<MemoryStream> GenerateGameFileAsync(string key);
+
+        Task<int> GetNumberOfGames();
     }
 }

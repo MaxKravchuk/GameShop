@@ -11,6 +11,7 @@ using AutoMapper;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.DAL.Entities;
+using GameShop.WebApi.Filters;
 
 namespace GameShop.WebApi.Controllers
 {
@@ -96,6 +97,15 @@ namespace GameShop.WebApi.Controllers
             result.Content.Headers.ContentDisposition.FileName = $"{gameKey}.bin";
 
             return result;
+        }
+
+        [HttpGet]
+        [Route("numberOfGames")]
+        [WebApiOutputCache(60,60,false)]
+        public async Task<IHttpActionResult> GetNumberOfGames()
+        {
+            var number = await _gameService.GetNumberOfGames();
+            return Json(number);
         }
     }
 }

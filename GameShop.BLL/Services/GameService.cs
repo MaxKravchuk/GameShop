@@ -208,5 +208,12 @@ namespace GameShop.BLL.Services
             _loggerManager.LogInfo($"Upload data successfully created for game with key {game.Key}");
             return stringInMemoryStream;
         }
+
+        public async Task<int> GetNumberOfGames()
+        {
+            var games = await _unitOfWork.GameRepository.GetAsync();
+
+            return games.Count();
+        }
     }
 }
