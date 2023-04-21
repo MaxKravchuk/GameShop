@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {ResourseService} from "../../../core/services/ResourseService/resourse.service";
+import {ResourseService} from "../ResourseService/resourse.service";
 import {Location} from "@angular/common";
 import {HttpClient} from "@angular/common/http";
-import {Comment} from "../../../core/models/Comment";
+import {Comment} from "../../models/Comment";
 import {catchError, Observable} from "rxjs";
 import {map} from "rxjs/operators";
 
@@ -22,6 +22,13 @@ export class CommentService extends ResourseService<Comment>{
       .pipe(
         map((result) => result.map((item) => new this.tConstructor(item))),
         catchError(this.handleError<Comment[]>('getAllByGameKey'))
+      );
+  }
+
+  createComment(comment: Comment): Observable<Comment> {
+    return this.http.post<Comment>(`${this.apiUrl}leaveComment`,comment, this.httpOptions)
+      .pipe(
+        catchError(this.handleError<Comment>('createComment'))
       );
   }
 }

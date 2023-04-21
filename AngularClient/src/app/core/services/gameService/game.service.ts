@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import {ResourseService} from "../../../core/services/ResourseService/resourse.service";
-import {Game} from "../../../core/models/Game";
+import {ResourseService} from "../ResourseService/resourse.service";
+import {Game} from "../../models/Game";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Location} from "@angular/common";
 import {catchError, Observable} from "rxjs";
 import {map} from "rxjs/operators";
+import {CreateGameDTO} from "../../DTOs/GameDTOs/CreateGameDTO";
 
 
 @Injectable({
@@ -37,5 +38,12 @@ export class GameService extends ResourseService<Game>{
     }).pipe(
       catchError(this.handleError<any>('downloadGame'))
     );
+  }
+
+  createGame(createGameDTO: CreateGameDTO): Observable<CreateGameDTO> {
+    return this.http.post<CreateGameDTO>(`${this.apiUrl}`, createGameDTO, this.httpOptions)
+      .pipe(
+        catchError(this.handleError<CreateGameDTO>('createGame'))
+      );
   }
 }

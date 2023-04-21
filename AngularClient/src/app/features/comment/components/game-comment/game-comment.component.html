@@ -3,6 +3,7 @@
     <div class="comment-item">
       <h3>{{comment.Name}}</h3>
       <p>{{comment.Body}}</p>
+      <button (click)="onAnswerButtonClick(comment.Name)">Answer</button>
     </div>
   </div>
 </div>

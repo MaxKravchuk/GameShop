@@ -25,6 +25,7 @@ namespace GameShop.WebApi.Controllers
         }
 
         [HttpPost]
+        [Route()]
         public async Task<IHttpActionResult> CreateGameAsync([FromBody] GameCreateDTO gameCreateViewModel)
         {
             await _gameService.CreateAsync(gameCreateViewModel);

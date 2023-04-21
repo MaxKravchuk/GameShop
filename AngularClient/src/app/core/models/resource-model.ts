@@ -1,5 +1,5 @@
 export abstract class ResourceModel<T> {
-  public id? :number;
+  public Id? :number;
 
   protected constructor(model?: Partial<T>) {
     if (model){

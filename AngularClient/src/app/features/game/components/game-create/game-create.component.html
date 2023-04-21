@@ -5,12 +5,12 @@
       <mat-label>Game name</mat-label>
       <input
         matInput
-        formControlName="gameName"
+        formControlName="Name"
         type="string"
         minlength="1"
         placeholder="Game name">
       <mat-hint>Length must be greater than 1</mat-hint>
-      <mat-error *ngIf="form.controls.gameName.invalid">Length must be greater than 1</mat-error>
+      <mat-error *ngIf="form.controls.Name.invalid">Length must be greater than 1</mat-error>
     </mat-form-field>
   </p>
   <p>
@@ -18,12 +18,12 @@
       <mat-label>Description</mat-label>
       <input
         matInput
-        formControlName="gameDescription"
+        formControlName="Description"
         type="string"
         minlength="1"
         placeholder="Game description">
       <mat-hint>Length must be greater than 1</mat-hint>
-      <mat-error *ngIf="form.controls.gameDescription.invalid">Length must be greater than 1</mat-error>
+      <mat-error *ngIf="form.controls.Description.invalid">Length must be greater than 1</mat-error>
     </mat-form-field>
   </p>
   <p>
@@ -31,20 +31,20 @@
       <mat-label>Game key</mat-label>
       <input
         matInput
-        formControlName="gameKey"
+        formControlName="Key"
         type="string"
         minlength="1"
         placeholder="Game key">
       <mat-hint>Length must be greater than 1</mat-hint>
-      <mat-error *ngIf="form.controls.gameKey.invalid">Length must be greater than 1</mat-error>
+      <mat-error *ngIf="form.controls.Key.invalid">Length must be greater than 1</mat-error>
     </mat-form-field>
   </p>
   <div>
     <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
       <mat-label>Game genres</mat-label>
-      <mat-select formControlName="gameGenres">
-        <mat-option *ngFor="let gameGenre of gameGenres" [value]="gameGenre">
-          {{gameGenre}}
+      <mat-select formControlName="GenresId" multiple>
+        <mat-option *ngFor="let gameGenre of gameGenres" [value]="gameGenre.Id">
+          {{gameGenre.Name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -52,9 +52,9 @@
   <div>
     <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
       <mat-label>Platform type</mat-label>
-      <mat-select formControlName="platformTypes">
-        <mat-option *ngFor="let PlatformType of platformTypes" [value]="PlatformType">
-          {{PlatformType}}
+      <mat-select formControlName="PlatformTypeId" multiple>
+        <mat-option *ngFor="let PlatformType of platformTypes" [value]="PlatformType.Id">
+          {{PlatformType.Type}}
         </mat-option>
       </mat-select>
     </mat-form-field>

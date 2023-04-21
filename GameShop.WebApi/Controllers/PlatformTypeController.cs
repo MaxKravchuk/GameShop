@@ -21,6 +21,7 @@ namespace GameShop.WebApi.Controllers
         }
 
         [HttpGet]
+        [Route()]
         public async Task<IHttpActionResult> GetAllGenres()
         {
             var result = await _platformTypeService.GetAsync();
