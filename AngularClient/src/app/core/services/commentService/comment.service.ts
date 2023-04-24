@@ -31,4 +31,12 @@ export class CommentService extends ResourseService<Comment>{
         catchError(this.handleError<Comment>('createComment'))
       );
   }
+
+  getAllAnswers(id:number):Observable<Comment[]>{
+    return this.http.get<Comment[]>(`${this.apiUrl}getAllChilder/${id}`,this.httpOptions)
+      .pipe(
+        map((result) => result.map((item) => new this.tConstructor(item))),
+        catchError(this.handleError<Comment[]>('getAllAnswers'))
+      );
+  }
 }

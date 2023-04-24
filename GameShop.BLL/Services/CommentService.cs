@@ -59,10 +59,20 @@ namespace GameShop.BLL.Services
         public async Task<IEnumerable<CommentReadDTO>> GetAllByGameKeyAsync(string gameKey)
         {
             await GetGameIdByKeyAsync(gameKey);
-            var comments = await _unitOfWork.CommentRepository.GetAsync(filter: x => x.Game.Key == gameKey);
+            var comments = await _unitOfWork.CommentRepository.GetAsync(
+                filter: x => x.Game.Key == gameKey && x.ParentId == null);
             var model = _mapper.Map<IEnumerable<CommentReadDTO>>(comments);
             _logger.LogInfo($"Comments with game`s key {gameKey} successfully found");
             return model;
+        }
+
+        public async Task<IEnumerable<CommentReadDTO>> GetAllChildrenByCommentId(int id)
+        {
+            var comments = await _unitOfWork.CommentRepository.GetAsync(filter: x => x.ParentId == id);
+            var model = _mapper.Map<IEnumerable<CommentReadDTO>>(comments);
+            _logger.LogInfo($"Comments childern with comment`s id {id} successfully found");
+            return model;
+
         }
 
         public async Task<CommentReadDTO> GetByIdAsync(int commentId)

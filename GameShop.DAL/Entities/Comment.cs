@@ -15,5 +15,10 @@ namespace GameShop.DAL.Entities
         public Game Game { get; set; }
 
         public int GameId { get; set; }
+
+        public Comment Parent { get; set; }
+
+        public int? ParentId { get; set; }
+
     }
 }

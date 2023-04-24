@@ -3,7 +3,11 @@
     <div class="comment-item">
       <h3>{{comment.Name}}</h3>
       <p>{{comment.Body}}</p>
-      <button (click)="onAnswerButtonClick(comment.Name)">Answer</button>
+      <a mat-button color="accent" (click)="onAnswerButtonClick(comment.Name!, comment.Id!)">Answer</a>
+      <a mat-button color="primary" (click)="showAnswers()">Answers</a>
+      <div *ngIf="answersIsDisplayed">
+        <app-game-comment [commentId]="comment.Id!"></app-game-comment>
+      </div>
     </div>
   </div>
 </div>

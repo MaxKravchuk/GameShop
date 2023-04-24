@@ -1,8 +1,8 @@
 <div class = "cont">
-  <h1>{{game!.Name}}</h1>
-  <p>{{game!.Description}}</p>
+  <h1>{{game.Name}}</h1>
+  <p>{{game.Description}}</p>
   <a mat-button color="primary" (click)="(downloadGame())">Download</a>
-  <app-game-comment [gameKey]="game?.Key"></app-game-comment>
-  <app-create-comment [gameKey]="game?.Key"></app-create-comment>
+  <app-game-comment [gameKey]="game.Key" [commentId]="0"></app-game-comment>
+  <app-create-comment [gameKey]="game.Key"></app-create-comment>
 </div>
 

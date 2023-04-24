@@ -13,5 +13,7 @@ namespace GameShop.BLL.Services.Interfaces
         Task<IEnumerable<CommentReadDTO>> GetAllByGameKeyAsync(string gameKey);
 
         Task<CommentReadDTO> GetByIdAsync(int commentId);
+
+        Task<IEnumerable<CommentReadDTO>> GetAllChildrenByCommentId(int id);
     }
 }

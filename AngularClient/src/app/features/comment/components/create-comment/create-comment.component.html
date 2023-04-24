@@ -1,6 +1,6 @@
 <div class="cont">
   <div class="mat-title">New comment</div>
-  <p *ngIf='receivedData!=""' >{{ "You are answering to " + receivedData }}</p>
+  <p *ngIf='receivedData?.Name != ""'>{{ "You are answering to " + receivedData.Name }}</p>
   <div [formGroup]="form" class="comment-create-form">
     <p>
       <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">

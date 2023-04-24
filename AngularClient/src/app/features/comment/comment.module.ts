@@ -13,7 +13,7 @@ import {MatInputModule} from "@angular/material/input";
 @NgModule({
   declarations: [
     GameCommentComponent,
-    CreateCommentComponent
+    CreateCommentComponent,
   ],
   exports: [
     GameCommentComponent,

@@ -11,7 +11,7 @@ import {saveAs} from "file-saver";
 })
 export class GameDetailsComponent implements OnInit {
 
-  game?: Game;
+  game!: Game;
   gameKey: string | null = null;
   constructor(
     private gameService: GameService,

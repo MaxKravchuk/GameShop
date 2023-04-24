@@ -34,7 +34,7 @@ export class GameCreateComponent implements OnInit {
   });
 
   gameGenres?: Genre[] = [];
-  platformTypes? : PlatformType[] = [];
+  platformTypes?: PlatformType[] = [];
 
   onNoClick() {
     this.gameService.goToPrevPage();

@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {CommentService} from "../../../../core/services/commentService/comment.service";
 import {Comment} from "../../../../core/models/Comment";
 import {SharedCommentService} from "../../../../core/services/commentService/shared/shared-comment.service";
+import {CommentShared} from "../../../../core/models/Helpers/CommentShared";
 
 @Component({
   selector: 'app-create-comment',
@@ -13,15 +14,16 @@ export class CreateCommentComponent implements OnInit{
   ngOnInit(): void {
   }
 
-  receivedData: string = "";
+  receivedData: CommentShared = new CommentShared("", undefined);
   @Input() gameKey?: string;
   constructor(
     @Inject(FormBuilder) private formBuilder: FormBuilder,
     private commentService: CommentService,
     private sharedService: SharedCommentService) {
     this.sharedService.getData().subscribe(data => {
-      if(this.receivedData == data){
-        this.receivedData = "";
+      if(this.receivedData.Name == data.Name && this.receivedData.CommentId == data.CommentId){
+        this.receivedData.Name = "";
+        this.receivedData.CommentId = undefined;
       }
       else{
         this.receivedData = data;
@@ -38,12 +40,14 @@ export class CreateCommentComponent implements OnInit{
     if(this.form.valid){
       const data:Comment = this.form.value as Comment;
       data.GameKey = this.gameKey;
-      if (this.receivedData != ""){
-        data.Body = '['+this.receivedData+']'+ data.Body;
+      data.ParentId = this.receivedData.CommentId;
+      if (this.receivedData?.Name != "" && this.receivedData?.CommentId != undefined){
+        data.Body = '['+this.receivedData.Name+']'+ data.Body;
+        data.ParentId = this.receivedData.CommentId;
       }
-      this.commentService.createComment(data).subscribe();
+      //this.commentService.createComment(data).subscribe();
       console.log(data);
-      this.sharedService.reloadComments();
+      //this.sharedService.reloadComments();
     }
   }
 }
