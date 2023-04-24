@@ -1,7 +1,6 @@
 .cont{
   margin: 5px 15px;
   height: fit-content;
-  overflow-y: auto;
 }
 .comment-item{
   border-top: 1px solid black;

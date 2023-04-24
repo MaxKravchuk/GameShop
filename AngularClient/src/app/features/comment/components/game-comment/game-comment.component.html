@@ -1,7 +1,7 @@
 <div class="cont">
   <div *ngFor="let comment of comments">
     <div class="comment-item">
-      <h3>{{comment.Name}}</h3>
+      <h3 id="{{comment.Name}}">{{comment.Name}}</h3>
       <p>{{comment.Body}}</p>
       <a mat-button color="accent" (click)="onAnswerButtonClick(comment.Name!, comment.Id!)">Answer</a>
       <a mat-button color="primary" (click)="showAnswers()">Answers</a>

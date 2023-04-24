@@ -45,9 +45,9 @@ export class CreateCommentComponent implements OnInit{
         data.Body = '['+this.receivedData.Name+']'+ data.Body;
         data.ParentId = this.receivedData.CommentId;
       }
-      //this.commentService.createComment(data).subscribe();
+      this.commentService.createComment(data).subscribe();
       console.log(data);
-      //this.sharedService.reloadComments();
+      this.sharedService.reloadComments();
     }
   }
 }
