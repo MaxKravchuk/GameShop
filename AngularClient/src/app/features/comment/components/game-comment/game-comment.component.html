@@ -1,13 +1,32 @@
 <div class="cont">
-  <div *ngFor="let comment of comments">
     <div class="comment-item">
-      <h3 id="{{comment.Name}}">{{comment.Name}}</h3>
-      <p>{{comment.Body}}</p>
-      <a mat-button color="accent" (click)="onAnswerButtonClick(comment.Name!, comment.Id!)">Answer</a>
-      <a mat-button color="primary" (click)="showAnswers()">Answers</a>
+      <h3 id="comment-{{comment.Id}}">{{comment.Name}}</h3>
+      <p> <!--(click)="goToParentComment(parentCommentId!)">-->
+        <a *ngIf="parentCommentName!=comment.Name" (click)="goToParentComment(parentCommentId!)">
+          [{{parentCommentName}}]
+        </a>
+        {{comment.Body}}
+      </p>
+      <a
+        mat-button
+        color="accent"
+        (click)="onAnswerButtonClick(comment.Name!, comment.Id!)"
+      >Answer</a>
+      <a
+        mat-button
+        color="primary"
+        (click)="showAnswers()"
+        *ngIf="replies.length > 0"
+      >Answers</a>
       <div *ngIf="answersIsDisplayed">
-        <app-game-comment [commentId]="comment.Id!"></app-game-comment>
+        <app-game-comment
+          *ngFor="let reply of replies; trackBy: trackById"
+          [comment]="reply"
+          [replies]="getReplies(reply.Id!)"
+          [parentCommentId]="comment.Id!"
+          [parentCommentName]="comment.Name!"
+          [gameKey]="gameKey"
+        ></app-game-comment>
       </div>
-    </div>
   </div>
 </div>

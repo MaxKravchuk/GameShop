@@ -10,6 +10,6 @@ namespace GameShop.BLL.DTO.CommentDTOs
     {
         public int Id { get; set; }
 
-        public int ParrentId { get; set; }
+        public int? ParentId { get; set; }
     }
 }

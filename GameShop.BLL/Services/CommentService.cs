@@ -37,6 +37,12 @@ namespace GameShop.BLL.Services
             var newComment = _mapper.Map<Comment>(newCommentDTO);
             newComment.GameId = await GetGameIdByKeyAsync(newCommentDTO.GameKey);
 
+            if (newCommentDTO.ParentId != null)
+            {
+                var parentComment = await _unitOfWork.CommentRepository.GetByIdAsync((int)newCommentDTO.ParentId);
+                newComment.Parent = parentComment;
+            }
+
             _unitOfWork.CommentRepository.Insert(newComment);
             await _unitOfWork.SaveAsync();
             _logger.LogInfo($"Comment for game`s key {newCommentDTO.GameKey} created successfully");
@@ -60,19 +66,10 @@ namespace GameShop.BLL.Services
         {
             await GetGameIdByKeyAsync(gameKey);
             var comments = await _unitOfWork.CommentRepository.GetAsync(
-                filter: x => x.Game.Key == gameKey && x.ParentId == null);
+                filter: x => x.Game.Key == gameKey);
             var model = _mapper.Map<IEnumerable<CommentReadDTO>>(comments);
             _logger.LogInfo($"Comments with game`s key {gameKey} successfully found");
             return model;
-        }
-
-        public async Task<IEnumerable<CommentReadDTO>> GetAllChildrenByCommentId(int id)
-        {
-            var comments = await _unitOfWork.CommentRepository.GetAsync(filter: x => x.ParentId == id);
-            var model = _mapper.Map<IEnumerable<CommentReadDTO>>(comments);
-            _logger.LogInfo($"Comments childern with comment`s id {id} successfully found");
-            return model;
-
         }
 
         public async Task<CommentReadDTO> GetByIdAsync(int commentId)

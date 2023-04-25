@@ -23,7 +23,7 @@ export class CreateCommentComponent implements OnInit{
     this.sharedService.getData().subscribe(data => {
       if(this.receivedData.Name == data.Name && this.receivedData.CommentId == data.CommentId){
         this.receivedData.Name = "";
-        this.receivedData.CommentId = undefined;
+        //this.receivedData.CommentId = undefined;
       }
       else{
         this.receivedData = data;
@@ -37,17 +37,15 @@ export class CreateCommentComponent implements OnInit{
   });
 
   onSaveForm() {
-    if(this.form.valid){
-      const data:Comment = this.form.value as Comment;
-      data.GameKey = this.gameKey;
-      data.ParentId = this.receivedData.CommentId;
-      if (this.receivedData?.Name != "" && this.receivedData?.CommentId != undefined){
-        data.Body = '['+this.receivedData.Name+']'+ data.Body;
-        data.ParentId = this.receivedData.CommentId;
-      }
-      this.commentService.createComment(data).subscribe();
-      console.log(data);
-      this.sharedService.reloadComments();
+    if (this.form.valid) {
+      const data: Comment = {
+        ...this.form.value,
+        GameKey: this.gameKey,
+        ParentId: this.receivedData.CommentId
+      } as Comment;
+      this.commentService.createComment(data).subscribe(() => {
+        this.sharedService.reloadComments();
+      });
     }
   }
 }

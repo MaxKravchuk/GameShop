@@ -101,7 +101,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("numberOfGames")]
-        [WebApiOutputCache(60,60,false)]
+        //[WebApiOutputCache(60)]
         public async Task<IHttpActionResult> GetNumberOfGames()
         {
             var number = await _gameService.GetNumberOfGames();

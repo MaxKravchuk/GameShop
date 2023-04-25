@@ -7,6 +7,7 @@ import { CreateCommentComponent } from './components/create-comment/create-comme
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import { CommentsListComponent } from './components/comments-list/comments-list.component';
 
 
 
@@ -14,10 +15,12 @@ import {MatInputModule} from "@angular/material/input";
   declarations: [
     GameCommentComponent,
     CreateCommentComponent,
+    CommentsListComponent,
   ],
   exports: [
     GameCommentComponent,
-    CreateCommentComponent
+    CreateCommentComponent,
+    CommentsListComponent
   ],
     imports: [
         CommonModule,

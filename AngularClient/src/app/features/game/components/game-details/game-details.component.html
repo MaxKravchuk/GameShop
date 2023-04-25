@@ -2,7 +2,7 @@
   <h1>{{game.Name}}</h1>
   <p>{{game.Description}}</p>
   <a mat-button color="primary" (click)="(downloadGame())">Download</a>
-  <app-game-comment [gameKey]="game.Key" [commentId]="0"></app-game-comment>
+  <app-comments-list [gameKey]="game.Key!"></app-comments-list>
   <app-create-comment [gameKey]="game.Key"></app-create-comment>
 </div>
 

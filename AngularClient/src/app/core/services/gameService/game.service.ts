@@ -46,4 +46,11 @@ export class GameService extends ResourseService<Game>{
         catchError(this.handleError<CreateGameDTO>('createGame'))
       );
   }
+
+  getNumberOfGames(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}numberOfGames`)
+      .pipe(
+        map(response => response as number)
+      );
+  }
 }
