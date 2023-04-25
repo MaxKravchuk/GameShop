@@ -15,10 +15,20 @@ namespace GameShop.DAL.Entities
 
         public string Description { get; set; }
 
+        public decimal Price { get; set; }
+
+        public short UnitsInStock { get; set; }
+
+        public bool Discontinued { get; set; } = true;
+
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
         public ICollection<Genre> GameGenres { get; set; } = new List<Genre>();
 
         public ICollection<PlatformType> GamePlatformTypes { get; set; } = new List<PlatformType>();
+
+        public Publisher Publisher { get; set; }
+
+        public int PublisherId { get; set; }
     }
 }

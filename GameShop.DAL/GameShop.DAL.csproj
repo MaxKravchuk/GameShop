@@ -60,12 +60,14 @@
     <Compile Include="Configurations\GenreConfiguration.cs" />
     <Compile Include="Configurations\GameConfiguration.cs" />
     <Compile Include="Configurations\CommentConfiguration.cs" />
+    <Compile Include="Configurations\PublisherConfiguration.cs" />
     <Compile Include="Context\GameShopContext.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\Game.cs" />
     <Compile Include="Entities\PlatformType.cs" />
     <Compile Include="Entities\Genre.cs" />
+    <Compile Include="Entities\Publisher.cs" />
     <Compile Include="Migrations\202304051514505_init.cs" />
     <Compile Include="Migrations\202304051514505_init.designer.cs">
       <DependentUpon>202304051514505_init.cs</DependentUpon>
@@ -81,6 +83,10 @@
     <Compile Include="Migrations\202304242027348_CommentConfiguration.cs" />
     <Compile Include="Migrations\202304242027348_CommentConfiguration.designer.cs">
       <DependentUpon>202304242027348_CommentConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202304251302297_AddPublisherTable.cs" />
+    <Compile Include="Migrations\202304251302297_AddPublisherTable.designer.cs">
+      <DependentUpon>202304251302297_AddPublisherTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -105,6 +111,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202304242027348_CommentConfiguration.resx">
       <DependentUpon>202304242027348_CommentConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202304251302297_AddPublisherTable.resx">
+      <DependentUpon>202304251302297_AddPublisherTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

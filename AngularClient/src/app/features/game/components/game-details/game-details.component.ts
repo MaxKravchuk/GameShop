@@ -3,6 +3,9 @@ import {GameService} from "../../../../core/services/gameService/game.service";
 import {Game} from "../../../../core/models/Game";
 import {ActivatedRoute} from "@angular/router";
 import {saveAs} from "file-saver";
+import {Genre} from "../../../../core/models/Genre";
+import {PlatformType} from "../../../../core/models/PlatformType";
+import {Publisher} from "../../../../core/models/Publisher";
 
 @Component({
   selector: 'app-game-details',
@@ -12,6 +15,9 @@ import {saveAs} from "file-saver";
 export class GameDetailsComponent implements OnInit {
 
   game!: Game;
+  genres?: Genre[] = [];
+  platformTypes?: PlatformType[] = [];
+  publisher?: Publisher;
   gameKey: string | null = null;
   constructor(
     private gameService: GameService,
@@ -20,11 +26,11 @@ export class GameDetailsComponent implements OnInit {
   }
 
   private getGameDetailsByKey(Key:string): void{
-    console.log("Key: " + Key)
     this.gameService.getGameDetailsByKey(Key).subscribe((data)=>{
-      console.log("Game Details");
-      console.log(data);
       this.game = data;
+      this.genres = data.Genres;
+      this.platformTypes = data.PlatformTypes;
+      this.publisher = data.PublisherReadDTO;
     });
   }
 

@@ -94,7 +94,7 @@ namespace GameShop.BLL.Services
         public async Task<GameReadDTO> GetGameByKeyAsync(string gameKey)
         {
             var game = await _unitOfWork.GameRepository.GetAsync(
-                filter: g => g.Key == gameKey, includeProperties: "GamePlatformTypes,GameGenres");
+                filter: g => g.Key == gameKey, includeProperties: "GamePlatformTypes,GameGenres,Publisher");
 
             if (game.SingleOrDefault() == null)
             {

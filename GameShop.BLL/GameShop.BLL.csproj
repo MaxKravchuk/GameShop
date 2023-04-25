@@ -54,6 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\PublisherDTOs\PublisherCreateDTO.cs" />
+    <Compile Include="DTO\PublisherDTOs\PublisherReadDTO.cs" />
+    <Compile Include="DTO\PublisherDTOs\PublisherReadListDTO.cs" />
     <Compile Include="Exceptions\BadRequestException.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Services\CommentService.cs" />
@@ -61,10 +64,12 @@
     <Compile Include="Services\GenreService.cs" />
     <Compile Include="Services\Interfaces\ICommentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Interfaces\IPublisherService.cs" />
     <Compile Include="Services\Interfaces\Utils\ILoggerManager.cs" />
     <Compile Include="Services\Interfaces\IPlatformTypeService.cs" />
     <Compile Include="Services\Interfaces\IGenreService.cs" />
     <Compile Include="Services\Interfaces\IGameService.cs" />
+    <Compile Include="Services\PublisherService.cs" />
     <Compile Include="Services\Utils\LoggerManager.cs" />
     <Compile Include="Services\PlatformTypeService.cs" />
     <Compile Include="DTO\CommentDTOs\CommentBaseDTO.cs" />
@@ -86,6 +91,7 @@
     <Compile Include="DTO\PlatformTypeDTOs\PlatformTypeUpdateDTO.cs" />
     <Compile Include="Services\Utils\Validators\CommentCreateDTOValidator.cs" />
     <Compile Include="Services\Utils\Validators\GameCreateDTOValidator.cs" />
+    <Compile Include="Services\Utils\Validators\PublisherCreateDTOValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -31,6 +31,18 @@ namespace GameShop.BLL.Services.Utils.Validators
             RuleFor(g => g.PlatformTypeId)
                 .NotEmpty()
                 .WithMessage("Game cannot be without platform types");
+
+            RuleFor(g => g.Price)
+                .NotEmpty()
+                .WithMessage("Game cannot be free");
+
+            RuleFor(g => g.UnitsInStock)
+                .NotEmpty()
+                .WithMessage("Game must have any quantity");
+
+            RuleFor(g => g.Discontinued)
+                .NotEmpty()
+                .WithMessage("Game must have any state");
         }
     }
 }

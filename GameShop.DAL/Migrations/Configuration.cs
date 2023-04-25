@@ -70,6 +70,24 @@
                 new PlatformType { Id = 4, Type = "Console" },
             };
 
+            List<Publisher> publishers = new List<Publisher>
+            {
+                new Publisher
+                {
+                    CompanyName = "TechPub",
+                    Description = "A cutting-edge technology publisher that specializes in books and online resources" +
+                    "related to artificial intelligence, machine learning, and data science.",
+                    HomePage = "https://www.techpub.com"
+                },
+                new Publisher
+                {
+                    CompanyName = "CodeMasters",
+                    Description = "A renowned publisher of programming and coding resources, providing high-quality " +
+                    "books, tutorials, and online courses on programming languages, web development, and software engineering.",
+                    HomePage = "https://www.codemasters.com"
+                },
+            };
+
             List<Game> games = new List<Game>();
 
             games.Add(new Game
@@ -79,7 +97,8 @@
                 Name = "Halo 5: Guardians",
                 Description = "A first-person shooter game set in a sci-fi universe",
                 GameGenres = new List<Genre> { dGenres[4], dGenres[4], dGenres[0].SubGenres.Where(x => x.Id == 14).SingleOrDefault() },
-                GamePlatformTypes = new List<PlatformType> { dPt[3] }
+                GamePlatformTypes = new List<PlatformType> { dPt[3] },
+                Publisher = publishers[0]
             });
 
             games.Add(new Game
@@ -89,7 +108,8 @@
                 Name = "Sid Meier's Civilization VI",
                 Description = "A turn-based strategy game where you lead a civilization from ancient times to modern era",
                 GameGenres = new List<Genre> { dGenres[0], dGenres[0].SubGenres.Where(x => x.Id == 8).SingleOrDefault() },
-                GamePlatformTypes = new List<PlatformType> { dPt[2], dPt[3] }
+                GamePlatformTypes = new List<PlatformType> { dPt[2], dPt[3] },
+                Publisher = publishers[0]
             });
 
             games.Add(new Game
@@ -99,7 +119,8 @@
                 Name = "FIFA 22",
                 Description = "A soccer simulation game featuring licensed teams and players",
                 GameGenres = new List<Genre> { dGenres[2] },
-                GamePlatformTypes = new List<PlatformType> { dPt[0], dPt[2], dPt[3] }
+                GamePlatformTypes = new List<PlatformType> { dPt[0], dPt[2], dPt[3] },
+                Publisher = publishers[0]
             });
 
             games.Add(new Game
@@ -109,7 +130,8 @@
                 Name = "Forza Motorsport 7",
                 Description = "A racing game featuring realistic driving physics and licensed cars",
                 GameGenres = new List<Genre> { dGenres[3], dGenres[3].SubGenres.Where(x => x.Id == 12).SingleOrDefault() },
-                GamePlatformTypes = new List<PlatformType> { dPt[3] }
+                GamePlatformTypes = new List<PlatformType> { dPt[3] },
+                Publisher = publishers[1]
             });
 
             games.Add(new Game
@@ -119,13 +141,15 @@
                 Name = "Minecraft",
                 Description = "A sandbox game where you can build and explore a blocky world",
                 GameGenres = new List<Genre> { dGenres[6] },
-                GamePlatformTypes = new List<PlatformType> { dPt[0], dPt[1], dPt[2], dPt[3] }
+                GamePlatformTypes = new List<PlatformType> { dPt[0], dPt[1], dPt[2], dPt[3] },
+                Publisher = publishers[1]
             });
 
             context.Comments.AddRange(dComments);
             context.Genres.AddRange(dGenres);
             context.PlatformTypes.AddRange(dPt);
             context.Games.AddRange(games);
+            context.Publishers.AddRange(publishers);
             context.SaveChanges();
         }
     }

@@ -6,6 +6,10 @@ const routes: Routes = [
     path: 'games',
     loadChildren: ()=> import('./app/features/game/game.module').then(m=>m.GameModule)
   },
+  {
+    path:'publishers',
+    loadChildren: ()=>import('./app/features/publisher/publisher.module').then(m=>m.PublisherModule)
+  }
 ];
 
 @NgModule({

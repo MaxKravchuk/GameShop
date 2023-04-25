@@ -30,6 +30,18 @@ namespace GameShop.DAL.Configurations
             Property(x => x.Description)
                 .HasMaxLength(255);
 
+            Property(x => x.Price)
+                .HasColumnType("money")
+                .IsRequired();
+
+            Property(x => x.UnitsInStock)
+                .HasColumnType("smallint")
+                .IsRequired();
+
+            Property(x => x.Discontinued)
+                .HasColumnType("bit")
+                .IsRequired();
+
             HasMany<Genre>(game => game.GameGenres)
                 .WithMany(genre => genre.GameGenres);
 

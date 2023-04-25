@@ -1,6 +1,16 @@
 <div class = "cont">
-  <h1>{{game.Name}}</h1>
-  <p>{{game.Description}}</p>
+  <div class="game-info">
+    <h1>Name: {{game.Name}}</h1>
+    <p>Description: {{game.Description}}</p>
+    <p>Price: {{game.Price}}</p>
+    <p>Units in stock: {{game.UnitsInStock}}</p>
+    <p>Discontinued: {{game.Discontinued}}</p>
+    <a routerLink="/publishers/details/{{publisher!.CompanyName}}">CompanyName: {{publisher!.CompanyName}}</a>
+  </div>
+  <p>Genres:</p>
+  <p *ngFor="let genre of genres">{{genre.Name}}</p>
+  <p>PlatformType:</p>
+  <p *ngFor="let platformType of platformTypes">{{platformType.Type}}</p>
   <a mat-button color="primary" (click)="(downloadGame())">Download</a>
   <app-comments-list [gameKey]="game.Key!"></app-comments-list>
   <app-create-comment [gameKey]="game.Key"></app-create-comment>

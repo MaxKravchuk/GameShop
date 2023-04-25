@@ -17,6 +17,7 @@ namespace GameShop.DAL.Repository
         private readonly Lazy<IRepository<Game>> _gameRepository;
         private readonly Lazy<IRepository<Genre>> _genreRepository;
         private readonly Lazy<IRepository<PlatformType>> _platformTypeRepository;
+        private readonly Lazy<IRepository<Publisher>> _publisherReposiroty;
         private bool _disposed = false;
 
         public UnitOfWork(
@@ -24,13 +25,15 @@ namespace GameShop.DAL.Repository
             Lazy<IRepository<Comment>> commentRepository,
             Lazy<IRepository<Game>> gameRepository,
             Lazy<IRepository<Genre>> genreRepository,
-            Lazy<IRepository<PlatformType>> platformTypeRepository)
+            Lazy<IRepository<PlatformType>> platformTypeRepository,
+            Lazy<IRepository<Publisher>> publisherReposiroty)
         {
             _context = context;
             _commentRepository = commentRepository;
             _gameRepository = gameRepository;
             _genreRepository = genreRepository;
             _platformTypeRepository = platformTypeRepository;
+            _publisherReposiroty = publisherReposiroty;
         }
 
         public IRepository<Comment> CommentRepository => _commentRepository.Value;
@@ -40,6 +43,8 @@ namespace GameShop.DAL.Repository
         public IRepository<Genre> GenreRepository => _genreRepository.Value;
 
         public IRepository<PlatformType> PlatformTypeRepository => _platformTypeRepository.Value;
+
+        public IRepository<Publisher> PublisherRepository => _publisherReposiroty.Value;
 
         public async Task SaveAsync()
         {

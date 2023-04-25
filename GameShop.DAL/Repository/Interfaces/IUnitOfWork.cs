@@ -17,6 +17,8 @@ namespace GameShop.DAL.Repository.Interfaces
 
         IRepository<PlatformType> PlatformTypeRepository { get; }
 
+        IRepository<Publisher> PublisherRepository { get; }
+
         Task SaveAsync();
     }
 }

@@ -25,6 +25,8 @@ namespace GameShop.DAL.Context
 
         public DbSet<PlatformType> PlatformTypes { get; set; }
 
+        public DbSet<Publisher> Publishers { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

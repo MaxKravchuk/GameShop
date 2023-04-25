@@ -1,3 +1,7 @@
 .cont{
   margin: 5px 15px;
 }
+.game-info{
+  display: grid;
+  grid-template:". .";
+}

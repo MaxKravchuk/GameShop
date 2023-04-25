@@ -10,7 +10,6 @@ import {MainPageService} from "./MainService/main-page.service";
 export class MainComponent implements OnInit {
 
   games: Game[] = [];
-  numberOfGames: number = 0;
 
   constructor(
     private mainPageService: MainPageService

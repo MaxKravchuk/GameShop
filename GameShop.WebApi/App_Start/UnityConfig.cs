@@ -15,6 +15,7 @@ using FluentValidation;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.Services.Utils.Validators;
 using GameShop.BLL.DTO.CommentDTOs;
+using GameShop.BLL.DTO.PublisherDTOs;
 
 namespace GameShop.WebApi.App_Start
 {
@@ -62,6 +63,7 @@ namespace GameShop.WebApi.App_Start
             container.RegisterType<IRepository<Game>, Repository<Game>>();
             container.RegisterType<IRepository<Genre>, Repository<Genre>>();
             container.RegisterType<IRepository<PlatformType>, Repository<PlatformType>>();
+            container.RegisterType<IRepository<Publisher>, Repository<Publisher>>();
 
             container.RegisterType<IUnitOfWork, UnitOfWork>();
 
@@ -69,6 +71,7 @@ namespace GameShop.WebApi.App_Start
             container.RegisterType<IGameService, GameService>();
             container.RegisterType<IGenreService, GenreService>();
             container.RegisterType<IPlatformTypeService, PlatformTypeService>();
+            container.RegisterType<IPublisherService, PublisherService>();
 
             var log = LogManager.GetLogger(typeof(LoggerManager));
             container.RegisterInstance(typeof(ILog), log);
@@ -84,6 +87,8 @@ namespace GameShop.WebApi.App_Start
             container.RegisterType<IValidator<GameCreateDTO>, GameCreateDTOValidator>
                 (new ContainerControlledLifetimeManager());
             container.RegisterType<IValidator<CommentCreateDTO>, CommentCreateDTOValidator>
+                (new ContainerControlledLifetimeManager());
+            container.RegisterType<IValidator<PublisherCreateDTO>, PublisherCreateDTOValidator>
                 (new ContainerControlledLifetimeManager());
 
         }

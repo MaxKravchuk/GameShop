@@ -184,6 +184,7 @@
     <Compile Include="Controllers\PlatformTypeController.cs" />
     <Compile Include="Controllers\GenreController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PublisherController.cs" />
     <Compile Include="Filters\ApiExceptionFilter.cs" />
     <Compile Include="Filters\LogIPFilter.cs" />
     <Compile Include="Filters\LogPerformanceFilter.cs" />
