@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {map} from "rxjs/operators";
+import {first, map} from "rxjs/operators";
 import {Observable} from "rxjs";
 import {GameService} from "../../core/services/gameService/game.service";
 
@@ -11,7 +11,7 @@ import {GameService} from "../../core/services/gameService/game.service";
 })
 export class HeaderComponent implements OnInit {
 
-  numberOfGames: number = 0;
+  numberOfGames!: number;
 
   constructor(
     private http : HttpClient,
@@ -20,14 +20,18 @@ export class HeaderComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    await this.getNumberOfGames();
+    setTimeout(() => {
+      this.getNumberOfGames();
+    }, 10000);
   }
 
-  private async getNumberOfGames(): Promise<void>{
-    this.gameService.getNumberOfGames().subscribe((data) => {
-      this.numberOfGames = data;
-    },(error) => {
+  private getNumberOfGames(): void {
+    try {
+      const data = this.gameService.getNumberOfGames().subscribe(
+        (data: number) => this.numberOfGames = data
+      );
+    } catch (error) {
       console.error('Error fetching number of games:', error);
-    });
+    }
   }
 }

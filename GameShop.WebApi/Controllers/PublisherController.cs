@@ -23,7 +23,7 @@ namespace GameShop.WebApi.Controllers
         [Route()]
         public async Task<IHttpActionResult> CreatePublisher([FromBody] PublisherCreateDTO publisherCreateDTO)
         {
-            await _publisherService.CreatePublisher(publisherCreateDTO);
+            await _publisherService.CreatePublisherAsync(publisherCreateDTO);
             return Ok();
         }
 
@@ -31,8 +31,16 @@ namespace GameShop.WebApi.Controllers
         [Route()]
         public async Task<IHttpActionResult> GetPublisherByCompanyName(string companyName)
         {
-            var publisher = await _publisherService.GetPublisherByCompanyName(companyName);
+            var publisher = await _publisherService.GetPublisherByCompanyNameAsync(companyName);
             return Json(publisher);
+        }
+
+        [HttpGet]
+        [Route("getAll")]
+        public async Task<IHttpActionResult> GetAllPublishers()
+        {
+            var publishers = await _publisherService.GetAllPublishersAsync();
+            return Json(publishers);
         }
     }
 }

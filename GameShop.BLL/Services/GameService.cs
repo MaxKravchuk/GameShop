@@ -211,8 +211,7 @@ namespace GameShop.BLL.Services
 
         public async Task<int> GetNumberOfGames()
         {
-            var games = await _unitOfWork.GameRepository.GetAsync();
-
+            var games = (await _unitOfWork.GameRepository.GetAsync()).ToList();
             return games.Count();
         }
     }

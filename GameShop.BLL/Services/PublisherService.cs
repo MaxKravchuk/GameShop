@@ -33,7 +33,7 @@ namespace GameShop.BLL.Services
             _validator = validator;
         }
 
-        public async Task CreatePublisher(PublisherCreateDTO publisherCreateDTO)
+        public async Task CreatePublisherAsync(PublisherCreateDTO publisherCreateDTO)
         {
             await _validator.ValidateAndThrowAsync(publisherCreateDTO);
             var newPublisher = _mapper.Map<Publisher>(publisherCreateDTO);
@@ -42,7 +42,7 @@ namespace GameShop.BLL.Services
             _loggerManager.LogInfo($"Publisher created successfully");
         }
 
-        public async Task<PublisherReadDTO> GetPublisherByCompanyName(string companyName)
+        public async Task<PublisherReadDTO> GetPublisherByCompanyNameAsync(string companyName)
         {
             var publisher = await _unitOfWork.PublisherRepository.GetAsync(
                 filter: p => p.CompanyName == companyName,
@@ -56,6 +56,16 @@ namespace GameShop.BLL.Services
             var model = _mapper.Map<PublisherReadDTO>(publisher.SingleOrDefault());
             _loggerManager.LogInfo($"Publisher with company name {companyName} returned successfully");
             return model;
+        }
+
+        public async Task<IEnumerable<PublisherReadListDTO>> GetAllPublishersAsync()
+        {
+            var publishers = await _unitOfWork.PublisherRepository.GetAsync();
+
+            var models = _mapper.Map<IEnumerable<PublisherReadListDTO>>(publishers);
+
+            _loggerManager.LogInfo($"Publishers successfully returned with array size of {models.Count()}");
+            return models;
         }
     }
 }

@@ -1,4 +1,4 @@
-<div [formGroup]="form" class="game-create-form">
+<div [formGroup]="form" class="create-form">
   <div class="mat-title">New Game</div>
   <p>
     <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
@@ -55,6 +55,16 @@
       <mat-select formControlName="PlatformTypeId" multiple>
         <mat-option *ngFor="let PlatformType of platformTypes" [value]="PlatformType.Id">
           {{PlatformType.Type}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+      <mat-label>Publisher</mat-label>
+      <mat-select formControlName="PublisherId">
+        <mat-option *ngFor="let publisher of publishers" [value]="publisher.Id">
+          {{publisher.CompanyName}}
         </mat-option>
       </mat-select>
     </mat-form-field>

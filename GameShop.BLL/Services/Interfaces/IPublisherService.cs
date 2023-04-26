@@ -9,8 +9,10 @@ namespace GameShop.BLL.Services.Interfaces
 {
     public interface IPublisherService
     {
-        Task<PublisherReadDTO> GetPublisherByCompanyName(string companyName);
+        Task<PublisherReadDTO> GetPublisherByCompanyNameAsync(string companyName);
 
-        Task CreatePublisher(PublisherCreateDTO publisherCreateDTO);
+        Task CreatePublisherAsync(PublisherCreateDTO publisherCreateDTO);
+
+        Task<IEnumerable<PublisherReadListDTO>> GetAllPublishersAsync();
     }
 }

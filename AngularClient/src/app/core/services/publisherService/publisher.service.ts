@@ -30,4 +30,12 @@ export class PublisherService extends ResourseService<Publisher>{
         catchError(this.handleError<Publisher>("createPublisher"))
       );
   }
+
+  getAllPublishers():Observable<Publisher[]>{
+    return this.http.get<Publisher[]>(`${this.apiUrl}getAll`, this.httpOptions)
+      .pipe(
+        map((result) => result.map((item) => new this.tConstructor(item))),
+        catchError(this.handleError<Publisher[]>("getAll"))
+      );
+  }
 }

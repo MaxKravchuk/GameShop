@@ -6,6 +6,8 @@ import {PlatformTypeService} from "../../../../core/services/platformTypeService
 import {Genre} from "../../../../core/models/Genre";
 import {PlatformType} from "../../../../core/models/PlatformType";
 import {CreateGameDTO} from "../../../../core/DTOs/GameDTOs/CreateGameDTO";
+import {Publisher} from "../../../../core/models/Publisher";
+import {PublisherService} from "../../../../core/services/publisherService/publisher.service";
 
 @Component({
   selector: 'app-game-create',
@@ -18,11 +20,13 @@ export class GameCreateComponent implements OnInit {
     @Inject(FormBuilder) private formBuilder: FormBuilder,
     private gameService: GameService,
     private genreService: GenreService,
-    private platformTypeService: PlatformTypeService) { }
+    private platformTypeService: PlatformTypeService,
+    private publisherService: PublisherService) { }
 
   async ngOnInit(): Promise<void> {
     await this.getGenres();
     await this.getPlatformTypes();
+    await this.getPublishers();
   }
 
   form = new FormGroup({
@@ -31,10 +35,12 @@ export class GameCreateComponent implements OnInit {
     Key: new FormControl("", Validators.required),
     GenresId: new FormControl("",Validators.required),
     PlatformTypeId: new FormControl("",Validators.required),
+    PublisherId: new FormControl("",Validators.required),
   });
 
   gameGenres?: Genre[] = [];
   platformTypes?: PlatformType[] = [];
+  publishers?: Publisher[] = [];
 
   onNoClick() {
     this.gameService.goToPrevPage();
@@ -42,9 +48,9 @@ export class GameCreateComponent implements OnInit {
 
   onSaveForm() {
     if(this.form.valid){
-      const data:CreateGameDTO = this.form.value as CreateGameDTO
-      this.gameService.createGame(data).subscribe(()=>this.gameService.goToPrevPage());
-      console.log(data);
+      const data:CreateGameDTO = this.form.value as CreateGameDTO;
+      this.gameService.createGame(data)
+        .subscribe(()=>this.gameService.goToPrevPage());
     }
   }
 
@@ -52,7 +58,6 @@ export class GameCreateComponent implements OnInit {
     try {
       this.gameGenres = await this.genreService.getAllGenres().toPromise();
     } catch (error) {
-      // Handle error here
       console.error('Error getting genres:', error);
     }
   }
@@ -61,9 +66,15 @@ export class GameCreateComponent implements OnInit {
     try {
       this.platformTypes = await this.platformTypeService.getAllPlatformTypes().toPromise();
     } catch (error) {
-      // Handle error here
       console.error('Error getting platform types:', error);
     }
   }
 
+  private async getPublishers(): Promise<void> {
+    try {
+      this.publishers = await this.publisherService.getAllPublishers().toPromise();
+    } catch (error) {
+      console.error('Error getting publishers:', error);
+    }
+  }
 }
