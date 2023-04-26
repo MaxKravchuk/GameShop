@@ -16,6 +16,8 @@ using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.Services.Utils.Validators;
 using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.DTO.PublisherDTOs;
+using StackExchange.Redis;
+using System.Configuration;
 
 namespace GameShop.WebApi.App_Start
 {
@@ -72,6 +74,11 @@ namespace GameShop.WebApi.App_Start
             container.RegisterType<IGenreService, GenreService>();
             container.RegisterType<IPlatformTypeService, PlatformTypeService>();
             container.RegisterType<IPublisherService, PublisherService>();
+
+            var redisConnectionString = ConfigurationManager.ConnectionStrings["RedisConnectingString"].ConnectionString;
+            var redisConfiguration = ConfigurationOptions.Parse(redisConnectionString);
+            container.RegisterInstance(ConnectionMultiplexer.Connect(redisConfiguration));
+            container.RegisterType<IDistributedCacheProvider, DistributedCacheProvider>();
 
             var log = LogManager.GetLogger(typeof(LoggerManager));
             container.RegisterInstance(typeof(ILog), log);
