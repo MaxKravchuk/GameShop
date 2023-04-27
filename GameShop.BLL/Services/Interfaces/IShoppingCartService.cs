@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using GameShop.BLL.DTO.RedisDTOs;
 
-namespace GameShop.BLL.Services.Interfaces.Utils
+namespace GameShop.BLL.Services.Interfaces
 {
-    public interface IDistributedCacheProvider
+    public interface IShoppingCartService
     {
         Task AddCartItemAsync(CartItem cartItem);
 
-        Task<List<CartItem>> GetCartItemsAsync();
+        Task<IEnumerable<CartItem>> GetCartItemsAsync();
     }
 }

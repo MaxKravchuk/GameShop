@@ -18,6 +18,8 @@ using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.DTO.PublisherDTOs;
 using StackExchange.Redis;
 using System.Configuration;
+using GameShop.DAL.Repository.Interfaces.Utils;
+using GameShop.BLL.DTO.RedisDTOs;
 
 namespace GameShop.WebApi.App_Start
 {
@@ -69,16 +71,18 @@ namespace GameShop.WebApi.App_Start
 
             container.RegisterType<IUnitOfWork, UnitOfWork>();
 
+            var redisConnectionString = ConfigurationManager.ConnectionStrings["RedisConnectingString"].ConnectionString;
+            var redisConfiguration = ConfigurationOptions.Parse(redisConnectionString);
+            var redis = ConnectionMultiplexer.Connect(redisConnectionString);
+            container.RegisterInstance(redis);
+            container.RegisterType<IRedisProvider<CartItem>, RedisProvider<CartItem>>();
+
             container.RegisterType<ICommentService, CommentService>();
             container.RegisterType<IGameService, GameService>();
             container.RegisterType<IGenreService, GenreService>();
             container.RegisterType<IPlatformTypeService, PlatformTypeService>();
             container.RegisterType<IPublisherService, PublisherService>();
-
-            var redisConnectionString = ConfigurationManager.ConnectionStrings["RedisConnectingString"].ConnectionString;
-            var redisConfiguration = ConfigurationOptions.Parse(redisConnectionString);
-            container.RegisterInstance(ConnectionMultiplexer.Connect(redisConfiguration));
-            container.RegisterType<IDistributedCacheProvider, DistributedCacheProvider>();
+            container.RegisterType<IShoppingCartService, ShoppingCartService>();
 
             var log = LogManager.GetLogger(typeof(LoggerManager));
             container.RegisterInstance(typeof(ILog), log);
@@ -97,7 +101,8 @@ namespace GameShop.WebApi.App_Start
                 (new ContainerControlledLifetimeManager());
             container.RegisterType<IValidator<PublisherCreateDTO>, PublisherCreateDTOValidator>
                 (new ContainerControlledLifetimeManager());
-
+            container.RegisterType<IValidator<CartItem>, CartItemValidator>
+                (new ContainerControlledLifetimeManager());
         }
     }
 }

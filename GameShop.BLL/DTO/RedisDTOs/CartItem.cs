@@ -14,6 +14,6 @@ namespace GameShop.BLL.DTO.RedisDTOs
 
         public decimal GamePrice { get; set; }
 
-        public short Quantity { get; set; }
+        public short Quantity { get; set; } = 1;
     }
 }
