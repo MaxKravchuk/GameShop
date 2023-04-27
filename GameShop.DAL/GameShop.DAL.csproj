@@ -111,6 +111,7 @@
     <Compile Include="Entities\PlatformType.cs" />
     <Compile Include="Entities\Genre.cs" />
     <Compile Include="Entities\Publisher.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Migrations\202304051514505_init.cs" />
     <Compile Include="Migrations\202304051514505_init.designer.cs">
       <DependentUpon>202304051514505_init.cs</DependentUpon>

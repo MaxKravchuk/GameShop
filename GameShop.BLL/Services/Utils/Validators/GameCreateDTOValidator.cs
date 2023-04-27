@@ -42,7 +42,7 @@ namespace GameShop.BLL.Services.Utils.Validators
 
             RuleFor(g => g.Discontinued)
                 .NotEmpty()
-                .WithMessage("Game must have any state");
+                .WithMessage("Game must have a discontinued state");
         }
     }
 }

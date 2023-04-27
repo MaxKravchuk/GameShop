@@ -44,16 +44,17 @@ namespace GameShop.BLL.Services
 
         public async Task<PublisherReadDTO> GetPublisherByCompanyNameAsync(string companyName)
         {
-            var publisher = await _unitOfWork.PublisherRepository.GetAsync(
+            var publishers = await _unitOfWork.PublisherRepository.GetAsync(
                 filter: p => p.CompanyName == companyName,
                 includeProperties: "Games");
 
-            if (publisher.SingleOrDefault() == null)
+            if (publishers.SingleOrDefault() == null)
             {
                 throw new NotFoundException($"Publisher with company name {companyName} not found");
             }
 
-            var model = _mapper.Map<PublisherReadDTO>(publisher.SingleOrDefault());
+            var publisher = publishers.SingleOrDefault();
+            var model = _mapper.Map<PublisherReadDTO>(publisher);
             _loggerManager.LogInfo($"Publisher with company name {companyName} returned successfully");
             return model;
         }
