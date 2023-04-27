@@ -98,7 +98,8 @@
                 Description = "A first-person shooter game set in a sci-fi universe",
                 GameGenres = new List<Genre> { dGenres[4], dGenres[4], dGenres[0].SubGenres.Where(x => x.Id == 14).SingleOrDefault() },
                 GamePlatformTypes = new List<PlatformType> { dPt[3] },
-                Publisher = publishers[0]
+                Publisher = publishers[0],
+                Price = 10
             });
 
             games.Add(new Game
@@ -109,7 +110,8 @@
                 Description = "A turn-based strategy game where you lead a civilization from ancient times to modern era",
                 GameGenres = new List<Genre> { dGenres[0], dGenres[0].SubGenres.Where(x => x.Id == 8).SingleOrDefault() },
                 GamePlatformTypes = new List<PlatformType> { dPt[2], dPt[3] },
-                Publisher = publishers[0]
+                Publisher = publishers[0],
+                Price = 10
             });
 
             games.Add(new Game
@@ -120,7 +122,8 @@
                 Description = "A soccer simulation game featuring licensed teams and players",
                 GameGenres = new List<Genre> { dGenres[2] },
                 GamePlatformTypes = new List<PlatformType> { dPt[0], dPt[2], dPt[3] },
-                Publisher = publishers[0]
+                Publisher = publishers[0],
+                Price = 10
             });
 
             games.Add(new Game
@@ -131,7 +134,8 @@
                 Description = "A racing game featuring realistic driving physics and licensed cars",
                 GameGenres = new List<Genre> { dGenres[3], dGenres[3].SubGenres.Where(x => x.Id == 12).SingleOrDefault() },
                 GamePlatformTypes = new List<PlatformType> { dPt[3] },
-                Publisher = publishers[1]
+                Publisher = publishers[1],
+                Price = 10
             });
 
             games.Add(new Game
@@ -142,7 +146,8 @@
                 Description = "A sandbox game where you can build and explore a blocky world",
                 GameGenres = new List<Genre> { dGenres[6] },
                 GamePlatformTypes = new List<PlatformType> { dPt[0], dPt[1], dPt[2], dPt[3] },
-                Publisher = publishers[1]
+                Publisher = publishers[1],
+                Price = 10
             });
 
             context.Comments.AddRange(dComments);

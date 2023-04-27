@@ -1,4 +1,8 @@
 <p>{{publisher!.CompanyName}}</p>
 <p>{{publisher!.Description}}</p>
-<p>{{publisher!.HomePage}}</p>
-<a *ngFor="let game of games" routerLink="/games/details/{{game.Key}}">{{game!.Name}}</a>
+<a href="{{publisher!.HomePage}}">{{publisher!.HomePage}}</a>
+<ul>
+  <li *ngFor="let game of games">
+    <a routerLink="/games/details/{{game.Key}}">{{game!.Name}}</a>
+  </li>
+</ul>

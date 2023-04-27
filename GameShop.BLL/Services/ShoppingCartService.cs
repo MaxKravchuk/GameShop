@@ -52,5 +52,21 @@ namespace GameShop.BLL.Services
             _loggerManager.LogInfo($"List of items returned with array length of {item.Count()}");
             return item;
         }
+
+        public async Task DeletItemFromList(string gameKey)
+        {
+            var existingCartItem = await _redisProvider.GetValueAsync(_redisKey, gameKey);
+            if (existingCartItem.Quantity == 1)
+            {
+                await _redisProvider.DeleteItemFromListAsync(_redisKey, gameKey);
+            }
+            else
+            {
+                existingCartItem.Quantity -= 1;
+                await _redisProvider.SetValueToListASync("CartItems", gameKey, existingCartItem);
+            }
+
+            _loggerManager.LogInfo($"Item with game key {gameKey} is deleted");
+        }
     }
 }

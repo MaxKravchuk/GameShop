@@ -10,6 +10,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {MatInputModule} from "@angular/material/input";
 import {CommentModule} from "../comment/comment.module";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 @NgModule({
   declarations: [
     GameDetailsComponent,
@@ -25,7 +26,8 @@ import {CommentModule} from "../comment/comment.module";
     ReactiveFormsModule,
     MatSelectModule,
     MatInputModule,
-    CommentModule
+    CommentModule,
+    MatSnackBarModule
   ]
 })
 export class GameModule { }

@@ -1,0 +1,23 @@
+<table class="cart-table">
+  <thead>
+  <tr>
+    <th>Game Name</th>
+    <th>Quantity</th>
+    <th>Price</th>
+    <th>Total Price</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let cartItem of cartItems">
+    <td><a routerLink="/games/details/{{cartItem.GameKey}}">{{ cartItem.GameName }}</a></td>
+    <td><p>{{ cartItem.Quantity }}</p></td>
+    <td><p>{{ cartItem.GamePrice }}</p></td>
+    <td><p>{{ cartItem.GamePrice! * cartItem.Quantity!}}</p></td>
+    <td><button mat-raised-button color="warn" (click)="removeFromCart(cartItem.GameKey!)">Delete</button></td>
+  </tr>
+  </tbody>
+</table>
+<h3>Checkout</h3>
+<p>Total Price: {{ getTotalPrice() }}</p>
+<button mat-raised-button disabled>Checkout</button>

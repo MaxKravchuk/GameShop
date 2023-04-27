@@ -10,7 +10,7 @@ using GameShop.BLL.Services.Interfaces.Utils;
 
 namespace GameShop.WebApi.Controllers
 {
-    [RoutePrefix("api/shopingcart")]
+    [RoutePrefix("api/shoppingcart")]
     public class ShoppingCartController : ApiController
     {
         private readonly IShoppingCartService _shoppingCartService;
@@ -33,6 +33,14 @@ namespace GameShop.WebApi.Controllers
         public async Task<IHttpActionResult> GetCache()
         {
             return Json(await _shoppingCartService.GetCartItemsAsync());
+        }
+
+        [HttpDelete]
+        [Route("delete/{gameKey}")]
+        public async Task<IHttpActionResult> DeleteGameFromCart(string gameKey)
+        {
+            await _shoppingCartService.DeletItemFromList(gameKey);
+            return Ok();
         }
     }
 }

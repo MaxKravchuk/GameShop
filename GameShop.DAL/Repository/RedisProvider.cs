@@ -36,10 +36,15 @@ namespace GameShop.DAL.Repository
             return tValues;
         }
 
-        public Task<bool> SetValueToListASync(string redisKey, string exRedisValue, T newRedisObject)
+        public async Task<bool> SetValueToListASync(string redisKey, string exRedisValue, T newRedisObject)
         {
             var newRedisValue = JsonConvert.SerializeObject(newRedisObject);
-            return _database.HashSetAsync(redisKey, exRedisValue, newRedisValue);
+            return await _database.HashSetAsync(redisKey, exRedisValue, newRedisValue);
+        }
+
+        public async Task<bool> DeleteItemFromListAsync(string redisKey, string redisValue)
+        {
+            return await _database.HashDeleteAsync(redisKey, redisValue);
         }
     }
 }

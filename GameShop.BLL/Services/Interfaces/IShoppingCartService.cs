@@ -12,5 +12,7 @@ namespace GameShop.BLL.Services.Interfaces
         Task AddCartItemAsync(CartItem cartItem);
 
         Task<IEnumerable<CartItem>> GetCartItemsAsync();
+
+        Task DeletItemFromList(string gameKey);
     }
 }

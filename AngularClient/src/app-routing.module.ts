@@ -9,6 +9,10 @@ const routes: Routes = [
   {
     path:'publishers',
     loadChildren: ()=>import('./app/features/publisher/publisher.module').then(m=>m.PublisherModule)
+  },
+  {
+    path:'cart',
+    loadChildren: ()=>import('./app/features/shopping-cart/shopping-cart.module').then(m=>m.ShoppingCartModule)
   }
 ];
 

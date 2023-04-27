@@ -6,6 +6,9 @@ import {saveAs} from "file-saver";
 import {Genre} from "../../../../core/models/Genre";
 import {PlatformType} from "../../../../core/models/PlatformType";
 import {Publisher} from "../../../../core/models/Publisher";
+import {ShoppingCartService} from "../../../../core/services/cartService/shopping-cart.service";
+import {CartItem} from "../../../../core/models/CartItem";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-game-details',
@@ -21,6 +24,8 @@ export class GameDetailsComponent implements OnInit {
   gameKey: string | null = null;
   constructor(
     private gameService: GameService,
+    private shoppingCartService: ShoppingCartService,
+    private snackBar: MatSnackBar,
     private activeRoute: ActivatedRoute){
     this.gameKey = this.activeRoute.snapshot.paramMap.get('Key');
   }
@@ -53,6 +58,22 @@ export class GameDetailsComponent implements OnInit {
         console.error('Failed to download game:', error);
         // Handle error here, e.g., show an error message
       }
+    );
+  }
+
+  buyGame() {
+    let cartItem = new CartItem(
+      this.game.Key!,
+      this.game.Name!,
+      this.game.Price!);
+    console.log(cartItem);
+    this.shoppingCartService.addToCart(cartItem).subscribe(
+      () => {
+        this.snackBar.open('Game has been added to your cart.', 'Close', {
+          duration: 3000,
+        });
+      },
+      error => console.error('Error adding to cart:', error)
     );
   }
 }
