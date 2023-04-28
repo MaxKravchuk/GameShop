@@ -39,6 +39,32 @@
       <mat-error *ngIf="form.controls.Key.invalid">Length must be greater than 1</mat-error>
     </mat-form-field>
   </p>
+  <p>
+    <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+      <mat-label>Game price</mat-label>
+      <input
+        matInput
+        formControlName="Price"
+        type="number"
+        min="0"
+        placeholder="Game price">
+      <mat-hint>Price must be greater than 0</mat-hint>
+      <mat-error *ngIf="form.controls.Key.invalid">Price must be greater than 0</mat-error>
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+      <mat-label>Game quantity</mat-label>
+      <input
+        matInput
+        formControlName="UnitsInStock"
+        type="number"
+        minlength="1"
+        placeholder="Game quantity">
+      <mat-hint>Quantity must be greater or equal than 0</mat-hint>
+      <mat-error *ngIf="form.controls.Key.invalid">Quantity must be greater or equal than 0</mat-error>
+    </mat-form-field>
+  </p>
   <div>
     <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
       <mat-label>Game genres</mat-label>

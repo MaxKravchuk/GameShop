@@ -36,6 +36,8 @@ export class GameCreateComponent implements OnInit {
     GenresId: new FormControl("",Validators.required),
     PlatformTypeId: new FormControl("",Validators.required),
     PublisherId: new FormControl("",Validators.required),
+    Price: new FormControl("",Validators.required),
+    UnitsInStock: new FormControl("",Validators.required),
   });
 
   gameGenres?: Genre[] = [];

@@ -23,7 +23,6 @@ export class CreateCommentComponent implements OnInit{
     this.sharedService.getData().subscribe(data => {
       if(this.receivedData.Name == data.Name && this.receivedData.CommentId == data.CommentId){
         this.receivedData.Name = "";
-        //this.receivedData.CommentId = undefined;
       }
       else{
         this.receivedData = data;
