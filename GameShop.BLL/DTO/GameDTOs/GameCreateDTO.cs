@@ -14,7 +14,7 @@ namespace GameShop.BLL.DTO.GameDTOs
 
         public short UnitsInStock { get; set; }
 
-        public bool Discontinued { get; set; }
+        public bool Discontinued { get; set; } = true;
 
         public int PublisherId { get; set; }
 
