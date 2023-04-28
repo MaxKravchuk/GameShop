@@ -36,7 +36,7 @@ namespace GameShop.DAL.Repository
             return tValues;
         }
 
-        public async Task<bool> SetValueToListASync(string redisKey, string exRedisValue, T newRedisObject)
+        public async Task<bool> SetValueToListAsync(string redisKey, string exRedisValue, T newRedisObject)
         {
             var newRedisValue = JsonConvert.SerializeObject(newRedisObject);
             return await _database.HashSetAsync(redisKey, exRedisValue, newRedisValue);

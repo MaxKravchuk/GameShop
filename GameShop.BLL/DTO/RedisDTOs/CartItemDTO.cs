@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameShop.BLL.DTO.RedisDTOs
 {
-    public class CartItem
+    public class CartItemDTO
     {
         public string GameKey { get; set; }
 

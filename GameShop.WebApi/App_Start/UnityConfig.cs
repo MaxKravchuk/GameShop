@@ -75,7 +75,7 @@ namespace GameShop.WebApi.App_Start
             var redisConfiguration = ConfigurationOptions.Parse(redisConnectionString);
             var redis = ConnectionMultiplexer.Connect(redisConnectionString);
             container.RegisterInstance(redis);
-            container.RegisterType<IRedisProvider<CartItem>, RedisProvider<CartItem>>();
+            container.RegisterType<IRedisProvider<CartItemDTO>, RedisProvider<CartItemDTO>>();
 
             container.RegisterType<ICommentService, CommentService>();
             container.RegisterType<IGameService, GameService>();
@@ -101,7 +101,7 @@ namespace GameShop.WebApi.App_Start
                 (new ContainerControlledLifetimeManager());
             container.RegisterType<IValidator<PublisherCreateDTO>, PublisherCreateDTOValidator>
                 (new ContainerControlledLifetimeManager());
-            container.RegisterType<IValidator<CartItem>, CartItemValidator>
+            container.RegisterType<IValidator<CartItemDTO>, CartItemValidator>
                 (new ContainerControlledLifetimeManager());
         }
     }

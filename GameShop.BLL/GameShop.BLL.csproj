@@ -96,7 +96,7 @@
     <Compile Include="DTO\PublisherDTOs\PublisherCreateDTO.cs" />
     <Compile Include="DTO\PublisherDTOs\PublisherReadDTO.cs" />
     <Compile Include="DTO\PublisherDTOs\PublisherReadListDTO.cs" />
-    <Compile Include="DTO\RedisDTOs\CartItem.cs" />
+    <Compile Include="DTO\RedisDTOs\CartItemDTO.cs" />
     <Compile Include="Exceptions\BadRequestException.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Services\CommentService.cs" />

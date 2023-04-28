@@ -8,7 +8,7 @@ using GameShop.BLL.DTO.RedisDTOs;
 
 namespace GameShop.BLL.Services.Utils.Validators
 {
-    public class CartItemValidator : AbstractValidator<CartItem>
+    public class CartItemValidator : AbstractValidator<CartItemDTO>
     {
         public CartItemValidator()
         {

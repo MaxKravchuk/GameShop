@@ -640,6 +640,7 @@ namespace GameShop.BLL.Tests.ServiceTests
                 _mockUnitOfWork.Invocations.Clear();
                 _mockMapper.Invocations.Clear();
                 _mockLogger.Invocations.Clear();
+                _mockValidator.Invocations.Clear();
             }
 
             _disposed = true;

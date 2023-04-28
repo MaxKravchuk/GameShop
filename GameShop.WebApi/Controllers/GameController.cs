@@ -59,7 +59,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getByGenre/{genreId}")]
-        public async Task<IHttpActionResult> GetAllGamesByGenre(int genreId)
+        public async Task<IHttpActionResult> GetAllGamesByGenreAsync(int genreId)
         {
             var games = await _gameService.GetGamesByGenreAsync(genreId);
             return Json(games);
@@ -67,7 +67,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getByPlatformType/{platformTypeId}")]
-        public async Task<IHttpActionResult> GetAllGamesByPlatformType(int platformTypeId)
+        public async Task<IHttpActionResult> GetAllGamesByPlatformTypeAsync(int platformTypeId)
         {
             var games = await _gameService.GetGamesByPlatformTypeAsync(platformTypeId);
             return Json(games);
@@ -83,7 +83,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("downloadGame/{gameKey}")]
-        public async Task<HttpResponseMessage> DownloadGame(string gameKey)
+        public async Task<HttpResponseMessage> DownloadGameAsync(string gameKey)
         {
             var stream = await _gameService.GenerateGameFileAsync(gameKey);
 
@@ -101,7 +101,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("numberOfGames")]
-        public async Task<IHttpActionResult> GetNumberOfGames()
+        public async Task<IHttpActionResult> GetNumberOfGamesAsync()
         {
             var number = await _gameService.GetNumberOfGames();
             return Json(number);

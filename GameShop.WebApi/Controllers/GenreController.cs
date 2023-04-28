@@ -22,7 +22,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route()]
-        public async Task<IHttpActionResult> GetAllGenres()
+        public async Task<IHttpActionResult> GetAllGenresAsync()
         {
             var result = await _genreService.GetAsync();
             return Json(result);

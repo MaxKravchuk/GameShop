@@ -54,7 +54,8 @@ namespace BLL.Test.ServiceTests
             var publisherCreateDTO = new PublisherCreateDTO();
             var publisher = new Publisher();
 
-            _mockMapper.Setup(m => m.Map<Publisher>(It.IsAny<PublisherCreateDTO>())).Verifiable();
+            _mockMapper.Setup(m => m.Map<Publisher>(It.IsAny<PublisherCreateDTO>()))
+                .Returns(publisher);
 
             _mockUnitOfWork
                 .Setup(u => u.PublisherRepository

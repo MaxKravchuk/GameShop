@@ -25,7 +25,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getAllByGameKey/{gameKey}")]
-        public async Task<IHttpActionResult> GetAllCommentsByGameKey([FromUri] string gameKey)
+        public async Task<IHttpActionResult> GetAllCommentsByGameKeyAsync([FromUri] string gameKey)
         {
             var comments = await _commentService.GetAllByGameKeyAsync(gameKey);
             return Json(comments);

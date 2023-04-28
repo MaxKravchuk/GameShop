@@ -11,7 +11,7 @@ namespace GameShop.DAL.Repository.Interfaces.Utils
     {
         Task<T> GetValueAsync(string redisKey, string redisValue);
 
-        Task<bool> SetValueToListASync(string redisKey, string exRedisValue, T newRedisValue);
+        Task<bool> SetValueToListAsync(string redisKey, string exRedisValue, T newRedisValue);
 
         Task<IEnumerable<T>> GetValuesAsync(string redisKey);
 

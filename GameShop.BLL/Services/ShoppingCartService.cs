@@ -14,21 +14,21 @@ namespace GameShop.BLL.Services
     public class ShoppingCartService : IShoppingCartService
     {
         private const string _redisKey = "CartItems";
-        private readonly IRedisProvider<CartItem> _redisProvider;
+        private readonly IRedisProvider<CartItemDTO> _redisProvider;
         private readonly ILoggerManager _loggerManager;
-        private readonly IValidator<CartItem> _validator;
+        private readonly IValidator<CartItemDTO> _validator;
 
         public ShoppingCartService(
-            IRedisProvider<CartItem> redisProvider,
+            IRedisProvider<CartItemDTO> redisProvider,
             ILoggerManager loggerManager,
-            IValidator<CartItem> validator)
+            IValidator<CartItemDTO> validator)
         {
             _redisProvider = redisProvider;
             _loggerManager = loggerManager;
             _validator = validator;
         }
 
-        public async Task AddCartItemAsync(CartItem cartItem)
+        public async Task AddCartItemAsync(CartItemDTO cartItem)
         {
             await _validator.ValidateAndThrowAsync(cartItem);
 
@@ -36,24 +36,24 @@ namespace GameShop.BLL.Services
             if (existingCartItem != null)
             {
                 existingCartItem.Quantity += 1;
-                await _redisProvider.SetValueToListASync("CartItems", cartItem.GameKey, existingCartItem);
+                await _redisProvider.SetValueToListAsync("CartItems", cartItem.GameKey, existingCartItem);
                 _loggerManager.LogInfo($"Item with key {cartItem.GameKey} updated");
             }
             else
             {
-                await _redisProvider.SetValueToListASync("CartItems", cartItem.GameKey, cartItem);
+                await _redisProvider.SetValueToListAsync("CartItems", cartItem.GameKey, cartItem);
                 _loggerManager.LogInfo($"New item with key {cartItem.GameKey} added to cart");
             }
         }
 
-        public async Task<IEnumerable<CartItem>> GetCartItemsAsync()
+        public async Task<IEnumerable<CartItemDTO>> GetCartItemsAsync()
         {
             var item = await _redisProvider.GetValuesAsync(_redisKey);
             _loggerManager.LogInfo($"List of items returned with array length of {item.Count()}");
             return item;
         }
 
-        public async Task DeletItemFromList(string gameKey)
+        public async Task DeletItemFromListAsync(string gameKey)
         {
             var existingCartItem = await _redisProvider.GetValueAsync(_redisKey, gameKey);
             if (existingCartItem.Quantity == 1)
@@ -63,7 +63,7 @@ namespace GameShop.BLL.Services
             else
             {
                 existingCartItem.Quantity -= 1;
-                await _redisProvider.SetValueToListASync("CartItems", gameKey, existingCartItem);
+                await _redisProvider.SetValueToListAsync("CartItems", gameKey, existingCartItem);
             }
 
             _loggerManager.LogInfo($"Item with game key {gameKey} is deleted");

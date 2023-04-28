@@ -115,6 +115,10 @@
   <ItemGroup>
     <Compile Include="ControllerTests\CommentControllerTests.cs" />
     <Compile Include="ControllerTests\GameControllerTests.cs" />
+    <Compile Include="ControllerTests\GenreControllerTests.cs" />
+    <Compile Include="ControllerTests\PlatformTypeControllerTests.cs" />
+    <Compile Include="ControllerTests\PublisherControllerTests.cs" />
+    <Compile Include="ControllerTests\ShoppingCartControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

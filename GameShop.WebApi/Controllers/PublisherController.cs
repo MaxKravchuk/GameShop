@@ -21,7 +21,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route()]
-        public async Task<IHttpActionResult> CreatePublisher([FromBody] PublisherCreateDTO publisherCreateDTO)
+        public async Task<IHttpActionResult> CreatePublisherAsync([FromBody] PublisherCreateDTO publisherCreateDTO)
         {
             await _publisherService.CreatePublisherAsync(publisherCreateDTO);
             return Ok();
@@ -29,7 +29,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route()]
-        public async Task<IHttpActionResult> GetPublisherByCompanyName(string companyName)
+        public async Task<IHttpActionResult> GetPublisherByCompanyNameAsync(string companyName)
         {
             var publisher = await _publisherService.GetPublisherByCompanyNameAsync(companyName);
             return Json(publisher);
@@ -37,7 +37,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getAll")]
-        public async Task<IHttpActionResult> GetAllPublishers()
+        public async Task<IHttpActionResult> GetAllPublishersAsync()
         {
             var publishers = await _publisherService.GetAllPublishersAsync();
             return Json(publishers);

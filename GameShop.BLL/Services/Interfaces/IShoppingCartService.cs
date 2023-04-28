@@ -9,10 +9,10 @@ namespace GameShop.BLL.Services.Interfaces
 {
     public interface IShoppingCartService
     {
-        Task AddCartItemAsync(CartItem cartItem);
+        Task AddCartItemAsync(CartItemDTO cartItem);
 
-        Task<IEnumerable<CartItem>> GetCartItemsAsync();
+        Task<IEnumerable<CartItemDTO>> GetCartItemsAsync();
 
-        Task DeletItemFromList(string gameKey);
+        Task DeletItemFromListAsync(string gameKey);
     }
 }

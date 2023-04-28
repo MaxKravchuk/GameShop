@@ -22,7 +22,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route("addToCart")]
-        public async Task<IHttpActionResult> AddGameToCart(CartItem cartItem)
+        public async Task<IHttpActionResult> AddGameToCartAsync(CartItemDTO cartItem)
         {
             await _shoppingCartService.AddCartItemAsync(cartItem);
             return Ok();
@@ -30,16 +30,16 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route()]
-        public async Task<IHttpActionResult> GetCache()
+        public async Task<IHttpActionResult> GetGamesFromCartAsync()
         {
             return Json(await _shoppingCartService.GetCartItemsAsync());
         }
 
         [HttpDelete]
         [Route("delete/{gameKey}")]
-        public async Task<IHttpActionResult> DeleteGameFromCart(string gameKey)
+        public async Task<IHttpActionResult> DeleteGameFromCartAsync(string gameKey)
         {
-            await _shoppingCartService.DeletItemFromList(gameKey);
+            await _shoppingCartService.DeletItemFromListAsync(gameKey);
             return Ok();
         }
     }

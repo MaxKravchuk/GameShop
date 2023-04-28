@@ -20,7 +20,7 @@ namespace BLL.Test.UtilTests.ValidatorTests
         public void CartItemValidator_Validate_ValidInput()
         {
             // Arrange
-            var cartItem = new CartItem
+            var cartItem = new CartItemDTO
             {
                 GameKey = "1234",
                 GameName = "Test Game",
@@ -42,7 +42,7 @@ namespace BLL.Test.UtilTests.ValidatorTests
         public void CartItemValidator_Validate_InvalidInput(string gameKey, string gameName, decimal gamePrice, string errorMessage)
         {
             // Arrange
-            var cartItem = new CartItem
+            var cartItem = new CartItemDTO
             {
                 GameKey = gameKey,
                 GameName = gameName,
