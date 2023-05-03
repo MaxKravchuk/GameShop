@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using FluentAssertions;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.Services.Utils.Validators;
@@ -12,11 +8,11 @@ namespace BLL.Test.UtilTests.ValidatorTests
 {
     public class GameValidatorTests
     {
-        private readonly GameCreateDTOValidator _validationRules;
+        private readonly GameCreateDtoValidator _validationRules;
 
         public GameValidatorTests()
         {
-            _validationRules = new GameCreateDTOValidator();
+            _validationRules = new GameCreateDtoValidator();
         }
 
         [Fact]

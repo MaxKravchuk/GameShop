@@ -19,10 +19,8 @@ export class HeaderComponent implements OnInit {
   {
   }
 
-  async ngOnInit(): Promise<void> {
-    setTimeout(() => {
+  ngOnInit(): void{
       this.getNumberOfGames();
-    }, 10000);
   }
 
   private getNumberOfGames(): void {

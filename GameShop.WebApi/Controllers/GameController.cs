@@ -1,17 +1,10 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.WebPages;
-using AutoMapper;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.Services.Interfaces;
-using GameShop.DAL.Entities;
-using GameShop.WebApi.Filters;
 
 namespace GameShop.WebApi.Controllers
 {
@@ -103,7 +96,7 @@ namespace GameShop.WebApi.Controllers
         [Route("numberOfGames")]
         public async Task<IHttpActionResult> GetNumberOfGamesAsync()
         {
-            var number = await _gameService.GetNumberOfGames();
+            var number = await _gameService.GetNumberOfGamesAsync();
             return Json(number);
         }
     }

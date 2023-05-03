@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using GameShop.BLL.DTO.CommentDTOs;
-using GameShop.BLL.DTO.GameDTOs;
 
 namespace GameShop.BLL.Services.Utils.Validators
 {
-    public class CommentCreateDTOValidator : AbstractValidator<CommentCreateDTO>
+    public class CommentCreateDtoValidator : AbstractValidator<CommentCreateDTO>
     {
-        public CommentCreateDTOValidator()
+        public CommentCreateDtoValidator()
         {
             RuleFor(g => g.Name)
                 .NotEmpty()
@@ -19,7 +13,7 @@ namespace GameShop.BLL.Services.Utils.Validators
 
             RuleFor(g => g.Body)
                 .NotEmpty()
-                .WithMessage("Comment body cannot be empy");
+                .WithMessage("Comment body cannot be empty");
 
             RuleFor(g => g.GameKey)
                 .NotEmpty()

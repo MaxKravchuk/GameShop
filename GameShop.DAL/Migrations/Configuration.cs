@@ -1,11 +1,9 @@
 ﻿namespace DAL.Migrations
 {
-    using GameShop.DAL.Entities;
-    using System;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using GameShop.DAL.Entities;
 
     internal sealed class Configuration : DbMigrationsConfiguration<GameShop.DAL.Context.GameShopContext>
     {

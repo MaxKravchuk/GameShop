@@ -132,9 +132,9 @@
     <Compile Include="DTO\PlatformTypeDTOs\PlatformTypeReadDTO.cs" />
     <Compile Include="DTO\PlatformTypeDTOs\PlatformTypeUpdateDTO.cs" />
     <Compile Include="Services\Utils\Validators\CartItemValidator.cs" />
-    <Compile Include="Services\Utils\Validators\CommentCreateDTOValidator.cs" />
-    <Compile Include="Services\Utils\Validators\GameCreateDTOValidator.cs" />
-    <Compile Include="Services\Utils\Validators\PublisherCreateDTOValidator.cs" />
+    <Compile Include="Services\Utils\Validators\CommentCreateDtoValidator.cs" />
+    <Compile Include="Services\Utils\Validators\GameCreateDtoValidator.cs" />
+    <Compile Include="Services\Utils\Validators\PublisherCreateDtoValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

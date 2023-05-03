@@ -7,11 +7,11 @@ namespace BLL.Test.UtilTests.ValidatorTests
 {
     public class CommentValidatorTests
     {
-        private readonly CommentCreateDTOValidator _validationRules;
+        private readonly CommentCreateDtoValidator _validationRules;
 
         public CommentValidatorTests()
         {
-            _validationRules = new CommentCreateDTOValidator();
+            _validationRules = new CommentCreateDtoValidator();
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace BLL.Test.UtilTests.ValidatorTests
 
         [Theory]
         [InlineData("", "This is a comment", "1234", "Comment must have author name")]
-        [InlineData("John Doe", "", "1234", "Comment body cannot be empy")]
+        [InlineData("John Doe", "", "1234", "Comment body cannot be empty")]
         [InlineData("John Doe", "This is a comment", "", "Comment must have game key")]
         public void CommentCreateDTOValidator_Validate_InvalidInput_ShouldFail(
             string name, string body, string gameKey, string errorMessage)

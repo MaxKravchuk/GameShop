@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameShop.BLL.DTO.RedisDTOs;
 
@@ -13,6 +10,6 @@ namespace GameShop.BLL.Services.Interfaces
 
         Task<IEnumerable<CartItemDTO>> GetCartItemsAsync();
 
-        Task DeletItemFromListAsync(string gameKey);
+        Task DeleteItemFromListAsync(string gameKey);
     }
 }

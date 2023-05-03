@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using GameShop.BLL.DTO.GameDTOs;
 
 namespace GameShop.BLL.Services.Utils.Validators
 {
-    public class GameCreateDTOValidator : AbstractValidator<GameCreateDTO>
+    public class GameCreateDtoValidator : AbstractValidator<GameCreateDTO>
     {
-        public GameCreateDTOValidator()
+        public GameCreateDtoValidator()
         {
             RuleFor(g => g.Name)
                 .NotEmpty()
@@ -18,11 +13,11 @@ namespace GameShop.BLL.Services.Utils.Validators
 
             RuleFor(g => g.Description)
                 .NotEmpty()
-                .WithMessage("Game description cannot be empy");
+                .WithMessage("Game description cannot be empty");
 
             RuleFor(g => g.Key)
                 .NotEmpty()
-                .WithMessage("Game key cannot be empy");
+                .WithMessage("Game key cannot be empty");
 
             RuleFor(g => g.GenresId)
                 .NotEmpty()

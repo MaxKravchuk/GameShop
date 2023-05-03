@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using GameShop.BLL.DTO.PublisherDTOs;
 using GameShop.BLL.Services.Utils.Validators;
 using Xunit;
@@ -12,11 +7,11 @@ namespace BLL.Test.UtilTests.ValidatorTests
 {
     public class PublisherValidatorTests
     {
-        private readonly PublisherCreateDTOValidator _validationRules;
+        private readonly PublisherCreateDtoValidator _validationRules;
 
         public PublisherValidatorTests()
         {
-            _validationRules = new PublisherCreateDTOValidator();
+            _validationRules = new PublisherCreateDtoValidator();
         }
 
         [Fact]

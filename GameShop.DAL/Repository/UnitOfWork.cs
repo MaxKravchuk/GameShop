@@ -1,12 +1,8 @@
-﻿using GameShop.DAL.Context;
+﻿using System;
+using System.Threading.Tasks;
+using GameShop.DAL.Context;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Contexts;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameShop.DAL.Repository
 {

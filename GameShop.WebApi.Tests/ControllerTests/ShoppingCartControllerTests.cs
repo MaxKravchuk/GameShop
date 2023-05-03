@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http.Results;
 using GameShop.BLL.DTO.RedisDTOs;
@@ -68,7 +65,7 @@ namespace WebApi.Test.ControllerTests
             var result = await _shoppingCartController.DeleteGameFromCartAsync(gameKey);
 
             // Assert
-            _mockShoppingCartService.Verify(x => x.DeletItemFromListAsync(gameKey), Times.Once);
+            _mockShoppingCartService.Verify(x => x.DeleteItemFromListAsync(gameKey), Times.Once);
             Assert.IsType<OkResult>(result);
         }
     }

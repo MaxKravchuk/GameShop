@@ -1,10 +1,6 @@
-﻿using GameShop.BLL.DTO.GenreDTOs;
-using GameShop.DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GameShop.BLL.DTO.GenreDTOs;
 
 namespace GameShop.BLL.Services.Interfaces
 {

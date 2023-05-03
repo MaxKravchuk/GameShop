@@ -101,5 +101,11 @@ namespace GameShop.DAL.Repository
 
             _context.Entry(entityToUpdate).State = EntityState.Modified;
         }
+
+        public virtual async Task<int> GetCountAsync()
+        {
+            var queryCount = _context.Set<T>().Where(x => !x.IsDeleted).AsNoTracking();
+            return await queryCount.CountAsync();
+        }
     }
 }

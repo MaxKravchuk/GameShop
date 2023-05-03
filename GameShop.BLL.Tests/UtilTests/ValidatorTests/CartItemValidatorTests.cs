@@ -1,6 +1,4 @@
-﻿using System;
-using FluentAssertions;
-using FluentValidation.TestHelper;
+﻿using FluentAssertions;
 using GameShop.BLL.DTO.RedisDTOs;
 using GameShop.BLL.Services.Utils.Validators;
 using Xunit;
@@ -37,7 +35,7 @@ namespace BLL.Test.UtilTests.ValidatorTests
         [Theory]
         [InlineData("", "Test Game", 9.99, "Game key cannot be empty")]
         [InlineData("1234", "", 9.99, "Game name cannot be empty")]
-        [InlineData("1234", "Test Game", -9.99, "Game price cannot be less than 0 or empy")]
+        [InlineData("1234", "Test Game", -9.99, "Game price cannot be less than 0 or empty")]
         [InlineData("", "", 0, "Game key cannot be empty")]
         public void CartItemValidator_Validate_InvalidInput(string gameKey, string gameName, decimal gamePrice, string errorMessage)
         {

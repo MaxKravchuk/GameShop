@@ -1,6 +1,5 @@
-﻿using GameShop.WebApi.App_Start;
-using System.Web.Http;
-
+﻿using System.Web.Http;
+using GameShop.WebApi.App_Start;
 using Unity.AspNet.WebApi;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(UnityWebApiActivator), nameof(UnityWebApiActivator.Start))]

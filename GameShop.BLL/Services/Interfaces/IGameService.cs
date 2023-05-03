@@ -1,12 +1,7 @@
-﻿using GameShop.BLL.DTO.GameDTOs;
-using GameShop.DAL.Entities;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
+using GameShop.BLL.DTO.GameDTOs;
 
 namespace GameShop.BLL.Services.Interfaces
 {
@@ -28,6 +23,6 @@ namespace GameShop.BLL.Services.Interfaces
 
         Task<MemoryStream> GenerateGameFileAsync(string key);
 
-        Task<int> GetNumberOfGames();
+        Task<int> GetNumberOfGamesAsync();
     }
 }

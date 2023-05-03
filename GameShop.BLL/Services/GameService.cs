@@ -209,10 +209,10 @@ namespace GameShop.BLL.Services
             return stringInMemoryStream;
         }
 
-        public async Task<int> GetNumberOfGames()
+        public async Task<int> GetNumberOfGamesAsync()
         {
-            var games = (await _unitOfWork.GameRepository.GetAsync()).ToList();
-            return games.Count();
+            var count = await _unitOfWork.GameRepository.GetCountAsync();
+            return count;
         }
     }
 }

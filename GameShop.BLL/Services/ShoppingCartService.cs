@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using FluentValidation;
 using GameShop.BLL.DTO.RedisDTOs;
@@ -13,7 +11,7 @@ namespace GameShop.BLL.Services
 {
     public class ShoppingCartService : IShoppingCartService
     {
-        private const string _redisKey = "CartItems";
+        private const string RedisKey = "CartItems";
         private readonly IRedisProvider<CartItemDTO> _redisProvider;
         private readonly ILoggerManager _loggerManager;
         private readonly IValidator<CartItemDTO> _validator;
@@ -32,7 +30,7 @@ namespace GameShop.BLL.Services
         {
             await _validator.ValidateAndThrowAsync(cartItem);
 
-            var existingCartItem = await _redisProvider.GetValueAsync(_redisKey, cartItem.GameKey);
+            var existingCartItem = await _redisProvider.GetValueAsync(RedisKey, cartItem.GameKey);
             if (existingCartItem != null)
             {
                 existingCartItem.Quantity += 1;
@@ -48,17 +46,17 @@ namespace GameShop.BLL.Services
 
         public async Task<IEnumerable<CartItemDTO>> GetCartItemsAsync()
         {
-            var item = await _redisProvider.GetValuesAsync(_redisKey);
+            var item = await _redisProvider.GetValuesAsync(RedisKey);
             _loggerManager.LogInfo($"List of items returned with array length of {item.Count()}");
             return item;
         }
 
-        public async Task DeletItemFromListAsync(string gameKey)
+        public async Task DeleteItemFromListAsync(string gameKey)
         {
-            var existingCartItem = await _redisProvider.GetValueAsync(_redisKey, gameKey);
+            var existingCartItem = await _redisProvider.GetValueAsync(RedisKey, gameKey);
             if (existingCartItem.Quantity == 1)
             {
-                await _redisProvider.DeleteItemFromListAsync(_redisKey, gameKey);
+                await _redisProvider.DeleteItemFromListAsync(RedisKey, gameKey);
             }
             else
             {

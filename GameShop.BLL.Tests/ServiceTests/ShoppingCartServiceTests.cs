@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using FluentValidation;
 using GameShop.BLL.DTO.RedisDTOs;
@@ -121,7 +119,7 @@ namespace BLL.Test.ServiceTests
                 .ReturnsAsync(existingCartItem);
 
             // Act
-            await _shoppingCartService.DeletItemFromListAsync("existing");
+            await _shoppingCartService.DeleteItemFromListAsync("existing");
 
             // Assert
             _mockRedisProvider.Verify(x => x.SetValueToListAsync(It.IsAny<string>(), "existing", existingCartItem), Times.Once);
@@ -144,7 +142,7 @@ namespace BLL.Test.ServiceTests
                 .ReturnsAsync(existingCartItem);
 
             // Act
-            await _shoppingCartService.DeletItemFromListAsync(existingCartItem.GameKey);
+            await _shoppingCartService.DeleteItemFromListAsync(existingCartItem.GameKey);
 
             // Assert
             existingCartItem.Quantity -= 1;

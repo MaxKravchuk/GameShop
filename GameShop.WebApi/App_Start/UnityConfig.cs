@@ -1,25 +1,25 @@
 ﻿using System;
+using System.Configuration;
 using AutoMapper;
-using GameShop.BLL.Services.Utils;
+using FluentValidation;
+using GameShop.BLL.DTO.CommentDTOs;
+using GameShop.BLL.DTO.GameDTOs;
+using GameShop.BLL.DTO.PublisherDTOs;
+using GameShop.BLL.DTO.RedisDTOs;
 using GameShop.BLL.Services;
 using GameShop.BLL.Services.Interfaces;
+using GameShop.BLL.Services.Interfaces.Utils;
+using GameShop.BLL.Services.Utils;
+using GameShop.BLL.Services.Utils.Validators;
 using GameShop.DAL.Context;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository;
 using GameShop.DAL.Repository.Interfaces;
+using GameShop.DAL.Repository.Interfaces.Utils;
 using log4net;
+using StackExchange.Redis;
 using Unity;
 using Unity.Lifetime;
-using GameShop.BLL.Services.Interfaces.Utils;
-using FluentValidation;
-using GameShop.BLL.DTO.GameDTOs;
-using GameShop.BLL.Services.Utils.Validators;
-using GameShop.BLL.DTO.CommentDTOs;
-using GameShop.BLL.DTO.PublisherDTOs;
-using StackExchange.Redis;
-using System.Configuration;
-using GameShop.DAL.Repository.Interfaces.Utils;
-using GameShop.BLL.DTO.RedisDTOs;
 
 namespace GameShop.WebApi.App_Start
 {
@@ -75,7 +75,7 @@ namespace GameShop.WebApi.App_Start
             var redisConfiguration = ConfigurationOptions.Parse(redisConnectionString);
             var redis = ConnectionMultiplexer.Connect(redisConnectionString);
             container.RegisterInstance(redis);
-            container.RegisterType<IRedisProvider<CartItemDTO>, RedisProvider<CartItemDTO>>();
+            container.RegisterType<IRedisProvider<CartItemDTO>, RedisProvider<CartItemDTO>>(new HierarchicalLifetimeManager());
 
             container.RegisterType<ICommentService, CommentService>();
             container.RegisterType<IGameService, GameService>();
@@ -95,11 +95,11 @@ namespace GameShop.WebApi.App_Start
             container.RegisterInstance<IMapper>(mapperConfiguration.CreateMapper());
 
             container.RegisterType<IValidatorFactory, UnityValidatorFactory>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IValidator<GameCreateDTO>, GameCreateDTOValidator>
+            container.RegisterType<IValidator<GameCreateDTO>, GameCreateDtoValidator>
                 (new ContainerControlledLifetimeManager());
-            container.RegisterType<IValidator<CommentCreateDTO>, CommentCreateDTOValidator>
+            container.RegisterType<IValidator<CommentCreateDTO>, CommentCreateDtoValidator>
                 (new ContainerControlledLifetimeManager());
-            container.RegisterType<IValidator<PublisherCreateDTO>, PublisherCreateDTOValidator>
+            container.RegisterType<IValidator<PublisherCreateDTO>, PublisherCreateDtoValidator>
                 (new ContainerControlledLifetimeManager());
             container.RegisterType<IValidator<CartItemDTO>, CartItemValidator>
                 (new ContainerControlledLifetimeManager());

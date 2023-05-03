@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using GameShop.BLL.DTO.RedisDTOs;
 
 namespace GameShop.BLL.Services.Utils.Validators
@@ -22,7 +17,7 @@ namespace GameShop.BLL.Services.Utils.Validators
 
             RuleFor(x => x.GamePrice)
                 .GreaterThan(0)
-                .WithMessage("Game price cannot be less than 0 or empy");
+                .WithMessage("Game price cannot be less than 0 or empty");
         }
     }
 }

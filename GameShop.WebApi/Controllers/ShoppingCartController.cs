@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
 using GameShop.BLL.DTO.RedisDTOs;
 using GameShop.BLL.Services.Interfaces;
-using GameShop.BLL.Services.Interfaces.Utils;
 
 namespace GameShop.WebApi.Controllers
 {
@@ -39,7 +34,7 @@ namespace GameShop.WebApi.Controllers
         [Route("delete/{gameKey}")]
         public async Task<IHttpActionResult> DeleteGameFromCartAsync(string gameKey)
         {
-            await _shoppingCartService.DeletItemFromListAsync(gameKey);
+            await _shoppingCartService.DeleteItemFromListAsync(gameKey);
             return Ok();
         }
     }

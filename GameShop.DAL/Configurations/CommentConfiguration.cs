@@ -1,5 +1,5 @@
-﻿using GameShop.DAL.Entities;
-using System.Data.Entity.ModelConfiguration;
+﻿using System.Data.Entity.ModelConfiguration;
+using GameShop.DAL.Entities;
 
 namespace GameShop.DAL.Configurations
 {
