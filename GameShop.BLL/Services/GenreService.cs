@@ -51,7 +51,7 @@ namespace GameShop.BLL.Services
 
         public async Task<IEnumerable<GenreReadListDTO>> GetAsync()
         {
-            var genres = await _unitOfWork.GenreRepository.GetAsync();
+            var genres = (await _unitOfWork.GenreRepository.GetAsync()).ToList();
 
             var genresDTO = _mapper.Map<IEnumerable<GenreReadListDTO>>(genres);
 

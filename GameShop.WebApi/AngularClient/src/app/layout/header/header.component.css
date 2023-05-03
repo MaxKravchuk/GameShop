@@ -1,0 +1,15 @@
+.header-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+p {
+    font-size: 1rem;
+    margin: 0;
+}
+
+.header-buttons {
+    display: flex;
+    margin-left: 12.5%;
+}
+

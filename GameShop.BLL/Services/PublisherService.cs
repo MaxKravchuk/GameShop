@@ -59,7 +59,7 @@ namespace GameShop.BLL.Services
 
         public async Task<IEnumerable<PublisherReadListDTO>> GetAllPublishersAsync()
         {
-            var publishers = await _unitOfWork.PublisherRepository.GetAsync();
+            var publishers = (await _unitOfWork.PublisherRepository.GetAsync()).ToList();
 
             var models = _mapper.Map<IEnumerable<PublisherReadListDTO>>(publishers);
 

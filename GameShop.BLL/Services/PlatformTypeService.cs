@@ -51,7 +51,7 @@ namespace GameShop.BLL.Services
 
         public async Task<IEnumerable<PlatformTypeReadListDTO>> GetAsync()
         {
-            var platformTypes = await _unitOfWork.PlatformTypeRepository.GetAsync();
+            var platformTypes = (await _unitOfWork.PlatformTypeRepository.GetAsync()).ToList();
 
             var platformTypesDTO = _mapper.Map<IEnumerable<PlatformTypeReadListDTO>>(platformTypes);
 
