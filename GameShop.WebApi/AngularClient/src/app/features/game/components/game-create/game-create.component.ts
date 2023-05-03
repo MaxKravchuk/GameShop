@@ -44,10 +44,10 @@ export class GameCreateComponent implements OnInit {
         private utilsService: UtilsService) {
     }
 
-    async ngOnInit(): Promise<void> {
-        await this.getGenres();
-        await this.getPlatformTypes();
-        await this.getPublishers();
+    ngOnInit(): void {
+        this.getGenres();
+        this.getPlatformTypes();
+        this.getPublishers();
     }
 
     public onNoClick() {
@@ -67,15 +67,27 @@ export class GameCreateComponent implements OnInit {
         });
     }
 
-    private async getGenres(): Promise<void> {
-        this.gameGenres = await this.genreService.getAllGenres().toPromise();
+    private getGenres(): void {
+        this.genreService.getAllGenres().subscribe(
+            (data) => {
+                this.gameGenres = data;
+            }
+        );
     }
 
-    private async getPlatformTypes(): Promise<void> {
-        this.platformTypes = await this.platformTypeService.getAllPlatformTypes().toPromise();
+    private getPlatformTypes(): void {
+        this.platformTypeService.getAllPlatformTypes().subscribe(
+            (data) => {
+                this.platformTypes = data;
+            }
+        );
     }
 
-    private async getPublishers(): Promise<void> {
-        this.publishers = await this.publisherService.getAllPublishers().toPromise();
+    private getPublishers(): void {
+        this.publisherService.getAllPublishers().subscribe(
+            (data) => {
+                this.publishers = data;
+            }
+        );
     }
 }
