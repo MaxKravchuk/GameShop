@@ -6,14 +6,16 @@ import { Game } from "../../../../core/models/Game";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
 
 @Component({
-    selector: 'app-publisher-main',
-    templateUrl: './publisher-main.component.html',
-    styleUrls: ['./publisher-main.component.css']
+    selector: 'app-publisher-details',
+    templateUrl: './publisher-details.component.html',
+    styleUrls: ['./publisher-details.component.css']
 })
-export class PublisherMainComponent implements OnInit {
+export class PublisherDetailsComponent implements OnInit {
 
     publisher?: Publisher;
+
     companyName?: string | null;
+
     games?: Game[] = [];
 
     constructor(
@@ -24,7 +26,7 @@ export class PublisherMainComponent implements OnInit {
 
     ngOnInit(): void {
         this.companyName = this.activeRoute.snapshot.paramMap.get('CompanyName');
-        if (this.companyName != null) {
+        if (this.companyName !== null) {
             this.getPublisherByCompanyName();
         } else {
             this.utilsService.goBack();

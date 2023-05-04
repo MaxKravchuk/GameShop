@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PublisherMainComponent } from './publisher-main.component';
+import { PublisherDetailsComponent } from './publisher-details.component';
 
 describe('PublisherMainComponent', () => {
-    let component: PublisherMainComponent;
-    let fixture: ComponentFixture<PublisherMainComponent>;
+    let component: PublisherDetailsComponent;
+    let fixture: ComponentFixture<PublisherDetailsComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [PublisherMainComponent]
+            declarations: [PublisherDetailsComponent]
         })
             .compileComponents();
 
-        fixture = TestBed.createComponent(PublisherMainComponent);
+        fixture = TestBed.createComponent(PublisherDetailsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

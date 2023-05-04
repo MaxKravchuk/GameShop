@@ -1,19 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Comment } from "../../../../core/models/Comment";
 import { SharedCommentService } from "../../../../core/services/helpers/sharedCommentService/shared-comment.service";
 import { CommentShared } from "../../../../core/models/helpers/CommentShared";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CommentService } from "../../../../core/services/commentService/comment.service";
-import { catchError } from "rxjs";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
+import { Subscription } from "rxjs";
 
 @Component({
     selector: 'app-game-comment',
     templateUrl: './game-comment.component.html',
     styleUrls: ['./game-comment.component.css']
 })
-export class GameCommentComponent implements OnInit {
+export class GameCommentComponent implements OnInit, OnDestroy {
 
     @Input() comment!: Comment;
 
@@ -29,24 +27,29 @@ export class GameCommentComponent implements OnInit {
 
     comments: Comment[] = [];
 
+    private reloadCommentsSub: Subscription = new Subscription();
+
     constructor(
         private commentService: CommentService,
         private sharedService: SharedCommentService,
-        private route: Router,
-        private _route: ActivatedRoute,
-        private utilsService: UtilsService
+        private router: Router,
+        private route: ActivatedRoute
     ) {
     }
 
     ngOnInit(): void {
-        this.sharedService.reloadComments$.subscribe({
+        this.reloadCommentsSub = this.sharedService.reloadComments$.subscribe({
             next: () =>{
-                this.utilsService.goBack();
+                // TODO: Add reload page
             }
         });
         if (this.gameKey! != null) {
             this.getCommentsByGameKey(this.gameKey!);
         }
+    }
+
+    ngOnDestroy(): void {
+        this.reloadCommentsSub.unsubscribe();
     }
 
     onAnswerButtonClick(Name: string, Id: number): void {
@@ -59,7 +62,7 @@ export class GameCommentComponent implements OnInit {
     }
 
     goToParentComment(Id: number): void {
-        this.route.navigate([], {relativeTo: this._route, fragment: `comment-${Id}`}).then(() => {
+        this.router.navigate([], {relativeTo: this.route, fragment: `comment-${Id}`}).then(() => {
             const parent = document.getElementById(`comment-${Id}`);
             if (parent) {
                 parent.scrollIntoView({behavior: 'smooth'});

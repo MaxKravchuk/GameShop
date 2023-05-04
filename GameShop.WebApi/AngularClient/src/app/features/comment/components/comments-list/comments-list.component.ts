@@ -13,6 +13,8 @@ export class CommentsListComponent implements OnInit {
 
     comments: Comment[] = [];
 
+    rootComments: Comment[] = [];
+
     constructor(private commentService: CommentService) {
     }
 
@@ -20,17 +22,16 @@ export class CommentsListComponent implements OnInit {
         this.getComments();
     }
 
-    getRootComments(): Comment[] {
-        return this.comments.filter((comment: Comment) => comment.ParentId == null);
-    }
-
-    getReplies(commentId: number): Comment[] {
-        return this.comments.filter((comment: Comment) => comment.ParentId == commentId);
-    }
-
     private getComments(): void {
         this.commentService.getCommentsByGameKey(this.gameKey).subscribe(
-            (comments: Comment[]) => this.comments = comments
+            (comments: Comment[]) => {
+                this.comments = comments;
+                this.rootComments = this.getRootComments();
+            }
         );
+    }
+
+    private getRootComments(): Comment[] {
+        return this.comments.filter((comment: Comment) => comment.ParentId == null);
     }
 }

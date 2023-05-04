@@ -11,32 +11,35 @@ export class CartMainComponent implements OnInit {
 
     cartItems: CartItem[] = [];
 
+    totalPrice: number = 0;
+
     constructor(private shoppingCartService: ShoppingCartService) {}
 
     ngOnInit(): void {
-        this.updateCart();
+        this.fetchCart();
     }
 
-    getTotalPrice(): number {
+    getTotalPrice(): void {
         let totalPrice: number = 0;
         for (let cartItem of this.cartItems) {
             totalPrice += cartItem.Quantity! * cartItem.GamePrice!;
         }
-        return totalPrice;
+        this.totalPrice = totalPrice;
     }
 
     removeFromCart(gameKey: string) {
         this.shoppingCartService.deleteItemFromCart(gameKey).subscribe({
             next: () => {
-                this.updateCart();
+                this.fetchCart();
             }
         });
     }
 
-    private updateCart() {
+    private fetchCart() {
         this.shoppingCartService.getCartItems().subscribe(
             (cartItems: CartItem[]) => {
                 this.cartItems = cartItems;
+                this.getTotalPrice();
             }
         );
     }

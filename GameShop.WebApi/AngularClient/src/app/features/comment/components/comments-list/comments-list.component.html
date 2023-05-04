@@ -1,9 +1,9 @@
 <h3>Comments</h3>
 <div class="comment-container">
     <app-game-comment
-        *ngFor="let rootComment of getRootComments()"
+        *ngFor="let rootComment of rootComments"
         [comment]="rootComment"
-        [replies]="getReplies(rootComment.Id!)"
+        [replies]="comments | repliesPipe:rootComment.Id!"
         [parentCommentId]="rootComment.Id!"
         [parentCommentName]="rootComment.Name!"
         [gameKey]="gameKey!"></app-game-comment>

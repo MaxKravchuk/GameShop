@@ -1,12 +1,12 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from '@angular/router';
-import { PublisherMainComponent } from "./components/publisher-main/publisher-main.component";
+import { PublisherDetailsComponent } from "./components/publisher-details/publisher-details.component";
 import { PublisherCreateComponent } from "./components/publisher-create/publisher-create.component";
 
 const routes: Routes = [
     {
         path: 'details/:CompanyName',
-        component: PublisherMainComponent
+        component: PublisherDetailsComponent
     },
     {
         path: 'create',

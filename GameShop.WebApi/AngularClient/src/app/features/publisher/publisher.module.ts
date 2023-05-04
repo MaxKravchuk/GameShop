@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PublisherMainComponent } from './components/publisher-main/publisher-main.component';
+import { PublisherDetailsComponent } from './components/publisher-details/publisher-details.component';
 import { PublisherCreateComponent } from "./components/publisher-create/publisher-create.component";
 import { PublisherRoutingModule } from "./publisher-routing-module";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -10,7 +10,7 @@ import { MatButtonModule } from "@angular/material/button";
 
 @NgModule({
     declarations: [
-        PublisherMainComponent,
+        PublisherDetailsComponent,
         PublisherCreateComponent
     ],
     imports: [

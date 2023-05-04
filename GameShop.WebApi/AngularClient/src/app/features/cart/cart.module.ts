@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartMainComponent } from "./components/cart-main/cart-main.component";
-import { ShoppingCartRoutingModule } from "./shopping-cart-routing.module";
+import { CartRoutingModule } from "./cart-routing.module";
 import { MatButtonModule } from "@angular/material/button";
 
 
@@ -11,9 +11,9 @@ import { MatButtonModule } from "@angular/material/button";
     ],
     imports: [
         CommonModule,
-        ShoppingCartRoutingModule,
+        CartRoutingModule,
         MatButtonModule
     ]
 })
-export class ShoppingCartModule {
+export class CartModule {
 }

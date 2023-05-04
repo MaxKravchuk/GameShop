@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { CommentsListComponent } from './components/comments-list/comments-list.component';
+import { RepliesPipe } from "../../core/pipes/replies.pipe";
 
 
 @NgModule({
@@ -15,11 +16,13 @@ import { CommentsListComponent } from './components/comments-list/comments-list.
         GameCommentComponent,
         CreateCommentComponent,
         CommentsListComponent,
+        RepliesPipe
     ],
     exports: [
         GameCommentComponent,
         CreateCommentComponent,
-        CommentsListComponent
+        CommentsListComponent,
+        RepliesPipe
     ],
     imports: [
         CommonModule,
@@ -28,7 +31,7 @@ import { CommentsListComponent } from './components/comments-list/comments-list.
         FormsModule,
         MatFormFieldModule,
         MatInputModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
     ]
 })
 export class CommentModule {

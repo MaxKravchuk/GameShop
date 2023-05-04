@@ -1,8 +1,8 @@
 <div class="cont">
     <div class="comment-item">
         <h3 id="comment-{{comment.Id}}">{{comment.Name}}</h3>
-        <p> <!--(click)="goToParentComment(parentCommentId!)">-->
-            <a *ngIf="parentCommentName!=comment.Name" (click)="goToParentComment(parentCommentId!)">
+        <p>
+            <a *ngIf="parentCommentName!==comment.Name" (click)="goToParentComment(parentCommentId!)">
                 [{{parentCommentName}}]
             </a>
             {{comment.Body}}
@@ -13,16 +13,16 @@
             (click)="onAnswerButtonClick(comment.Name!, comment.Id!)"
         >Answer</a>
         <a
+            *ngIf="replies.length > 0"
             mat-button
             color="primary"
             (click)="showAnswers()"
-            *ngIf="replies.length > 0"
         >Answers</a>
         <div *ngIf="answersIsDisplayed">
             <app-game-comment
                 *ngFor="let reply of replies"
                 [comment]="reply"
-                [replies]="getReplies(reply.Id!)"
+                [replies]="comments | repliesPipe:reply.Id!"
                 [parentCommentId]="comment.Id!"
                 [parentCommentName]="comment.Name!"
                 [gameKey]="gameKey"

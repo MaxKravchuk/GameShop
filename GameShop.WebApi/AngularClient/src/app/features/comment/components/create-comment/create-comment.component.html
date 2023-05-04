@@ -1,6 +1,6 @@
 <div class="cont">
     <div class="mat-title">New comment</div>
-    <p *ngIf='receivedData?.Name != ""'>{{ "You are answering to " + receivedData.Name }}</p>
+    <p *ngIf="receivedData?.Name !== ''">{{ "You are answering to " + receivedData.Name }}</p>
     <div [formGroup]="form" class="comment-create-form">
         <p>
             <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
@@ -12,7 +12,7 @@
                     minlength="1"
                     placeholder="Your name">
                 <mat-hint>Length must be greater than 1</mat-hint>
-                <mat-error *ngIf="form.controls.Name.invalid">Length must be greater than 1</mat-error>
+                <mat-error *ngIf="form.controls['Name'].invalid">Length must be greater than 1</mat-error>
             </mat-form-field>
         </p>
         <p>
@@ -25,7 +25,7 @@
                     minlength="1"
                     placeholder="Comment body">
                 <mat-hint>Length must be greater than 1</mat-hint>
-                <mat-error *ngIf="form.controls.Body.invalid">Length must be greater than 1</mat-error>
+                <mat-error *ngIf="form.controls['Body'].invalid">Length must be greater than 1</mat-error>
             </mat-form-field>
         </p>
     </div>

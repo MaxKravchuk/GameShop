@@ -25,7 +25,7 @@ import { GameModule } from "../features/game/game.module";
         RouterModule,
         MatToolbarModule,
         MatButtonModule,
-        GameModule
+        GameModule,
     ]
 })
 export class LayoutModule {

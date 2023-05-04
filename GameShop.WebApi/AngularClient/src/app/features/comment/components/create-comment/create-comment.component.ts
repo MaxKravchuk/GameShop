@@ -1,5 +1,5 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { CommentService } from "../../../../core/services/commentService/comment.service";
 import { Comment } from "../../../../core/models/Comment";
 import { SharedCommentService } from "../../../../core/services/helpers/sharedCommentService/shared-comment.service";
@@ -18,10 +18,7 @@ export class CreateCommentComponent implements OnInit{
 
     @Input() gameKey?: string;
 
-    form = this.formBuilder.group({
-        Name: new FormControl("", Validators.required),
-        Body: new FormControl("", Validators.required)
-    });
+    form!: FormGroup;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -31,6 +28,11 @@ export class CreateCommentComponent implements OnInit{
     ) {}
 
     ngOnInit(): void {
+        this.form = this.formBuilder.group({
+            Name: new FormControl("", Validators.required),
+            Body: new FormControl("", Validators.required)
+        });
+
         this.sharedService.getData().subscribe((data: CommentShared) => {
             if (this.receivedData.Name == data.Name && this.receivedData.CommentId == data.CommentId) {
                 this.receivedData.Name = "";
