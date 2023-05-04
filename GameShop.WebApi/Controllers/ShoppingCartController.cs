@@ -24,7 +24,7 @@ namespace GameShop.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route()]
+        [Route("getAll")]
         public async Task<IHttpActionResult> GetGamesFromCartAsync()
         {
             return Json(await _shoppingCartService.GetCartItemsAsync());

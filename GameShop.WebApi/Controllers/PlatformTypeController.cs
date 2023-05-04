@@ -16,7 +16,7 @@ namespace GameShop.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route()]
+        [Route("getAll")]
         public async Task<IHttpActionResult> GetAllPlatformTypes()
         {
             var result = await _platformTypeService.GetAsync();

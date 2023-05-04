@@ -1,4 +1,4 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from "@angular/forms";
 import { CommentService } from "../../../../core/services/commentService/comment.service";
 import { Comment } from "../../../../core/models/Comment";
@@ -12,7 +12,7 @@ import { UtilsService } from "../../../../core/services/helpers/utilsService/uti
     templateUrl: './create-comment.component.html',
     styleUrls: ['./create-comment.component.css']
 })
-export class CreateCommentComponent {
+export class CreateCommentComponent implements OnInit{
 
     receivedData: CommentShared = {Name: "", CommentId: undefined};
 
@@ -24,11 +24,14 @@ export class CreateCommentComponent {
     });
 
     constructor(
-        @Inject(FormBuilder) private formBuilder: FormBuilder,
+        private formBuilder: FormBuilder,
         private commentService: CommentService,
         private sharedService: SharedCommentService,
-        private utilsService: UtilsService) {
-        this.sharedService.getData().subscribe(data => {
+        private utilsService: UtilsService
+    ) {}
+
+    ngOnInit(): void {
+        this.sharedService.getData().subscribe((data: CommentShared) => {
             if (this.receivedData.Name == data.Name && this.receivedData.CommentId == data.CommentId) {
                 this.receivedData.Name = "";
             } else {
@@ -37,7 +40,7 @@ export class CreateCommentComponent {
         });
     }
 
-    public onSaveForm(): void {
+    onSaveForm(): void {
         if (!this.form.valid) {
             this.utilsService.openWithMessage("Please fill all the fields");
         }

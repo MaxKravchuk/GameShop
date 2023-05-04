@@ -16,7 +16,7 @@ export class CommentService {
         private utilsService: UtilsService) {
     }
 
-    public getCommentsByGameKey(gameKey: string): Observable<Comment[]> {
+    getCommentsByGameKey(gameKey: string): Observable<Comment[]> {
         return this.http.get<Comment[]>(`${this.apiUrl}getAllByGameKey/${gameKey}`)
             .pipe(
                 catchError(err => {
@@ -26,7 +26,7 @@ export class CommentService {
             );
     }
 
-    public createComment(comment: Comment): Observable<Comment> {
+    createComment(comment: Comment): Observable<Comment> {
         return this.http.post<Comment>(`${this.apiUrl}leaveComment`, comment)
             .pipe(
                 catchError(err => {

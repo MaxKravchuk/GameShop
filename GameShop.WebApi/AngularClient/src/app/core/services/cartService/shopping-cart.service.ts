@@ -9,15 +9,15 @@ import { UtilsService } from "../helpers/utilsService/utils-service";
 })
 export class ShoppingCartService {
 
-    private apiUrl: string = '/api/shoppingcart';
+    private apiUrl: string = '/api/shoppingcart/';
 
     constructor(
         private http: HttpClient,
         private utilsService: UtilsService) {
     }
 
-    public addToCart(cartItem: CartItem): Observable<CartItem> {
-        return  this.http.post<CartItem>(`${this.apiUrl}/addToCart`, cartItem)
+    addToCart(cartItem: CartItem): Observable<CartItem> {
+        return  this.http.post<CartItem>(`${this.apiUrl}addToCart`, cartItem)
             .pipe(
                 catchError(err => {
                     this.utilsService.openWithMessage(err.message);
@@ -26,8 +26,8 @@ export class ShoppingCartService {
             );
     }
 
-    public getCartItems(): Observable<CartItem[]> {
-        return this.http.get<CartItem[]>(this.apiUrl)
+    getCartItems(): Observable<CartItem[]> {
+        return this.http.get<CartItem[]>(`${this.apiUrl}getAll`)
             .pipe(
                 catchError(err => {
                     this.utilsService.openWithMessage(err.message);
@@ -36,8 +36,8 @@ export class ShoppingCartService {
             );
     }
 
-    public deleteItemFromCart(key: string) {
-        return this.http.delete(`${this.apiUrl}/delete/${key}`)
+    deleteItemFromCart(key: string) {
+        return this.http.delete(`${this.apiUrl}delete/${key}`)
             .pipe(
                 catchError(err => {
                     this.utilsService.openWithMessage(err.message);

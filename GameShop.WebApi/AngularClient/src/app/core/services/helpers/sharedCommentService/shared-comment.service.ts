@@ -13,15 +13,15 @@ export class SharedCommentService {
 
     reloadComments$: Observable<any> = this.reloadCommentsSource.asObservable();
 
-    public sendData(model: CommentShared) {
+    sendData(model: CommentShared) {
         this.dataSubject.next(model);
     }
 
-    public getData() {
+    getData() {
         return this.dataSubject.asObservable();
     }
 
-    public reloadComments() {
+    reloadComments() {
         this.reloadCommentsSource.next();
     }
 }

@@ -19,7 +19,7 @@ export class GameService {
         private utilsService: UtilsService) {
     }
 
-    public getAllGames(): Observable<Game[]> {
+    getAllGames(): Observable<Game[]> {
         return this.http.get<Game[]>(`${this.apiUrl}getAll`)
             .pipe(
                 catchError(err => {
@@ -29,7 +29,7 @@ export class GameService {
             );
     }
 
-    public getGameDetailsByKey(key: string): Observable<Game> {
+    getGameDetailsByKey(key: string): Observable<Game> {
         return this.http.get<Game>(`${this.apiUrl}getDetailsByKey/${key}`)
             .pipe(
                 catchError(err => {
@@ -39,7 +39,7 @@ export class GameService {
             );
     }
 
-    public downloadGame(gameKey: string): Observable<any> {
+    downloadGame(gameKey: string): Observable<any> {
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
             'Accept': 'application/octet-stream'
@@ -56,7 +56,7 @@ export class GameService {
         );
     }
 
-    public createGame(createGameDTO: CreateGameModel): Observable<CreateGameModel> {
+    createGame(createGameDTO: CreateGameModel): Observable<CreateGameModel> {
         return this.http.post<CreateGameModel>(`${this.apiUrl}`, createGameDTO)
             .pipe(
                 catchError(err => {
@@ -66,7 +66,7 @@ export class GameService {
             );
     }
 
-    public getNumberOfGames(): Observable<number> {
+    getNumberOfGames(): Observable<number> {
         return this.http.get<number>(`${this.apiUrl}numberOfGames`)
             .pipe(
                 catchError(err => {

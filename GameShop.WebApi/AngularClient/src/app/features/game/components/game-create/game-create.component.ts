@@ -9,7 +9,8 @@ import { CreateGameModel } from "../../../../core/models/CreateGameModel";
 import { Publisher } from "../../../../core/models/Publisher";
 import { PublisherService } from "../../../../core/services/publisherService/publisher.service";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
-import { catchError, forkJoin, Observable } from "rxjs";
+import { catchError, combineLatest, combineLatestAll, forkJoin, mergeMap, Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 @Component({
     selector: 'app-game-create',
@@ -18,43 +19,52 @@ import { catchError, forkJoin, Observable } from "rxjs";
 })
 export class GameCreateComponent implements OnInit {
 
-    gameGenres?: Genre[] = [];
+    gameGenres!: Genre[];
 
-    platformTypes?: PlatformType[] = [];
+    platformTypes!: PlatformType[];
 
-    publishers?: Publisher[] = [];
+    publishers!: Publisher[];
 
-    form = new FormGroup({
-        Name: new FormControl("", Validators.required),
-        Description: new FormControl("", Validators.required),
-        Key: new FormControl("", Validators.required),
-        GenresId: new FormControl("", Validators.required),
-        PlatformTypeId: new FormControl("", Validators.required),
-        PublisherId: new FormControl("", Validators.required),
-        Price: new FormControl("", Validators.required),
-        UnitsInStock: new FormControl("", Validators.required),
-    });
+    form!: FormGroup;
 
     constructor(
-        @Inject(FormBuilder) private formBuilder: FormBuilder,
+        private formBuilder: FormBuilder,
         private gameService: GameService,
         private genreService: GenreService,
         private platformTypeService: PlatformTypeService,
         private publisherService: PublisherService,
-        private utilsService: UtilsService) {
-    }
+        private utilsService: UtilsService
+    ) {}
 
     ngOnInit(): void {
-        this.getGenres();
-        this.getPlatformTypes();
-        this.getPublishers();
+
+        this.form = this.formBuilder.group({
+            Name: new FormControl("", Validators.required),
+            Description: new FormControl("", Validators.required),
+            Key: new FormControl("", Validators.required),
+            GenresId: new FormControl("", Validators.required),
+            PlatformTypeId: new FormControl("", Validators.required),
+            PublisherId: new FormControl("", Validators.required),
+            Price: new FormControl("", [Validators.required, Validators.min(0)]),
+            UnitsInStock: new FormControl("", [Validators.required, Validators.min(1)]),
+        });
+
+        forkJoin([
+            this.genreService.getAllGenres(),
+            this.platformTypeService.getAllPlatformTypes(),
+            this.publisherService.getAllPublishers()
+        ]).subscribe(([genres, platformTypes, publishers]) => {
+            this.gameGenres = genres;
+            this.platformTypes = platformTypes;
+            this.publishers = publishers;
+        });
     }
 
-    public onNoClick() {
+    onNoClick() {
         this.utilsService.goBack();
     }
 
-    public onSaveForm() {
+    onSaveForm() {
         if (!this.form.valid) {
             this.utilsService.openWithMessage("Please fill all the fields");
         }
@@ -65,29 +75,5 @@ export class GameCreateComponent implements OnInit {
                 this.utilsService.goBack();
             }
         });
-    }
-
-    private getGenres(): void {
-        this.genreService.getAllGenres().subscribe(
-            (data) => {
-                this.gameGenres = data;
-            }
-        );
-    }
-
-    private getPlatformTypes(): void {
-        this.platformTypeService.getAllPlatformTypes().subscribe(
-            (data) => {
-                this.platformTypes = data;
-            }
-        );
-    }
-
-    private getPublishers(): void {
-        this.publisherService.getAllPublishers().subscribe(
-            (data) => {
-                this.publishers = data;
-            }
-        );
     }
 }

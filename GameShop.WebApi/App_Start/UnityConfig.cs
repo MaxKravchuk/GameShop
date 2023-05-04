@@ -1,5 +1,5 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
+using System.Web.Http;
 using AutoMapper;
 using FluentValidation;
 using GameShop.BLL.DTO.CommentDTOs;
@@ -16,51 +16,25 @@ using GameShop.DAL.Entities;
 using GameShop.DAL.Repository;
 using GameShop.DAL.Repository.Interfaces;
 using GameShop.DAL.Repository.Interfaces.Utils;
+using GameShop.WebApi.App_Start;
 using log4net;
 using StackExchange.Redis;
 using Unity;
 using Unity.Lifetime;
+using Unity.WebApi;
 
-namespace GameShop.WebApi.App_Start
+namespace GameShop.WebApi
 {
-    /// <summary>
-    /// Specifies the Unity configuration for the main container.
-    /// </summary>
     public static class UnityConfig
     {
-        #region Unity Container
-        private static Lazy<IUnityContainer> container =
-          new Lazy<IUnityContainer>(() =>
-          {
-              var container = new UnityContainer();
-              RegisterTypes(container);
-              return container;
-          });
-
-        /// <summary>
-        /// Configured Unity Container.
-        /// </summary>
-        public static IUnityContainer Container => container.Value;
-        #endregion
-
-        /// <summary>
-        /// Registers the type mappings with the Unity container.
-        /// </summary>
-        /// <param name="container">The unity container to configure.</param>
-        /// <remarks>
-        /// There is no need to register concrete types such as controllers or
-        /// API controllers (unless you want to change the defaults), as Unity
-        /// allows resolving a concrete type even if it was not previously
-        /// registered.
-        /// </remarks>
-        public static void RegisterTypes(IUnityContainer container)
+        public static void RegisterComponents(HttpConfiguration httpConfiguration)
         {
-            // NOTE: To load from web.config uncomment the line below.
-            // Make sure to add a Unity.Configuration to the using statements.
-            // container.LoadConfiguration();
+			var container = new UnityContainer();
 
-            // TODO: Register your type's mappings here.
-            // container.RegisterType<IProductRepository, ProductRepository>();
+            // register all your components with the container here
+            // it is NOT necessary to register your controllers
+
+            // e.g. container.RegisterType<ITestService, TestService>();
             container.RegisterType<GameShopContext>(new HierarchicalLifetimeManager());
 
             container.RegisterType<IRepository<Comment>, Repository<Comment>>();
@@ -103,6 +77,8 @@ namespace GameShop.WebApi.App_Start
                 (new ContainerControlledLifetimeManager());
             container.RegisterType<IValidator<CartItemDTO>, CartItemValidator>
                 (new ContainerControlledLifetimeManager());
+
+            httpConfiguration.DependencyResolver = new UnityDependencyResolver(container);
         }
     }
 }

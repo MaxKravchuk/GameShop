@@ -17,23 +17,25 @@ export class CartMainComponent implements OnInit {
         this.updateCart();
     }
 
-    public getTotalPrice(): number {
-        let totalPrice = 0;
+    getTotalPrice(): number {
+        let totalPrice: number = 0;
         for (let cartItem of this.cartItems) {
             totalPrice += cartItem.Quantity! * cartItem.GamePrice!;
         }
         return totalPrice;
     }
 
-    public removeFromCart(gameKey: string) {
-        this.shoppingCartService.deleteItemFromCart(gameKey).subscribe(
-            () => this.updateCart()
-        );
+    removeFromCart(gameKey: string) {
+        this.shoppingCartService.deleteItemFromCart(gameKey).subscribe({
+            next: () => {
+                this.updateCart();
+            }
+        });
     }
 
     private updateCart() {
         this.shoppingCartService.getCartItems().subscribe(
-            cartItems => {
+            (cartItems: CartItem[]) => {
                 this.cartItems = cartItems;
             }
         );

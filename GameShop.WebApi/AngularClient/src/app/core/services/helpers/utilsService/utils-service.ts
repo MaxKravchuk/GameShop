@@ -13,7 +13,7 @@ export class UtilsService {
     ) {
     }
 
-    public openWithMessage(message: string): void {
+    openWithMessage(message: string): void {
         this.snackBar.open(`${message}`, 'Close', {
             duration: 4000,
             horizontalPosition: 'center',
@@ -21,9 +21,7 @@ export class UtilsService {
         });
     }
 
-    public goBack(): void {
+    goBack(): void {
         this.location.back();
     }
-
-
 }

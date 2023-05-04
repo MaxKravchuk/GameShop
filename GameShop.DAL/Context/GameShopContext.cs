@@ -7,7 +7,6 @@ namespace GameShop.DAL.Context
     {
         public GameShopContext() : base("name=DefaultConnectingString")
         {
-            Database.SetInitializer<GameShopContext>(new DropCreateDatabaseIfModelChanges<GameShopContext>());
         }
 
         public DbSet<Comment> Comments { get; set; }
@@ -26,7 +25,6 @@ namespace GameShop.DAL.Context
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
             modelBuilder.Configurations.AddFromAssembly(GetType().Assembly);
         }
     }

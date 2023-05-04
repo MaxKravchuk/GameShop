@@ -9,25 +9,31 @@ import { UtilsService } from "../../../../core/services/helpers/utilsService/uti
     templateUrl: './publisher-create.component.html',
     styleUrls: ['./publisher-create.component.css']
 })
-export class PublisherCreateComponent {
+export class PublisherCreateComponent implements OnInit{
 
-    form = new FormGroup({
-        CompanyName: this.formBuilder.control('', Validators.required),
-        Description: this.formBuilder.control('', Validators.required),
-        HomePage: this.formBuilder.control('', Validators.required),
-    });
+    private urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=]+$/;
+
+    form!: FormGroup;
 
     constructor(
-        @Inject(FormBuilder) private formBuilder: FormBuilder,
+        private formBuilder: FormBuilder,
         private publisherService: PublisherService,
         private utilsService: UtilsService
     ) {}
 
-    public onNoClick() {
+    ngOnInit(): void {
+        this.form = this.formBuilder.group({
+            CompanyName: this.formBuilder.control('', Validators.required),
+            Description: this.formBuilder.control('', Validators.required),
+            HomePage: this.formBuilder.control('', [Validators.required, Validators.pattern(this.urlRegex)])
+        });
+    }
+
+    onNoClick() {
         this.utilsService.goBack();
     }
 
-    public onSaveForm() {
+    onSaveForm() {
         if (!this.form.valid) {
             this.utilsService.openWithMessage("Form is invalid!");
         }

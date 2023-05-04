@@ -42,7 +42,7 @@ namespace GameShop.DAL.Repository
             return set;
         }
 
-        public virtual async Task<IEnumerable<T>> GetAsync(
+        public async Task<IEnumerable<T>> GetAsync(
             Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             string includeProperties = "",
@@ -81,18 +81,18 @@ namespace GameShop.DAL.Repository
             return await set.FirstOrDefaultAsync(en => en == result && en.IsDeleted == false);
         }
 
-        public virtual void Insert(T entity)
+        public void Insert(T entity)
         {
             _context.Set<T>().Add(entity);
         }
 
-        public virtual void Delete(T entityToDelete)
+        public void Delete(T entityToDelete)
         {
             entityToDelete.IsDeleted = true;
             Update(entityToDelete);
         }
 
-        public virtual void Update(T entityToUpdate)
+        public void Update(T entityToUpdate)
         {
             if (_context.Entry(entityToUpdate).State == EntityState.Detached)
             {
@@ -102,9 +102,9 @@ namespace GameShop.DAL.Repository
             _context.Entry(entityToUpdate).State = EntityState.Modified;
         }
 
-        public virtual async Task<int> GetCountAsync()
+        public async Task<int> GetCountAsync()
         {
-            var queryCount = _context.Set<T>().Where(x => !x.IsDeleted).AsNoTracking();
+            var queryCount = _context.Set<T>().Where(x => !x.IsDeleted);
             return await queryCount.CountAsync();
         }
     }

@@ -20,17 +20,17 @@ export class CommentsListComponent implements OnInit {
         this.getComments();
     }
 
-    public getRootComments(): Comment[] {
-        return this.comments.filter((comment) => comment.ParentId == null);
+    getRootComments(): Comment[] {
+        return this.comments.filter((comment: Comment) => comment.ParentId == null);
     }
 
-    public getReplies(commentId: number): Comment[] {
-        return this.comments.filter((comment) => comment.ParentId == commentId);
+    getReplies(commentId: number): Comment[] {
+        return this.comments.filter((comment: Comment) => comment.ParentId == commentId);
     }
 
     private getComments(): void {
         this.commentService.getCommentsByGameKey(this.gameKey).subscribe(
-            (comments) => this.comments = comments
+            (comments: Comment[]) => this.comments = comments
         );
     }
 }

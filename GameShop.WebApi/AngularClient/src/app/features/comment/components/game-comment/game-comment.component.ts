@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { CommentService } from "../../../../core/services/commentService/comment.service";
 import { catchError } from "rxjs";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
 
 @Component({
     selector: 'app-game-comment',
@@ -32,29 +33,32 @@ export class GameCommentComponent implements OnInit {
         private commentService: CommentService,
         private sharedService: SharedCommentService,
         private route: Router,
-        private _route: ActivatedRoute
+        private _route: ActivatedRoute,
+        private utilsService: UtilsService
     ) {
     }
 
     ngOnInit(): void {
-        this.sharedService.reloadComments$.subscribe(() => {
-            window.location.reload();
+        this.sharedService.reloadComments$.subscribe({
+            next: () =>{
+                this.utilsService.goBack();
+            }
         });
         if (this.gameKey! != null) {
             this.getCommentsByGameKey(this.gameKey!);
         }
     }
 
-    public onAnswerButtonClick(Name: string, Id: number): void {
-        const model: CommentShared = {Name: Name, CommentId: Id};
+    onAnswerButtonClick(Name: string, Id: number): void {
+        const model: CommentShared = { Name: Name, CommentId: Id };
         this.sharedService.sendData(model);
     }
 
-    public showAnswers(): void {
+    showAnswers(): void {
         this.answersIsDisplayed = !this.answersIsDisplayed;
     }
 
-    public goToParentComment(Id: number): void {
+    goToParentComment(Id: number): void {
         this.route.navigate([], {relativeTo: this._route, fragment: `comment-${Id}`}).then(() => {
             const parent = document.getElementById(`comment-${Id}`);
             if (parent) {
@@ -63,13 +67,13 @@ export class GameCommentComponent implements OnInit {
         });
     }
 
-    public getReplies(id: number): Comment[] {
-        return this.comments.filter(x => x.ParentId == id);
+    getReplies(id: number): Comment[] {
+        return this.comments.filter((comment: Comment) => comment.ParentId == id);
     }
 
     private getCommentsByGameKey(gameKey: string): void {
         this.commentService.getCommentsByGameKey(this.gameKey!).subscribe(
-            (comment) => this.comments = comment
+            (comment: Comment[]) => this.comments = comment
         );
     }
 }

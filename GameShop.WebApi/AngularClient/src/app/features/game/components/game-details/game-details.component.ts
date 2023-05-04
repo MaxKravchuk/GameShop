@@ -39,14 +39,14 @@ export class GameDetailsComponent implements OnInit {
         }
     }
 
-    public downloadGame(): void {
+    downloadGame(): void {
         this.gameService.downloadGame(this.gameKey!).subscribe(
             (blob: Blob) => {
                 saveAs(blob, `${this.gameKey}.bin`);
             });
     }
 
-    public buyGame(): void {
+    buyGame(): void {
         let cartItem: CartItem = {
             GameKey: this.game.Key!,
             GameName: this.game.Name!,
@@ -61,7 +61,7 @@ export class GameDetailsComponent implements OnInit {
     }
 
     private getGameDetailsByKey(Key: string): void {
-        this.gameService.getGameDetailsByKey(Key).subscribe((data) => {
+        this.gameService.getGameDetailsByKey(Key).subscribe((data: Game) => {
             this.game = data;
             this.genres = data.Genres;
             this.platformTypes = data.PlatformTypes;

@@ -97,7 +97,7 @@ namespace GameShop.WebApi.Controllers
         public async Task<IHttpActionResult> GetNumberOfGamesAsync()
         {
             var number = await _gameService.GetNumberOfGamesAsync();
-            return Json(number);
+            return Ok(number);
         }
     }
 }

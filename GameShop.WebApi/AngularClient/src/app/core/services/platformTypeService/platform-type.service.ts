@@ -3,6 +3,7 @@ import { PlatformType } from "../../models/PlatformType";
 import { HttpClient } from "@angular/common/http";
 import { catchError, Observable } from "rxjs";
 import { UtilsService } from "../helpers/utilsService/utils-service";
+import { map } from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root'
@@ -16,9 +17,13 @@ export class PlatformTypeService {
         private utilsService: UtilsService) {
     }
 
-    public getAllPlatformTypes(): Observable<PlatformType[]> {
-        return this.http.get<PlatformType[]>(`${this.apiUrl}`)
+    getAllPlatformTypes(): Observable<PlatformType[]> {
+        return this.http.get<PlatformType[]>(`${this.apiUrl}getAll`)
             .pipe(
+                map((platformTypes: PlatformType[]) => {
+                    return platformTypes;
+                    }
+                ),
                 catchError(err => {
                     console.log(err);
                     this.utilsService.openWithMessage(err.message);

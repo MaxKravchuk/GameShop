@@ -11,20 +11,11 @@ export class GameListComponent implements OnInit {
 
     games: Game[] = [];
 
-    constructor(
-        private gameService: GameService
-    ) {
-
-    }
+    constructor(private gameService: GameService) {}
 
     ngOnInit(): void {
-        this.getGames();
+        this.gameService.getAllGames().subscribe(
+            (games: Game[]) => this.games = games
+        );
     }
-
-    private getGames(): void {
-        this.gameService.getAllGames().subscribe((data) => {
-            this.games = data;
-        });
-    }
-
 }

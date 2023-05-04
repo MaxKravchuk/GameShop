@@ -20,11 +20,10 @@ export class PublisherMainComponent implements OnInit {
         private publisherService: PublisherService,
         private activeRoute: ActivatedRoute,
         private utilsService: UtilsService
-    ) {
-        this.companyName = this.activeRoute.snapshot.paramMap.get('CompanyName');
-    }
+    ) {}
 
     ngOnInit(): void {
+        this.companyName = this.activeRoute.snapshot.paramMap.get('CompanyName');
         if (this.companyName != null) {
             this.getPublisherByCompanyName();
         } else {
@@ -32,9 +31,9 @@ export class PublisherMainComponent implements OnInit {
         }
     }
 
-    public getPublisherByCompanyName() {
+    getPublisherByCompanyName() {
         this.publisherService.getPublisherByCompanyName(this.companyName!).subscribe(
-            (data) => {
+            (data: Publisher) => {
                 this.publisher = data;
                 this.games = data.GameReadListDTOs;
             }

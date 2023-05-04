@@ -10,7 +10,7 @@
                 minlength="1"
                 placeholder="Company name">
             <mat-hint>Length must be greater than 1</mat-hint>
-            <mat-error *ngIf="form.controls.CompanyName.invalid">Length must be greater than 1</mat-error>
+            <mat-error *ngIf="form.controls['CompanyName'].invalid">Length must be greater than 1</mat-error>
         </mat-form-field>
     </p>
     <p>
@@ -23,7 +23,7 @@
                 minlength="1"
                 placeholder="Description">
             <mat-hint>Length must be greater than 1</mat-hint>
-            <mat-error *ngIf="form.controls.Description.invalid">Length must be greater than 1</mat-error>
+            <mat-error *ngIf="form.controls['Description'].invalid">Length must be greater than 1</mat-error>
         </mat-form-field>
     </p>
     <p>
@@ -36,7 +36,7 @@
                 minlength="1"
                 placeholder="Home page">
             <mat-hint>Length must be greater than 1</mat-hint>
-            <mat-error *ngIf="form.controls.HomePage.invalid">Length must be greater than 1</mat-error>
+            <mat-error *ngIf="form.controls['HomePage'].invalid">This is not URL</mat-error>
         </mat-form-field>
     </p>
 </div>
