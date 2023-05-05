@@ -1,17 +1,15 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Comment } from "../../../../core/models/Comment";
-import { SharedCommentService } from "../../../../core/services/helpers/sharedCommentService/shared-comment.service";
+import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
 import { CommentShared } from "../../../../core/models/helpers/CommentShared";
-import { ActivatedRoute, Router } from "@angular/router";
 import { CommentService } from "../../../../core/services/commentService/comment.service";
-import { Subscription } from "rxjs";
 
 @Component({
     selector: 'app-game-comment',
     templateUrl: './game-comment.component.html',
     styleUrls: ['./game-comment.component.css']
 })
-export class GameCommentComponent implements OnInit, OnDestroy {
+export class GameCommentComponent implements OnInit {
 
     @Input() comment!: Comment;
 
@@ -27,33 +25,19 @@ export class GameCommentComponent implements OnInit, OnDestroy {
 
     comments: Comment[] = [];
 
-    private reloadCommentsSub: Subscription = new Subscription();
-
     constructor(
         private commentService: CommentService,
-        private sharedService: SharedCommentService,
-        private router: Router,
-        private route: ActivatedRoute
-    ) {
-    }
+        private sharedService: SharedService<CommentShared>
+    ) {}
 
     ngOnInit(): void {
-        this.reloadCommentsSub = this.sharedService.reloadComments$.subscribe({
-            next: () =>{
-                // TODO: Add reload page
-            }
-        });
         if (this.gameKey! != null) {
             this.getCommentsByGameKey(this.gameKey!);
         }
     }
 
-    ngOnDestroy(): void {
-        this.reloadCommentsSub.unsubscribe();
-    }
-
     onAnswerButtonClick(Name: string, Id: number): void {
-        const model: CommentShared = { Name: Name, CommentId: Id };
+        const model: CommentShared = {Name: Name, CommentId: Id};
         this.sharedService.sendData(model);
     }
 
@@ -62,16 +46,10 @@ export class GameCommentComponent implements OnInit, OnDestroy {
     }
 
     goToParentComment(Id: number): void {
-        this.router.navigate([], {relativeTo: this.route, fragment: `comment-${Id}`}).then(() => {
-            const parent = document.getElementById(`comment-${Id}`);
-            if (parent) {
-                parent.scrollIntoView({behavior: 'smooth'});
-            }
-        });
-    }
-
-    getReplies(id: number): Comment[] {
-        return this.comments.filter((comment: Comment) => comment.ParentId == id);
+        const parent: HTMLElement | null = document.getElementById(`comment-${Id}`);
+        if (parent) {
+            parent.scrollIntoView({behavior: 'smooth'});
+        }
     }
 
     private getCommentsByGameKey(gameKey: string): void {

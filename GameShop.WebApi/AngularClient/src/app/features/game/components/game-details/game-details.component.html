@@ -5,7 +5,7 @@
         <p>Price: {{game.Price}}</p>
         <p>Units in stock: {{game.UnitsInStock}}</p>
         <p>Discontinued: {{game.Discontinued}}</p>
-        <a routerLink="/publishers/details/{{publisher!.CompanyName}}">CompanyName: {{publisher!.CompanyName}}</a>
+        <a routerLink="/publishers/details/{{publisher!.CompanyName}}">Publisher: {{publisher!.CompanyName}}</a>
     </div>
     <p>Genres:</p>
     <p *ngFor="let genre of genres">{{genre.Name}}</p>

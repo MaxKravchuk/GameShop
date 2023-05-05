@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { PublisherService } from "../../../../core/services/publisherService/publisher.service";
 import { Publisher } from "../../../../core/models/Publisher";
@@ -9,7 +9,7 @@ import { UtilsService } from "../../../../core/services/helpers/utilsService/uti
     templateUrl: './publisher-create.component.html',
     styleUrls: ['./publisher-create.component.css']
 })
-export class PublisherCreateComponent implements OnInit{
+export class PublisherCreateComponent implements OnInit {
 
     private urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=]+$/;
 
@@ -29,18 +29,18 @@ export class PublisherCreateComponent implements OnInit{
         });
     }
 
-    onNoClick() {
+    onNoClick(): void {
         this.utilsService.goBack();
     }
 
-    onSaveForm() {
+    onSaveForm(): void {
         if (!this.form.valid) {
             this.utilsService.openWithMessage("Form is invalid!");
         }
 
         const data: Publisher = this.form.value as Publisher;
         this.publisherService.createPublisher(data).subscribe({
-            next: () => {
+            next: (): void => {
                 this.utilsService.goBack();
             }
         });

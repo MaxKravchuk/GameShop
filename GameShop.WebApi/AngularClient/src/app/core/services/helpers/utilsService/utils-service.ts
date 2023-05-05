@@ -10,8 +10,7 @@ export class UtilsService {
     constructor(
         private snackBar: MatSnackBar,
         private location: Location
-    ) {
-    }
+    ) {}
 
     openWithMessage(message: string): void {
         this.snackBar.open(`${message}`, 'Close', {

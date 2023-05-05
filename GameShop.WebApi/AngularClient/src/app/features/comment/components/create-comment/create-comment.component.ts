@@ -1,10 +1,10 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { CommentService } from "../../../../core/services/commentService/comment.service";
 import { Comment } from "../../../../core/models/Comment";
-import { SharedCommentService } from "../../../../core/services/helpers/sharedCommentService/shared-comment.service";
+import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
 import { CommentShared } from "../../../../core/models/helpers/CommentShared";
-import { catchError } from "rxjs";
+import { Subscription } from "rxjs";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
 
 @Component({
@@ -12,18 +12,20 @@ import { UtilsService } from "../../../../core/services/helpers/utilsService/uti
     templateUrl: './create-comment.component.html',
     styleUrls: ['./create-comment.component.css']
 })
-export class CreateCommentComponent implements OnInit{
-
-    receivedData: CommentShared = {Name: "", CommentId: undefined};
+export class CreateCommentComponent implements OnInit, OnDestroy {
 
     @Input() gameKey?: string;
 
+    receivedData: CommentShared = {Name: ''};
+
     form!: FormGroup;
+
+    private receivedDataSub: Subscription = new Subscription();
 
     constructor(
         private formBuilder: FormBuilder,
         private commentService: CommentService,
-        private sharedService: SharedCommentService,
+        private sharedService: SharedService<CommentShared>,
         private utilsService: UtilsService
     ) {}
 
@@ -33,13 +35,17 @@ export class CreateCommentComponent implements OnInit{
             Body: new FormControl("", Validators.required)
         });
 
-        this.sharedService.getData().subscribe((data: CommentShared) => {
+        this.receivedDataSub = this.sharedService.getData$().subscribe((data: CommentShared): void => {
             if (this.receivedData.Name == data.Name && this.receivedData.CommentId == data.CommentId) {
                 this.receivedData.Name = "";
             } else {
                 this.receivedData = data;
             }
         });
+    }
+
+    ngOnDestroy(): void {
+        this.receivedDataSub.unsubscribe();
     }
 
     onSaveForm(): void {
@@ -54,8 +60,8 @@ export class CreateCommentComponent implements OnInit{
         } as Comment;
 
         this.commentService.createComment(data).subscribe({
-            next: () => {
-                this.sharedService.reloadComments();
+            next: (): void => {
+                this.sharedService.reloadSource();
             }
         });
     }

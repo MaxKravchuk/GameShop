@@ -4,7 +4,6 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { catchError, Observable } from "rxjs";
 import { CreateGameModel } from "../../models/CreateGameModel";
 import { UtilsService } from "../helpers/utilsService/utils-service";
-import { map } from "rxjs/operators";
 
 
 @Injectable({
@@ -16,8 +15,8 @@ export class GameService {
 
     constructor(
         private http: HttpClient,
-        private utilsService: UtilsService) {
-    }
+        private utilsService: UtilsService
+    ) {}
 
     getAllGames(): Observable<Game[]> {
         return this.http.get<Game[]>(`${this.apiUrl}getAll`)
@@ -40,7 +39,7 @@ export class GameService {
     }
 
     downloadGame(gameKey: string): Observable<any> {
-        const headers = new HttpHeaders({
+        const headers: HttpHeaders = new HttpHeaders({
             'Content-Type': 'application/json',
             'Accept': 'application/octet-stream'
         });

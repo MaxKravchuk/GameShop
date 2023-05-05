@@ -18,10 +18,14 @@ import { UtilsService } from "../../../../core/services/helpers/utilsService/uti
 export class GameDetailsComponent implements OnInit {
 
     game!: Game;
+
     genres?: Genre[] = [];
+
     platformTypes?: PlatformType[] = [];
+
     publisher?: Publisher;
-    gameKey: string | null = null;
+
+    gameKey?: string | null;
 
     constructor(
         private gameService: GameService,
@@ -41,7 +45,7 @@ export class GameDetailsComponent implements OnInit {
 
     downloadGame(): void {
         this.gameService.downloadGame(this.gameKey!).subscribe(
-            (blob: Blob) => {
+            (blob: Blob): void => {
                 saveAs(blob, `${this.gameKey}.bin`);
             });
     }
@@ -54,14 +58,14 @@ export class GameDetailsComponent implements OnInit {
         }
 
         this.shoppingCartService.addToCart(cartItem).subscribe({
-            next: () => {
+            next: (): void => {
                 this.utilsService.openWithMessage('Game has been added to your cart.');
             },
         });
     }
 
     private getGameDetailsByKey(Key: string): void {
-        this.gameService.getGameDetailsByKey(Key).subscribe((data: Game) => {
+        this.gameService.getGameDetailsByKey(Key).subscribe((data: Game): void => {
             this.game = data;
             this.genres = data.Genres;
             this.platformTypes = data.PlatformTypes;

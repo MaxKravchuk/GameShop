@@ -27,17 +27,17 @@ export class CartMainComponent implements OnInit {
         this.totalPrice = totalPrice;
     }
 
-    removeFromCart(gameKey: string) {
+    removeFromCart(gameKey: string): void {
         this.shoppingCartService.deleteItemFromCart(gameKey).subscribe({
-            next: () => {
+            next: (): void => {
                 this.fetchCart();
             }
         });
     }
 
-    private fetchCart() {
+    private fetchCart(): void {
         this.shoppingCartService.getCartItems().subscribe(
-            (cartItems: CartItem[]) => {
+            (cartItems: CartItem[]): void => {
                 this.cartItems = cartItems;
                 this.getTotalPrice();
             }

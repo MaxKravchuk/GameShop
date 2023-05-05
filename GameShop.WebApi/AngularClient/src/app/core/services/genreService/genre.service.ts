@@ -3,7 +3,6 @@ import { Genre } from "../../models/Genre";
 import { HttpClient } from "@angular/common/http";
 import { catchError, Observable } from "rxjs";
 import { UtilsService } from "../helpers/utilsService/utils-service";
-import { map } from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root'
@@ -14,8 +13,8 @@ export class GenreService {
 
     constructor(
         private http: HttpClient,
-        private utilsService: UtilsService) {
-    }
+        private utilsService: UtilsService
+    ) {}
 
     getAllGenres(): Observable<Genre[]> {
         return this.http.get<Genre[]>(`${this.apiUrl}getAll`)

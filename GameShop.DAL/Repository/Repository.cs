@@ -104,8 +104,7 @@ namespace GameShop.DAL.Repository
 
         public async Task<int> GetCountAsync()
         {
-            var queryCount = _context.Set<T>().Where(x => !x.IsDeleted);
-            return await queryCount.CountAsync();
+            return await GetQuery(filter: null).CountAsync();
         }
     }
 }

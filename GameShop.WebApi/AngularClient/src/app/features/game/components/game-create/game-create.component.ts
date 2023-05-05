@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { GameService } from "../../../../core/services/gameService/game.service";
 import { GenreService } from "../../../../core/services/genreService/genre.service";
@@ -9,8 +9,9 @@ import { CreateGameModel } from "../../../../core/models/CreateGameModel";
 import { Publisher } from "../../../../core/models/Publisher";
 import { PublisherService } from "../../../../core/services/publisherService/publisher.service";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
-import { catchError, combineLatest, combineLatestAll, forkJoin, mergeMap, Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { forkJoin } from "rxjs";
+import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
+import { Game } from "../../../../core/models/Game";
 
 @Component({
     selector: 'app-game-create',
@@ -33,7 +34,8 @@ export class GameCreateComponent implements OnInit {
         private genreService: GenreService,
         private platformTypeService: PlatformTypeService,
         private publisherService: PublisherService,
-        private utilsService: UtilsService
+        private utilsService: UtilsService,
+        private sharedService: SharedService<Game>
     ) {}
 
     ngOnInit(): void {
@@ -60,18 +62,19 @@ export class GameCreateComponent implements OnInit {
         });
     }
 
-    onNoClick() {
+    onNoClick(): void {
         this.utilsService.goBack();
     }
 
-    onSaveForm() {
+    onSaveForm(): void {
         if (!this.form.valid) {
             this.utilsService.openWithMessage("Please fill all the fields");
         }
 
         const data: CreateGameModel = this.form.value as CreateGameModel;
         this.gameService.createGame(data).subscribe({
-            next: () => {
+            next: (): void => {
+                this.sharedService.reloadSource();
                 this.utilsService.goBack();
             }
         });

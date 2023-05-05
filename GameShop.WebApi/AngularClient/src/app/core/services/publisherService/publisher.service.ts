@@ -3,7 +3,6 @@ import { Publisher } from "../../models/Publisher";
 import { HttpClient } from "@angular/common/http";
 import { catchError, Observable } from "rxjs";
 import { UtilsService } from "../helpers/utilsService/utils-service";
-import { map } from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root'
@@ -14,8 +13,8 @@ export class PublisherService {
 
     constructor(
         private http: HttpClient,
-        private utilsService: UtilsService) {
-    }
+        private utilsService: UtilsService
+    ) {}
 
     getPublisherByCompanyName(companyName: string): Observable<Publisher> {
         return this.http.get<Publisher>(`${this.apiUrl}?companyName=${companyName}`)
@@ -30,11 +29,6 @@ export class PublisherService {
     createPublisher(publisher: Publisher): Observable<Publisher> {
         return this.http.post<Publisher>(`${this.apiUrl}`, publisher)
             .pipe(
-                map(
-                    (publisher: Publisher) => {
-                        return publisher;
-                    }
-                ),
                 catchError(err => {
                     this.utilsService.openWithMessage(err.message);
                     return [];

@@ -33,9 +33,9 @@ export class PublisherDetailsComponent implements OnInit {
         }
     }
 
-    getPublisherByCompanyName() {
+    getPublisherByCompanyName(): void {
         this.publisherService.getPublisherByCompanyName(this.companyName!).subscribe(
-            (data: Publisher) => {
+            (data: Publisher): void => {
                 this.publisher = data;
                 this.games = data.GameReadListDTOs;
             }

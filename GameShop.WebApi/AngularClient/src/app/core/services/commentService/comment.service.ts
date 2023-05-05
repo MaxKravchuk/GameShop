@@ -13,8 +13,8 @@ export class CommentService {
 
     constructor(
         private http: HttpClient,
-        private utilsService: UtilsService) {
-    }
+        private utilsService: UtilsService
+    ) {}
 
     getCommentsByGameKey(gameKey: string): Observable<Comment[]> {
         return this.http.get<Comment[]>(`${this.apiUrl}getAllByGameKey/${gameKey}`)

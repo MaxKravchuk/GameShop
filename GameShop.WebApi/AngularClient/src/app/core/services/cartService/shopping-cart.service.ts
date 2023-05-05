@@ -13,11 +13,11 @@ export class ShoppingCartService {
 
     constructor(
         private http: HttpClient,
-        private utilsService: UtilsService) {
-    }
+        private utilsService: UtilsService
+    ) {}
 
     addToCart(cartItem: CartItem): Observable<CartItem> {
-        return  this.http.post<CartItem>(`${this.apiUrl}addToCart`, cartItem)
+        return this.http.post<CartItem>(`${this.apiUrl}addToCart`, cartItem)
             .pipe(
                 catchError(err => {
                     this.utilsService.openWithMessage(err.message);
@@ -36,7 +36,7 @@ export class ShoppingCartService {
             );
     }
 
-    deleteItemFromCart(key: string) {
+    deleteItemFromCart(key: string): Observable<any> {
         return this.http.delete(`${this.apiUrl}delete/${key}`)
             .pipe(
                 catchError(err => {
