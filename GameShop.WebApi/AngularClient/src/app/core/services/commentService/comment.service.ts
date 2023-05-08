@@ -20,7 +20,7 @@ export class CommentService {
         return this.http.get<Comment[]>(`${this.apiUrl}getAllByGameKey/${gameKey}`)
             .pipe(
                 catchError(err => {
-                    this.utilsService.openWithMessage(err.message);
+                    this.utilsService.handleError(err);
                     return [];
                 })
             );
@@ -30,7 +30,7 @@ export class CommentService {
         return this.http.post<Comment>(`${this.apiUrl}leaveComment`, comment)
             .pipe(
                 catchError(err => {
-                    this.utilsService.openWithMessage(err.message);
+                    this.utilsService.handleError(err);
                     return [];
                 })
             );

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { GameService } from "../../../../core/services/gameService/game.service";
 import { GenreService } from "../../../../core/services/genreService/genre.service";
 import { PlatformTypeService } from "../../../../core/services/platformTypeService/platform-type.service";
@@ -41,14 +41,14 @@ export class GameCreateComponent implements OnInit {
     ngOnInit(): void {
 
         this.form = this.formBuilder.group({
-            Name: new FormControl("", Validators.required),
-            Description: new FormControl("", Validators.required),
-            Key: new FormControl("", Validators.required),
-            GenresId: new FormControl("", Validators.required),
-            PlatformTypeId: new FormControl("", Validators.required),
-            PublisherId: new FormControl("", Validators.required),
-            Price: new FormControl("", [Validators.required, Validators.min(0)]),
-            UnitsInStock: new FormControl("", [Validators.required, Validators.min(1)]),
+            Name: ['', Validators.required],
+            Description: ['', [Validators.required,Validators.minLength(50)]],
+            Key: ['', Validators.required],
+            GenresId: ['', Validators.required],
+            PlatformTypeId: ['', Validators.required],
+            PublisherId: ['', Validators.required],
+            Price: ['', [Validators.required, Validators.min(0)]],
+            UnitsInStock: ['', [Validators.required, Validators.min(1)]],
         });
 
         forkJoin([
@@ -68,7 +68,7 @@ export class GameCreateComponent implements OnInit {
 
     onSaveForm(): void {
         if (!this.form.valid) {
-            this.utilsService.openWithMessage("Please fill all the fields");
+            this.utilsService.openWithMessage('Please fill all the fields');
         }
 
         const data: CreateGameModel = this.form.value as CreateGameModel;

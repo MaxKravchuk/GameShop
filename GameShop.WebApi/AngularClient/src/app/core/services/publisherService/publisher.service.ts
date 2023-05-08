@@ -20,7 +20,7 @@ export class PublisherService {
         return this.http.get<Publisher>(`${this.apiUrl}?companyName=${companyName}`)
             .pipe(
                 catchError(err => {
-                    this.utilsService.openWithMessage(err.message);
+                    this.utilsService.handleError(err);
                     return [];
                 })
             );
@@ -30,7 +30,7 @@ export class PublisherService {
         return this.http.post<Publisher>(`${this.apiUrl}`, publisher)
             .pipe(
                 catchError(err => {
-                    this.utilsService.openWithMessage(err.message);
+                    this.utilsService.handleError(err);
                     return [];
                 })
             );
@@ -40,7 +40,7 @@ export class PublisherService {
         return this.http.get<Publisher[]>(`${this.apiUrl}getAll`)
             .pipe(
                 catchError(err => {
-                    this.utilsService.openWithMessage(err.message);
+                    this.utilsService.handleError(err);
                     return [];
                 })
             );

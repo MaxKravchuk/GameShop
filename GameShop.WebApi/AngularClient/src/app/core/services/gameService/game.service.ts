@@ -22,7 +22,7 @@ export class GameService {
         return this.http.get<Game[]>(`${this.apiUrl}getAll`)
             .pipe(
                 catchError(err => {
-                    this.utilsService.openWithMessage(err.message);
+                    this.utilsService.handleError(err);
                     return [];
                 })
             );
@@ -32,7 +32,7 @@ export class GameService {
         return this.http.get<Game>(`${this.apiUrl}getDetailsByKey/${key}`)
             .pipe(
                 catchError(err => {
-                    this.utilsService.openWithMessage(err.message);
+                    this.utilsService.handleError(err);
                     return [];
                 })
             );
@@ -49,7 +49,7 @@ export class GameService {
             responseType: 'blob'
         }).pipe(
             catchError(err => {
-                this.utilsService.openWithMessage(err.message);
+                this.utilsService.handleError(err);
                 return [];
             })
         );
@@ -59,7 +59,7 @@ export class GameService {
         return this.http.post<CreateGameModel>(`${this.apiUrl}`, createGameDTO)
             .pipe(
                 catchError(err => {
-                    this.utilsService.openWithMessage(err.message);
+                    this.utilsService.handleError(err);
                     return [];
                 })
             );
@@ -69,7 +69,7 @@ export class GameService {
         return this.http.get<number>(`${this.apiUrl}numberOfGames`)
             .pipe(
                 catchError(err => {
-                    this.utilsService.openWithMessage(err.message);
+                    this.utilsService.handleError(err);
                     return [];
                 })
             );

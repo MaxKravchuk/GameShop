@@ -20,8 +20,7 @@ export class PlatformTypeService {
         return this.http.get<PlatformType[]>(`${this.apiUrl}getAll`)
             .pipe(
                 catchError(err => {
-                    console.log(err);
-                    this.utilsService.openWithMessage(err.message);
+                    this.utilsService.handleError(err);
                     return [];
                 })
             );

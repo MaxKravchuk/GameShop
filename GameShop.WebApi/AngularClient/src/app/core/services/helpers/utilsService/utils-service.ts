@@ -20,6 +20,24 @@ export class UtilsService {
         });
     }
 
+    handleError(error: any): void{
+        if (error.status === 400) {
+            this.openWithMessage(error.statusText);
+        }
+        else if (error.status === 403) {
+            this.openWithMessage(error.statusText);
+        }
+        else if (error.status === 404) {
+            this.openWithMessage(error.statusText);
+        }
+        else if (error.status === 500) {
+            this.openWithMessage('An internal server error occurred. Please try again later.');
+        }
+        else {
+            this.openWithMessage('An unexpected error occurred. Please try again later.');
+        }
+    }
+
     goBack(): void {
         this.location.back();
     }

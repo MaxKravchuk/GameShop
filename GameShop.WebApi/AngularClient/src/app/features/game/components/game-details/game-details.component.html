@@ -1,4 +1,6 @@
-<div class="cont">
+<div
+    *ngIf="game !== undefined"
+    class="cont">
     <div class="game-info">
         <h1>Name: {{game.Name}}</h1>
         <p>Description: {{game.Description}}</p>

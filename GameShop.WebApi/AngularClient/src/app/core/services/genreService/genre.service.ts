@@ -20,7 +20,7 @@ export class GenreService {
         return this.http.get<Genre[]>(`${this.apiUrl}getAll`)
             .pipe(
                 catchError(err => {
-                    this.utilsService.openWithMessage(err.message);
+                    this.utilsService.handleError(err);
                     return [];
                 })
             );

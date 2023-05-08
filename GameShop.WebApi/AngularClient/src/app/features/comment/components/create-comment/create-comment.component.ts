@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CommentService } from "../../../../core/services/commentService/comment.service";
 import { Comment } from "../../../../core/models/Comment";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
@@ -31,13 +31,13 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.form = this.formBuilder.group({
-            Name: new FormControl("", Validators.required),
-            Body: new FormControl("", Validators.required)
+            Name: ['', Validators.required],
+            Body: ['', Validators.required]
         });
 
         this.receivedDataSub = this.sharedService.getData$().subscribe((data: CommentShared): void => {
             if (this.receivedData.Name == data.Name && this.receivedData.CommentId == data.CommentId) {
-                this.receivedData.Name = "";
+                this.receivedData.Name = '';
             } else {
                 this.receivedData = data;
             }
@@ -50,7 +50,7 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
 
     onSaveForm(): void {
         if (!this.form.valid) {
-            this.utilsService.openWithMessage("Please fill all the fields");
+            this.utilsService.openWithMessage('Please fill all the fields');
         }
 
         const data: Comment = {
@@ -61,6 +61,7 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
 
         this.commentService.createComment(data).subscribe({
             next: (): void => {
+                this.form.reset();
                 this.sharedService.reloadSource();
             }
         });

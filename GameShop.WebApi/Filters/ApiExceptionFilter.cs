@@ -1,6 +1,8 @@
 ﻿using System.Net;
 using System.Net.Http;
 using System.Web.Http.Filters;
+using FluentValidation;
+using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services.Interfaces.Utils;
 
 namespace GameShop.WebApi.Filters
@@ -21,11 +23,34 @@ namespace GameShop.WebApi.Filters
 
             loggerManager.LogError(errorMessage);
 
-            context.Response = new HttpResponseMessage
+            if (context.Exception is ValidationException)
             {
-                StatusCode = HttpStatusCode.InternalServerError,
-                Content = new StringContent(exception == string.Empty ? DefaultErrorMessage : exception)
-            };
+                context.Response = new HttpResponseMessage(HttpStatusCode.Forbidden)
+                {
+                    Content = new StringContent(context.Exception.Message)
+                };
+            }
+            else if (context.Exception is NotFoundException)
+            {
+                context.Response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(context.Exception.Message)
+                };
+            }
+            else if (context.Exception is BadRequestException)
+            {
+                context.Response = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent(context.Exception.Message)
+                };
+            }
+            else
+            {
+                context.Response = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent(exception == string.Empty ? DefaultErrorMessage : exception)
+                };
+            }
         }
     }
 }

@@ -23,9 +23,9 @@ export class PublisherCreateComponent implements OnInit {
 
     ngOnInit(): void {
         this.form = this.formBuilder.group({
-            CompanyName: this.formBuilder.control('', Validators.required),
-            Description: this.formBuilder.control('', Validators.required),
-            HomePage: this.formBuilder.control('', [Validators.required, Validators.pattern(this.urlRegex)])
+            CompanyName: ['', [Validators.required, Validators.maxLength(40)]],
+            Description: ['', Validators.required],
+            HomePage: ['', [Validators.required, Validators.pattern(this.urlRegex)]]
         });
     }
 
@@ -35,7 +35,7 @@ export class PublisherCreateComponent implements OnInit {
 
     onSaveForm(): void {
         if (!this.form.valid) {
-            this.utilsService.openWithMessage("Form is invalid!");
+            this.utilsService.openWithMessage('Form is invalid!');
         }
 
         const data: Publisher = this.form.value as Publisher;

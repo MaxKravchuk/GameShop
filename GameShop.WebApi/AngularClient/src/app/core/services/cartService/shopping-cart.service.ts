@@ -20,7 +20,7 @@ export class ShoppingCartService {
         return this.http.post<CartItem>(`${this.apiUrl}addToCart`, cartItem)
             .pipe(
                 catchError(err => {
-                    this.utilsService.openWithMessage(err.message);
+                    this.utilsService.handleError(err);
                     return [];
                 })
             );
@@ -30,7 +30,7 @@ export class ShoppingCartService {
         return this.http.get<CartItem[]>(`${this.apiUrl}getAll`)
             .pipe(
                 catchError(err => {
-                    this.utilsService.openWithMessage(err.message);
+                    this.utilsService.handleError(err);
                     return [];
                 })
             );
@@ -40,7 +40,7 @@ export class ShoppingCartService {
         return this.http.delete(`${this.apiUrl}delete/${key}`)
             .pipe(
                 catchError(err => {
-                    this.utilsService.openWithMessage(err.message);
+                    this.utilsService.handleError(err);
                     return [];
                 })
             );
