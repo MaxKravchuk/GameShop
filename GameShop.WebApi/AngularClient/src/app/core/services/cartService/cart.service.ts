@@ -7,7 +7,7 @@ import { UtilsService } from "../helpers/utilsService/utils-service";
 @Injectable({
     providedIn: 'root'
 })
-export class ShoppingCartService {
+export class CartService {
 
     private apiUrl: string = '/api/shoppingcart/';
 

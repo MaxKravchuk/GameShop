@@ -6,7 +6,7 @@ import { saveAs } from "file-saver";
 import { Genre } from "../../../../core/models/Genre";
 import { PlatformType } from "../../../../core/models/PlatformType";
 import { Publisher } from "../../../../core/models/Publisher";
-import { ShoppingCartService } from "../../../../core/services/cartService/shopping-cart.service";
+import { CartService } from "../../../../core/services/cartService/cart.service";
 import { CartItem } from "../../../../core/models/CartItem";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
 
@@ -29,7 +29,7 @@ export class GameDetailsComponent implements OnInit {
 
     constructor(
         private gameService: GameService,
-        private shoppingCartService: ShoppingCartService,
+        private shoppingCartService: CartService,
         private utilsService: UtilsService,
         private activeRoute: ActivatedRoute
     ) {}

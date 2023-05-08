@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CartItem } from "../../../../core/models/CartItem";
-import { ShoppingCartService } from "../../../../core/services/cartService/shopping-cart.service";
+import { CartService } from "../../../../core/services/cartService/cart.service";
 
 @Component({
     selector: 'app-cart-main',
@@ -13,7 +13,7 @@ export class CartMainComponent implements OnInit {
 
     totalPrice: number = 0;
 
-    constructor(private shoppingCartService: ShoppingCartService) {}
+    constructor(private shoppingCartService: CartService) {}
 
     ngOnInit(): void {
         this.fetchCart();
