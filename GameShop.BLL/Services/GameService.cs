@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services.Interfaces;
@@ -18,19 +19,24 @@ namespace GameShop.BLL.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
+        private readonly IValidator<GameCreateDTO> _validator;
 
         public GameService(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            ILoggerManager loggerManager)
+            ILoggerManager loggerManager,
+            IValidator<GameCreateDTO> validator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _loggerManager = loggerManager;
+            _validator = validator;
         }
 
         public async Task CreateAsync(GameCreateDTO newGameDTO)
         {
+            await _validator.ValidateAndThrowAsync(newGameDTO);
+
             var gameToAdd = _mapper.Map<Game>(newGameDTO);
 
             var allGenres = await _unitOfWork.GenreRepository.GetAsync(
@@ -88,7 +94,7 @@ namespace GameShop.BLL.Services
         public async Task<GameReadDTO> GetGameByKeyAsync(string gameKey)
         {
             var game = await _unitOfWork.GameRepository.GetAsync(
-                filter: g => g.Key == gameKey, includeProperties: "GamePlatformTypes,GameGenres");
+                filter: g => g.Key == gameKey, includeProperties: "GamePlatformTypes,GameGenres,Publisher");
 
             if (game.SingleOrDefault() == null)
             {
@@ -136,6 +142,8 @@ namespace GameShop.BLL.Services
 
         public async Task UpdateAsync(GameUpdateDTO updatedGameDTO)
         {
+            await _validator.ValidateAndThrowAsync(updatedGameDTO);
+
             var exGame = (await _unitOfWork.GameRepository.GetAsync(
                 filter: game => game.Key == updatedGameDTO.Key,
                 includeProperties: "GameGenres,GamePlatformTypes")).SingleOrDefault();
@@ -199,6 +207,12 @@ namespace GameShop.BLL.Services
 
             _loggerManager.LogInfo($"Upload data successfully created for game with key {game.Key}");
             return stringInMemoryStream;
+        }
+
+        public async Task<int> GetNumberOfGamesAsync()
+        {
+            var count = await _unitOfWork.GameRepository.GetCountAsync();
+            return count;
         }
     }
 }

@@ -1,17 +1,13 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using GameShop.BLL.DTO.GenreDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameShop.BLL.Services
 {

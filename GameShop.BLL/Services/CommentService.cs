@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services.Interfaces;
@@ -16,21 +17,31 @@ namespace GameShop.BLL.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _logger;
+        private readonly IValidator<CommentCreateDTO> _validator;
 
         public CommentService(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            ILoggerManager logger)
+            ILoggerManager logger,
+            IValidator<CommentCreateDTO> validator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
+            _validator = validator;
         }
 
         public async Task CreateAsync(CommentCreateDTO newCommentDTO)
         {
+            await _validator.ValidateAndThrowAsync(newCommentDTO);
             var newComment = _mapper.Map<Comment>(newCommentDTO);
             newComment.GameId = await GetGameIdByKeyAsync(newCommentDTO.GameKey);
+
+            if (newCommentDTO.ParentId != null)
+            {
+                var parentComment = await _unitOfWork.CommentRepository.GetByIdAsync((int)newCommentDTO.ParentId);
+                newComment.Parent = parentComment;
+            }
 
             _unitOfWork.CommentRepository.Insert(newComment);
             await _unitOfWork.SaveAsync();
@@ -53,13 +64,9 @@ namespace GameShop.BLL.Services
 
         public async Task<IEnumerable<CommentReadDTO>> GetAllByGameKeyAsync(string gameKey)
         {
-            var comments = await _unitOfWork.CommentRepository.GetAsync(filter: x => x.Game.Key == gameKey);
-
-            if (!comments.Any())
-            {
-                throw new NotFoundException($"Game with key {gameKey} does not exist");
-            }
-
+            await GetGameIdByKeyAsync(gameKey);
+            var comments = await _unitOfWork.CommentRepository.GetAsync(
+                filter: x => x.Game.Key == gameKey);
             var model = _mapper.Map<IEnumerable<CommentReadDTO>>(comments);
             _logger.LogInfo($"Comments with game`s key {gameKey} successfully found");
             return model;

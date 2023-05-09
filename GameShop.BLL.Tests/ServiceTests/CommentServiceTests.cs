@@ -4,10 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services;
-using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository.Interfaces;
@@ -22,6 +22,7 @@ namespace GameShop.BLL.Tests.ServiceTests
         private readonly CommentService _commentService;
         private readonly Mock<IMapper> _mockMapper;
         private readonly Mock<ILoggerManager> _mockLogger;
+        private readonly Mock<IValidator<CommentCreateDTO>> _mockValidator;
 
         private bool _disposed;
 
@@ -30,11 +31,13 @@ namespace GameShop.BLL.Tests.ServiceTests
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _mockMapper = new Mock<IMapper>();
             _mockLogger = new Mock<ILoggerManager>();
+            _mockValidator = new Mock<IValidator<CommentCreateDTO>>();
 
             _commentService = new CommentService(
                 _mockUnitOfWork.Object,
                 _mockMapper.Object,
-                _mockLogger.Object);
+                _mockLogger.Object,
+                _mockValidator.Object);
         }
 
         public void Dispose()
@@ -50,6 +53,16 @@ namespace GameShop.BLL.Tests.ServiceTests
             var gameKey = "game_key";
             var comments = new List<Comment> { new Comment() };
             var commentReadDTOs = new List<CommentReadDTO> { new CommentReadDTO() };
+            var games = new List<Game> { new Game { Key = "game_key" } };
+
+            _mockUnitOfWork
+                .Setup(u => u.GameRepository
+                    .GetAsync(
+                        It.IsAny<Expression<Func<Game, bool>>>(),
+                        It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<bool>()))
+                .ReturnsAsync(games);
 
             _mockUnitOfWork
                 .Setup(x => x.CommentRepository.GetAsync(
@@ -79,12 +92,13 @@ namespace GameShop.BLL.Tests.ServiceTests
             var comments = new List<Comment>();
 
             _mockUnitOfWork
-            .Setup(x => x.CommentRepository.GetAsync(
-                    It.IsAny<Expression<Func<Comment, bool>>>(),
-                    It.IsAny<Func<IQueryable<Comment>, IOrderedQueryable<Comment>>>(),
-                    It.IsAny<string>(),
-                    It.IsAny<bool>()))
-            .ReturnsAsync(comments);
+                .Setup(u => u.GameRepository
+                    .GetAsync(
+                        It.IsAny<Expression<Func<Game, bool>>>(),
+                        It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<bool>()))
+                .ThrowsAsync(new NotFoundException());
 
             // Act & Assert
             await Assert.ThrowsAsync<NotFoundException>(() => _commentService.GetAllByGameKeyAsync(gameKey));
@@ -140,7 +154,12 @@ namespace GameShop.BLL.Tests.ServiceTests
         public async Task CreateAsync_ShouldCreateCommentAndLogInfo()
         {
             // Arrange
-            var commentCreateDto = new CommentCreateDTO() { GameKey = "gameKey" };
+            var commentCreateDto = new CommentCreateDTO()
+            {
+                GameKey = "gameKey",
+                Body = "test",
+                Name = "test"
+            };
             var game = new Game() { Id = 1, Key = "gameKey" };
             var comment = new Comment();
 
@@ -291,6 +310,7 @@ namespace GameShop.BLL.Tests.ServiceTests
                 _mockUnitOfWork.Invocations.Clear();
                 _mockMapper.Invocations.Clear();
                 _mockLogger.Invocations.Clear();
+                _mockValidator.Invocations.Clear();
             }
 
             _disposed = true;

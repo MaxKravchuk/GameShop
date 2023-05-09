@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http.Results;
 using GameShop.BLL.DTO.GameDTOs;
@@ -187,7 +184,7 @@ namespace GameShop.WebApi.Tests.ControllerTests
                 .ReturnsAsync(gamesList);
 
             // Act
-            var actionResult = await _gameController.GetAllGamesByGenre(genreId);
+            var actionResult = await _gameController.GetAllGamesByGenreAsync(genreId);
 
             // Assert
             Assert.IsType<JsonResult<IEnumerable<GameReadListDTO>>>(actionResult);
@@ -208,7 +205,7 @@ namespace GameShop.WebApi.Tests.ControllerTests
                 .ReturnsAsync(gamesList);
 
             // Act
-            var actionResult = await _gameController.GetAllGamesByPlatformType(platformTypeId);
+            var actionResult = await _gameController.GetAllGamesByPlatformTypeAsync(platformTypeId);
 
             // Assert
             Assert.IsType<JsonResult<IEnumerable<GameReadListDTO>>>(actionResult);
@@ -271,7 +268,7 @@ namespace GameShop.WebApi.Tests.ControllerTests
                 .ReturnsAsync(fileContent);
 
             // Act
-            var actionResult = await _gameController.DownloadGame(gameKey);
+            var actionResult = await _gameController.DownloadGameAsync(gameKey);
 
             // Assert
             Assert.NotNull(actionResult);
@@ -303,7 +300,7 @@ namespace GameShop.WebApi.Tests.ControllerTests
                 .ThrowsAsync(new NotFoundException());
 
             // Act
-            var actionResult = _gameController.DownloadGame(gameKey);
+            var actionResult = _gameController.DownloadGameAsync(gameKey);
 
             // Assert
             await Assert.ThrowsAsync<NotFoundException>(() => actionResult);

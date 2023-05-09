@@ -87,7 +87,7 @@ namespace GameShop.WebApi.Tests.ControllerTests
                 .ReturnsAsync(listOfComments);
 
             // Act
-            var actionResult = await _commentController.GetAllCommentsByGameKey(gameKey);
+            var actionResult = await _commentController.GetAllCommentsByGameKeyAsync(gameKey);
 
             // Assert
             Assert.IsType<JsonResult<IEnumerable<CommentReadDTO>>>(actionResult);
@@ -108,7 +108,7 @@ namespace GameShop.WebApi.Tests.ControllerTests
                 .ThrowsAsync(new NotFoundException());
 
             // Act
-            var actionResult = _commentController.GetAllCommentsByGameKey(gameKey);
+            var actionResult = _commentController.GetAllCommentsByGameKeyAsync(gameKey);
 
             // Assert
             await Assert.ThrowsAsync<NotFoundException>(() => actionResult);

@@ -1,10 +1,9 @@
-﻿using GameShop.DAL.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
+using GameShop.DAL.Entities;
 
 namespace GameShop.DAL.Repository.Interfaces
 {
@@ -28,5 +27,7 @@ namespace GameShop.DAL.Repository.Interfaces
         void Delete(T entityToDelete);
 
         void Update(T entityToUpdate);
+
+        Task<int> GetCountAsync();
     }
 }

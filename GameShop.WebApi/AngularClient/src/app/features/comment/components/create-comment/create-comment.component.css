@@ -1,0 +1,13 @@
+.cont {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-between;
+}
+
+.comment-create-form {
+    display: flex;
+    margin: 10px 0;
+    justify-content: center;
+}
+

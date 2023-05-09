@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure.Interception;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EntityFramework.Filters;
+﻿using System.Data.Entity;
 using GameShop.DAL.Entities;
 
 namespace GameShop.DAL.Context
@@ -14,7 +7,6 @@ namespace GameShop.DAL.Context
     {
         public GameShopContext() : base("name=DefaultConnectingString")
         {
-            Database.SetInitializer<GameShopContext>(new DropCreateDatabaseIfModelChanges<GameShopContext>());
         }
 
         public DbSet<Comment> Comments { get; set; }
@@ -25,9 +17,14 @@ namespace GameShop.DAL.Context
 
         public DbSet<PlatformType> PlatformTypes { get; set; }
 
+        public DbSet<Publisher> Publishers { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderDetails> OrderDetails { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
             modelBuilder.Configurations.AddFromAssembly(GetType().Assembly);
         }
     }

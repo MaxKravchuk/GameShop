@@ -1,0 +1,4 @@
+<div *ngFor="let game of games">
+    <p>{{game.Name}}</p>
+    <a mat-button routerLink="/games/details/{{game.Key}}" color="accent">View</a>
+</div>

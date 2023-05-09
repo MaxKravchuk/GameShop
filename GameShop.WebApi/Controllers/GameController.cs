@@ -1,16 +1,10 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.WebPages;
-using AutoMapper;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.Services.Interfaces;
-using GameShop.DAL.Entities;
 
 namespace GameShop.WebApi.Controllers
 {
@@ -25,6 +19,7 @@ namespace GameShop.WebApi.Controllers
         }
 
         [HttpPost]
+        [Route()]
         public async Task<IHttpActionResult> CreateGameAsync([FromBody] GameCreateDTO gameCreateViewModel)
         {
             await _gameService.CreateAsync(gameCreateViewModel);
@@ -57,7 +52,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getByGenre/{genreId}")]
-        public async Task<IHttpActionResult> GetAllGamesByGenre(int genreId)
+        public async Task<IHttpActionResult> GetAllGamesByGenreAsync(int genreId)
         {
             var games = await _gameService.GetGamesByGenreAsync(genreId);
             return Json(games);
@@ -65,7 +60,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getByPlatformType/{platformTypeId}")]
-        public async Task<IHttpActionResult> GetAllGamesByPlatformType(int platformTypeId)
+        public async Task<IHttpActionResult> GetAllGamesByPlatformTypeAsync(int platformTypeId)
         {
             var games = await _gameService.GetGamesByPlatformTypeAsync(platformTypeId);
             return Json(games);
@@ -81,7 +76,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("downloadGame/{gameKey}")]
-        public async Task<HttpResponseMessage> DownloadGame(string gameKey)
+        public async Task<HttpResponseMessage> DownloadGameAsync(string gameKey)
         {
             var stream = await _gameService.GenerateGameFileAsync(gameKey);
 
@@ -95,6 +90,14 @@ namespace GameShop.WebApi.Controllers
             result.Content.Headers.ContentDisposition.FileName = $"{gameKey}.bin";
 
             return result;
+        }
+
+        [HttpGet]
+        [Route("numberOfGames")]
+        public async Task<IHttpActionResult> GetNumberOfGamesAsync()
+        {
+            var number = await _gameService.GetNumberOfGamesAsync();
+            return Ok(number);
         }
     }
 }

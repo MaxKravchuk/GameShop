@@ -47,6 +47,12 @@
     <Reference Include="Fare, Version=2.1.0.0, Culture=neutral, PublicKeyToken=ea68d375bf33a7c8, processorArchitecture=MSIL">
       <HintPath>..\packages\Fare.2.1.1\lib\net35\Fare.dll</HintPath>
     </Reference>
+    <Reference Include="FluentAssertions, Version=6.11.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.6.11.0\lib\net47\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.9.5.4\lib\net461\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.CodeCoverage.Shim, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeCoverage.17.5.0\lib\net462\Microsoft.VisualStudio.CodeCoverage.Shim.dll</HintPath>
     </Reference>
@@ -85,10 +91,16 @@
   <ItemGroup>
     <Compile Include="ServiceTests\CommentServiceTests.cs" />
     <Compile Include="ServiceTests\GameServiceTests.cs" />
+    <Compile Include="ServiceTests\PublisherServiceTests.cs" />
+    <Compile Include="ServiceTests\ShoppingCartServiceTests.cs" />
     <Compile Include="UtilTests\MappingTests.cs" />
     <Compile Include="ServiceTests\PlatformTypeServiceTests.cs" />
     <Compile Include="ServiceTests\GenreServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UtilTests\ValidatorTests\CartItemValidatorTests.cs" />
+    <Compile Include="UtilTests\ValidatorTests\CommentValidatorTests.cs" />
+    <Compile Include="UtilTests\ValidatorTests\GameValidatorTests.cs" />
+    <Compile Include="UtilTests\ValidatorTests\PublisherValidatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

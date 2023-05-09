@@ -1,6 +1,6 @@
-﻿using GameShop.BLL.DTO.CommentDTOs;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GameShop.BLL.DTO.CommentDTOs;
 
 namespace GameShop.BLL.Services.Interfaces
 {
