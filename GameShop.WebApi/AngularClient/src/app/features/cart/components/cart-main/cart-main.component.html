@@ -22,4 +22,8 @@
 </table>
 <h3>Checkout</h3>
 <p>Total Price: {{ totalPrice }}</p>
-<button mat-raised-button disabled>Checkout</button>
+<button
+    [disabled]="cartItems.length == 0"
+    mat-raised-button routerLink="/order/1"
+    >Make order
+</button>

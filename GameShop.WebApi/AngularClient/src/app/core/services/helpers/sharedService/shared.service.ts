@@ -6,18 +6,18 @@ import { Observable, Subject } from "rxjs";
 })
 export class SharedService<T> {
 
-    private commentSharedSubject: Subject<T> = new Subject<T>();
+    private sharedSubject: Subject<T> = new Subject<T>();
 
     private reloadSourceSubject: Subject<void> = new Subject<void>();
 
     reloadSource$: Observable<any> = this.reloadSourceSubject.asObservable();
 
     sendData(model: T): void {
-        this.commentSharedSubject.next(model);
+        this.sharedSubject.next(model);
     }
 
     getData$(): Observable<T> {
-        return this.commentSharedSubject.asObservable();
+        return this.sharedSubject.asObservable();
     }
 
     reloadSource(): void {

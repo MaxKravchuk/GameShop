@@ -1,0 +1,36 @@
+.cont{
+    display: grid;
+    grid-template-areas:
+        "."
+        ".";
+    justify-items: center;
+    justify-content: space-around;
+    gap: 30px;
+    margin-top: 15px;
+}
+
+p{
+    margin: 0;
+}
+
+.table{
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f2f2f2;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+img{
+    height: 30px;
+}
