@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { OrderMainComponent } from "./components/order-main/order-main.component";
 import { OrderRoutingModule } from "./order-routing.module";
 import { MatButtonModule } from "@angular/material/button";
@@ -13,7 +13,8 @@ import { MatButtonModule } from "@angular/material/button";
     imports: [
         CommonModule,
         OrderRoutingModule,
-        MatButtonModule
+        MatButtonModule,
+        NgOptimizedImage
     ]
 })
 export class OrderModule { }

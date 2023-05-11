@@ -97,7 +97,8 @@
                 GameGenres = new List<Genre> { dGenres[4], dGenres[4], dGenres[0].SubGenres.Where(x => x.Id == 14).SingleOrDefault() },
                 GamePlatformTypes = new List<PlatformType> { dPt[3] },
                 Publisher = publishers[0],
-                Price = 10
+                Price = 10,
+                UnitsInStock = 2
             });
 
             games.Add(new Game
@@ -109,7 +110,8 @@
                 GameGenres = new List<Genre> { dGenres[0], dGenres[0].SubGenres.Where(x => x.Id == 8).SingleOrDefault() },
                 GamePlatformTypes = new List<PlatformType> { dPt[2], dPt[3] },
                 Publisher = publishers[0],
-                Price = 10
+                Price = 10,
+                UnitsInStock = 5
             });
 
             games.Add(new Game
@@ -121,7 +123,8 @@
                 GameGenres = new List<Genre> { dGenres[2] },
                 GamePlatformTypes = new List<PlatformType> { dPt[0], dPt[2], dPt[3] },
                 Publisher = publishers[0],
-                Price = 10
+                Price = 10,
+                UnitsInStock = 0
             });
 
             games.Add(new Game
@@ -133,7 +136,8 @@
                 GameGenres = new List<Genre> { dGenres[3], dGenres[3].SubGenres.Where(x => x.Id == 12).SingleOrDefault() },
                 GamePlatformTypes = new List<PlatformType> { dPt[3] },
                 Publisher = publishers[1],
-                Price = 10
+                Price = 10,
+                UnitsInStock = 10
             });
 
             games.Add(new Game
@@ -145,7 +149,8 @@
                 GameGenres = new List<Genre> { dGenres[6] },
                 GamePlatformTypes = new List<PlatformType> { dPt[0], dPt[1], dPt[2], dPt[3] },
                 Publisher = publishers[1],
-                Price = 10
+                Price = 10,
+                UnitsInStock = 1
             });
 
             context.Comments.AddRange(dComments);

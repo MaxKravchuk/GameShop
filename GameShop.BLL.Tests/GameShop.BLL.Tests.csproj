@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="ServiceTests\CommentServiceTests.cs" />
     <Compile Include="ServiceTests\GameServiceTests.cs" />
+    <Compile Include="ServiceTests\OrderServiceTests.cs" />
     <Compile Include="ServiceTests\PublisherServiceTests.cs" />
     <Compile Include="ServiceTests\ShoppingCartServiceTests.cs" />
     <Compile Include="UtilTests\MappingTests.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="UtilTests\ValidatorTests\CartItemValidatorTests.cs" />
     <Compile Include="UtilTests\ValidatorTests\CommentValidatorTests.cs" />
     <Compile Include="UtilTests\ValidatorTests\GameValidatorTests.cs" />
+    <Compile Include="UtilTests\ValidatorTests\OrderValidatorTests.cs" />
     <Compile Include="UtilTests\ValidatorTests\PublisherValidatorTests.cs" />
   </ItemGroup>
   <ItemGroup>

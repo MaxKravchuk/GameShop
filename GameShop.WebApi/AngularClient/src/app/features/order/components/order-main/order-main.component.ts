@@ -1,6 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CartItem } from "../../../../core/models/CartItem";
 import { CartService } from "../../../../core/services/cartService/cart.service";
+import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
 
 @Component({
   selector: 'app-order-main',
@@ -15,7 +16,10 @@ export class OrderMainComponent implements OnInit{
 
     totalPrice?: number;
 
-    constructor(private cartService: CartService) {}
+    constructor(
+        private cartService: CartService,
+        private utilsService: UtilsService
+    ) {}
 
     ngOnInit(): void {
         this.cartService.getCartItems().subscribe(

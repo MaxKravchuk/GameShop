@@ -11,6 +11,8 @@ using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.BLL.Services.Utils;
 using GameShop.BLL.Services.Utils.Validators;
+using GameShop.BLL.Strategies;
+using GameShop.BLL.Strategies.Interfaces;
 using GameShop.DAL.Context;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository;
@@ -77,6 +79,9 @@ namespace GameShop.WebApi
                 (new ContainerControlledLifetimeManager());
             container.RegisterType<IValidator<CartItemDTO>, CartItemValidator>
                 (new ContainerControlledLifetimeManager());
+
+            container.RegisterType<IPaymentContext, PaymentContext>();
+            container.RegisterType<IPaymentStrategy, BankStrategy>();
 
             httpConfiguration.DependencyResolver = new UnityDependencyResolver(container);
         }

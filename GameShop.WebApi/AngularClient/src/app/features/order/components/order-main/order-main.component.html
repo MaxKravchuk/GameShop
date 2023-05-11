@@ -23,7 +23,6 @@
             </tr>
             </tbody>
         </table>
-
     </div>
     <div class="payment-methods">
         <table class="table">
@@ -31,19 +30,28 @@
                 <td><img src="assets/payment-methods-icons/bank-methode.svg" alt="Bank"></td>
                 <td>Bank Payment</td>
                 <td>Pay by generating an invoice</td>
-                <td><a mat-stroked-button color="accent">Pay</a></td>
+                <td><button
+                    mat-stroked-button
+                    color="accent"
+                    >Pay</button></td>
             </tr>
             <tr>
                 <td><img src="assets/payment-methods-icons/IBOX.svg" alt="IBox Terminal"></td>
                 <td>IBox Terminal Payment</td>
                 <td>Pay using an IBox terminal</td>
-                <td><a mat-stroked-button color="accent">Pay</a></td>
+                <td><button
+                    mat-stroked-button
+                    color="accent"
+                    routerLink="/payment/ibox">Pay</button></td>
             </tr>
             <tr>
                 <td><img src="assets/payment-methods-icons/visa-svgrepo-com.svg" alt="Visa"></td>
                 <td>Visa Payment</td>
                 <td>Pay using a Visa card</td>
-                <td><a mat-stroked-button color="accent">Pay</a></td>
+                <td><button
+                    mat-stroked-button
+                    color="accent"
+                    routerLink="/payment/visa">Pay</button></td>
             </tr>
         </table>
     </div>
