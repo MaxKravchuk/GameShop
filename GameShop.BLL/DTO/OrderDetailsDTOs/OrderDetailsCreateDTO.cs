@@ -10,6 +10,6 @@ namespace GameShop.BLL.DTO.OrderDetailsDTOs
     {
         public string GameKey { get; set; }
 
-        public int Quantity { get; set; }
+        public short Quantity { get; set; }
     }
 }
