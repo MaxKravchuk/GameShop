@@ -12,7 +12,5 @@ namespace GameShop.BLL.DTO.OrderDTOs
         public int CustomerID { get; set; }
 
         public DateTime OrderedAt { get; set; }
-
-        public IEnumerable<OrderDetailsCreateDTO> ListOfOrderDetails { get; set; } = new List<OrderDetailsCreateDTO>();
     }
 }

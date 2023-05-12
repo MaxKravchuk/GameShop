@@ -27,7 +27,6 @@ namespace BLL.Test.UtilTests.ValidatorTests
             {
                 CustomerID = 0, // or any other invalid value
                 OrderedAt = DateTime.UtcNow,
-                ListOfOrderDetails = new List<OrderDetailsCreateDTO>()
             };
 
             var result = _validationRules.TestValidate(order);
@@ -43,29 +42,12 @@ namespace BLL.Test.UtilTests.ValidatorTests
             {
                 CustomerID = 1,
                 OrderedAt = DateTime.MinValue, // or any other invalid value
-                ListOfOrderDetails = new List<OrderDetailsCreateDTO>()
             };
 
             var result = _validationRules.TestValidate(order);
 
             result.ShouldHaveValidationErrorFor(o => o.OrderedAt)
                   .WithErrorMessage("Time cannot be empty");
-        }
-
-        [Fact]
-        public void Given_Empty_ListOfOrderDetails_Should_Return_Error()
-        {
-            var order = new OrderCreateDTO
-            {
-                CustomerID = 1,
-                OrderedAt = DateTime.UtcNow,
-                ListOfOrderDetails = null // or an empty list
-            };
-
-            var result = _validationRules.TestValidate(order);
-
-            result.ShouldHaveValidationErrorFor(o => o.ListOfOrderDetails)
-                  .WithErrorMessage("Order cannot be empty");
         }
     }
 }

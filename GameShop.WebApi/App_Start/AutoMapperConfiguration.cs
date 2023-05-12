@@ -2,6 +2,7 @@
 using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.DTO.GenreDTOs;
+using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.DTO.PlatformTypeDTOs;
 using GameShop.BLL.DTO.PublisherDTOs;
 using GameShop.DAL.Entities;
@@ -63,6 +64,9 @@ namespace GameShop.WebApi.App_Start
                 .ForMember(dest => dest.GameReadListDTOs, opt => opt.MapFrom(src => src.Games));
 
             CreateMap<Publisher, PublisherReadListDTO>();
+
+            CreateMap<OrderCreateDTO, Order>()
+                .ForMember(dest => dest.ListOfOrderDetails, opt => opt.Ignore());
         }
     }
 }

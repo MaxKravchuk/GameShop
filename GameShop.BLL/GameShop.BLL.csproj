@@ -114,7 +114,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DTO\OrderDetailsDTOs\OrderDetailsCreateDTO.cs" />
     <Compile Include="DTO\OrderDTOs\OrderCreateDTO.cs" />
     <Compile Include="DTO\PublisherDTOs\PublisherCreateDTO.cs" />
     <Compile Include="DTO\PublisherDTOs\PublisherReadDTO.cs" />

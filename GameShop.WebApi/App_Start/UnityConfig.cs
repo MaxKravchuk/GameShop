@@ -4,6 +4,7 @@ using AutoMapper;
 using FluentValidation;
 using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.DTO.GameDTOs;
+using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.DTO.PublisherDTOs;
 using GameShop.BLL.DTO.RedisDTOs;
 using GameShop.BLL.Services;
@@ -44,6 +45,8 @@ namespace GameShop.WebApi
             container.RegisterType<IRepository<Genre>, Repository<Genre>>();
             container.RegisterType<IRepository<PlatformType>, Repository<PlatformType>>();
             container.RegisterType<IRepository<Publisher>, Repository<Publisher>>();
+            container.RegisterType<IRepository<DAL.Entities.Order>, Repository<DAL.Entities.Order>>();
+            container.RegisterType<IRepository<OrderDetails>, Repository<OrderDetails>>();
 
             container.RegisterType<IUnitOfWork, UnitOfWork>();
 
@@ -59,6 +62,7 @@ namespace GameShop.WebApi
             container.RegisterType<IPlatformTypeService, PlatformTypeService>();
             container.RegisterType<IPublisherService, PublisherService>();
             container.RegisterType<IShoppingCartService, ShoppingCartService>();
+            container.RegisterType<IOrderService, OrderService>();
 
             var log = LogManager.GetLogger(typeof(LoggerManager));
             container.RegisterInstance(typeof(ILog), log);
@@ -78,6 +82,8 @@ namespace GameShop.WebApi
             container.RegisterType<IValidator<PublisherCreateDTO>, PublisherCreateDtoValidator>
                 (new ContainerControlledLifetimeManager());
             container.RegisterType<IValidator<CartItemDTO>, CartItemValidator>
+                (new ContainerControlledLifetimeManager());
+            container.RegisterType<IValidator<OrderCreateDTO>, OrderCreateDtoValidator>
                 (new ContainerControlledLifetimeManager());
 
             container.RegisterType<IPaymentContext, PaymentContext>();

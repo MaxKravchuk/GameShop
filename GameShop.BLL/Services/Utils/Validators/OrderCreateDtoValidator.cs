@@ -19,10 +19,6 @@ namespace GameShop.BLL.Services.Utils.Validators
             RuleFor(g => g.OrderedAt)
                 .NotEmpty()
                 .WithMessage("Time cannot be empty");
-
-            RuleFor(g => g.ListOfOrderDetails)
-                .NotEmpty()
-                .WithMessage("Order cannot be empty");
         }
     }
 }
