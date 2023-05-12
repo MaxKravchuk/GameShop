@@ -66,5 +66,11 @@ namespace GameShop.BLL.Services
 
             _loggerManager.LogInfo($"Item with game key {gameKey} is deleted");
         }
+
+        public async Task CleatCartAsync()
+        {
+            await _redisProvider.ClearCartAsync(RedisKey);
+            _loggerManager.LogInfo($"Cart with key {RedisKey} cleared!");
+        }
     }
 }

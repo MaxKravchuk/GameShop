@@ -44,5 +44,10 @@ namespace GameShop.DAL.Repository
         {
             return await _database.HashDeleteAsync(redisKey, redisValue);
         }
+
+        public async Task<bool> ClearCartAsync(string redisKey)
+        {
+            return await _database.KeyDeleteAsync(redisKey);
+        }
     }
 }

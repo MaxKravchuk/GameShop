@@ -13,7 +13,7 @@ namespace GameShop.BLL.Services.Utils.Validators
         public OrderCreateDtoValidator()
         {
             RuleFor(g => g.CustomerID)
-                .NotEmpty()
+                .NotNull()
                 .WithMessage("Customer ID cannot be empty");
 
             RuleFor(g => g.OrderedAt)

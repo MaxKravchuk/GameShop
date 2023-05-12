@@ -37,7 +37,7 @@ namespace GameShop.BLL.Services
             _validator = validator;
         }
 
-        public async Task<int> CreateOrderAsync(OrderCreateDTO orderCreateDTO)
+        public async Task<Order> CreateOrderAsync(OrderCreateDTO orderCreateDTO)
         {
             await _validator.ValidateAndThrowAsync(orderCreateDTO);
             var newOrder = _mapper.Map<Order>(orderCreateDTO);
@@ -62,7 +62,7 @@ namespace GameShop.BLL.Services
 
             await _unitOfWork.SaveAsync();
             _loggerManager.LogInfo($"Order with id {newOrder.Id} created succesfully");
-            return newOrder.Id;
+            return newOrder;
         }
     }
 }

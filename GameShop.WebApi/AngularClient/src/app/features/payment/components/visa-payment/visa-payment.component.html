@@ -1,1 +1,53 @@
-<p>visa-payment works!</p>
+<div class="visa-form" [formGroup]="form">
+    <div class="mat-title" style="margin-bottom: 15px">Card info</div>
+    <p>
+        <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+            <mat-label>Cart holder’s name</mat-label>
+            <input
+                matInput
+                formControlName="CartHolderName"
+                type="string"
+                minlength="1"
+                placeholder="Cart holder’s name">
+            <mat-hint>Length must be greater than 1</mat-hint>
+            <mat-error *ngIf="form.controls['CartHolderName'].invalid">Length must be greater than 1</mat-error>
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+            <input
+                matInput
+                formControlName="CardNumber"
+                type="string"
+                maxlength="16"
+                placeholder="XXXX-XXXX-XXXX-XXXX">
+            <mat-hint>Length must be 16</mat-hint>
+            <mat-error *ngIf="form.controls['CardNumber'].invalid">Length must be 16</mat-error>
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+            <input
+                matInput
+                formControlName="DateOfExpiry"
+                type="string"
+                placeholder="YYYY-MM">
+            <mat-hint>Enter year and month</mat-hint>
+            <mat-error *ngIf="form.controls['DateOfExpiry'].invalid">Year and month cannot be empty</mat-error>
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+            <input
+                matInput
+                formControlName="CVV2CVC2"
+                type="string"
+                maxlength="3"
+                placeholder="CVV2/CVC2">
+            <mat-hint>Enter CVV2/CVC2</mat-hint>
+            <mat-error *ngIf="form.controls['CVV2CVC2'].invalid">CVV2/CVC2 cannot be empty</mat-error>
+        </mat-form-field>
+    </p>
+</div>
+<button mat-raised-button type="submit" color="primary" [disabled]="!form.valid" (click)="onPay()">Pay
+</button>

@@ -1,0 +1,11 @@
+.cont{
+    margin: 30px auto auto;
+}
+
+.visa-form > * {
+    margin: 0 5px;
+}
+
+button{
+    margin-left: 15px;
+}

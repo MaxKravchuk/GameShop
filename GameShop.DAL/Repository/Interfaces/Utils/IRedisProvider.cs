@@ -12,5 +12,7 @@ namespace GameShop.DAL.Repository.Interfaces.Utils
         Task<IEnumerable<T>> GetValuesAsync(string redisKey);
 
         Task<bool> DeleteItemFromListAsync(string redisKey, string redisValue);
+
+        Task<bool> ClearCartAsync(string redisKey);
     }
 }
