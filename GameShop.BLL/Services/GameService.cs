@@ -7,6 +7,7 @@ using AutoMapper;
 using FluentValidation;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.Exceptions;
+using GameShop.BLL.Filters;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.DAL.Entities;
@@ -106,9 +107,13 @@ namespace GameShop.BLL.Services
             return model;
         }
 
-        public async Task<IEnumerable<GameReadListDTO>> GetAllGamesAsync()
+        public async Task<IEnumerable<GameReadListDTO>> GetAllGamesAsync(GameFiltersDTO gameFiltersDTO)
         {
-            var games = await _unitOfWork.GameRepository.GetAsync();
+            var games = await _unitOfWork.GameRepository.GetAsync(includeProperties: "GameGenres");
+
+            var filter = new GenreFilter(gameFiltersDTO.GenreIds);
+
+            games = filter.ApplyFilter(games);
 
             var models = _mapper.Map<IEnumerable<GameReadListDTO>>(games);
 

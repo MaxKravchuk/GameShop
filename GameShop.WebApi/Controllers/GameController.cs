@@ -42,11 +42,11 @@ namespace GameShop.WebApi.Controllers
             return Json(game);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("getAll")]
-        public async Task<IHttpActionResult> GetAllGamesAsync()
+        public async Task<IHttpActionResult> GetAllGamesAsync([FromBody] GameFiltersDTO gameFiltersDTO)
         {
-            var games = await _gameService.GetAllGamesAsync();
+            var games = await _gameService.GetAllGamesAsync(gameFiltersDTO);
             return Json(games);
         }
 

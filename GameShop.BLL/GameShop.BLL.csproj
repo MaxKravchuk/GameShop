@@ -120,6 +120,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\GameDTOs\GameFiltersDTO.cs" />
     <Compile Include="DTO\OrderDTOs\OrderCreateDTO.cs" />
     <Compile Include="DTO\PublisherDTOs\PublisherCreateDTO.cs" />
     <Compile Include="DTO\PublisherDTOs\PublisherReadDTO.cs" />
@@ -128,6 +129,8 @@
     <Compile Include="DTO\StrategyDTOs\PaymentResultDTO.cs" />
     <Compile Include="Exceptions\BadRequestException.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
+    <Compile Include="Filters\GameFilter.cs" />
+    <Compile Include="Filters\GenreFilter.cs" />
     <Compile Include="Services\CommentService.cs" />
     <Compile Include="Services\Interfaces\IOrderService.cs" />
     <Compile Include="Services\Interfaces\IShoppingCartService.cs" />
@@ -188,5 +191,6 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
