@@ -4,17 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameShop.BLL.DTO.OrderDTOs;
+using GameShop.BLL.DTO.StrategyDTOs;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Strategies.Interfaces;
+using GameShop.DAL.Entities;
 
 namespace GameShop.BLL.Strategies
 {
-    public class VisaStrategy : IPaymentStrategy<int>
+    public class VisaStrategy : IPaymentStrategy
     {
-        public async Task<int> Pay(OrderCreateDTO orderCreateDTO, IOrderService orderService)
+        public PaymentResultDTO Pay(Order newOrder)
         {
-            var newOrder = await orderService.CreateOrderAsync(orderCreateDTO);
-            return newOrder.Id;
+            var result = new PaymentResultDTO
+            {
+                OrderId = newOrder.Id
+            };
+
+            return result;
         }
     }
 }

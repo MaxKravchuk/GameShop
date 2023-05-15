@@ -6,19 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameShop.BLL.DTO.OrderDTOs;
+using GameShop.BLL.DTO.StrategyDTOs;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Strategies.Interfaces;
+using GameShop.DAL.Entities;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 
 namespace GameShop.BLL.Strategies
 {
-    public class BankStrategy : IPaymentStrategy<MemoryStream>
+    public class BankStrategy : IPaymentStrategy
     {
-        public async Task<MemoryStream> Pay(OrderCreateDTO orderCreateDTO, IOrderService orderService)
+        public PaymentResultDTO Pay(Order newOrder)
         {
-            var newOrder = await orderService.CreateOrderAsync(orderCreateDTO);
-
             var invoice = new StringBuilder();
 
             invoice.Append($"Customer number: {newOrder.CustomerId}");
@@ -41,7 +41,13 @@ namespace GameShop.BLL.Strategies
             var formattedGameList = gameList.ToString();
             invoice.Append(formattedGameList);
 
-            return new MemoryStream(Encoding.ASCII.GetBytes(invoice.ToString()));
+            var result = new PaymentResultDTO
+            {
+                InvoiceMemoryStream = new MemoryStream(Encoding.ASCII.GetBytes(invoice.ToString())),
+                OrderId = newOrder.Id
+            };
+
+            return result;
         }
     }
 }

@@ -5,23 +5,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameShop.BLL.DTO.OrderDTOs;
+using GameShop.BLL.DTO.StrategyDTOs;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Strategies.Interfaces;
+using GameShop.DAL.Entities;
 
 namespace GameShop.BLL.Strategies
 {
-    public class PaymentContext<T> : IPaymentContext<T>
+    public class PaymentContext : IPaymentContext
     {
-        private IPaymentStrategy<T> _paymentStrategy;
+        private IPaymentStrategy _paymentStrategy;
 
-        public PaymentContext(IPaymentStrategy<T> paymentStrategy)
+        public PaymentContext(IPaymentStrategy paymentStrategy)
         {
             _paymentStrategy = paymentStrategy;
         }
 
-        public async Task<T> ExecuteStrategy(OrderCreateDTO orderCreateDTO, IOrderService orderService)
+        public void SetStrategy(IPaymentStrategy paymentStrategy)
         {
-            return await _paymentStrategy.Pay(orderCreateDTO, orderService);
+            _paymentStrategy = paymentStrategy;
+        }
+
+        public PaymentResultDTO ExecuteStrategy(Order order)
+        {
+            return _paymentStrategy.Pay(order);
         }
     }
 }

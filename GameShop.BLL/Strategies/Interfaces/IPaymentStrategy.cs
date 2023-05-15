@@ -5,12 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GameShop.BLL.DTO.OrderDTOs;
+using GameShop.BLL.DTO.StrategyDTOs;
 using GameShop.BLL.Services.Interfaces;
+using GameShop.DAL.Entities;
 
 namespace GameShop.BLL.Strategies.Interfaces
 {
-    public interface IPaymentStrategy<T>
+    public interface IPaymentStrategy
     {
-        Task<T> Pay(OrderCreateDTO orderCreateDTO, IOrderService orderService);
+        PaymentResultDTO Pay(Order order);
     }
 }

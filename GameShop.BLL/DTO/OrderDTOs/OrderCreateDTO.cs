@@ -11,5 +11,7 @@ namespace GameShop.BLL.DTO.OrderDTOs
         public int CustomerID { get; set; }
 
         public DateTime OrderedAt { get; set; }
+
+        public string Strategy { get; set; }
     }
 }

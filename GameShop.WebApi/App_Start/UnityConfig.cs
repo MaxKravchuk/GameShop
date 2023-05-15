@@ -87,12 +87,10 @@ namespace GameShop.WebApi
             container.RegisterType<IValidator<OrderCreateDTO>, OrderCreateDtoValidator>
                 (new ContainerControlledLifetimeManager());
 
-            container.RegisterType<IPaymentContext<MemoryStream>,PaymentContext<MemoryStream>>();
-            container.RegisterType<IPaymentContext<int>,PaymentContext<int>>();
-            container.RegisterType<IPaymentContext<int>,PaymentContext<int>>();
-            container.RegisterType<IPaymentStrategy<MemoryStream>, BankStrategy>();
-            container.RegisterType<IPaymentStrategy<int>, IBoxStrategy>();
-            container.RegisterType<IPaymentStrategy<int>, VisaStrategy>();
+            container.RegisterType<IPaymentContext, PaymentContext>();
+            container.RegisterType<IPaymentStrategy, BankStrategy>();
+            container.RegisterType<IPaymentStrategy, IBoxStrategy>();
+            container.RegisterType<IPaymentStrategy, VisaStrategy>();
 
             httpConfiguration.DependencyResolver = new UnityDependencyResolver(container);
         }
