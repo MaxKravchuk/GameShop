@@ -1,0 +1,76 @@
+<div class="filters">
+    <mat-form-field appearance="fill">
+        <mat-label>Game name</mat-label>
+        <input matInput>
+    </mat-form-field>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Genres
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ul>
+            <li *ngFor="let genre of genres">
+                <mat-checkbox color="primary">
+                    {{genre.Name}}
+                </mat-checkbox>
+            </li>
+        </ul>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Platforms
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ul>
+            <li *ngFor="let platform of platforms">
+                <mat-checkbox color="primary">
+                    {{platform.Type}}
+                </mat-checkbox>
+            </li>
+        </ul>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Publishers
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ul>
+            <li *ngFor="let publisher of publishers">
+                <mat-checkbox color="primary">
+                    {{publisher.CompanyName}}
+                </mat-checkbox>
+            </li>
+        </ul>
+    </mat-expansion-panel>
+    <div class="filter-price">
+        <p>Price</p>
+        <div class="price-text">
+            <p>{{fromValue}}</p>
+            <p>{{toValue}}</p>
+        </div>
+        <mat-slider min="0" max="100">
+            <input matSliderStartThumb value="5" [(ngModel)]="fromValue">
+            <input matSliderEndThumb value="50" [(ngModel)]="toValue">
+        </mat-slider>
+    </div>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Date
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-radio-group aria-label="Select an date filter">
+            <mat-radio-button [value]="">Last week</mat-radio-button>
+            <mat-radio-button [value]="">Last month</mat-radio-button>
+            <mat-radio-button [value]="">Last year</mat-radio-button>
+            <mat-radio-button [value]="">2 years</mat-radio-button>
+            <mat-radio-button [value]="">3 years</mat-radio-button>
+        </mat-radio-group>
+    </mat-expansion-panel>
+    <div class="filter-button">
+        <button mat-raised-button color="primary">Filter</button>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+.price-text{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.filters > *{
+    margin: 5px 0;
+    width: 100%;
+}
+
+mat-slider{
+    width: 90% !important;
+}
+
+.filter-button{
+    margin-top: 30px!important;
+}

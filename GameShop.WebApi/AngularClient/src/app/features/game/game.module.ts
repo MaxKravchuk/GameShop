@@ -12,15 +12,22 @@ import { MatInputModule } from "@angular/material/input";
 import { CommentModule } from "../comment/comment.module";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { GameListComponent } from './components/game-list/game-list.component';
+import { GameFiltersComponent } from './components/game-filters/game-filters.component';
+import { MatExpansionModule } from "@angular/material/expansion";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatSliderModule } from "@angular/material/slider";
+import { MatRadioModule } from "@angular/material/radio";
 
 @NgModule({
     declarations: [
         GameDetailsComponent,
         GameCreateComponent,
         GameListComponent,
+        GameFiltersComponent,
     ],
     exports: [
-        GameListComponent
+        GameListComponent,
+        GameFiltersComponent
     ],
     imports: [
         CommonModule,
@@ -33,7 +40,11 @@ import { GameListComponent } from './components/game-list/game-list.component';
         MatSelectModule,
         MatInputModule,
         CommentModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatExpansionModule,
+        MatCheckboxModule,
+        MatSliderModule,
+        MatRadioModule
     ]
 })
 export class GameModule {
