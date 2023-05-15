@@ -35,9 +35,11 @@ export class VisaPaymentComponent implements OnInit{
         }
         const createOrderService: CreateOrderModel = {
             CustomerId: 0,
-            OrderedAt: new Date().toISOString()
+            OrderedAt: new Date().toISOString(),
+            IsPaymentSuccessful: true,
+            Strategy: 'Visa'
         }
-        this.paymentService.payVisa(createOrderService).subscribe(
+        this.paymentService.getOrderId(createOrderService).subscribe(
             (data: number): void => {
                 setTimeout(() => {
                     this.router.navigateByUrl('/').then(

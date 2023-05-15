@@ -40,11 +40,13 @@ export class OrderMainComponent implements OnInit{
 
     generateInvoice(): void {
         const orderCreateDTO : CreateOrderModel = {
-          CustomerId: 0,
-          OrderedAt: new Date().toISOString()
+            CustomerId: 0,
+            OrderedAt: new Date().toISOString(),
+            Strategy: 'Bank',
+            IsPaymentSuccessful: true
         };
 
-        this.paymentService.payBank(orderCreateDTO)
+        this.paymentService.getInvoice(orderCreateDTO)
             .subscribe(
                 (blob: Blob): void => {
                     this.utilsService.openWithMessage('Invoice generated successfully.');
@@ -63,7 +65,7 @@ export class OrderMainComponent implements OnInit{
     redirectToiBox() {
         setTimeout(() => {
             this.sharedService.sendData(this.totalPrice!);
-        }, 0);
+        }, 10);
         this.router.navigateByUrl('/payment/ibox');
     }
 

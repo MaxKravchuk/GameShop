@@ -35,12 +35,15 @@ export class IboxPaymentComponent implements OnInit, OnDestroy {
             }
         );
         const orderCreateDTO: CreateOrderModel ={
-          CustomerId: this.accountNumber,
-          OrderedAt: new Date().toISOString()
+            CustomerId: this.accountNumber,
+            OrderedAt: new Date().toISOString(),
+            Strategy: 'iBox',
+            IsPaymentSuccessful: true
         };
-        this.paymentService.payiBox(orderCreateDTO)
+        this.paymentService.getOrderId(orderCreateDTO)
             .subscribe(
                 (data: number) => {
+                    console.log(data);
                     this.invoiceNumber = data;
                     setTimeout(() => {
                         this.router.navigateByUrl('/').then(

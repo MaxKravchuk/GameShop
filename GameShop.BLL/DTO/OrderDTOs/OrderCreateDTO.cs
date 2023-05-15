@@ -13,5 +13,7 @@ namespace GameShop.BLL.DTO.OrderDTOs
         public DateTime OrderedAt { get; set; }
 
         public string Strategy { get; set; }
+
+        public bool IsPaymentSuccessful { get; set; }
     }
 }

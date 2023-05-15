@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentValidation.TestHelper;
-using GameShop.BLL.DTO.OrderDetailsDTOs;
 using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.Services.Utils.Validators;
 using Xunit;

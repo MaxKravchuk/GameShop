@@ -31,7 +31,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route("pay")]
-        public async Task<IHttpActionResult> PayBankAsync([FromBody] OrderCreateDTO orderCreateDTO)
+        public async Task<IHttpActionResult> PayAsync([FromBody] OrderCreateDTO orderCreateDTO)
         {
             var paymentResult = await _orderService.ExecutePayment(orderCreateDTO);
             await _shoppingCartService.CleatCartAsync();

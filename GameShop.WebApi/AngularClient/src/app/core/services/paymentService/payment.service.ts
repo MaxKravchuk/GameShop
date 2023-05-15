@@ -16,13 +16,13 @@ export class PaymentService {
       private utilsService: UtilsService
     ) { }
 
-    payBank(orderCreateDTO: CreateOrderModel): Observable<any> {
+    getInvoice(orderCreateDTO: CreateOrderModel): Observable<any> {
         const headers: HttpHeaders = new HttpHeaders({
             'Content-Type': 'application/json',
             'Accept': 'application/octet-stream'
         });
 
-        const url = `${this.apiUrl}/bank`;
+        const url = `${this.apiUrl}/pay`;
         return this.http.post(url, orderCreateDTO, {headers: headers, responseType: 'blob' })
             .pipe(
                 catchError(err => {
@@ -32,19 +32,8 @@ export class PaymentService {
             );
     }
 
-    payiBox(orderCreateDTO: CreateOrderModel): Observable<number> {
-        const url = `${this.apiUrl}/iBox`;
-        return this.http.post<number>(url, orderCreateDTO)
-            .pipe(
-                catchError(err => {
-                    this.utilsService.handleError(err);
-                    return [];
-                })
-            );
-    }
-
-    payVisa(orderCreateDTO: CreateOrderModel): Observable<number> {
-        const url = `${this.apiUrl}/visa`;
+    getOrderId(orderCreateDTO: CreateOrderModel): Observable<number> {
+        const url = `${this.apiUrl}/pay`;
         return this.http.post<number>(url, orderCreateDTO)
             .pipe(
                 catchError(err => {

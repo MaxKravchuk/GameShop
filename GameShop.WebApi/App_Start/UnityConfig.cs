@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Web.Http;
 using AutoMapper;
@@ -87,10 +88,10 @@ namespace GameShop.WebApi
             container.RegisterType<IValidator<OrderCreateDTO>, OrderCreateDtoValidator>
                 (new ContainerControlledLifetimeManager());
 
-            container.RegisterType<IPaymentContext, PaymentContext>();
-            container.RegisterType<IPaymentStrategy, BankStrategy>();
-            container.RegisterType<IPaymentStrategy, IBoxStrategy>();
-            container.RegisterType<IPaymentStrategy, VisaStrategy>();
+            container.RegisterType<IPaymentStrategyFactory, PaymentStrategyFactory>();
+            container.RegisterType<IPaymentStrategy, BankStrategy>("Bank");
+            container.RegisterType<IPaymentStrategy, IBoxStrategy>("iBox");
+            container.RegisterType<IPaymentStrategy, VisaStrategy>("Visa");
 
             httpConfiguration.DependencyResolver = new UnityDependencyResolver(container);
         }

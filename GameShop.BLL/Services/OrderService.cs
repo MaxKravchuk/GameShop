@@ -26,7 +26,7 @@ namespace GameShop.BLL.Services
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
         private readonly IValidator<OrderCreateDTO> _validator;
-        private readonly IPaymentContext _paymentContext;
+        private readonly IPaymentStrategyFactory _paymentStrategyFactory;
 
         public OrderService(
             IUnitOfWork unitOfWork,
@@ -34,40 +34,25 @@ namespace GameShop.BLL.Services
             IMapper mapper,
             ILoggerManager loggerManager,
             IValidator<OrderCreateDTO> validator,
-            IPaymentContext paymentContext)
+            IPaymentStrategyFactory paymentStrategyFactory)
         {
             _unitOfWork = unitOfWork;
             _redisProvider = redisProvider;
             _mapper = mapper;
             _loggerManager = loggerManager;
             _validator = validator;
-            _paymentContext = paymentContext;
+            _paymentStrategyFactory = paymentStrategyFactory;
         }
-
 
         public async Task<PaymentResultDTO> ExecutePayment(OrderCreateDTO orderCreateDTO)
         {
+            if (!orderCreateDTO.IsPaymentSuccessful)
+            {
+                throw new BadRequestException("Payment is not successful");
+            }
             var newOrder = await CreateOrderAsync(orderCreateDTO);
-
-            if (orderCreateDTO.Strategy == "Bank")
-            {
-                _paymentContext.SetStrategy(new BankStrategy());
-                return _paymentContext.ExecuteStrategy(newOrder);
-            }
-            else if (orderCreateDTO.Strategy == "iBox")
-            {
-                _paymentContext.SetStrategy(new IBoxStrategy());
-                return _paymentContext.ExecuteStrategy(newOrder);
-            }
-            else if (orderCreateDTO.Strategy == "Visa")
-            {
-                _paymentContext.SetStrategy(new VisaStrategy());
-                return _paymentContext.ExecuteStrategy(newOrder);
-            }
-            else
-            {
-                throw new BadRequestException();
-            }
+            var strategy = _paymentStrategyFactory.GetPaymentStrategy(orderCreateDTO.Strategy);
+            return strategy.Pay(newOrder);
         }
 
         private async Task<Order> CreateOrderAsync(OrderCreateDTO orderCreateDTO)
@@ -76,26 +61,35 @@ namespace GameShop.BLL.Services
             var newOrder = _mapper.Map<Order>(orderCreateDTO);
             _unitOfWork.OrderRepository.Insert(newOrder);
 
-            var games = await _unitOfWork.GameRepository.GetAsync();
             var redisKey = orderCreateDTO.CustomerID == 0 ? "CartItems" : $"CartItems-{orderCreateDTO.CustomerID}";
             var cartItems = await _redisProvider.GetValuesAsync(redisKey);
 
             if (!cartItems.Any())
             {
-                throw new BadRequestException();
+                throw new NotFoundException("Cart is empty");
             }
 
             foreach (var game in cartItems)
             {
-                var gameToAddId = games.Where(g => g.Key == game.GameKey).SingleOrDefault().Id;
+                var gameToAdd =
+                    (await _unitOfWork.GameRepository.GetAsync(filter: g => g.Key == game.GameKey)).SingleOrDefault();
+
+                if (gameToAdd.UnitsInStock < game.Quantity)
+                {
+                    throw new BadRequestException("Not enough games");
+                }
+
                 var orderDetails = new OrderDetails
                 {
-                    GameId = gameToAddId,
+                    GameId = gameToAdd.Id,
                     OrderId = newOrder.Id,
                     Quantity = game.Quantity,
                     Discount = 0,
                 };
+
                 _unitOfWork.OrderDetailsRepository.Insert(orderDetails);
+                gameToAdd.UnitsInStock -= game.Quantity;
+                _unitOfWork.GameRepository.Update(gameToAdd);
             }
 
             await _unitOfWork.SaveAsync();
