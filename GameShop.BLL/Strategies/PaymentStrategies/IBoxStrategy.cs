@@ -7,9 +7,10 @@ using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.DTO.StrategyDTOs;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Strategies.Interfaces;
+using GameShop.BLL.Strategies.Interfaces.Strategies;
 using GameShop.DAL.Entities;
 
-namespace GameShop.BLL.Strategies
+namespace GameShop.BLL.Strategies.PaymentStrategies
 {
     public class IBoxStrategy : IPaymentStrategy
     {

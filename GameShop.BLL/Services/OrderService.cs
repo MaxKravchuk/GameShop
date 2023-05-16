@@ -13,6 +13,7 @@ using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.BLL.Strategies;
 using GameShop.BLL.Strategies.Interfaces;
+using GameShop.BLL.Strategies.Interfaces.Factories;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository.Interfaces;
 using GameShop.DAL.Repository.Interfaces.Utils;

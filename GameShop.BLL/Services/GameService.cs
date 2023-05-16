@@ -13,6 +13,7 @@ using GameShop.BLL.Filters.Interfaces;
 using GameShop.BLL.Pipelines;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
+using GameShop.BLL.Strategies.Interfaces.Factories;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository.Interfaces;
 
@@ -25,19 +26,22 @@ namespace GameShop.BLL.Services
         private readonly ILoggerManager _loggerManager;
         private readonly IValidator<GameCreateDTO> _validator;
         private readonly IFiltersFactory<IEnumerable<Game>> _filtersFactory;
+        private readonly IGameSortingFactory _gameSortingFactory;
 
         public GameService(
             IUnitOfWork unitOfWork,
             IMapper mapper,
             ILoggerManager loggerManager,
             IValidator<GameCreateDTO> validator,
-            IFiltersFactory<IEnumerable<Game>> filtersFactory)
+            IFiltersFactory<IEnumerable<Game>> filtersFactory,
+            IGameSortingFactory gameSortingFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _loggerManager = loggerManager;
             _validator = validator;
             _filtersFactory = filtersFactory;
+            _gameSortingFactory = gameSortingFactory;
         }
 
         public async Task CreateAsync(GameCreateDTO newGameDTO)
@@ -100,15 +104,21 @@ namespace GameShop.BLL.Services
 
         public async Task<GameReadDTO> GetGameByKeyAsync(string gameKey)
         {
-            var game = await _unitOfWork.GameRepository.GetAsync(
-                filter: g => g.Key == gameKey, includeProperties: "GamePlatformTypes,GameGenres,Publisher");
+            var game = (await _unitOfWork.GameRepository.GetAsync(
+                filter: g => g.Key == gameKey, includeProperties: "GamePlatformTypes,GameGenres,Publisher"))
+                    .SingleOrDefault();
 
-            if (game.SingleOrDefault() == null)
+            if (game == null)
             {
                 throw new NotFoundException($"Game with key {gameKey} not found");
             }
 
-            var model = _mapper.Map<GameReadDTO>(game.SingleOrDefault());
+            game.Views += 1;
+            var model = _mapper.Map<GameReadDTO>(game);
+
+            _unitOfWork.GameRepository.Update(game);
+            await _unitOfWork.SaveAsync();
+
             _loggerManager.LogInfo($"Game with key {gameKey} returned successfully");
             return model;
         }
@@ -120,6 +130,12 @@ namespace GameShop.BLL.Services
             var pipeline = new GameFiltersPipeline();
             pipeline.Register(_filtersFactory.GetOperation(gameFiltersDTO));
             games = pipeline.PerformOperation(games);
+
+            if (!string.IsNullOrEmpty(gameFiltersDTO.SortingOption))
+            {
+                var sortingStrategy = _gameSortingFactory.GetGamesSortingStrategy(gameFiltersDTO.SortingOption);
+                games = sortingStrategy.Sort(games);
+            }
 
             var models = _mapper.Map<IEnumerable<GameReadListDTO>>(games);
 

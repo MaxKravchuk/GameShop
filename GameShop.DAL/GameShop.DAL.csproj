@@ -140,6 +140,10 @@
     <Compile Include="Migrations\202305160847288_AddCreatedAtFieldForGame.designer.cs">
       <DependentUpon>202305160847288_AddCreatedAtFieldForGame.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202305161227119_AddViewsFieldForGame.cs" />
+    <Compile Include="Migrations\202305161227119_AddViewsFieldForGame.designer.cs">
+      <DependentUpon>202305161227119_AddViewsFieldForGame.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Interfaces\IRepository.cs" />
@@ -174,6 +178,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202305160847288_AddCreatedAtFieldForGame.resx">
       <DependentUpon>202305160847288_AddCreatedAtFieldForGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305161227119_AddViewsFieldForGame.resx">
+      <DependentUpon>202305161227119_AddViewsFieldForGame.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

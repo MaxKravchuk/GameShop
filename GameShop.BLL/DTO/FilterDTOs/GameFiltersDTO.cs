@@ -21,5 +21,7 @@ namespace GameShop.BLL.DTO.FilterDTOs
         public int PriceFrom { get; set; }
 
         public int PriceTo { get; set; }
+
+        public string SortingOption { get; set; }
     }
 }

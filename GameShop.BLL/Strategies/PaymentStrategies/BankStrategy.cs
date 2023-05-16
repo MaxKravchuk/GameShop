@@ -9,11 +9,12 @@ using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.DTO.StrategyDTOs;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Strategies.Interfaces;
+using GameShop.BLL.Strategies.Interfaces.Strategies;
 using GameShop.DAL.Entities;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 
-namespace GameShop.BLL.Strategies
+namespace GameShop.BLL.Strategies.PaymentStrategies
 {
     public class BankStrategy : IPaymentStrategy
     {

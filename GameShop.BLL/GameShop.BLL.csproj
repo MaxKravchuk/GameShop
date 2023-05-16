@@ -180,12 +180,20 @@
     <Compile Include="Services\Utils\Validators\GameCreateDtoValidator.cs" />
     <Compile Include="Services\Utils\Validators\OrderCreateDtoValidator.cs" />
     <Compile Include="Services\Utils\Validators\PublisherCreateDtoValidator.cs" />
-    <Compile Include="Strategies\BankStrategy.cs" />
-    <Compile Include="Strategies\IBoxStrategy.cs" />
-    <Compile Include="Strategies\PaymentStrategyFactory.cs" />
-    <Compile Include="Strategies\Interfaces\IPaymentStrategy.cs" />
-    <Compile Include="Strategies\Interfaces\IPaymentStrategyFactory.cs" />
-    <Compile Include="Strategies\VisaStrategy.cs" />
+    <Compile Include="Strategies\Factories\SortingStrategyFactory.cs" />
+    <Compile Include="Strategies\Interfaces\Strategies\IGamesSortingStrategy.cs" />
+    <Compile Include="Strategies\Interfaces\Factories\IGameSortingFactory.cs" />
+    <Compile Include="Strategies\PaymentStrategies\BankStrategy.cs" />
+    <Compile Include="Strategies\PaymentStrategies\IBoxStrategy.cs" />
+    <Compile Include="Strategies\Factories\PaymentStrategyFactory.cs" />
+    <Compile Include="Strategies\Interfaces\Strategies\IPaymentStrategy.cs" />
+    <Compile Include="Strategies\Interfaces\Factories\IPaymentStrategyFactory.cs" />
+    <Compile Include="Strategies\PaymentStrategies\VisaStrategy.cs" />
+    <Compile Include="Strategies\SortingStrategies\AscPriceStrategy.cs" />
+    <Compile Include="Strategies\SortingStrategies\DateStrategy.cs" />
+    <Compile Include="Strategies\SortingStrategies\DescPriceStrategy.cs" />
+    <Compile Include="Strategies\SortingStrategies\MostCommentedStrategy.cs" />
+    <Compile Include="Strategies\SortingStrategies\MostPopularStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

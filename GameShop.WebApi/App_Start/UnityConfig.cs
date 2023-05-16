@@ -17,7 +17,12 @@ using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.BLL.Services.Utils;
 using GameShop.BLL.Services.Utils.Validators;
 using GameShop.BLL.Strategies;
+using GameShop.BLL.Strategies.Factories;
 using GameShop.BLL.Strategies.Interfaces;
+using GameShop.BLL.Strategies.Interfaces.Factories;
+using GameShop.BLL.Strategies.Interfaces.Strategies;
+using GameShop.BLL.Strategies.PaymentStrategies;
+using GameShop.BLL.Strategies.SortingStrategies;
 using GameShop.DAL.Context;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository;
@@ -102,6 +107,14 @@ namespace GameShop.WebApi
             container.RegisterType<IOperation<IEnumerable<Game>>, PlatformTypeFilter>();
             container.RegisterType<IOperation<IEnumerable<Game>>, PriceFilter>();
             container.RegisterType<IOperation<IEnumerable<Game>>, PublisherFilter>();
+
+            container.RegisterType<IGameSortingFactory, SortingStrategyFactory>();
+            container.RegisterType<IGamesSortingStrategy, AscPriceStrategy>();
+            container.RegisterType<IGamesSortingStrategy, DateStrategy>();
+            container.RegisterType<IGamesSortingStrategy, DescPriceStrategy>();
+            container.RegisterType<IGamesSortingStrategy, MostCommentedStrategy>();
+            container.RegisterType<IGamesSortingStrategy, MostPopularStrategy>();
+
 
             httpConfiguration.DependencyResolver = new UnityDependencyResolver(container);
         }

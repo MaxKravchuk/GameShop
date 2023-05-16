@@ -19,6 +19,8 @@ namespace GameShop.DAL.Entities
 
         public DateTime CreatedAt { get; set; }
 
+        public int Views { get; set; } = 0;
+
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
         public ICollection<Genre> GameGenres { get; set; } = new List<Genre>();

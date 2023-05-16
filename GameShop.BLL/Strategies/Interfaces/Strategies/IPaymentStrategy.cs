@@ -9,7 +9,7 @@ using GameShop.BLL.DTO.StrategyDTOs;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.DAL.Entities;
 
-namespace GameShop.BLL.Strategies.Interfaces
+namespace GameShop.BLL.Strategies.Interfaces.Strategies
 {
     public interface IPaymentStrategy
     {

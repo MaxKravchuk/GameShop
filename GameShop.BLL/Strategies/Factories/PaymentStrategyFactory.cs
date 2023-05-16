@@ -5,9 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Strategies.Interfaces;
+using GameShop.BLL.Strategies.Interfaces.Factories;
+using GameShop.BLL.Strategies.Interfaces.Strategies;
+using GameShop.BLL.Strategies.PaymentStrategies;
 using Unity;
 
-namespace GameShop.BLL.Strategies
+namespace GameShop.BLL.Strategies.Factories
 {
     public class PaymentStrategyFactory : IPaymentStrategyFactory
     {
