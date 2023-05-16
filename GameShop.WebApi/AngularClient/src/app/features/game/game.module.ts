@@ -27,7 +27,7 @@ import { MatRadioModule } from "@angular/material/radio";
     ],
     exports: [
         GameListComponent,
-        GameFiltersComponent
+        GameFiltersComponent,
     ],
     imports: [
         CommonModule,

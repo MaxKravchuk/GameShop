@@ -1,4 +1,18 @@
 <div class="filters">
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Sorted by
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-radio-group aria-label="Select an sorting option" color="primary">
+            <mat-radio-button [value]="">Most popular</mat-radio-button>
+            <mat-radio-button [value]="">Most commented</mat-radio-button>
+            <mat-radio-button [value]="">By price asc</mat-radio-button>
+            <mat-radio-button [value]="">By price desc</mat-radio-button>
+            <mat-radio-button [value]="">Newest</mat-radio-button>
+        </mat-radio-group>
+    </mat-expansion-panel>
     <mat-form-field appearance="fill">
         <mat-label>Game name</mat-label>
         <input matInput>
@@ -62,7 +76,7 @@
                 Date
             </mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-radio-group aria-label="Select an date filter">
+        <mat-radio-group aria-label="Select an date filter" color="primary">
             <mat-radio-button [value]="">Last week</mat-radio-button>
             <mat-radio-button [value]="">Last month</mat-radio-button>
             <mat-radio-button [value]="">Last year</mat-radio-button>
