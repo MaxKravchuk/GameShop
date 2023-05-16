@@ -9,6 +9,8 @@ using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.DTO.PublisherDTOs;
 using GameShop.BLL.DTO.RedisDTOs;
+using GameShop.BLL.Filters;
+using GameShop.BLL.Filters.Interfaces;
 using GameShop.BLL.Services;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
@@ -92,6 +94,14 @@ namespace GameShop.WebApi
             container.RegisterType<IPaymentStrategy, BankStrategy>("Bank");
             container.RegisterType<IPaymentStrategy, IBoxStrategy>("iBox");
             container.RegisterType<IPaymentStrategy, VisaStrategy>("Visa");
+
+            container.RegisterType<IFiltersFactory<IEnumerable<Game>>, GameFiltersFactory>();
+            container.RegisterType<IOperation<IEnumerable<Game>>, CreatedAtFilter>();
+            container.RegisterType<IOperation<IEnumerable<Game>>, GenreFilter>();
+            container.RegisterType<IOperation<IEnumerable<Game>>, NameFilter>();
+            container.RegisterType<IOperation<IEnumerable<Game>>, PlatformTypeFilter>();
+            container.RegisterType<IOperation<IEnumerable<Game>>, PriceFilter>();
+            container.RegisterType<IOperation<IEnumerable<Game>>, PublisherFilter>();
 
             httpConfiguration.DependencyResolver = new UnityDependencyResolver(container);
         }

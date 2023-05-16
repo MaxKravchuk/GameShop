@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
+using GameShop.BLL.DTO.FilterDTOs;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.Services.Interfaces;
 
@@ -42,9 +43,9 @@ namespace GameShop.WebApi.Controllers
             return Json(game);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("getAll")]
-        public async Task<IHttpActionResult> GetAllGamesAsync([FromBody] GameFiltersDTO gameFiltersDTO)
+        public async Task<IHttpActionResult> GetAllGamesAsync([FromUri] GameFiltersDTO gameFiltersDTO)
         {
             var games = await _gameService.GetAllGamesAsync(gameFiltersDTO);
             return Json(games);

@@ -98,7 +98,8 @@
                 GamePlatformTypes = new List<PlatformType> { dPt[3] },
                 Publisher = publishers[0],
                 Price = 10,
-                UnitsInStock = 2
+                UnitsInStock = 2,
+                CreatedAt = new System.DateTime(2022, 3, 15)
             });
 
             games.Add(new Game
@@ -111,7 +112,8 @@
                 GamePlatformTypes = new List<PlatformType> { dPt[2], dPt[3] },
                 Publisher = publishers[0],
                 Price = 10,
-                UnitsInStock = 5
+                UnitsInStock = 5,
+                CreatedAt = new System.DateTime(2019, 5, 11)
             });
 
             games.Add(new Game
@@ -124,7 +126,8 @@
                 GamePlatformTypes = new List<PlatformType> { dPt[0], dPt[2], dPt[3] },
                 Publisher = publishers[0],
                 Price = 10,
-                UnitsInStock = 0
+                UnitsInStock = 0,
+                CreatedAt = new System.DateTime(2021, 9, 25)
             });
 
             games.Add(new Game
@@ -137,7 +140,8 @@
                 GamePlatformTypes = new List<PlatformType> { dPt[3] },
                 Publisher = publishers[1],
                 Price = 10,
-                UnitsInStock = 10
+                UnitsInStock = 10,
+                CreatedAt = new System.DateTime(2017, 10, 3)
             });
 
             games.Add(new Game
@@ -150,7 +154,8 @@
                 GamePlatformTypes = new List<PlatformType> { dPt[0], dPt[1], dPt[2], dPt[3] },
                 Publisher = publishers[1],
                 Price = 10,
-                UnitsInStock = 1
+                UnitsInStock = 1,
+                CreatedAt = new System.DateTime(2011, 11, 18)
             });
 
             context.Comments.AddRange(dComments);

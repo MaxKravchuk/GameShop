@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using GameShop.BLL.DTO.FilterDTOs;
 using GameShop.BLL.DTO.GameDTOs;
 
 namespace GameShop.BLL.Services.Interfaces

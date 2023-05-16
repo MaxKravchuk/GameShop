@@ -5,9 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
+using GameShop.BLL.DTO.FilterDTOs;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Filters;
+using GameShop.BLL.Filters.Interfaces;
+using GameShop.BLL.Pipelines;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.DAL.Entities;
@@ -21,17 +24,20 @@ namespace GameShop.BLL.Services
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
         private readonly IValidator<GameCreateDTO> _validator;
+        private readonly IFiltersFactory<IEnumerable<Game>> _filtersFactory;
 
         public GameService(
             IUnitOfWork unitOfWork,
             IMapper mapper,
             ILoggerManager loggerManager,
-            IValidator<GameCreateDTO> validator)
+            IValidator<GameCreateDTO> validator,
+            IFiltersFactory<IEnumerable<Game>> filtersFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _loggerManager = loggerManager;
             _validator = validator;
+            _filtersFactory = filtersFactory;
         }
 
         public async Task CreateAsync(GameCreateDTO newGameDTO)
@@ -111,9 +117,9 @@ namespace GameShop.BLL.Services
         {
             var games = await _unitOfWork.GameRepository.GetAsync(includeProperties: "GameGenres");
 
-            var filter = new GenreFilter(gameFiltersDTO.GenreIds);
-
-            games = filter.ApplyFilter(games);
+            var pipeline = new GameFiltersPipeline();
+            pipeline.Register(_filtersFactory.GetOperation(gameFiltersDTO));
+            games = pipeline.PerformOperation(games);
 
             var models = _mapper.Map<IEnumerable<GameReadListDTO>>(games);
 

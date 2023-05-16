@@ -120,7 +120,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DTO\GameDTOs\GameFiltersDTO.cs" />
+    <Compile Include="DTO\FilterDTOs\BaseFilterDTO.cs" />
+    <Compile Include="DTO\FilterDTOs\GameFiltersDTO.cs" />
     <Compile Include="DTO\OrderDTOs\OrderCreateDTO.cs" />
     <Compile Include="DTO\PublisherDTOs\PublisherCreateDTO.cs" />
     <Compile Include="DTO\PublisherDTOs\PublisherReadDTO.cs" />
@@ -129,8 +130,17 @@
     <Compile Include="DTO\StrategyDTOs\PaymentResultDTO.cs" />
     <Compile Include="Exceptions\BadRequestException.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
-    <Compile Include="Filters\GameFilter.cs" />
+    <Compile Include="Filters\CreatedAtFilter.cs" />
+    <Compile Include="Filters\GameFiltersFactory.cs" />
     <Compile Include="Filters\GenreFilter.cs" />
+    <Compile Include="Filters\Interfaces\IFiltersFactory.cs" />
+    <Compile Include="Filters\Interfaces\IOperation.cs" />
+    <Compile Include="Filters\NameFilter.cs" />
+    <Compile Include="Filters\PlatformTypeFilter.cs" />
+    <Compile Include="Filters\PriceFilter.cs" />
+    <Compile Include="Filters\PublisherFilter.cs" />
+    <Compile Include="Pipelines\GameFiltersPipeline.cs" />
+    <Compile Include="Pipelines\Interfaces\IPipelinebase.cs" />
     <Compile Include="Services\CommentService.cs" />
     <Compile Include="Services\Interfaces\IOrderService.cs" />
     <Compile Include="Services\Interfaces\IShoppingCartService.cs" />

@@ -8,13 +8,13 @@ using GameShop.DAL.Entities;
 
 namespace GameShop.BLL.Filters
 {
-    public class GenreFilter : IOperation<IEnumerable<Game>>
+    public class PublisherFilter : IOperation<IEnumerable<Game>>
     {
-        private IEnumerable<int> _genreIds;
+        private IEnumerable<int> _publishersIds;
 
-        public IOperation<IEnumerable<Game>> SetFilterData(IEnumerable<int> genreIds)
+        public IOperation<IEnumerable<Game>> SetFilterData(IEnumerable<int> publishersIds)
         {
-            _genreIds = genreIds;
+            _publishersIds = publishersIds;
             return this;
         }
 
@@ -25,9 +25,9 @@ namespace GameShop.BLL.Filters
 
         private IEnumerable<Game> ApplyFilter(IEnumerable<Game> games)
         {
-            if (_genreIds != null && _genreIds.Any())
+            if (_publishersIds != null && _publishersIds.Any())
             {
-                games = games.Where(game => game.GameGenres.Any(genre => _genreIds.Contains(genre.Id)));
+                games = games.Where(game => _publishersIds.Contains(game.Publisher.Id));
             }
 
             return games;
