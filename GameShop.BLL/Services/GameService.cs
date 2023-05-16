@@ -137,6 +137,11 @@ namespace GameShop.BLL.Services
                 games = sortingStrategy.Sort(games);
             }
 
+            if (gameFiltersDTO.PageNumber > 0 && gameFiltersDTO.PageSize > 0)
+            {
+                games = games.Skip((gameFiltersDTO.PageNumber - 1) * gameFiltersDTO.PageSize).Take(gameFiltersDTO.PageSize);
+            }
+
             var models = _mapper.Map<IEnumerable<GameReadListDTO>>(games);
 
             _loggerManager.LogInfo($"Games successfully returned with array size of {models.Count()}");
