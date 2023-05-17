@@ -1,21 +1,22 @@
-<div class="filters">
+<div [formGroup]="form" class="filters">
     <mat-expansion-panel>
         <mat-expansion-panel-header>
             <mat-panel-title>
                 Sorted by
             </mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-radio-group aria-label="Select an sorting option" color="primary">
-            <mat-radio-button [value]="">Most popular</mat-radio-button>
-            <mat-radio-button [value]="">Most commented</mat-radio-button>
-            <mat-radio-button [value]="">By price asc</mat-radio-button>
-            <mat-radio-button [value]="">By price desc</mat-radio-button>
-            <mat-radio-button [value]="">Newest</mat-radio-button>
+        <mat-radio-group aria-label="Select an sorting option" color="primary" formControlName="SortedBy">
+            <mat-radio-button value="MostPopular">Most popular</mat-radio-button>
+            <mat-radio-button value="MostCommented">Most commented</mat-radio-button>
+            <mat-radio-button value="AscPrice">By price asc</mat-radio-button>
+            <mat-radio-button value="DescPrice">By price desc</mat-radio-button>
+            <mat-radio-button value="Date">Newest</mat-radio-button>
         </mat-radio-group>
     </mat-expansion-panel>
     <mat-form-field appearance="fill">
         <mat-label>Game name</mat-label>
-        <input matInput>
+        <input matInput formControlName="GameName">
+        <mat-hint>Enter name</mat-hint>
     </mat-form-field>
     <mat-expansion-panel>
         <mat-expansion-panel-header>
@@ -23,13 +24,12 @@
                 Genres
             </mat-panel-title>
         </mat-expansion-panel-header>
-        <ul>
-            <li *ngFor="let genre of genres">
-                <mat-checkbox color="primary">
-                    {{genre.Name}}
-                </mat-checkbox>
-            </li>
-        </ul>
+<!--        <ul>-->
+<!--            <li *ngFor="let genre of genres">-->
+<!--                <input type="checkbox" class="genre" value="{{genre.Id}}">-->
+<!--                <label for="{{genre.Id}}">{{genre.Name}}</label>-->
+<!--            </li>-->
+<!--        </ul>-->
     </mat-expansion-panel>
     <mat-expansion-panel>
         <mat-expansion-panel-header>
@@ -37,13 +37,13 @@
                 Platforms
             </mat-panel-title>
         </mat-expansion-panel-header>
-        <ul>
-            <li *ngFor="let platform of platforms">
-                <mat-checkbox color="primary">
-                    {{platform.Type}}
-                </mat-checkbox>
-            </li>
-        </ul>
+<!--        <ul>-->
+<!--            <li *ngFor="let platform of platforms" class="platform">-->
+<!--                <mat-checkbox color="primary">-->
+<!--                    {{platform.Type}}-->
+<!--                </mat-checkbox>-->
+<!--            </li>-->
+<!--        </ul>-->
     </mat-expansion-panel>
     <mat-expansion-panel>
         <mat-expansion-panel-header>
@@ -51,24 +51,24 @@
                 Publishers
             </mat-panel-title>
         </mat-expansion-panel-header>
-        <ul>
-            <li *ngFor="let publisher of publishers">
-                <mat-checkbox color="primary">
-                    {{publisher.CompanyName}}
-                </mat-checkbox>
-            </li>
-        </ul>
+<!--        <ul>-->
+<!--            <li *ngFor="let publisher of publishers" class="publisher">-->
+<!--                <mat-checkbox color="primary">-->
+<!--                    {{publisher.CompanyName}}-->
+<!--                </mat-checkbox>-->
+<!--            </li>-->
+<!--        </ul>-->
     </mat-expansion-panel>
     <div class="filter-price">
-        <p>Price</p>
-        <div class="price-text">
-            <p>{{fromValue}}</p>
-            <p>{{toValue}}</p>
-        </div>
-        <mat-slider min="0" max="100">
-            <input matSliderStartThumb value="5" [(ngModel)]="fromValue">
-            <input matSliderEndThumb value="50" [(ngModel)]="toValue">
-        </mat-slider>
+        <mat-form-field>
+            <mat-label>Price from</mat-label>
+            <input matInput formControlName="PriceFrom">
+            <mat-hint>Enter price</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Price to</mat-label>
+            <input matInput formControlName="PriceTo">
+        </mat-form-field>
     </div>
     <mat-expansion-panel>
         <mat-expansion-panel-header>
@@ -76,15 +76,15 @@
                 Date
             </mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-radio-group aria-label="Select an date filter" color="primary">
-            <mat-radio-button [value]="">Last week</mat-radio-button>
-            <mat-radio-button [value]="">Last month</mat-radio-button>
-            <mat-radio-button [value]="">Last year</mat-radio-button>
-            <mat-radio-button [value]="">2 years</mat-radio-button>
-            <mat-radio-button [value]="">3 years</mat-radio-button>
+        <mat-radio-group aria-label="Select an date filter" color="primary" formControlName="DateFilter">
+            <mat-radio-button value="lastWeek">Last week</mat-radio-button>
+            <mat-radio-button value="lastMonth">Last month</mat-radio-button>
+            <mat-radio-button value="lastYear">Last year</mat-radio-button>
+            <mat-radio-button value="last2Years">2 years</mat-radio-button>
+            <mat-radio-button value="last3Years">3 years</mat-radio-button>
         </mat-radio-group>
     </mat-expansion-panel>
     <div class="filter-button">
-        <button mat-raised-button color="primary">Filter</button>
+        <button mat-raised-button color="primary" (click)="setFilters()">Filter</button>
     </div>
 </div>

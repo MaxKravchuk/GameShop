@@ -50,14 +50,9 @@ namespace GameShop.WebApi.App_Start
             CreateMap<Game, GameReadListDTO>();
 
             CreateMap<PagedList<GameReadListDTO>, PagedListViewModel<GameReadListDTO>>()
-                .ForMember(dest => dest.CurrentPage, opt => opt.MapFrom(src => src.CurrentPage))
                 .ForMember(dest => dest.HasNext, opt => opt.MapFrom(src => src.HasNext))
                 .ForMember(dest => dest.HasPrevious, opt => opt.MapFrom(src => src.HasPrevious))
-                .ForMember(dest => dest.PageSize, opt => opt.MapFrom(src => src.PageSize))
-                .ForMember(dest => dest.TotalCount, opt => opt.MapFrom(src => src.TotalCount))
-                .ForMember(dest => dest.TotalPages, opt => opt.MapFrom(src => src.TotalPages))
                 .ForMember(dest => dest.Entities, opt => opt.MapFrom(src => src));
-
 
             CreateMap<GameUpdateDTO, Game>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
