@@ -23,9 +23,5 @@ namespace GameShop.BLL.DTO.FilterDTOs
         public int PriceTo { get; set; }
 
         public string SortingOption { get; set; }
-
-        public int PageNumber { get; set; } = 1;
-
-        public int PageSize { get; set; } = 20;
     }
 }

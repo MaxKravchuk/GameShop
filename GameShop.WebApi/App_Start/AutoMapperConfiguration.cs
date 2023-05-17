@@ -3,8 +3,10 @@ using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.DTO.GenreDTOs;
 using GameShop.BLL.DTO.OrderDTOs;
+using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.DTO.PlatformTypeDTOs;
 using GameShop.BLL.DTO.PublisherDTOs;
+using GameShop.BLL.Pagination;
 using GameShop.DAL.Entities;
 
 namespace GameShop.WebApi.App_Start
@@ -44,7 +46,18 @@ namespace GameShop.WebApi.App_Start
                 .ForMember(dest => dest.PlatformTypes, opt => opt.MapFrom(src => src.GamePlatformTypes))
                 .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.GameGenres))
                 .ForMember(dest => dest.PublisherReadDTO, opt => opt.MapFrom(src => src.Publisher));
+            
             CreateMap<Game, GameReadListDTO>();
+
+            CreateMap<PagedList<GameReadListDTO>, PagedListViewModel<GameReadListDTO>>()
+                .ForMember(dest => dest.CurrentPage, opt => opt.MapFrom(src => src.CurrentPage))
+                .ForMember(dest => dest.HasNext, opt => opt.MapFrom(src => src.HasNext))
+                .ForMember(dest => dest.HasPrevious, opt => opt.MapFrom(src => src.HasPrevious))
+                .ForMember(dest => dest.PageSize, opt => opt.MapFrom(src => src.PageSize))
+                .ForMember(dest => dest.TotalCount, opt => opt.MapFrom(src => src.TotalCount))
+                .ForMember(dest => dest.TotalPages, opt => opt.MapFrom(src => src.TotalPages))
+                .ForMember(dest => dest.Entities, opt => opt.MapFrom(src => src));
+
 
             CreateMap<GameUpdateDTO, Game>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())

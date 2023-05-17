@@ -27,7 +27,7 @@ namespace GameShop.BLL.Filters
         {
             if (!string.IsNullOrEmpty(_gameName))
             {
-                games = games.Where(game => game.Name.Contains(_gameName));
+                games = games.Where(game => game.Name.ToUpper().Contains(_gameName.ToUpper().Trim()));
             }
 
             return games;

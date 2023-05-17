@@ -7,9 +7,12 @@ using AutoMapper;
 using FluentValidation;
 using GameShop.BLL.DTO.FilterDTOs;
 using GameShop.BLL.DTO.GameDTOs;
+using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Filters;
 using GameShop.BLL.Filters.Interfaces;
+using GameShop.BLL.Pagination;
+using GameShop.BLL.Pagination.Extensions;
 using GameShop.BLL.Pipelines;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
@@ -123,9 +126,9 @@ namespace GameShop.BLL.Services
             return model;
         }
 
-        public async Task<IEnumerable<GameReadListDTO>> GetAllGamesAsync(GameFiltersDTO gameFiltersDTO)
+        public async Task<PagedListViewModel<GameReadListDTO>> GetAllGamesAsync(GameFiltersDTO gameFiltersDTO)
         {
-            var games = await _unitOfWork.GameRepository.GetAsync(includeProperties: "GameGenres");
+            var games = await _unitOfWork.GameRepository.GetAsync(includeProperties: "GameGenres,Comments,GamePlatformTypes,Publisher");
 
             var pipeline = new GameFiltersPipeline();
             pipeline.Register(_filtersFactory.GetOperation(gameFiltersDTO));
@@ -137,15 +140,13 @@ namespace GameShop.BLL.Services
                 games = sortingStrategy.Sort(games);
             }
 
-            if (gameFiltersDTO.PageNumber > 0 && gameFiltersDTO.PageSize > 0)
-            {
-                games = games.Skip((gameFiltersDTO.PageNumber - 1) * gameFiltersDTO.PageSize).Take(gameFiltersDTO.PageSize);
-            }
-
             var models = _mapper.Map<IEnumerable<GameReadListDTO>>(games);
 
+            var pagedGames = models.ToPagedList(gameFiltersDTO.PageNumber, gameFiltersDTO.PageSize);
+            var pagedModels = _mapper.Map<PagedListViewModel<GameReadListDTO>>(pagedGames);
+
             _loggerManager.LogInfo($"Games successfully returned with array size of {models.Count()}");
-            return models;
+            return pagedModels;
         }
 
         public async Task<IEnumerable<GameReadListDTO>> GetGamesByGenreAsync(int genreId)

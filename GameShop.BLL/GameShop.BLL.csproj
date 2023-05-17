@@ -123,6 +123,7 @@
     <Compile Include="DTO\FilterDTOs\BaseFilterDTO.cs" />
     <Compile Include="DTO\FilterDTOs\GameFiltersDTO.cs" />
     <Compile Include="DTO\OrderDTOs\OrderCreateDTO.cs" />
+    <Compile Include="DTO\PaginationDTOs\PagedListViewModel.cs" />
     <Compile Include="DTO\PublisherDTOs\PublisherCreateDTO.cs" />
     <Compile Include="DTO\PublisherDTOs\PublisherReadDTO.cs" />
     <Compile Include="DTO\PublisherDTOs\PublisherReadListDTO.cs" />
@@ -139,6 +140,9 @@
     <Compile Include="Filters\PlatformTypeFilter.cs" />
     <Compile Include="Filters\PriceFilter.cs" />
     <Compile Include="Filters\PublisherFilter.cs" />
+    <Compile Include="Pagination\Extensions\IEnumerableExtension.cs" />
+    <Compile Include="Pagination\Models\PaginationParameters.cs" />
+    <Compile Include="Pagination\PagedList.cs" />
     <Compile Include="Pipelines\GameFiltersPipeline.cs" />
     <Compile Include="Pipelines\Interfaces\IPipelinebase.cs" />
     <Compile Include="Services\CommentService.cs" />
@@ -209,8 +213,6 @@
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Pagination\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
