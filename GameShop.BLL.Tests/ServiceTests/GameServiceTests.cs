@@ -6,10 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
+using GameShop.BLL.DTO.FilterDTOs;
 using GameShop.BLL.DTO.GameDTOs;
+using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.Exceptions;
+using GameShop.BLL.Filters.Interfaces;
+using GameShop.BLL.Pagination;
 using GameShop.BLL.Services;
 using GameShop.BLL.Services.Interfaces.Utils;
+using GameShop.BLL.Strategies.Interfaces.Factories;
+using GameShop.BLL.Strategies.Interfaces.Strategies;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository.Interfaces;
 using Moq;
@@ -24,11 +30,14 @@ namespace GameShop.BLL.Tests.ServiceTests
         private readonly Mock<IMapper> _mockMapper;
         private readonly Mock<ILoggerManager> _mockLogger;
         private readonly Mock<IValidator<GameCreateDTO>> _mockValidator;
+        private readonly Mock<IFiltersFactory<IEnumerable<Game>>> _mockFiltersFactory;
+        private readonly Mock<IGameSortingFactory> _mockGameSortingFactory;
 
         private bool _disposed;
 
         private GameCreateDTO _gameCreateDTO;
         private Game _game;
+        private GameFiltersDTO _gameFiltersDTO;
         private List<Genre> _listOfGenres;
         private List<PlatformType> _listOfPlatformTypes;
 
@@ -38,6 +47,8 @@ namespace GameShop.BLL.Tests.ServiceTests
             _mockMapper = new Mock<IMapper>();
             _mockLogger = new Mock<ILoggerManager>();
             _mockValidator = new Mock<IValidator<GameCreateDTO>>();
+            _mockFiltersFactory = new Mock<IFiltersFactory<IEnumerable<Game>>>();
+            _mockGameSortingFactory = new Mock<IGameSortingFactory>();
 
             _gameCreateDTO = GetGameCreateDTO();
             _game = GetGame();
@@ -48,7 +59,9 @@ namespace GameShop.BLL.Tests.ServiceTests
                 _mockUnitOfWork.Object,
                 _mockMapper.Object,
                 _mockLogger.Object,
-                _mockValidator.Object);
+                _mockValidator.Object,
+                _mockFiltersFactory.Object,
+                _mockGameSortingFactory.Object);
         }
 
         public void Dispose()
@@ -284,11 +297,13 @@ namespace GameShop.BLL.Tests.ServiceTests
         }
 
         [Fact]
-        public async Task GetAllGamesAsync_ShouldReturnFilledGameList()
+        public async Task GetAllGamesAsync_WithCorrectSortingOption_ShouldReturnFilledSortedGameList()
         {
             // Arrange
             var gameList = new List<Game> { _game };
             var gameListDTO = new List<GameReadListDTO> { new GameReadListDTO() };
+            var pagedGameList = new PagedListViewModel<GameReadListDTO> { Entities = gameListDTO };
+            var gameFiltersDTO = new GameFiltersDTO { PageNumber = 1, PageSize = 10, SortingOption = "AscPrice" };
 
             _mockUnitOfWork
                 .Setup(u => u.GameRepository
@@ -300,24 +315,28 @@ namespace GameShop.BLL.Tests.ServiceTests
                 .ReturnsAsync(gameList);
 
             _mockMapper
-                .Setup(m => m.Map<IEnumerable<GameReadListDTO>>(gameList)).Returns(gameListDTO);
+                .Setup(m => m.Map<PagedListViewModel<GameReadListDTO>>(gameList))
+                .Returns(pagedGameList);
 
             // Act
-            var result = await _gameService.GetAllGamesAsync();
+            var result = await _gameService.GetAllGamesAsync(gameFiltersDTO);
 
             // Assert
             _mockLogger.Verify(
                 l => l.LogInfo($"Games successfully returned with array size of {gameListDTO.Count()}"), Times.Once);
             Assert.IsAssignableFrom<IEnumerable<GameReadListDTO>>(result);
-            Assert.True(result.Any());
+
+            Assert.True(result.Entities.Any());
         }
 
         [Fact]
-        public async Task GetAllGamesAsync_ShouldReturnEmptyGameList()
+        public async Task GetAllGamesAsync_WithCorrectSortingOption_ShouldReturnEmptyGameList()
         {
             // Arrange
             var gameList = new List<Game>();
             var gameListDTO = new List<GameReadListDTO>();
+            var pagedGameList = new PagedListViewModel<GameReadListDTO> { Entities = gameListDTO };
+            var gameFiltersDTO = new GameFiltersDTO { PageNumber = 1, PageSize = 10, SortingOption = "AscPrice" };
 
             _mockUnitOfWork
                 .Setup(u => u.GameRepository
@@ -332,13 +351,69 @@ namespace GameShop.BLL.Tests.ServiceTests
                 .Setup(m => m.Map<IEnumerable<GameReadListDTO>>(gameList)).Returns(gameListDTO);
 
             // Act
-            var result = await _gameService.GetAllGamesAsync();
+            var result = await _gameService.GetAllGamesAsync(gameFiltersDTO);
 
             // Assert
             _mockLogger.Verify(
                 l => l.LogInfo($"Games successfully returned with array size of {gameListDTO.Count()}"), Times.Once);
             Assert.IsAssignableFrom<IEnumerable<GameReadListDTO>>(result);
-            Assert.False(result.Any());
+            Assert.False(result.Entities.Any());
+        }
+
+        [Fact]
+        public async Task GetAllGamesAsync_WithEmptySortingOption_ShouldReturnGameList()
+        {
+            // Arrange
+            var gameList = new List<Game> { _game };
+            var gameListDTO = new List<GameReadListDTO> { new GameReadListDTO() };
+            var pagedGameList = new PagedListViewModel<GameReadListDTO> { Entities = gameListDTO };
+            var gameFiltersDTO = new GameFiltersDTO { PageNumber = 1, PageSize = 10, SortingOption = "AscPrice" };
+
+            _mockUnitOfWork
+                .Setup(u => u.GameRepository
+                    .GetAsync(
+                        It.IsAny<Expression<Func<Game, bool>>>(),
+                        It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<bool>()))
+                .ReturnsAsync(gameList);
+
+            _mockMapper
+                .Setup(m => m.Map<PagedListViewModel<GameReadListDTO>>(gameList))
+                .Returns(pagedGameList);
+
+            // Act
+            var result = await _gameService.GetAllGamesAsync(gameFiltersDTO);
+
+            // Assert
+            _mockLogger.Verify(
+                l => l.LogInfo($"Games successfully returned with array size of {gameListDTO.Count()}"), Times.Once);
+            Assert.IsAssignableFrom<IEnumerable<GameReadListDTO>>(result);
+
+            Assert.True(result.Entities.Any());
+        }
+
+        [Fact]
+        public async Task GetAllGamesAsync_WithWrongSortingOption_ShouldThrowBadRequestException()
+        {
+            // Arrange
+            var gameList = new List<Game> { _game };
+            var gameFiltersDTO = new GameFiltersDTO { PageNumber = 1, PageSize = 10, SortingOption = "wrong" };
+
+            _mockUnitOfWork
+                .Setup(u => u.GameRepository
+                    .GetAsync(
+                        It.IsAny<Expression<Func<Game, bool>>>(),
+                        It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<bool>()))
+                .ReturnsAsync(gameList);
+
+            // Act
+            var result = _gameService.GetAllGamesAsync(gameFiltersDTO);
+
+            // Assert
+            await Assert.ThrowsAsync<BadRequestException>(() => result);
         }
 
         [Fact]

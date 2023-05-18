@@ -4,7 +4,9 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http.Results;
+using GameShop.BLL.DTO.FilterDTOs;
 using GameShop.BLL.DTO.GameDTOs;
+using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.WebApi.Controllers;
@@ -156,19 +158,21 @@ namespace GameShop.WebApi.Tests.ControllerTests
         {
             // Arrange
             var gamesList = new List<GameReadListDTO> { new GameReadListDTO() };
+            var pagedList = new PagedListViewModel<GameReadListDTO> { Entities = gamesList };
+            var gameFilterDTO = new GameFiltersDTO { PageNumber = 1, PageSize = 10 };
 
             _mockGameService
                 .Setup(s => s
-                    .GetAllGamesAsync())
-                .ReturnsAsync(gamesList);
+                    .GetAllGamesAsync(It.IsAny<GameFiltersDTO>()))
+                .ReturnsAsync(pagedList);
 
             // Act
-            var actionResult = await _gameController.GetAllGamesAsync();
+            var actionResult = await _gameController.GetAllGamesAsync(gameFilterDTO);
 
             // Assert
-            Assert.IsType<JsonResult<IEnumerable<GameReadListDTO>>>(actionResult);
+            Assert.IsType<JsonResult<PagedListViewModel<GameReadListDTO>>>(actionResult);
             Assert.NotNull(actionResult);
-            _mockGameService.Verify(s => s.GetAllGamesAsync(), Times.Once);
+            _mockGameService.Verify(s => s.GetAllGamesAsync(gameFilterDTO), Times.Once);
         }
 
         [Fact]

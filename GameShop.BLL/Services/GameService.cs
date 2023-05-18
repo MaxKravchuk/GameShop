@@ -140,12 +140,10 @@ namespace GameShop.BLL.Services
                 games = sortingStrategy.Sort(games);
             }
 
-            var models = _mapper.Map<IEnumerable<GameReadListDTO>>(games);
-
-            var pagedGames = models.ToPagedList(gameFiltersDTO.PageNumber, gameFiltersDTO.PageSize);
+            var pagedGames = games.ToPagedList(gameFiltersDTO.PageNumber, gameFiltersDTO.PageSize);
             var pagedModels = _mapper.Map<PagedListViewModel<GameReadListDTO>>(pagedGames);
 
-            _loggerManager.LogInfo($"Games successfully returned with array size of {models.Count()}");
+            _loggerManager.LogInfo($"Games successfully returned with array size of {pagedModels.Entities.Count()}");
             return pagedModels;
         }
 

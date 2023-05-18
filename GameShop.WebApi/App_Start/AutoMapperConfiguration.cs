@@ -49,7 +49,7 @@ namespace GameShop.WebApi.App_Start
             
             CreateMap<Game, GameReadListDTO>();
 
-            CreateMap<PagedList<GameReadListDTO>, PagedListViewModel<GameReadListDTO>>()
+            CreateMap<PagedList<Game>, PagedListViewModel<GameReadListDTO>>()
                 .ForMember(dest => dest.HasNext, opt => opt.MapFrom(src => src.HasNext))
                 .ForMember(dest => dest.HasPrevious, opt => opt.MapFrom(src => src.HasPrevious))
                 .ForMember(dest => dest.Entities, opt => opt.MapFrom(src => src));

@@ -3,7 +3,7 @@ using GameShop.BLL.DTO.PublisherDTOs;
 using GameShop.BLL.Services.Utils.Validators;
 using Xunit;
 
-namespace BLL.Test.UtilTests.ValidatorTests
+namespace GameShop.BLL.Tests.UtilTests.ValidatorTests
 {
     public class PublisherValidatorTests
     {

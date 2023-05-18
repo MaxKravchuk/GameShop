@@ -9,7 +9,7 @@ using GameShop.DAL.Repository.Interfaces.Utils;
 using Moq;
 using Xunit;
 
-namespace BLL.Test.ServiceTests
+namespace GameShop.BLL.Tests.ServiceTests
 {
     public class ShoppingCartServiceTests : IDisposable
     {

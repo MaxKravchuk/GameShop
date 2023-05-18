@@ -51,6 +51,7 @@ namespace GameShop.BLL.Services
             {
                 throw new BadRequestException("Payment is not successful");
             }
+
             var newOrder = await CreateOrderAsync(orderCreateDTO);
             var strategy = _paymentStrategyFactory.GetPaymentStrategy(orderCreateDTO.Strategy);
             return strategy.Pay(newOrder);
@@ -70,10 +71,11 @@ namespace GameShop.BLL.Services
                 throw new NotFoundException("Cart is empty");
             }
 
+            var games = await _unitOfWork.GameRepository.GetAsync();
+
             foreach (var game in cartItems)
             {
-                var gameToAdd =
-                    (await _unitOfWork.GameRepository.GetAsync(filter: g => g.Key == game.GameKey)).SingleOrDefault();
+                var gameToAdd = games.SingleOrDefault(g => g.Key == game.GameKey);
 
                 if (gameToAdd.UnitsInStock < game.Quantity)
                 {
