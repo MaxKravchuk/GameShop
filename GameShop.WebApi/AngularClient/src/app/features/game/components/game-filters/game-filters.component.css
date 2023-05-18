@@ -18,3 +18,9 @@
     grid-template-columns: 1fr 1fr;
     grid-gap: 5px;
 }
+
+.filter-button{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 5px;
+}

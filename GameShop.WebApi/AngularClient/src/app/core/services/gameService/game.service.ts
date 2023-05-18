@@ -19,8 +19,8 @@ export class GameService {
         private utilsService: UtilsService
     ) {}
 
-    getAllGames(filterParams: string): Observable<PagedList<Game>> {
-        return this.http.get<PagedList<Game>>(`${this.apiUrl}getAll/${filterParams}`)
+    getAllGames(filterParams: any): Observable<PagedList<Game>> {
+        return this.http.get<PagedList<Game>>(`${this.apiUrl}getAll/`, {params: filterParams})
             .pipe(
                 catchError(err => {
                     this.utilsService.handleError(err);

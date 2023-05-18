@@ -5,9 +5,9 @@ import { Publisher } from "../../../../core/models/Publisher";
 import { GenreService } from "../../../../core/services/genreService/genre.service";
 import { PlatformTypeService } from "../../../../core/services/platformTypeService/platform-type.service";
 import { PublisherService } from "../../../../core/services/publisherService/publisher.service";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
-import { FilterShared } from "../../../../core/models/helpers/FilterShared";
+import { FilterModel } from "../../../../core/models/FilterModel";
 
 @Component({
   selector: 'app-game-filters',
@@ -29,16 +29,19 @@ export class GameFiltersComponent implements OnInit {
         private genreService: GenreService,
         private platformTypeService: PlatformTypeService,
         private publisherService: PublisherService,
-        private sharedService: SharedService<FilterShared>
+        private sharedService: SharedService<FilterModel>,
     ) { }
 
     ngOnInit(): void {
         this.form = this.formBuilder.group({
             SortedBy: [''],
-            GameName: [''],
+            GameName: ['', Validators.min(3)],
             PriceFrom: [''],
             PriceTo: [''],
             DateFilter: [''],
+            GenresId: [''],
+            PlatformsId: [''],
+            PublishersId: [''],
         });
         this.genreService.getAllGenres().subscribe(
             (genres: Genre[]) => this.genres = genres
@@ -55,21 +58,46 @@ export class GameFiltersComponent implements OnInit {
 
     setFilters(): void {
         let filterValues = this.form.value;
-        const model: FilterShared = { FilterString: this.buildFilterString(filterValues) };
-        this.sharedService.sendData(model);
+        const queryParams: FilterModel = this.filterRequestToQueryParams(filterValues);
+        this.sharedService.sendData(queryParams);
     }
 
-    private buildFilterString(filterValues: any): string {
-        const dateFilterString: string = `?gameFiltersDTO.dateOption=${filterValues.DateFilter}`;
-        const gameNameFilterString: string = `gameFiltersDTO.gameName=${filterValues.GameName}`;
-        const priceFromFilterString: string = `gameFiltersDTO.priceFrom=${filterValues.PriceFrom}`;
-        const priceToFilterString: string = `gameFiltersDTO.priceTo=${filterValues.PriceTo}`;
-        const sortingOptionFilterString: string = `gameFiltersDTO.sortingOption=${filterValues.SortedBy}`;
-        let filterString: string = dateFilterString + '&'
-            + gameNameFilterString + '&'
-            + priceFromFilterString + '&'
-            + priceToFilterString + '&'
-            + sortingOptionFilterString+ '&';
-        return filterString;
+    clearFilters(): void {
+        this.form.reset({
+            SortedBy: '',
+            GameName: '',
+            PriceFrom: '',
+            PriceTo: '',
+            DateFilter: '',
+            GenresId: '',
+            PlatformsId: '',
+            PublishersId: '',
+        });
+        this.setFilters();
+    }
+
+    private filterRequestToQueryParams(filterRequest: any): FilterModel {
+
+        let filterModel: FilterModel = { gameFiltersDTO: {} };
+
+        if (filterRequest.GenresId && filterRequest.GenresId.length > 0) {
+            filterModel.gameFiltersDTO.genresId = filterRequest.GenresId;
+        }
+
+        if (filterRequest.PlatformsId && filterRequest.PlatformsId.length > 0) {
+            filterModel.gameFiltersDTO.platformsId = filterRequest.PlatformsId;
+        }
+
+        if (filterRequest.PublishersId && filterRequest.PublishersId.length > 0) {
+            filterModel.gameFiltersDTO.publishersId = filterRequest.PublishersId;
+        }
+
+        filterModel.gameFiltersDTO.dateOption = filterRequest.DateFilter;
+        filterModel.gameFiltersDTO.gameName = filterRequest.GameName;
+        filterModel.gameFiltersDTO.priceFrom = filterRequest.PriceFrom;
+        filterModel.gameFiltersDTO.priceTo = filterRequest.PriceTo;
+        filterModel.gameFiltersDTO.sortingOption = filterRequest.SortedBy;
+
+        return filterModel;
     }
 }

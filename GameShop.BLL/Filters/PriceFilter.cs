@@ -27,9 +27,9 @@ namespace GameShop.BLL.Filters
 
         private IEnumerable<Game> ApplyFilter(IEnumerable<Game> games)
         {
-            if (_priceFrom != 0 && _priceTo != 0)
+            if (_priceFrom != 0 || _priceTo != 0)
             {
-                games = games.Where(game => game.Price > _priceFrom && game.Price < _priceTo);
+                games = games.Where(game => game.Price > _priceFrom || game.Price < _priceTo);
             }
 
             return games;

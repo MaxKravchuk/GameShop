@@ -4,7 +4,8 @@ import { GameService } from "../../../../core/services/gameService/game.service"
 import { PagedList } from "../../../../core/models/PagedList";
 import { Subscription } from "rxjs";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
-import { FilterShared } from "../../../../core/models/helpers/FilterShared";
+import { Router } from "@angular/router";
+import { FilterModel } from "../../../../core/models/FilterModel";
 
 @Component({
     selector: 'app-game-list',
@@ -27,22 +28,20 @@ export class GameListComponent implements OnInit, OnDestroy {
 
     resultSub: Subscription = new Subscription();
 
-    receivedData: FilterShared = { FilterString: '' };
+    receivedData: FilterModel = { gameFiltersDTO : {} };
 
     constructor(
         private gameService: GameService,
-        private sharedService: SharedService<FilterShared>
+        private sharedService: SharedService<FilterModel>,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
-        this.updateGames(this.receivedData.FilterString!);
-
-        this.resultSub = this.sharedService.getData$().subscribe((data: FilterShared): void => {
-            if (data.FilterString != '') {
-                console.log(data.FilterString);
-                this.receivedData.FilterString = data.FilterString;
-                this.updateGames(this.receivedData.FilterString!);
-            }
+        this.updateGames(this.receivedData!);
+        this.resultSub = this.sharedService.getData$().subscribe((data: FilterModel): void => {
+            this.receivedData.gameFiltersDTO = data.gameFiltersDTO;
+            this.pageIndex = 1;
+            this.updateGames(data);
         });
     }
 
@@ -52,37 +51,38 @@ export class GameListComponent implements OnInit, OnDestroy {
 
     pageSizeChange(value: any): void {
         this.pageSize = Number(value.target.value);
-        this.updateGames(this.receivedData.FilterString!);
+        this.updateGames(this.receivedData!);
     }
 
     previousPage(): void {
         this.pageIndex--;
-        this.updateGames(this.receivedData.FilterString!);
+        this.updateGames(this.receivedData!);
     }
 
     nextPage(): void {
         this.pageIndex++;
-        this.updateGames(this.receivedData.FilterString!);
+        this.updateGames(this.receivedData!);
     }
 
-    private updateGames(filterString: string): void {
-        console.log("uP" + filterString);
-        let filterParams;
-        if (filterString != ''){
-            filterParams =
-                `${filterString}?gameFiltersDTO.pageNumber=${this.pageIndex}&gameFiltersDTO.pageSize=${this.pageSize}`;
-        }
-        else {
-            filterParams =
-                `?gameFiltersDTO.pageNumber=${this.pageIndex}&gameFiltersDTO.pageSize=${this.pageSize}`;
-        }
-         this.gameService.getAllGames(filterParams).subscribe(
+    private updateGames(filterParams: FilterModel): void {
+        this.receivedData.gameFiltersDTO.pageNumber = this.pageIndex;
+        this.receivedData.gameFiltersDTO.pageSize = this.pageSize;
+
+         this.gameService.getAllGames(filterParams.gameFiltersDTO).subscribe(
             (pagedList: PagedList<Game>): void => {
-                console.log(pagedList);
                 this.games = pagedList.Entities;
                 this.HasNext = pagedList.HasNext;
                 this.HasPrevious = pagedList.HasPrevious;
             }
         );
+         this.setUrl();
+    }
+
+    private setUrl(){
+        this.router.navigate([],{
+            queryParams: {
+                page: this.pageIndex
+            }
+        })
     }
 }
