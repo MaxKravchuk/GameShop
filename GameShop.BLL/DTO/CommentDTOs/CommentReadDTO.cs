@@ -5,5 +5,7 @@
         public int Id { get; set; }
 
         public int? ParentId { get; set; }
+
+        public bool HasQuotation { get; set; }
     }
 }

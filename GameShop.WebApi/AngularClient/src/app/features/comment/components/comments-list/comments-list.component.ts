@@ -3,7 +3,6 @@ import { Comment } from "../../../../core/models/Comment";
 import { CommentService } from "../../../../core/services/commentService/comment.service";
 import { Subscription } from "rxjs";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
-import { CommentShared } from "../../../../core/models/helpers/CommentShared";
 
 @Component({
     selector: 'app-comments-list',
@@ -22,7 +21,7 @@ export class CommentsListComponent implements OnInit, OnDestroy {
 
     constructor(
         private commentService: CommentService,
-        private sharedService: SharedService<CommentShared>
+        private sharedService: SharedService<boolean>
     ) {}
 
     ngOnInit(): void {

@@ -41,7 +41,7 @@ export class VisaPaymentComponent implements OnInit{
         }
         this.paymentService.getOrderId(createOrderService).subscribe(
             (data: number): void => {
-                setTimeout(() => {
+                setTimeout((): void => {
                     this.router.navigateByUrl('/').then(
                         (): void => {
                             this.utilsService

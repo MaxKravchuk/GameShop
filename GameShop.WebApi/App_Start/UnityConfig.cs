@@ -72,6 +72,7 @@ namespace GameShop.WebApi
             container.RegisterType<IPublisherService, PublisherService>();
             container.RegisterType<IShoppingCartService, ShoppingCartService>();
             container.RegisterType<IOrderService, OrderService>();
+            container.RegisterType<ICommentBanService, CommentBanService>();
 
             var log = LogManager.GetLogger(typeof(LoggerManager));
             container.RegisterInstance(typeof(ILog), log);

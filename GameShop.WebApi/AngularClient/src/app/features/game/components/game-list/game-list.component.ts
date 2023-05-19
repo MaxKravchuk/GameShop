@@ -78,7 +78,7 @@ export class GameListComponent implements OnInit, OnDestroy {
          this.setUrl();
     }
 
-    private setUrl(){
+    private setUrl(): void {
         this.router.navigate([],{
             queryParams: {
                 page: this.pageIndex

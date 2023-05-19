@@ -13,7 +13,7 @@ namespace GameShop.BLL.Strategies.SortingStrategies
     {
         public IEnumerable<Game> Sort(IEnumerable<Game> games)
         {
-            return games.OrderByDescending(game => game.CreatedAt);
+            return games.OrderByDescending(game => game.Views);
         }
     }
 }

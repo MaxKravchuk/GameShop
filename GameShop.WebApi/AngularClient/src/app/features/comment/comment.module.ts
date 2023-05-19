@@ -9,6 +9,11 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { CommentsListComponent } from './components/comments-list/comments-list.component';
 import { RepliesPipe } from "../../core/pipes/replies.pipe";
+import { DeleteCommentDialogComponent } from './components/delete-comment-dialog/delete-comment-dialog.component';
+import { MatDialogModule } from "@angular/material/dialog";
+import { BanCommentComponent } from './components/ban-comment/ban-comment.component';
+import { MatRadioModule } from "@angular/material/radio";
+import { CommentRoutingModule } from "./comment-routing.module";
 
 
 @NgModule({
@@ -16,7 +21,9 @@ import { RepliesPipe } from "../../core/pipes/replies.pipe";
         GameCommentComponent,
         CreateCommentComponent,
         CommentsListComponent,
-        RepliesPipe
+        RepliesPipe,
+        DeleteCommentDialogComponent,
+        BanCommentComponent
     ],
     exports: [
         GameCommentComponent,
@@ -32,6 +39,9 @@ import { RepliesPipe } from "../../core/pipes/replies.pipe";
         MatFormFieldModule,
         MatInputModule,
         ReactiveFormsModule,
+        MatDialogModule,
+        MatRadioModule,
+        CommentRoutingModule
     ]
 })
 export class CommentModule {

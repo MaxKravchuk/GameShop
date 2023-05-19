@@ -4,7 +4,6 @@
         *ngFor="let rootComment of rootComments"
         [comment]="rootComment"
         [replies]="comments | repliesPipe:rootComment.Id!"
-        [parentCommentId]="rootComment.Id!"
-        [parentCommentName]="rootComment.Name!"
+        [parentComment]="rootComment"
         [gameKey]="gameKey!"></app-game-comment>
 </div>

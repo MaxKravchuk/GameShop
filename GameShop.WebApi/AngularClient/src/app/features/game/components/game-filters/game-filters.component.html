@@ -51,10 +51,12 @@
         </mat-expansion-panel-header>
         <mat-form-field appearance="outline">
             <mat-select
-                formControlName="GenresId"
-                multiple
-                (change)="handleChanges($event)">
-                <mat-option *ngFor="let gameGenre of genres" [value]="gameGenre.Id">
+                formControlName="GenreIds"
+                multiple>
+                <mat-option
+                    *ngFor="let gameGenre of genres"
+                    [value]="gameGenre.Id"
+                    (click)="handleChanges($event)">
                     {{gameGenre.Name}}
                 </mat-option>
             </mat-select>
@@ -68,10 +70,12 @@
         </mat-expansion-panel-header>
         <mat-form-field appearance="outline">
             <mat-select
-                formControlName="PlatformsId"
-                multiple
-                (change)="handleChanges($event)">
-                <mat-option *ngFor="let platform of platforms" [value]="platform.Id">
+                formControlName="PlatformIds"
+                multiple>
+                <mat-option
+                    *ngFor="let platform of platforms"
+                    [value]="platform.Id"
+                    (click)="handleChanges($event)">
                     {{platform.Type}}
                 </mat-option>
             </mat-select>
@@ -85,10 +89,12 @@
         </mat-expansion-panel-header>
         <mat-form-field appearance="outline">
             <mat-select
-                formControlName="PublishersId"
-                multiple
-                (change)="handleChanges($event)">
-                <mat-option *ngFor="let publisher of publishers" [value]="publisher.Id">
+                formControlName="PublisherIds"
+                multiple>
+                <mat-option
+                    *ngFor="let publisher of publishers"
+                    [value]="publisher.Id"
+                    (click)="handleChanges($event)">
                     {{publisher.CompanyName}}
                 </mat-option>
             </mat-select>

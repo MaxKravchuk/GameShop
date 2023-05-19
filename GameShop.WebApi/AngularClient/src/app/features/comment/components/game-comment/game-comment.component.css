@@ -8,11 +8,23 @@
     border-bottom: 1px solid black;
 }
 
-a {
-    color: blue;
+a:hover{
+    cursor: pointer;
 }
 
-a:hover {
+a:not([color="warn"]):hover {
     color: red;
-    cursor: pointer;
+}
+
+q {
+    font-style: italic;
+}
+
+.comment-buttons{
+    display: flex;
+    justify-content: space-between;
+}
+
+.comment-buttons a {
+    margin: 0 5px;
 }

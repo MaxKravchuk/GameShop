@@ -29,6 +29,7 @@ import { MatPaginatorModule } from "@angular/material/paginator";
     exports: [
         GameListComponent,
         GameFiltersComponent,
+        GameCreateComponent,
     ],
     imports: [
         CommonModule,

@@ -1,14 +1,24 @@
 export interface FilterModel {
+
     gameFiltersDTO: {
-        genresId?: string[];
-        platformsId?: string[];
-        publishersId?: string[];
+        genreIds?: string[];
+
+        platformTypeIds?: string[];
+
+        publisherIds?: string[];
+
         dateOption?: string;
+
         gameName?: string;
+
         priceFrom?: string;
+
         priceTo?: string;
+
         sortingOption?: string;
+
         pageNumber?: number;
+
         pageSize?: number;
     };
 }

@@ -89,6 +89,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ServiceTests\CommentBanServiceTests.cs" />
     <Compile Include="ServiceTests\CommentServiceTests.cs" />
     <Compile Include="ServiceTests\GameServiceTests.cs" />
     <Compile Include="ServiceTests\OrderServiceTests.cs" />

@@ -30,29 +30,31 @@ namespace GameShop.WebApi.Controllers
         }
 
         [HttpPost]
+        [Route("payAndGetInvoice")]
+        public async Task<IHttpActionResult> GetInvoiceAsync([FromBody] OrderCreateDTO orderCreateDTO)
+        {
+            var paymentResult = await _orderService.ExecutePayment(orderCreateDTO);
+            await _shoppingCartService.CleatCartAsync();
+
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            result.Content = new StreamContent(paymentResult.InvoiceMemoryStream);
+            result.Content.Headers.ContentLength = paymentResult.InvoiceMemoryStream.Length;
+            result.Content.Headers.ContentType =
+                new MediaTypeHeaderValue("application/octet-stream");
+            result.Content.Headers.ContentDisposition =
+                new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            result.Content.Headers.ContentDisposition.FileName = $"{paymentResult.OrderId}.txt";
+
+            return ResponseMessage(result);
+        }
+
+        [HttpPost]
         [Route("pay")]
         public async Task<IHttpActionResult> PayAsync([FromBody] OrderCreateDTO orderCreateDTO)
         {
             var paymentResult = await _orderService.ExecutePayment(orderCreateDTO);
             await _shoppingCartService.CleatCartAsync();
-
-            if (paymentResult.InvoiceMemoryStream != null)
-            {
-                HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-                result.Content = new StreamContent(paymentResult.InvoiceMemoryStream);
-                result.Content.Headers.ContentLength = paymentResult.InvoiceMemoryStream.Length;
-                result.Content.Headers.ContentType =
-                    new MediaTypeHeaderValue("application/octet-stream");
-                result.Content.Headers.ContentDisposition =
-                    new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-                result.Content.Headers.ContentDisposition.FileName = $"{paymentResult.OrderId}.txt";
-
-                return ResponseMessage(result);
-            }
-            else
-            {
-                return Json(paymentResult.OrderId);
-            }
+            return Json(paymentResult.OrderId);
         }
     }
 }

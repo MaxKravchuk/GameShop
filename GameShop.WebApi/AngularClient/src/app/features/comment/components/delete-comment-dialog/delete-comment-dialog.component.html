@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Delete comment</h1>
+<div mat-dialog-content>
+    Do you want to delete comment with id {{commentId}}?
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Discard</button>
+    <button mat-raised-button color="warn" (click)="onDeleteClick()">
+        Delete
+    </button>
+</div>

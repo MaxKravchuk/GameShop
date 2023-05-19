@@ -6,7 +6,7 @@ import { PaymentService } from "../../../../core/services/paymentService/payment
 import { CreateOrderModel } from "../../../../core/models/CreateOrderModel";
 import { saveAs } from "file-saver";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
-import { Router } from "@angular/router";
+import { NavigationExtras, Router } from "@angular/router";
 
 @Component({
   selector: 'app-order-main',
@@ -25,13 +25,13 @@ export class OrderMainComponent implements OnInit{
         private cartService: CartService,
         private utilsService: UtilsService,
         private paymentService: PaymentService,
-        private sharedService: SharedService<number>,
+        private sharedService: SharedService<{ sum: number }>,
         private router: Router
     ) {}
 
     ngOnInit(): void {
         this.cartService.getCartItems().subscribe(
-            (data: CartItem[]) => {
+            (data: CartItem[]): void => {
                 this.cartItems = data;
                 this.getTotal();
             }
@@ -62,14 +62,12 @@ export class OrderMainComponent implements OnInit{
                 });
     }
 
-    redirectToiBox() {
-        setTimeout(() => {
-            this.sharedService.sendData(this.totalPrice!);
-        }, 10);
-        this.router.navigateByUrl('/payment/ibox');
+    redirectToiBox(): void {
+        const navExtras: NavigationExtras = { state: { sum: this.totalPrice } };
+        this.router.navigateByUrl('/payment/ibox', navExtras);
     }
 
-    private getTotal(){
+    private getTotal(): void {
         let totalPrice: number = 0;
         let totalQuantity: number = 0;
         for (let cartItem of this.cartItems) {

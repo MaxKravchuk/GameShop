@@ -22,7 +22,7 @@ export class PaymentService {
             'Accept': 'application/octet-stream'
         });
 
-        const url = `${this.apiUrl}/pay`;
+        const url: string = `${this.apiUrl}/payAndGetInvoice`;
         return this.http.post(url, orderCreateDTO, {headers: headers, responseType: 'blob' })
             .pipe(
                 catchError(err => {
@@ -33,7 +33,7 @@ export class PaymentService {
     }
 
     getOrderId(orderCreateDTO: CreateOrderModel): Observable<number> {
-        const url = `${this.apiUrl}/pay`;
+        const url: string = `${this.apiUrl}/pay`;
         return this.http.post<number>(url, orderCreateDTO)
             .pipe(
                 catchError(err => {

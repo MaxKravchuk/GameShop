@@ -2,29 +2,56 @@
     <div class="comment-item">
         <h3 id="comment-{{comment.Id}}">{{comment.Name}}</h3>
         <p>
-            <a *ngIf="parentCommentName!==comment.Name" (click)="goToParentComment(parentCommentId!)">
-                [{{parentCommentName}}]
+            <a *ngIf="parentComment.Name !== comment.Name" (click)="goToParentComment(parentComment.Id!)">
+                [{{parentComment.Name}}]
             </a>
+            <q *ngIf="comment.HasQuotation">{{parentComment.Body}}</q>
             {{comment.Body}}
         </p>
-        <a
-            mat-button
-            color="accent"
-            (click)="onAnswerButtonClick(comment.Name!, comment.Id!)"
-        >Answer</a>
-        <a
-            *ngIf="replies.length > 0"
-            mat-button
-            color="primary"
-            (click)="showAnswers()"
-        >Answers</a>
+        <div class="comment-buttons">
+            <div class="left-buttons">
+                <a
+                    mat-button
+                    color="accent"
+                    (click)="onAnswerButtonClick()"
+                >Answer</a>
+                <a
+                    mat-button
+                    color="primary"
+                    (click)="onQuoteButtonClick()"
+                >Quote</a>
+                <a
+                    *ngIf="replies.length > 0"
+                    mat-button
+                    color="primary"
+                    (click)="showAnswers()"
+                >Answers</a>
+            </div>
+            <div class="right-buttons">
+                <a
+                    mat-raised-button
+                    color="warn"
+                    (click)="deleteComment()"
+                >Delete</a>
+                <a
+                    mat-raised-button
+                    color="warn"
+                    routerLink="/comment/ban"
+                >Ban</a>
+            </div>
+        </div>
+        <app-create-comment
+            *ngIf="isFormOpen"
+            [parentComment]="comment"
+            [action]="action"
+            [gameKey]="gameKey"
+        ></app-create-comment>
         <div *ngIf="answersIsDisplayed">
             <app-game-comment
                 *ngFor="let reply of replies"
                 [comment]="reply"
                 [replies]="comments | repliesPipe:reply.Id!"
-                [parentCommentId]="comment.Id!"
-                [parentCommentName]="comment.Name!"
+                [parentComment]="comment"
                 [gameKey]="gameKey"
             ></app-game-comment>
         </div>

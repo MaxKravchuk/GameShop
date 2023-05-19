@@ -144,6 +144,14 @@
     <Compile Include="Migrations\202305161227119_AddViewsFieldForGame.designer.cs">
       <DependentUpon>202305161227119_AddViewsFieldForGame.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202305190811195_AddHasQuatationFieldToCommentModel.cs" />
+    <Compile Include="Migrations\202305190811195_AddHasQuatationFieldToCommentModel.designer.cs">
+      <DependentUpon>202305190811195_AddHasQuatationFieldToCommentModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305190813542_ChangeHasQuatationToHasQuotation.cs" />
+    <Compile Include="Migrations\202305190813542_ChangeHasQuatationToHasQuotation.designer.cs">
+      <DependentUpon>202305190813542_ChangeHasQuatationToHasQuotation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Interfaces\IRepository.cs" />
@@ -181,6 +189,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202305161227119_AddViewsFieldForGame.resx">
       <DependentUpon>202305161227119_AddViewsFieldForGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305190811195_AddHasQuatationFieldToCommentModel.resx">
+      <DependentUpon>202305190811195_AddHasQuatationFieldToCommentModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305190813542_ChangeHasQuatationToHasQuotation.resx">
+      <DependentUpon>202305190813542_ChangeHasQuatationToHasQuotation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -41,10 +41,11 @@ export class GameFiltersComponent implements OnInit {
             PriceFrom: [''],
             PriceTo: [''],
             DateFilter: [''],
-            GenresId: [''],
-            PlatformsId: [''],
-            PublishersId: [''],
+            GenreIds: [''],
+            PlatformIds: [''],
+            PublisherIds: [''],
         });
+
         this.genreService.getAllGenres().subscribe(
             (genres: Genre[]) => this.genres = genres
         );
@@ -60,7 +61,7 @@ export class GameFiltersComponent implements OnInit {
 
     setFilters(): void {
         if (this.isChanged) {
-            let filterValues = this.form.value;
+            const filterValues = this.form.value;
             const queryParams: FilterModel = this.filterRequestToQueryParams(filterValues);
             this.sharedService.sendData(queryParams);
         }
@@ -74,9 +75,9 @@ export class GameFiltersComponent implements OnInit {
             PriceFrom: '',
             PriceTo: '',
             DateFilter: '',
-            GenresId: '',
-            PlatformsId: '',
-            PublishersId: '',
+            GenreIds: '',
+            PlatformIds: '',
+            PublisherIds: '',
         });
         this.isChanged = true;
         this.setFilters();
@@ -92,16 +93,16 @@ export class GameFiltersComponent implements OnInit {
 
         let filterModel: FilterModel = { gameFiltersDTO: {} };
 
-        if (filterRequest.GenresId && filterRequest.GenresId.length > 0) {
-            filterModel.gameFiltersDTO.genresId = filterRequest.GenresId;
+        if (filterRequest.GenreIds.length > 0) {
+            filterModel.gameFiltersDTO.genreIds = filterRequest.GenreIds
         }
 
-        if (filterRequest.PlatformsId && filterRequest.PlatformsId.length > 0) {
-            filterModel.gameFiltersDTO.platformsId = filterRequest.PlatformsId;
+        if (filterRequest.PlatformIds.length > 0) {
+            filterModel.gameFiltersDTO.platformTypeIds = filterRequest.PlatformIds;
         }
 
-        if (filterRequest.PublishersId && filterRequest.PublishersId.length > 0) {
-            filterModel.gameFiltersDTO.publishersId = filterRequest.PublishersId;
+        if (filterRequest.PublisherIds.length > 0) {
+            filterModel.gameFiltersDTO.publisherIds = filterRequest.PublisherIds;
         }
 
         filterModel.gameFiltersDTO.dateOption = filterRequest.DateFilter;
