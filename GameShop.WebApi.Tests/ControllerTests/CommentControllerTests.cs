@@ -13,12 +13,17 @@ namespace GameShop.WebApi.Tests.ControllerTests
     public class CommentControllerTests
     {
         private readonly Mock<ICommentService> _mockCommentService;
+        private readonly Mock<ICommentBanService> _mockCommentBanService;
         private readonly CommentController _commentController;
 
         public CommentControllerTests()
         {
             _mockCommentService = new Mock<ICommentService>();
-            _commentController = new CommentController(_mockCommentService.Object);
+            _mockCommentBanService = new Mock<ICommentBanService>();
+
+            _commentController = new CommentController(
+                _mockCommentService.Object,
+                _mockCommentBanService.Object);
         }
 
         [Fact]
@@ -112,6 +117,62 @@ namespace GameShop.WebApi.Tests.ControllerTests
 
             // Assert
             await Assert.ThrowsAsync<NotFoundException>(() => actionResult);
+        }
+
+        [Fact]
+        public async Task DeleteCommentAsync_WithCorrectId_ShouldDeleteAndLog()
+        {
+            // Arrange
+            var commentId = 1;
+
+            _mockCommentService
+                .Setup(s => s
+                    .DeleteAsync(It.IsAny<int>()))
+                .Verifiable();
+
+            // Act
+            var actionResult = await _commentController.DeleteCommentAsync(commentId);
+
+            // Assert
+            Assert.IsType<OkResult>(actionResult);
+            Assert.NotNull(actionResult);
+            _mockCommentService.Verify(x => x.DeleteAsync(commentId), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteCommentAsync_WithWrongId_ShouldDeleteAndLog()
+        {
+            // Arrange
+            var commentId = 0;
+
+            _mockCommentService
+                .Setup(s => s
+                    .DeleteAsync(It.IsAny<int>()))
+                .ThrowsAsync(new NotFoundException());
+
+            // Act
+            var actionResult = _commentController.DeleteCommentAsync(commentId);
+
+            // Assert
+            await Assert.ThrowsAsync<NotFoundException>(() => actionResult);
+        }
+
+        [Fact]
+        public async Task Ban_ShouldDoNothing()
+        {
+            // Assert
+            var banDuration = "1day";
+
+            _mockCommentBanService
+                .Setup(s => s
+                    .Ban(It.IsAny<string>()))
+                .Verifiable();
+
+            // Act
+            var actionResult = await _commentController.Ban(banDuration);
+
+            // Assert
+            Assert.IsType<OkResult>(actionResult);
         }
     }
 }

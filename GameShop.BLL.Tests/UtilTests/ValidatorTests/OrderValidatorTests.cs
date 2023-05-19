@@ -24,7 +24,8 @@ namespace GameShop.BLL.Tests.UtilTests.ValidatorTests
         {
             var order = new OrderCreateDTO
             {
-                CustomerID = 0, // or any other invalid value
+                Strategy = "s",
+                IsPaymentSuccessful = true,
                 OrderedAt = DateTime.UtcNow,
             };
 

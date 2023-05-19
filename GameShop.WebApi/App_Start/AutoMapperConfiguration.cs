@@ -36,7 +36,9 @@ namespace GameShop.WebApi.App_Start
                 .ForMember(dest => dest.GameGenres, opt => opt.Ignore())
                 .ForMember(dest => dest.GamePlatformTypes, opt => opt.Ignore())
                 .ForMember(dest => dest.Publisher, opt => opt.Ignore())
-                .ForMember(dest => dest.ListOfOrderDetails, opt => opt.Ignore());
+                .ForMember(dest => dest.ListOfOrderDetails, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+                .ForMember(dest => dest.Views, opt => opt.Ignore());
 
             CreateMap<Genre, GenreReadListDTO>();
 
@@ -61,7 +63,9 @@ namespace GameShop.WebApi.App_Start
                 .ForMember(dest => dest.GameGenres, opt => opt.Ignore())
                 .ForMember(dest => dest.GamePlatformTypes, opt => opt.Ignore())
                 .ForMember(dest => dest.Publisher, opt => opt.Ignore())
-                .ForMember(dest => dest.ListOfOrderDetails, opt => opt.Ignore());
+                .ForMember(dest => dest.ListOfOrderDetails, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+                .ForMember(dest => dest.Views, opt => opt.Ignore());
 
             CreateMap<PublisherCreateDTO, Publisher>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -74,6 +78,8 @@ namespace GameShop.WebApi.App_Start
             CreateMap<Publisher, PublisherReadListDTO>();
 
             CreateMap<OrderCreateDTO, Order>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
                 .ForMember(dest => dest.ListOfOrderDetails, opt => opt.Ignore());
         }
     }

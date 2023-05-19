@@ -16,6 +16,7 @@ using GameShop.BLL.Services;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.BLL.Strategies.Interfaces.Factories;
 using GameShop.BLL.Strategies.Interfaces.Strategies;
+using GameShop.BLL.Strategies.SortingStrategies;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository.Interfaces;
 using Moq;
@@ -37,7 +38,6 @@ namespace GameShop.BLL.Tests.ServiceTests
 
         private GameCreateDTO _gameCreateDTO;
         private Game _game;
-        private GameFiltersDTO _gameFiltersDTO;
         private List<Genre> _listOfGenres;
         private List<PlatformType> _listOfPlatformTypes;
 
@@ -314,6 +314,11 @@ namespace GameShop.BLL.Tests.ServiceTests
                         It.IsAny<bool>()))
                 .ReturnsAsync(gameList);
 
+            _mockGameSortingFactory
+                .Setup(gsf => gsf
+                    .GetGamesSortingStrategy(It.IsAny<string>()))
+                .Returns(new AscPriceStrategy());
+
             _mockMapper
                 .Setup(m => m.Map<PagedListViewModel<GameReadListDTO>>(gameList))
                 .Returns(pagedGameList);
@@ -324,7 +329,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Assert
             _mockLogger.Verify(
                 l => l.LogInfo($"Games successfully returned with array size of {gameListDTO.Count()}"), Times.Once);
-            Assert.IsAssignableFrom<IEnumerable<GameReadListDTO>>(result);
+            Assert.IsAssignableFrom<PagedListViewModel<GameReadListDTO>>(result);
 
             Assert.True(result.Entities.Any());
         }
@@ -347,16 +352,22 @@ namespace GameShop.BLL.Tests.ServiceTests
                         It.IsAny<bool>()))
                 .ReturnsAsync(gameList);
 
+            _mockGameSortingFactory
+                .Setup(gsf => gsf
+                    .GetGamesSortingStrategy(It.IsAny<string>()))
+                .Returns(new AscPriceStrategy());
+
             _mockMapper
-                .Setup(m => m.Map<IEnumerable<GameReadListDTO>>(gameList)).Returns(gameListDTO);
+                .Setup(m => m.Map<PagedListViewModel<GameReadListDTO>>(It.IsAny<PagedList<Game>>()))
+                .Returns(pagedGameList);
 
             // Act
             var result = await _gameService.GetAllGamesAsync(gameFiltersDTO);
 
             // Assert
             _mockLogger.Verify(
-                l => l.LogInfo($"Games successfully returned with array size of {gameListDTO.Count()}"), Times.Once);
-            Assert.IsAssignableFrom<IEnumerable<GameReadListDTO>>(result);
+                l => l.LogInfo($"Games successfully returned with array size of {pagedGameList.Entities.Count()}"), Times.Once);
+            Assert.IsAssignableFrom<PagedListViewModel<GameReadListDTO>>(result);
             Assert.False(result.Entities.Any());
         }
 
@@ -367,7 +378,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             var gameList = new List<Game> { _game };
             var gameListDTO = new List<GameReadListDTO> { new GameReadListDTO() };
             var pagedGameList = new PagedListViewModel<GameReadListDTO> { Entities = gameListDTO };
-            var gameFiltersDTO = new GameFiltersDTO { PageNumber = 1, PageSize = 10, SortingOption = "AscPrice" };
+            var gameFiltersDTO = new GameFiltersDTO { PageNumber = 1, PageSize = 10, SortingOption = "" };
 
             _mockUnitOfWork
                 .Setup(u => u.GameRepository
@@ -379,7 +390,7 @@ namespace GameShop.BLL.Tests.ServiceTests
                 .ReturnsAsync(gameList);
 
             _mockMapper
-                .Setup(m => m.Map<PagedListViewModel<GameReadListDTO>>(gameList))
+                .Setup(m => m.Map<PagedListViewModel<GameReadListDTO>>(It.IsAny<PagedList<Game>>()))
                 .Returns(pagedGameList);
 
             // Act
@@ -388,8 +399,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Assert
             _mockLogger.Verify(
                 l => l.LogInfo($"Games successfully returned with array size of {gameListDTO.Count()}"), Times.Once);
-            Assert.IsAssignableFrom<IEnumerable<GameReadListDTO>>(result);
-
+            Assert.IsAssignableFrom<PagedListViewModel<GameReadListDTO>>(result);
             Assert.True(result.Entities.Any());
         }
 
@@ -408,6 +418,11 @@ namespace GameShop.BLL.Tests.ServiceTests
                         It.IsAny<string>(),
                         It.IsAny<bool>()))
                 .ReturnsAsync(gameList);
+
+            _mockGameSortingFactory
+                .Setup(gsf => gsf
+                    .GetGamesSortingStrategy(It.IsAny<string>()))
+                .Throws(new BadRequestException());
 
             // Act
             var result = _gameService.GetAllGamesAsync(gameFiltersDTO);

@@ -17,7 +17,7 @@ namespace GameShop.DAL.Entities
 
         public bool Discontinued { get; set; } = true;
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public int Views { get; set; } = 0;
 
