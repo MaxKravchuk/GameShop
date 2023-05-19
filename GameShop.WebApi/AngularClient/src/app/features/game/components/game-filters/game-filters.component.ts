@@ -24,6 +24,8 @@ export class GameFiltersComponent implements OnInit {
 
     form!: FormGroup;
 
+    isChanged: boolean = true;
+
     constructor(
         private formBuilder: FormBuilder,
         private genreService: GenreService,
@@ -35,7 +37,7 @@ export class GameFiltersComponent implements OnInit {
     ngOnInit(): void {
         this.form = this.formBuilder.group({
             SortedBy: [''],
-            GameName: ['', Validators.min(3)],
+            GameName: ['', Validators.minLength(3)],
             PriceFrom: [''],
             PriceTo: [''],
             DateFilter: [''],
@@ -57,9 +59,12 @@ export class GameFiltersComponent implements OnInit {
     }
 
     setFilters(): void {
-        let filterValues = this.form.value;
-        const queryParams: FilterModel = this.filterRequestToQueryParams(filterValues);
-        this.sharedService.sendData(queryParams);
+        if (this.isChanged) {
+            let filterValues = this.form.value;
+            const queryParams: FilterModel = this.filterRequestToQueryParams(filterValues);
+            this.sharedService.sendData(queryParams);
+        }
+        this.isChanged = false;
     }
 
     clearFilters(): void {
@@ -73,7 +78,14 @@ export class GameFiltersComponent implements OnInit {
             PlatformsId: '',
             PublishersId: '',
         });
+        this.isChanged = true;
         this.setFilters();
+    }
+
+    handleChanges($event: any): void {
+        if(!this.isChanged) {
+            this.isChanged = true;
+        }
     }
 
     private filterRequestToQueryParams(filterRequest: any): FilterModel {

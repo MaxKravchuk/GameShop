@@ -1,11 +1,41 @@
 <div [formGroup]="form" class="filters">
+    <mat-form-field appearance="fill">
+        <mat-label>Game name</mat-label>
+        <input
+            matInput
+            type="string"
+            placeholder="Enter game name"
+            formControlName="GameName"
+            (change)="handleChanges($event)">
+        <mat-error *ngIf="form.controls['GameName'].invalid">Min length is 3</mat-error>
+    </mat-form-field>
+    <div class="filter-price">
+        <mat-form-field>
+            <mat-label>Price from</mat-label>
+            <input
+                matInput
+                formControlName="PriceFrom"
+                (change)="handleChanges($event)">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Price to</mat-label>
+            <input
+                matInput
+                formControlName="PriceTo"
+                (change)="handleChanges($event)">
+        </mat-form-field>
+    </div>
     <mat-expansion-panel>
         <mat-expansion-panel-header>
             <mat-panel-title>
                 Sorted by
             </mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-radio-group aria-label="Select an sorting option" color="primary" formControlName="SortedBy">
+        <mat-radio-group
+            aria-label="Select an sorting option"
+            color="primary"
+            formControlName="SortedBy"
+            (change)="handleChanges($event)">
             <mat-radio-button value="MostPopular">Most popular</mat-radio-button>
             <mat-radio-button value="MostCommented">Most commented</mat-radio-button>
             <mat-radio-button value="AscPrice">By price asc</mat-radio-button>
@@ -13,11 +43,6 @@
             <mat-radio-button value="Date">Newest</mat-radio-button>
         </mat-radio-group>
     </mat-expansion-panel>
-    <mat-form-field appearance="fill">
-        <mat-label>Game name</mat-label>
-        <input matInput formControlName="GameName">
-        <mat-hint>Enter name</mat-hint>
-    </mat-form-field>
     <mat-expansion-panel>
         <mat-expansion-panel-header>
             <mat-panel-title>
@@ -25,7 +50,10 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-form-field appearance="outline">
-            <mat-select formControlName="GenresId" multiple>
+            <mat-select
+                formControlName="GenresId"
+                multiple
+                (change)="handleChanges($event)">
                 <mat-option *ngFor="let gameGenre of genres" [value]="gameGenre.Id">
                     {{gameGenre.Name}}
                 </mat-option>
@@ -39,7 +67,10 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-form-field appearance="outline">
-            <mat-select formControlName="PlatformsId" multiple>
+            <mat-select
+                formControlName="PlatformsId"
+                multiple
+                (change)="handleChanges($event)">
                 <mat-option *ngFor="let platform of platforms" [value]="platform.Id">
                     {{platform.Type}}
                 </mat-option>
@@ -53,31 +84,27 @@
             </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-form-field appearance="outline">
-            <mat-select formControlName="PublishersId" multiple>
+            <mat-select
+                formControlName="PublishersId"
+                multiple
+                (change)="handleChanges($event)">
                 <mat-option *ngFor="let publisher of publishers" [value]="publisher.Id">
                     {{publisher.CompanyName}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
     </mat-expansion-panel>
-    <div class="filter-price">
-        <mat-form-field>
-            <mat-label>Price from</mat-label>
-            <input matInput formControlName="PriceFrom">
-            <mat-hint>Enter price</mat-hint>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Price to</mat-label>
-            <input matInput formControlName="PriceTo">
-        </mat-form-field>
-    </div>
     <mat-expansion-panel>
         <mat-expansion-panel-header>
             <mat-panel-title>
                 Date
             </mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-radio-group aria-label="Select an date filter" color="primary" formControlName="DateFilter">
+        <mat-radio-group
+            aria-label="Select an date filter"
+            color="primary"
+            formControlName="DateFilter"
+            (change)="handleChanges($event)">
             <mat-radio-button value="lastWeek">Last week</mat-radio-button>
             <mat-radio-button value="lastMonth">Last month</mat-radio-button>
             <mat-radio-button value="lastYear">Last year</mat-radio-button>
