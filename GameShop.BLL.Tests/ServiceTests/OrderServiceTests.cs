@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
 using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.DTO.RedisDTOs;
 using GameShop.BLL.DTO.StrategyDTOs;
+using GameShop.BLL.Enums;
 using GameShop.BLL.Services;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.BLL.Strategies.Interfaces.Factories;
@@ -64,7 +64,6 @@ namespace GameShop.BLL.Tests.ServiceTests
             var orderCreateDTO = new OrderCreateDTO
             {
                 CustomerID = 0,
-                IsPaymentSuccessful = true,
                 OrderedAt = DateTime.UtcNow,
                 Strategy = "Visa"
             };
@@ -97,7 +96,7 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             _mockPaymentStrategyFactory
                 .Setup(psf => psf
-                    .GetPaymentStrategy(It.IsAny<string>()))
+                    .GetPaymentStrategy(It.IsAny<PaymentTypes>()))
                 .Returns(paymentStrategy.Object);
 
             paymentStrategy

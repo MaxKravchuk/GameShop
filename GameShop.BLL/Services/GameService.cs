@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,10 @@ using FluentValidation;
 using GameShop.BLL.DTO.FilterDTOs;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.DTO.PaginationDTOs;
+using GameShop.BLL.Enums;
+using GameShop.BLL.Enums.Extensions;
 using GameShop.BLL.Exceptions;
-using GameShop.BLL.Filters;
 using GameShop.BLL.Filters.Interfaces;
-using GameShop.BLL.Pagination;
 using GameShop.BLL.Pagination.Extensions;
 using GameShop.BLL.Pipelines;
 using GameShop.BLL.Services.Interfaces;
@@ -28,7 +29,7 @@ namespace GameShop.BLL.Services
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
         private readonly IValidator<GameCreateDTO> _validator;
-        private readonly IFiltersFactory<IEnumerable<Game>> _filtersFactory;
+        private readonly IFiltersFactory<IQueryable<Game>> _filtersFactory;
         private readonly IGameSortingFactory _gameSortingFactory;
 
         public GameService(
@@ -36,7 +37,7 @@ namespace GameShop.BLL.Services
             IMapper mapper,
             ILoggerManager loggerManager,
             IValidator<GameCreateDTO> validator,
-            IFiltersFactory<IEnumerable<Game>> filtersFactory,
+            IFiltersFactory<IQueryable<Game>> filtersFactory,
             IGameSortingFactory gameSortingFactory)
         {
             _unitOfWork = unitOfWork;
@@ -128,18 +129,22 @@ namespace GameShop.BLL.Services
 
         public async Task<PagedListViewModel<GameReadListDTO>> GetAllGamesAsync(GameFiltersDTO gameFiltersDTO)
         {
-            var games = await _unitOfWork.GameRepository.GetAsync(includeProperties: "GameGenres,Comments,GamePlatformTypes,Publisher");
+            var query = _unitOfWork.GameRepository.GetQuery(
+                filter: null,
+                includeProperties: "GameGenres,Comments,GamePlatformTypes,Publisher");
 
             var pipeline = new GameFiltersPipeline();
             pipeline.Register(_filtersFactory.GetOperation(gameFiltersDTO));
-            games = pipeline.PerformOperation(games);
+            query = pipeline.PerformOperation(query);
 
             if (!string.IsNullOrEmpty(gameFiltersDTO.SortingOption))
             {
-                var sortingStrategy = _gameSortingFactory.GetGamesSortingStrategy(gameFiltersDTO.SortingOption);
-                games = sortingStrategy.Sort(games);
+                var sortingType = gameFiltersDTO.SortingOption.ToEnum<SortingTypes>();
+                var sortingStrategy = _gameSortingFactory.GetGamesSortingStrategy(sortingType);
+                query = sortingStrategy.Sort(query);
             }
 
+            var games = await query.ToListAsync();
             var pagedGames = games.ToPagedList(gameFiltersDTO.PageNumber, gameFiltersDTO.PageSize);
             var pagedModels = _mapper.Map<PagedListViewModel<GameReadListDTO>>(pagedGames);
 

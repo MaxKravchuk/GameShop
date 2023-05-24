@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
+﻿using System.Configuration;
+using System.Linq;
 using System.Web.Http;
 using AutoMapper;
 using FluentValidation;
@@ -9,6 +8,7 @@ using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.DTO.PublisherDTOs;
 using GameShop.BLL.DTO.RedisDTOs;
+using GameShop.BLL.Enums;
 using GameShop.BLL.Filters;
 using GameShop.BLL.Filters.Interfaces;
 using GameShop.BLL.Services;
@@ -16,9 +16,7 @@ using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.BLL.Services.Utils;
 using GameShop.BLL.Services.Utils.Validators;
-using GameShop.BLL.Strategies;
 using GameShop.BLL.Strategies.Factories;
-using GameShop.BLL.Strategies.Interfaces;
 using GameShop.BLL.Strategies.Interfaces.Factories;
 using GameShop.BLL.Strategies.Interfaces.Strategies;
 using GameShop.BLL.Strategies.PaymentStrategies;
@@ -97,17 +95,17 @@ namespace GameShop.WebApi
                 (new ContainerControlledLifetimeManager());
 
             container.RegisterType<IPaymentStrategyFactory, PaymentStrategyFactory>();
-            container.RegisterType<IPaymentStrategy, BankStrategy>("Bank");
-            container.RegisterType<IPaymentStrategy, IBoxStrategy>("iBox");
-            container.RegisterType<IPaymentStrategy, VisaStrategy>("Visa");
+            container.RegisterType<IPaymentStrategy, BankStrategy>(PaymentTypes.Bank.ToString());
+            container.RegisterType<IPaymentStrategy, IBoxStrategy>(PaymentTypes.iBox.ToString());
+            container.RegisterType<IPaymentStrategy, VisaStrategy>(PaymentTypes.Visa.ToString());
 
-            container.RegisterType<IFiltersFactory<IEnumerable<Game>>, GameFiltersFactory>();
-            container.RegisterType<IOperation<IEnumerable<Game>>, CreatedAtFilter>();
-            container.RegisterType<IOperation<IEnumerable<Game>>, GenreFilter>();
-            container.RegisterType<IOperation<IEnumerable<Game>>, NameFilter>();
-            container.RegisterType<IOperation<IEnumerable<Game>>, PlatformTypeFilter>();
-            container.RegisterType<IOperation<IEnumerable<Game>>, PriceFilter>();
-            container.RegisterType<IOperation<IEnumerable<Game>>, PublisherFilter>();
+            container.RegisterType<IFiltersFactory<IQueryable<Game>>, GameFiltersFactory>();
+            container.RegisterType<IOperation<IQueryable<Game>>, CreatedAtFilter>();
+            container.RegisterType<IOperation<IQueryable<Game>>, GenreFilter>();
+            container.RegisterType<IOperation<IQueryable<Game>>, NameFilter>();
+            container.RegisterType<IOperation<IQueryable<Game>>, PlatformTypeFilter>();
+            container.RegisterType<IOperation<IQueryable<Game>>, PriceFilter>();
+            container.RegisterType<IOperation<IQueryable<Game>>, PublisherFilter>();
 
             container.RegisterType<IGameSortingFactory, SortingStrategyFactory>();
             container.RegisterType<IGamesSortingStrategy, AscPriceStrategy>();

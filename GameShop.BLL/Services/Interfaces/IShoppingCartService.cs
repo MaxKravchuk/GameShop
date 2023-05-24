@@ -10,6 +10,8 @@ namespace GameShop.BLL.Services.Interfaces
 
         Task<IEnumerable<CartItemDTO>> GetCartItemsAsync();
 
+        Task<int> GetNumberOfGamesByGameKeyAsync(string gameKey);
+
         Task DeleteItemFromListAsync(string gameKey);
 
         Task CleatCartAsync();

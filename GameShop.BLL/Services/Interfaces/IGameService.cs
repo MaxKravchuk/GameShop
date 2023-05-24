@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using GameShop.BLL.DTO.FilterDTOs;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.DTO.PaginationDTOs;
-using GameShop.BLL.Pagination;
 
 namespace GameShop.BLL.Services.Interfaces
 {

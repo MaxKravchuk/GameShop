@@ -5,8 +5,7 @@ import { UtilsService } from "../../../../core/services/helpers/utilsService/uti
 import { PaymentService } from "../../../../core/services/paymentService/payment.service";
 import { CreateOrderModel } from "../../../../core/models/CreateOrderModel";
 import { saveAs } from "file-saver";
-import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
-import { NavigationExtras, Router } from "@angular/router";
+import { ActivatedRoute, NavigationExtras, Router } from "@angular/router";
 
 @Component({
   selector: 'app-order-main',
@@ -21,15 +20,18 @@ export class OrderMainComponent implements OnInit{
 
     totalPrice?: number;
 
+    customerId?: number;
+
     constructor(
         private cartService: CartService,
         private utilsService: UtilsService,
         private paymentService: PaymentService,
-        private sharedService: SharedService<{ sum: number }>,
-        private router: Router
+        private router: Router,
+        private activeRoute: ActivatedRoute
     ) {}
 
     ngOnInit(): void {
+        this.customerId = Number(this.activeRoute.snapshot.paramMap.get('Key'));
         this.cartService.getCartItems().subscribe(
             (data: CartItem[]): void => {
                 this.cartItems = data;
@@ -40,10 +42,9 @@ export class OrderMainComponent implements OnInit{
 
     generateInvoice(): void {
         const orderCreateDTO : CreateOrderModel = {
-            CustomerId: 0,
+            CustomerId: this.customerId,
             OrderedAt: new Date().toISOString(),
-            Strategy: 'Bank',
-            IsPaymentSuccessful: true
+            Strategy: 'Bank'
         };
 
         this.paymentService.getInvoice(orderCreateDTO)

@@ -9,6 +9,7 @@ import { Publisher } from "../../../../core/models/Publisher";
 import { CartService } from "../../../../core/services/cartService/cart.service";
 import { CartItem } from "../../../../core/models/CartItem";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
+import { concatMap } from "rxjs";
 
 @Component({
     selector: 'app-game-details',
@@ -27,6 +28,8 @@ export class GameDetailsComponent implements OnInit {
 
     gameKey?: string | null;
 
+    isAvailable: boolean = false;
+
     constructor(
         private gameService: GameService,
         private shoppingCartService: CartService,
@@ -36,6 +39,7 @@ export class GameDetailsComponent implements OnInit {
 
     ngOnInit(): void {
         this.gameKey = this.activeRoute.snapshot.paramMap.get('Key');
+
         if (this.gameKey != null) {
             this.getGameDetailsByKey(this.gameKey);
         } else {
@@ -57,10 +61,17 @@ export class GameDetailsComponent implements OnInit {
             GamePrice: this.game.Price!,
         }
 
-        this.shoppingCartService.addToCart(cartItem).subscribe({
-            next: (): void => {
+        this.shoppingCartService.addToCart(cartItem)
+            .pipe(
+                concatMap(() => this.shoppingCartService.getNumberOfGamesInCart(this.gameKey!))
+            ).subscribe({
+            next: (data: number): void => {
                 this.utilsService.openWithMessage('Game has been added to your cart.');
-            },
+                if (data === this.game.UnitsInStock!) {
+                    this.utilsService.openWithMessage('Game is out of stock.');
+                    this.isAvailable = false;
+                }
+            }
         });
     }
 
@@ -70,6 +81,7 @@ export class GameDetailsComponent implements OnInit {
             this.genres = data.Genres;
             this.platformTypes = data.PlatformTypes;
             this.publisher = data.PublisherReadDTO;
+            this.isAvailable = data.UnitsInStock! > 0;
         });
     }
 }

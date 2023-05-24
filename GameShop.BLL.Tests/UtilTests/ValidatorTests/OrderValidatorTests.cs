@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentValidation.TestHelper;
 using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.Services.Utils.Validators;
@@ -25,7 +21,6 @@ namespace GameShop.BLL.Tests.UtilTests.ValidatorTests
             var order = new OrderCreateDTO
             {
                 Strategy = "s",
-                IsPaymentSuccessful = true,
                 OrderedAt = DateTime.UtcNow,
             };
 

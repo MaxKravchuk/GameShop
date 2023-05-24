@@ -72,5 +72,16 @@ namespace GameShop.BLL.Services
             await _redisProvider.ClearCartAsync(RedisKey);
             _loggerManager.LogInfo($"Cart with key {RedisKey} cleared!");
         }
+
+        public async Task<int> GetNumberOfGamesByGameKeyAsync(string gameKey)
+        {
+            var existingCartItem = await _redisProvider.GetValueAsync(RedisKey, gameKey);
+            if (existingCartItem == null)
+            {
+                return 0;
+            }
+
+            return existingCartItem.Quantity;
+        }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace GameShop.BLL.DTO.StrategyDTOs
 {
@@ -12,5 +7,7 @@ namespace GameShop.BLL.DTO.StrategyDTOs
         public int OrderId { get; set; }
 
         public MemoryStream InvoiceMemoryStream { get; set; }
+
+        public bool IsPaymentSuccessful { get; set; }
     }
 }

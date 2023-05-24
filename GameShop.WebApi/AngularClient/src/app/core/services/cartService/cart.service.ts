@@ -45,4 +45,14 @@ export class CartService {
                 })
             );
     }
+
+    getNumberOfGamesInCart(key: string): Observable<number> {
+        return this.http.get<number>(`${this.apiUrl}numberOfGames/${key}`)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
 }

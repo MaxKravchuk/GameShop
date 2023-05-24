@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GameShop.BLL.DTO.FilterDTOs;
 using GameShop.BLL.Filters.Interfaces;
 using GameShop.DAL.Entities;
@@ -10,7 +7,7 @@ using Unity;
 
 namespace GameShop.BLL.Filters
 {
-    public class GameFiltersFactory : IFiltersFactory<IEnumerable<Game>>
+    public class GameFiltersFactory : IFiltersFactory<IQueryable<Game>>
     {
         private readonly IUnityContainer _container;
 
@@ -19,11 +16,11 @@ namespace GameShop.BLL.Filters
             _container = container;
         }
 
-        public IEnumerable<IOperation<IEnumerable<Game>>> GetOperation(BaseFilterDTO baseFilterDTO)
+        public IEnumerable<IOperation<IQueryable<Game>>> GetOperation(BaseFilterDTO baseFilterDTO)
         {
             var gameFilterDTO = baseFilterDTO as GameFiltersDTO;
 
-            var operations = new List<IOperation<IEnumerable<Game>>>
+            var operations = new List<IOperation<IQueryable<Game>>>
             {
                 _container.Resolve<CreatedAtFilter>().SetFilterDate(gameFilterDTO.DateOption),
                 _container.Resolve<GenreFilter>().SetFilterData(gameFilterDTO.GenreIds),

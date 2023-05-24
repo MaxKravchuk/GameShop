@@ -16,9 +16,7 @@
     <a mat-button color="primary" (click)="downloadGame()">Download</a>
     <a mat-button
        color="accent"
-       [disabled]="game.UnitsInStock === 0"
+       [disabled]="!isAvailable"
        (click)="buyGame()">Buy game</a>
     <app-comments-list [gameKey]="game.Key!"></app-comments-list>
-    <app-create-comment [gameKey]="game.Key"></app-create-comment>
 </div>
-

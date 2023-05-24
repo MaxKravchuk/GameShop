@@ -5,6 +5,4 @@ export interface CreateOrderModel {
     OrderedAt?: string;
 
     Strategy?: string;
-
-    IsPaymentSuccessful?: boolean;
 }

@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GameShop.BLL.Filters.Interfaces;
 using GameShop.BLL.Pipelines.Interfaces;
 using GameShop.DAL.Entities;
-using Unity;
 
 namespace GameShop.BLL.Pipelines
 {
-    public class GameFiltersPipeline : IPipelinebase<IEnumerable<Game>>
+    public class GameFiltersPipeline : IPipelinebase<IQueryable<Game>>
     {
-        private IEnumerable<IOperation<IEnumerable<Game>>> _operations;
+        private IEnumerable<IOperation<IQueryable<Game>>> _operations;
 
-        public IEnumerable<Game> PerformOperation(IEnumerable<Game> input)
+        public IQueryable<Game> PerformOperation(IQueryable<Game> input)
         {
             return _operations.Aggregate(input, (current, operation) => operation.Execute(current));
         }
 
-        public void Register(IEnumerable<IOperation<IEnumerable<Game>>> operations)
+        public void Register(IEnumerable<IOperation<IQueryable<Game>>> operations)
         {
             _operations = operations;
         }

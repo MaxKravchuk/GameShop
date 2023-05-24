@@ -51,6 +51,7 @@ export class GameListComponent implements OnInit, OnDestroy {
 
     pageSizeChange(value: any): void {
         this.pageSize = Number(value.target.value);
+        this.pageIndex = 1;
         this.updateGames(this.receivedData!);
     }
 

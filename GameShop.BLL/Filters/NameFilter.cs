@@ -1,29 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using GameShop.BLL.Filters.Interfaces;
 using GameShop.DAL.Entities;
 
 namespace GameShop.BLL.Filters
 {
-    public class NameFilter : IOperation<IEnumerable<Game>>
+    public class NameFilter : IOperation<IQueryable<Game>>
     {
         private string _gameName;
 
-        public IOperation<IEnumerable<Game>> SetFilterData(string gameName)
+        public IOperation<IQueryable<Game>> SetFilterData(string gameName)
         {
             _gameName = gameName;
             return this;
         }
 
-        public IEnumerable<Game> Execute(IEnumerable<Game> input)
+        public IQueryable<Game> Execute(IQueryable<Game> input)
         {
             return ApplyFilter(input);
         }
 
-        private IEnumerable<Game> ApplyFilter(IEnumerable<Game> games)
+        private IQueryable<Game> ApplyFilter(IQueryable<Game> games)
         {
             if (!string.IsNullOrEmpty(_gameName))
             {

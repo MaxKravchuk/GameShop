@@ -9,13 +9,13 @@ using FluentValidation;
 using GameShop.BLL.DTO.FilterDTOs;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.DTO.PaginationDTOs;
+using GameShop.BLL.Enums;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Filters.Interfaces;
 using GameShop.BLL.Pagination;
 using GameShop.BLL.Services;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.BLL.Strategies.Interfaces.Factories;
-using GameShop.BLL.Strategies.Interfaces.Strategies;
 using GameShop.BLL.Strategies.SortingStrategies;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository.Interfaces;
@@ -31,7 +31,7 @@ namespace GameShop.BLL.Tests.ServiceTests
         private readonly Mock<IMapper> _mockMapper;
         private readonly Mock<ILoggerManager> _mockLogger;
         private readonly Mock<IValidator<GameCreateDTO>> _mockValidator;
-        private readonly Mock<IFiltersFactory<IEnumerable<Game>>> _mockFiltersFactory;
+        private readonly Mock<IFiltersFactory<IQueryable<Game>>> _mockFiltersFactory;
         private readonly Mock<IGameSortingFactory> _mockGameSortingFactory;
 
         private bool _disposed;
@@ -47,7 +47,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             _mockMapper = new Mock<IMapper>();
             _mockLogger = new Mock<ILoggerManager>();
             _mockValidator = new Mock<IValidator<GameCreateDTO>>();
-            _mockFiltersFactory = new Mock<IFiltersFactory<IEnumerable<Game>>>();
+            _mockFiltersFactory = new Mock<IFiltersFactory<IQueryable<Game>>>();
             _mockGameSortingFactory = new Mock<IGameSortingFactory>();
 
             _gameCreateDTO = GetGameCreateDTO();
@@ -316,7 +316,7 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             _mockGameSortingFactory
                 .Setup(gsf => gsf
-                    .GetGamesSortingStrategy(It.IsAny<string>()))
+                    .GetGamesSortingStrategy(It.IsAny<SortingTypes>()))
                 .Returns(new AscPriceStrategy());
 
             _mockMapper
@@ -354,7 +354,7 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             _mockGameSortingFactory
                 .Setup(gsf => gsf
-                    .GetGamesSortingStrategy(It.IsAny<string>()))
+                    .GetGamesSortingStrategy(It.IsAny<SortingTypes>()))
                 .Returns(new AscPriceStrategy());
 
             _mockMapper
@@ -378,7 +378,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             var gameList = new List<Game> { _game };
             var gameListDTO = new List<GameReadListDTO> { new GameReadListDTO() };
             var pagedGameList = new PagedListViewModel<GameReadListDTO> { Entities = gameListDTO };
-            var gameFiltersDTO = new GameFiltersDTO { PageNumber = 1, PageSize = 10, SortingOption = "" };
+            var gameFiltersDTO = new GameFiltersDTO { PageNumber = 1, PageSize = 10, SortingOption = string.Empty };
 
             _mockUnitOfWork
                 .Setup(u => u.GameRepository
@@ -421,7 +421,7 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             _mockGameSortingFactory
                 .Setup(gsf => gsf
-                    .GetGamesSortingStrategy(It.IsAny<string>()))
+                    .GetGamesSortingStrategy(It.IsAny<SortingTypes>()))
                 .Throws(new BadRequestException());
 
             // Act

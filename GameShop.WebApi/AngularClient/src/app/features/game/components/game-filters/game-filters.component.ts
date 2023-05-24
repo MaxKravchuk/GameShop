@@ -8,6 +8,7 @@ import { PublisherService } from "../../../../core/services/publisherService/pub
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
 import { FilterModel } from "../../../../core/models/FilterModel";
+import { forkJoin } from "rxjs";
 
 @Component({
   selector: 'app-game-filters',
@@ -46,17 +47,15 @@ export class GameFiltersComponent implements OnInit {
             PublisherIds: [''],
         });
 
-        this.genreService.getAllGenres().subscribe(
-            (genres: Genre[]) => this.genres = genres
-        );
-
-        this.platformTypeService.getAllPlatformTypes().subscribe(
-            (platforms: PlatformType[]) => this.platforms = platforms
-        );
-
-        this.publisherService.getAllPublishers().subscribe(
-            (publishers: Publisher[]) => this.publishers = publishers
-        );
+        forkJoin([
+            this.genreService.getAllGenres(),
+            this.platformTypeService.getAllPlatformTypes(),
+            this.publisherService.getAllPublishers()
+        ]).subscribe(([genres, platformTypes, publishers]) => {
+            this.genres = genres;
+            this.platforms = platformTypes;
+            this.publishers = publishers;
+        });
     }
 
     setFilters(): void {
@@ -69,6 +68,7 @@ export class GameFiltersComponent implements OnInit {
     }
 
     clearFilters(): void {
+        this.form.reset();
         this.form.reset({
             SortedBy: '',
             GameName: '',

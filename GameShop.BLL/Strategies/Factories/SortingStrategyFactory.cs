@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GameShop.BLL.Enums;
 using GameShop.BLL.Exceptions;
-using GameShop.BLL.Strategies.Interfaces;
 using GameShop.BLL.Strategies.Interfaces.Factories;
 using GameShop.BLL.Strategies.Interfaces.Strategies;
 using GameShop.BLL.Strategies.SortingStrategies;
@@ -21,19 +16,19 @@ namespace GameShop.BLL.Strategies.Factories
             _container = container;
         }
 
-        public IGamesSortingStrategy GetGamesSortingStrategy(string sortingOption)
+        public IGamesSortingStrategy GetGamesSortingStrategy(SortingTypes sortingType)
         {
-            switch (sortingOption)
+            switch (sortingType)
             {
-                case "AscPrice":
+                case SortingTypes.AscPrice:
                     return _container.Resolve<AscPriceStrategy>();
-                case "Date":
+                case SortingTypes.Date:
                     return _container.Resolve<DateStrategy>();
-                case "DescPrice":
+                case SortingTypes.DescPrice:
                     return _container.Resolve<DescPriceStrategy>();
-                case "MostCommented":
+                case SortingTypes.MostCommented:
                     return _container.Resolve<MostCommentedStrategy>();
-                case "MostPopular":
+                case SortingTypes.MostPopular:
                     return _container.Resolve<MostPopularStrategy>();
                 default:
                     throw new BadRequestException("Invalid sorting option");

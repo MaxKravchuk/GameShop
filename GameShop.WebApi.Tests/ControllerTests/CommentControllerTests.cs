@@ -158,7 +158,7 @@ namespace GameShop.WebApi.Tests.ControllerTests
         }
 
         [Fact]
-        public async Task Ban_ShouldDoNothing()
+        public void Ban_ShouldDoNothing()
         {
             // Assert
             var banDuration = "1day";
@@ -169,7 +169,7 @@ namespace GameShop.WebApi.Tests.ControllerTests
                 .Verifiable();
 
             // Act
-            var actionResult = await _commentController.Ban(banDuration);
+            var actionResult = _commentController.Ban(banDuration);
 
             // Assert
             Assert.IsType<OkResult>(actionResult);

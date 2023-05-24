@@ -1,5 +1,10 @@
 <div class="cont">
     <div class="mat-title">New comment</div>
+    <p *ngIf="parentComment === undefined">This is a form for a new comment</p>
+    <ng-container [ngSwitch]="action" *ngIf="parentComment">
+        <p *ngSwitchCase="'answer'">You are answering to {{parentComment.Name}}</p>
+        <p *ngSwitchCase="'quote'">You are quoting {{parentComment.Name}}</p>
+    </ng-container>
     <div [formGroup]="form" class="comment-create-form">
         <p>
             <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">

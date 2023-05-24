@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using GameShop.BLL.DTO.OrderDTOs;
 
 namespace GameShop.BLL.Services.Utils.Validators
@@ -13,7 +8,7 @@ namespace GameShop.BLL.Services.Utils.Validators
         public OrderCreateDtoValidator()
         {
             RuleFor(g => g.CustomerID)
-                .NotEmpty()
+                .GreaterThanOrEqualTo(0)
                 .WithMessage("Customer ID cannot be empty");
 
             RuleFor(g => g.OrderedAt)
@@ -23,10 +18,6 @@ namespace GameShop.BLL.Services.Utils.Validators
             RuleFor(g => g.Strategy)
                 .NotEmpty()
                 .WithMessage("Strategy cannot be empty");
-
-            RuleFor(g => g.IsPaymentSuccessful)
-                .NotEmpty()
-                .WithMessage("IsPaymentSuccessful cannot be empty");
         }
     }
 }

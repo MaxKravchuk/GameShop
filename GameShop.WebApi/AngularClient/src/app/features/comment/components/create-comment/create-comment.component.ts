@@ -15,16 +15,18 @@ export class CreateCommentComponent implements OnInit {
 
     @Input() gameKey?: string;
 
-    @Input() parentComment?: Comment;
+    parentComment?: Comment = undefined;
 
-    @Input() action: string = '';
+    action: string = 'new';
 
     form!: FormGroup;
+
+    getCommentActionSubscription: Subscription = new Subscription();
 
     constructor(
         private formBuilder: FormBuilder,
         private commentService: CommentService,
-        private sharedService: SharedService<boolean>,
+        private sharedService: SharedService<{ action: string, parentComment: Comment }>,
         private utilsService: UtilsService
     ) {}
 
@@ -32,6 +34,18 @@ export class CreateCommentComponent implements OnInit {
         this.form = this.formBuilder.group({
             Name: ['', Validators.required],
             Body: ['', Validators.required]
+        });
+
+        this.getCommentActionSubscription = this.sharedService.getData$().subscribe({
+            next: (data: { action: string, parentComment: Comment }): void => {
+                if (this.action === data['action'] && this.parentComment === data['parentComment']) {
+                    this.action = 'new';
+                    this.parentComment = undefined;
+                    return;
+                }
+                this.action = data['action'];
+                this.parentComment = data['parentComment'];
+            }
         });
     }
 

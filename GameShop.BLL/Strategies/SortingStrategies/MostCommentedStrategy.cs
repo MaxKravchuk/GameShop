@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameShop.BLL.Strategies.Interfaces;
+﻿using System.Linq;
 using GameShop.BLL.Strategies.Interfaces.Strategies;
 using GameShop.DAL.Entities;
 
@@ -11,7 +6,7 @@ namespace GameShop.BLL.Strategies.SortingStrategies
 {
     public class MostCommentedStrategy : IGamesSortingStrategy
     {
-        public IEnumerable<Game> Sort(IEnumerable<Game> games)
+        public IQueryable<Game> Sort(IQueryable<Game> games)
         {
             return games.OrderByDescending(game => game.Comments.Count());
         }

@@ -21,19 +21,18 @@ export class IboxPaymentComponent implements OnInit {
         private paymentService: PaymentService,
         private utilsService: UtilsService,
         private router: Router
-    ) {
-        this.sum = this.router.getCurrentNavigation()?.extras.state?.['sum'];
-    }
+    ) {}
 
     ngOnInit(): void {
-        const orderCreateDTO: CreateOrderModel ={
+        this.sum = history.state.sum;
+
+        const createOrderModel: CreateOrderModel ={
             CustomerId: this.accountNumber,
             OrderedAt: new Date().toISOString(),
-            Strategy: 'iBox',
-            IsPaymentSuccessful: true
+            Strategy: 'iBox'
         };
 
-        this.paymentService.getOrderId(orderCreateDTO)
+        this.paymentService.getOrderId(createOrderModel)
             .subscribe(
                 (data: number): void => {
                     this.invoiceNumber = data;

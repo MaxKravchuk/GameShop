@@ -33,13 +33,12 @@ export class VisaPaymentComponent implements OnInit{
         if (!this.form.valid) {
             this.utilsService.openWithMessage('Please fill all the fields');
         }
-        const createOrderService: CreateOrderModel = {
+        const createOrderModel: CreateOrderModel = {
             CustomerId: 0,
             OrderedAt: new Date().toISOString(),
-            IsPaymentSuccessful: true,
             Strategy: 'Visa'
         }
-        this.paymentService.getOrderId(createOrderService).subscribe(
+        this.paymentService.getOrderId(createOrderModel).subscribe(
             (data: number): void => {
                 setTimeout((): void => {
                     this.router.navigateByUrl('/').then(

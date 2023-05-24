@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
 using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.DTO.RedisDTOs;
 using GameShop.BLL.DTO.StrategyDTOs;
+using GameShop.BLL.Enums;
+using GameShop.BLL.Enums.Extensions;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
-using GameShop.BLL.Strategies;
-using GameShop.BLL.Strategies.Interfaces;
 using GameShop.BLL.Strategies.Interfaces.Factories;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository.Interfaces;
@@ -47,13 +44,17 @@ namespace GameShop.BLL.Services
 
         public async Task<PaymentResultDTO> ExecutePayment(OrderCreateDTO orderCreateDTO)
         {
-            if (!orderCreateDTO.IsPaymentSuccessful)
+            var newOrder = await CreateOrderAsync(orderCreateDTO);
+
+            var strategyType = orderCreateDTO.Strategy.ToEnum<PaymentTypes>();
+            var strategy = _paymentStrategyFactory.GetPaymentStrategy(strategyType);
+
+            var paymentResult = strategy.Pay(newOrder);
+            if (!paymentResult.IsPaymentSuccessful)
             {
                 throw new BadRequestException("Payment is not successful");
             }
 
-            var newOrder = await CreateOrderAsync(orderCreateDTO);
-            var strategy = _paymentStrategyFactory.GetPaymentStrategy(orderCreateDTO.Strategy);
             return strategy.Pay(newOrder);
         }
 

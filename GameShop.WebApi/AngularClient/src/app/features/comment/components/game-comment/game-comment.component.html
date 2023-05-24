@@ -40,12 +40,6 @@
                 >Ban</a>
             </div>
         </div>
-        <app-create-comment
-            *ngIf="isFormOpen"
-            [parentComment]="comment"
-            [action]="action"
-            [gameKey]="gameKey"
-        ></app-create-comment>
         <div *ngIf="answersIsDisplayed">
             <app-game-comment
                 *ngFor="let reply of replies"

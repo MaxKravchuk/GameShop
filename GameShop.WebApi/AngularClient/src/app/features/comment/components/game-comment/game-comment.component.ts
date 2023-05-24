@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { Comment } from "../../../../core/models/Comment";
 import { CommentService } from "../../../../core/services/commentService/comment.service";
 import { MatDialog } from "@angular/material/dialog";
@@ -31,7 +31,7 @@ export class GameCommentComponent implements OnInit {
     constructor(
         private commentService: CommentService,
         private dialog: MatDialog,
-        private sharedService: SharedService<boolean>
+        private sharedService: SharedService<{ action: string, parentComment: Comment }>
     ) {}
 
     ngOnInit(): void {
@@ -41,13 +41,17 @@ export class GameCommentComponent implements OnInit {
     }
 
     onAnswerButtonClick(): void {
-        this.isFormOpen = !this.isFormOpen;
-        this.action = 'answer';
+        this.sharedService.sendData({action: 'answer',parentComment: this.comment});
+        //this.isFormOpen = !this.isFormOpen;
+        //this.action = 'answer';
     }
 
     onQuoteButtonClick(): void {
-        this.isFormOpen = !this.isFormOpen;
-        this.action = 'quote';
+        this.sharedService.sendData({action: 'quote',parentComment: this.comment});
+        // if (!this.isFormOpen) {
+        //     this.isFormOpen = !this.isFormOpen;
+        // }
+        // this.action = 'quote';
     }
 
     showAnswers(): void {

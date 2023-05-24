@@ -1,29 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GameShop.BLL.Filters.Interfaces;
 using GameShop.DAL.Entities;
 
 namespace GameShop.BLL.Filters
 {
-    public class PublisherFilter : IOperation<IEnumerable<Game>>
+    public class PublisherFilter : IOperation<IQueryable<Game>>
     {
         private IEnumerable<int> _publishersIds;
 
-        public IOperation<IEnumerable<Game>> SetFilterData(IEnumerable<int> publishersIds)
+        public IOperation<IQueryable<Game>> SetFilterData(IEnumerable<int> publishersIds)
         {
             _publishersIds = publishersIds;
             return this;
         }
 
-        public IEnumerable<Game> Execute(IEnumerable<Game> input)
+        public IQueryable<Game> Execute(IQueryable<Game> input)
         {
             return ApplyFilter(input);
         }
 
-        private IEnumerable<Game> ApplyFilter(IEnumerable<Game> games)
+        private IQueryable<Game> ApplyFilter(IQueryable<Game> games)
         {
             if (_publishersIds != null && _publishersIds.Any())
             {

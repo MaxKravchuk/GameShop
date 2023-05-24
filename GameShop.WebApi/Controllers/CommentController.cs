@@ -45,7 +45,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route("ban")]
-        public async Task<IHttpActionResult> Ban([FromBody] string banDuration)
+        public IHttpActionResult Ban([FromBody] string banDuration)
         {
             _commentBanService.Ban(banDuration);
             return Ok();
