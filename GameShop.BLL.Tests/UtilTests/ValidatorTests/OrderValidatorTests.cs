@@ -16,10 +16,11 @@ namespace GameShop.BLL.Tests.UtilTests.ValidatorTests
         }
 
         [Fact]
-        public void Given_Empty_CustomerID_Should_Return_Error()
+        public void Given_Wrong_CustomerID_Should_Return_Error()
         {
             var order = new OrderCreateDTO
             {
+                CustomerID = -1,
                 Strategy = "s",
                 OrderedAt = DateTime.UtcNow,
             };

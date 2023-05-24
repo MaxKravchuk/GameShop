@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CommentService } from "../../../../core/services/commentService/comment.service";
 import { Comment } from "../../../../core/models/Comment";
@@ -11,7 +11,7 @@ import { UtilsService } from "../../../../core/services/helpers/utilsService/uti
     templateUrl: './create-comment.component.html',
     styleUrls: ['./create-comment.component.css']
 })
-export class CreateCommentComponent implements OnInit {
+export class CreateCommentComponent implements OnInit, OnDestroy {
 
     @Input() gameKey?: string;
 
@@ -47,6 +47,10 @@ export class CreateCommentComponent implements OnInit {
                 this.parentComment = data['parentComment'];
             }
         });
+    }
+
+    ngOnDestroy(): void {
+        this.getCommentActionSubscription.unsubscribe();
     }
 
     onSaveForm(): void {

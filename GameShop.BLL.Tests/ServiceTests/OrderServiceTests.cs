@@ -71,7 +71,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             var cartItems = new List<CartItemDTO> { new CartItemDTO { GameKey = "test", Quantity = 1 } };
             var order = new Order { Id = 1 };
             var paymentStrategy = new Mock<IPaymentStrategy>();
-            var paymentResult = new PaymentResultDTO { OrderId = 1 };
+            var paymentResult = new PaymentResultDTO { OrderId = 1, IsPaymentSuccessful = true };
 
             MockCreateOrder(orderCreateDTO, order);
 

@@ -40,13 +40,10 @@ export class VisaPaymentComponent implements OnInit{
         }
         this.paymentService.getOrderId(createOrderModel).subscribe(
             (data: number): void => {
+                this.utilsService
+                    .openWithMessage(`Your order with id - ${data} has been successfully created.`);
                 setTimeout((): void => {
-                    this.router.navigateByUrl('/').then(
-                        (): void => {
-                            this.utilsService
-                                .openWithMessage(`Your order has been successfully created.`);
-                        }
-                    );
+                    this.router.navigateByUrl('/');
                 }, 2000);
             }
         )

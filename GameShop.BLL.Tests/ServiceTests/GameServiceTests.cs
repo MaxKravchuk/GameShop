@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using BLL.Test.DbAsyncTests;
 using FluentValidation;
 using GameShop.BLL.DTO.FilterDTOs;
 using GameShop.BLL.DTO.GameDTOs;
@@ -33,6 +36,7 @@ namespace GameShop.BLL.Tests.ServiceTests
         private readonly Mock<IValidator<GameCreateDTO>> _mockValidator;
         private readonly Mock<IFiltersFactory<IQueryable<Game>>> _mockFiltersFactory;
         private readonly Mock<IGameSortingFactory> _mockGameSortingFactory;
+        private readonly Mock<IQueryable<Game>> _mockGameIqueryable;
 
         private bool _disposed;
 
@@ -49,6 +53,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             _mockValidator = new Mock<IValidator<GameCreateDTO>>();
             _mockFiltersFactory = new Mock<IFiltersFactory<IQueryable<Game>>>();
             _mockGameSortingFactory = new Mock<IGameSortingFactory>();
+            _mockGameIqueryable = new Mock<IQueryable<Game>>();
 
             _gameCreateDTO = GetGameCreateDTO();
             _game = GetGame();
@@ -307,12 +312,11 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             _mockUnitOfWork
                 .Setup(u => u.GameRepository
-                    .GetAsync(
+                    .GetQuery(
                         It.IsAny<Expression<Func<Game, bool>>>(),
                         It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
-                        It.IsAny<string>(),
-                        It.IsAny<bool>()))
-                .ReturnsAsync(gameList);
+                        It.IsAny<string>()))
+                .Returns(new TestDbAsyncEnumerable<Game>(gameList));
 
             _mockGameSortingFactory
                 .Setup(gsf => gsf
@@ -345,12 +349,11 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             _mockUnitOfWork
                 .Setup(u => u.GameRepository
-                    .GetAsync(
+                    .GetQuery(
                         It.IsAny<Expression<Func<Game, bool>>>(),
                         It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
-                        It.IsAny<string>(),
-                        It.IsAny<bool>()))
-                .ReturnsAsync(gameList);
+                        It.IsAny<string>()))
+                .Returns(new TestDbAsyncEnumerable<Game>(gameList));
 
             _mockGameSortingFactory
                 .Setup(gsf => gsf
@@ -382,12 +385,11 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             _mockUnitOfWork
                 .Setup(u => u.GameRepository
-                    .GetAsync(
+                    .GetQuery(
                         It.IsAny<Expression<Func<Game, bool>>>(),
                         It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
-                        It.IsAny<string>(),
-                        It.IsAny<bool>()))
-                .ReturnsAsync(gameList);
+                        It.IsAny<string>()))
+                .Returns(new TestDbAsyncEnumerable<Game>(gameList));
 
             _mockMapper
                 .Setup(m => m.Map<PagedListViewModel<GameReadListDTO>>(It.IsAny<PagedList<Game>>()))
@@ -412,12 +414,11 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             _mockUnitOfWork
                 .Setup(u => u.GameRepository
-                    .GetAsync(
+                    .GetQuery(
                         It.IsAny<Expression<Func<Game, bool>>>(),
                         It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
-                        It.IsAny<string>(),
-                        It.IsAny<bool>()))
-                .ReturnsAsync(gameList);
+                        It.IsAny<string>()))
+                .Returns(new TestDbAsyncEnumerable<Game>(gameList));
 
             _mockGameSortingFactory
                 .Setup(gsf => gsf
@@ -428,7 +429,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             var result = _gameService.GetAllGamesAsync(gameFiltersDTO);
 
             // Assert
-            await Assert.ThrowsAsync<BadRequestException>(() => result);
+            await Assert.ThrowsAsync<ArgumentException>(() => result);
         }
 
         [Fact]

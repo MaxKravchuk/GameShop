@@ -119,7 +119,10 @@
         </mat-radio-group>
     </mat-expansion-panel>
     <div class="filter-button">
-        <button mat-raised-button color="primary" (click)="setFilters()">Filter</button>
+        <button mat-raised-button
+                color="primary"
+                [disabled]="form.invalid"
+                (click)="setFilters()">Filter</button>
         <button mat-raised-button color="primary" (click)="clearFilters()">Clear all</button>
     </div>
 </div>
