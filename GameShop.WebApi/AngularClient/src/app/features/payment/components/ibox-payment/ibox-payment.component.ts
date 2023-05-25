@@ -3,6 +3,7 @@ import { PaymentService } from "../../../../core/services/paymentService/payment
 import { CreateOrderModel } from "../../../../core/models/CreateOrderModel";
 import { Router } from "@angular/router";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
+import { PaymentCreateDTO } from "../../../../core/models/PaymentCreateDTO";
 
 @Component({
   selector: 'app-ibox-payment',
@@ -11,11 +12,13 @@ import { UtilsService } from "../../../../core/services/helpers/utilsService/uti
 })
 export class IboxPaymentComponent implements OnInit {
 
-    accountNumber: number = 0;
+    accountNumber?: number;
 
     invoiceNumber?: number;
 
     sum?: number;
+
+    currentOrderId?: number;
 
     constructor(
         private paymentService: PaymentService,
@@ -25,14 +28,15 @@ export class IboxPaymentComponent implements OnInit {
 
     ngOnInit(): void {
         this.sum = history.state.sum;
+        this.currentOrderId = history.state.orderId;
+        this.accountNumber = history.state.customerId;
 
-        const createOrderModel: CreateOrderModel ={
-            CustomerId: this.accountNumber,
-            OrderedAt: new Date().toISOString(),
+        const paymentCreateDTO: PaymentCreateDTO ={
+            OrderId: this.currentOrderId,
             Strategy: 'iBox'
         };
 
-        this.paymentService.getOrderId(createOrderModel)
+        this.paymentService.getOrderId(paymentCreateDTO)
             .subscribe(
                 (data: number): void => {
                     this.invoiceNumber = data;

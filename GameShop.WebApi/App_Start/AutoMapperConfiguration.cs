@@ -80,7 +80,8 @@ namespace GameShop.WebApi.App_Start
             CreateMap<OrderCreateDTO, Order>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
-                .ForMember(dest => dest.ListOfOrderDetails, opt => opt.Ignore());
+                .ForMember(dest => dest.ListOfOrderDetails, opt => opt.Ignore())
+                .ForMember(dest => dest.IsPaid, opt => opt.Ignore());
         }
     }
 }

@@ -29,7 +29,6 @@ namespace GameShop.BLL.Tests.ServiceTests
         private readonly Mock<IMapper> _mockMapper;
         private readonly Mock<ILoggerManager> _mockLogger;
         private readonly Mock<IValidator<OrderCreateDTO>> _mockValidator;
-        private readonly Mock<IPaymentStrategyFactory> _mockPaymentStrategyFactory;
 
         private bool _disposed;
 
@@ -40,15 +39,13 @@ namespace GameShop.BLL.Tests.ServiceTests
             _mockMapper = new Mock<IMapper>();
             _mockLogger = new Mock<ILoggerManager>();
             _mockValidator = new Mock<IValidator<OrderCreateDTO>>();
-            _mockPaymentStrategyFactory = new Mock<IPaymentStrategyFactory>();
 
             _orderService = new OrderService(
                 _mockUnitOfWork.Object,
                 _mockRedisProvider.Object,
                 _mockMapper.Object,
                 _mockLogger.Object,
-                _mockValidator.Object,
-                _mockPaymentStrategyFactory.Object);
+                _mockValidator.Object);
         }
 
         public void Dispose()
@@ -58,19 +55,16 @@ namespace GameShop.BLL.Tests.ServiceTests
         }
 
         [Fact]
-        public async Task ExecutePayment_WithSuccessfulPayment_ShouldReturnOrderCreateDTO()
+        public async Task CreateOrderAsync_WithCorrectOrder_ShouldReturnOrderCreateDTO()
         {
             // Arrange
             var orderCreateDTO = new OrderCreateDTO
             {
-                CustomerID = 0,
-                OrderedAt = DateTime.UtcNow,
-                Strategy = "Visa"
+                CustomerID = 1,
+                OrderedAt = DateTime.UtcNow
             };
             var gameList = new List<Game> { new Game { Id = 1, Key = "test", UnitsInStock = 2 } };
-            var cartItems = new List<CartItemDTO> { new CartItemDTO { GameKey = "test", Quantity = 1 } };
             var order = new Order { Id = 1 };
-            var paymentStrategy = new Mock<IPaymentStrategy>();
             var paymentResult = new PaymentResultDTO { OrderId = 1, IsPaymentSuccessful = true };
 
             MockCreateOrder(orderCreateDTO, order);
@@ -94,24 +88,14 @@ namespace GameShop.BLL.Tests.ServiceTests
                     .Update(It.IsAny<Game>()))
                 .Verifiable();
 
-            _mockPaymentStrategyFactory
-                .Setup(psf => psf
-                    .GetPaymentStrategy(It.IsAny<PaymentTypes>()))
-                .Returns(paymentStrategy.Object);
-
-            paymentStrategy
-                .Setup(s => s
-                    .Pay(It.IsAny<Order>()))
-                .Returns(paymentResult);
-
             // Act
-            var result = await _orderService.ExecutePayment(orderCreateDTO);
+            var result = await _orderService.CreateOrderAsync(orderCreateDTO);
 
             // Assert
             _mockUnitOfWork.Verify(u => u.OrderRepository.Insert(order), Times.Once);
             _mockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
-            Assert.IsType<PaymentResultDTO>(result);
-            Assert.Equal(1, result.OrderId);
+            Assert.IsType<int>(result);
+            Assert.Equal(1, result);
         }
 
         protected virtual void Dispose(bool disposing)

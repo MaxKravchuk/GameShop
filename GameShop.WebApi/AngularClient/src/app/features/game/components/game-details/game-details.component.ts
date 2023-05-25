@@ -9,7 +9,7 @@ import { Publisher } from "../../../../core/models/Publisher";
 import { CartService } from "../../../../core/services/cartService/cart.service";
 import { CartItem } from "../../../../core/models/CartItem";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
-import { concatMap } from "rxjs";
+import { concatMap, forkJoin, Observable } from "rxjs";
 
 @Component({
     selector: 'app-game-details',
@@ -29,6 +29,8 @@ export class GameDetailsComponent implements OnInit {
     gameKey?: string | null;
 
     isAvailable: boolean = false;
+
+    gamesInCart?: number;
 
     constructor(
         private gameService: GameService,
@@ -55,6 +57,8 @@ export class GameDetailsComponent implements OnInit {
     }
 
     buyGame(): void {
+        this.isAvailable = false;
+
         let cartItem: CartItem = {
             GameKey: this.game.Key!,
             GameName: this.game.Name!,
@@ -66,22 +70,39 @@ export class GameDetailsComponent implements OnInit {
                 concatMap(() => this.shoppingCartService.getNumberOfGamesInCart(this.gameKey!))
             ).subscribe({
             next: (data: number): void => {
+                this.gamesInCart = data;
                 this.utilsService.openWithMessage('Game has been added to your cart.');
                 if (data === this.game.UnitsInStock!) {
                     this.utilsService.openWithMessage('Game is out of stock.');
                     this.isAvailable = false;
+                }
+                else {
+                    this.isAvailable = true;
                 }
             }
         });
     }
 
     private getGameDetailsByKey(Key: string): void {
-        this.gameService.getGameDetailsByKey(Key).subscribe((data: Game): void => {
-            this.game = data;
-            this.genres = data.Genres;
-            this.platformTypes = data.PlatformTypes;
-            this.publisher = data.PublisherReadDTO;
-            this.isAvailable = data.UnitsInStock! > 0;
-        });
+        const gameDetails$: Observable<Game> = this.gameService.getGameDetailsByKey(Key);
+        const numberOfGames$: Observable<number> = this.shoppingCartService.getNumberOfGamesInCart(this.gameKey!);
+
+        forkJoin([gameDetails$, numberOfGames$]).subscribe(
+            ([gameDetails, numberOfGames]: [Game, number]) => {
+                this.game = gameDetails;
+                this.genres = gameDetails.Genres;
+                this.platformTypes = gameDetails.PlatformTypes;
+                this.publisher = gameDetails.PublisherReadDTO;
+                this.isAvailable = gameDetails.UnitsInStock! > 0;
+                this.isAvailable = numberOfGames < gameDetails.UnitsInStock!;
+            }
+        );
+        // this.gameService.getGameDetailsByKey(Key).subscribe((data: Game): void => {
+        //     this.game = data;
+        //     this.genres = data.Genres;
+        //     this.platformTypes = data.PlatformTypes;
+        //     this.publisher = data.PublisherReadDTO;
+        //     this.isAvailable = data.UnitsInStock! > 0;
+        // });
     }
 }

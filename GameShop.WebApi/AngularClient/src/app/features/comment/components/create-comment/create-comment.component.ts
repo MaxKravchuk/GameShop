@@ -71,5 +71,8 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
                 this.sharedService.reloadSource();
             }
         });
+
+        this.action = 'new';
+        this.parentComment = undefined;
     }
 }

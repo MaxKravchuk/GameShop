@@ -21,7 +21,6 @@ namespace GameShop.BLL.Tests.UtilTests.ValidatorTests
             var order = new OrderCreateDTO
             {
                 CustomerID = -1,
-                Strategy = "s",
                 OrderedAt = DateTime.UtcNow,
             };
 

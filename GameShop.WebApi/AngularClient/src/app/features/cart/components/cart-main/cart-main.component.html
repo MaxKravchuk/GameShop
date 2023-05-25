@@ -24,6 +24,7 @@
 <p>Total Price: {{ totalPrice }}</p>
 <button
     [disabled]="cartItems.length == 0"
-    mat-raised-button routerLink="/order/1"
+    mat-raised-button
+    (click)="createOrder()"
     >Make order
 </button>

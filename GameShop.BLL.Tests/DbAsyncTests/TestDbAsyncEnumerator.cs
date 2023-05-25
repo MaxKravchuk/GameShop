@@ -17,16 +17,6 @@ namespace BLL.Test.DbAsyncTests
             _inner = inner;
         }
 
-        public void Dispose()
-        {
-            _inner.Dispose();
-        }
-
-        public Task<bool> MoveNextAsync(CancellationToken cancellationToken)
-        {
-            return Task.FromResult(_inner.MoveNext());
-        }
-
         public T Current
         {
             get { return _inner.Current; }
@@ -35,6 +25,16 @@ namespace BLL.Test.DbAsyncTests
         object IDbAsyncEnumerator.Current
         {
             get { return Current; }
+        }
+
+        public void Dispose()
+        {
+            _inner.Dispose();
+        }
+
+        public Task<bool> MoveNextAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_inner.MoveNext());
         }
     }
 }

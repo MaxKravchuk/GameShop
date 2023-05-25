@@ -103,6 +103,7 @@
     <Compile Include="ServiceTests\CommentServiceTests.cs" />
     <Compile Include="ServiceTests\GameServiceTests.cs" />
     <Compile Include="ServiceTests\OrderServiceTests.cs" />
+    <Compile Include="ServiceTests\PaymentServiceTests.cs" />
     <Compile Include="ServiceTests\PublisherServiceTests.cs" />
     <Compile Include="ServiceTests\ShoppingCartServiceTests.cs" />
     <Compile Include="UtilTests\MappingTests.cs" />

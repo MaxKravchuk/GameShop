@@ -132,11 +132,12 @@
     <Compile Include="DTO\FilterDTOs\GameFiltersDTO.cs" />
     <Compile Include="DTO\OrderDTOs\OrderCreateDTO.cs" />
     <Compile Include="DTO\PaginationDTOs\PagedListViewModel.cs" />
+    <Compile Include="DTO\PaymentDTOs\PaymentCreateDTO.cs" />
     <Compile Include="DTO\PublisherDTOs\PublisherCreateDTO.cs" />
     <Compile Include="DTO\PublisherDTOs\PublisherReadDTO.cs" />
     <Compile Include="DTO\PublisherDTOs\PublisherReadListDTO.cs" />
     <Compile Include="DTO\RedisDTOs\CartItemDTO.cs" />
-    <Compile Include="DTO\StrategyDTOs\PaymentResultDTO.cs" />
+    <Compile Include="DTO\PaymentDTOs\PaymentResultDTO.cs" />
     <Compile Include="Enums\CreatedAtTypes.cs" />
     <Compile Include="Enums\Extensions\ToEnumExtension.cs" />
     <Compile Include="Enums\PaymentTypes.cs" />
@@ -161,8 +162,10 @@
     <Compile Include="Services\CommentService.cs" />
     <Compile Include="Services\Interfaces\ICommentBanService.cs" />
     <Compile Include="Services\Interfaces\IOrderService.cs" />
+    <Compile Include="Services\Interfaces\IPaymentService.cs" />
     <Compile Include="Services\Interfaces\IShoppingCartService.cs" />
     <Compile Include="Services\OrderService.cs" />
+    <Compile Include="Services\PaymentService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\GameService.cs" />
     <Compile Include="Services\GenreService.cs" />

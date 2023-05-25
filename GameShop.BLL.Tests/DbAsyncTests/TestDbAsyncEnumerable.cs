@@ -12,11 +12,18 @@ namespace BLL.Test.DbAsyncTests
     {
         public TestDbAsyncEnumerable(IEnumerable<T> enumerable)
             : base(enumerable)
-        { }
+        {
+        }
 
         public TestDbAsyncEnumerable(Expression expression)
             : base(expression)
-        { }
+        {
+        }
+
+        IQueryProvider IQueryable.Provider
+        {
+            get { return new TestDbAsyncQueryProvider<T>(this); }
+        }
 
         public IDbAsyncEnumerator<T> GetAsyncEnumerator()
         {
@@ -26,11 +33,6 @@ namespace BLL.Test.DbAsyncTests
         IDbAsyncEnumerator IDbAsyncEnumerable.GetAsyncEnumerator()
         {
             return GetAsyncEnumerator();
-        }
-
-        IQueryProvider IQueryable.Provider
-        {
-            get { return new TestDbAsyncQueryProvider<T>(this); }
         }
     }
 }

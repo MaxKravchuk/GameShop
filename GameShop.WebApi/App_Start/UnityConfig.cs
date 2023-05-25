@@ -70,6 +70,7 @@ namespace GameShop.WebApi
             container.RegisterType<IPublisherService, PublisherService>();
             container.RegisterType<IShoppingCartService, ShoppingCartService>();
             container.RegisterType<IOrderService, OrderService>();
+            container.RegisterType<IPaymentService, PaymentService>();
             container.RegisterType<ICommentBanService, CommentBanService>();
 
             var log = LogManager.GetLogger(typeof(LoggerManager));
@@ -96,7 +97,7 @@ namespace GameShop.WebApi
 
             container.RegisterType<IPaymentStrategyFactory, PaymentStrategyFactory>();
             container.RegisterType<IPaymentStrategy, BankStrategy>(PaymentTypes.Bank.ToString());
-            container.RegisterType<IPaymentStrategy, IBoxStrategy>(PaymentTypes.iBox.ToString());
+            container.RegisterType<IPaymentStrategy, IBoxStrategy>(PaymentTypes.IBox.ToString());
             container.RegisterType<IPaymentStrategy, VisaStrategy>(PaymentTypes.Visa.ToString());
 
             container.RegisterType<IFiltersFactory<IQueryable<Game>>, GameFiltersFactory>();

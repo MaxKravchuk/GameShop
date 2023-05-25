@@ -24,7 +24,7 @@ namespace GameShop.BLL.Strategies.Factories
                     return _container.Resolve<VisaStrategy>();
                 case PaymentTypes.Bank:
                     return _container.Resolve<BankStrategy>();
-                case PaymentTypes.iBox:
+                case PaymentTypes.IBox:
                     return _container.Resolve<IBoxStrategy>();
                 default:
                     throw new BadRequestException("Invalid payment type");

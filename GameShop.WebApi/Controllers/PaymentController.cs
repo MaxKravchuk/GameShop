@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
 using GameShop.BLL.DTO.OrderDTOs;
+using GameShop.BLL.DTO.PaymentDTOs;
 using GameShop.BLL.Services.Interfaces;
 
 namespace GameShop.WebApi.Controllers
@@ -11,22 +12,22 @@ namespace GameShop.WebApi.Controllers
     [RoutePrefix("api/payments")]
     public class PaymentController : ApiController
     {
-        private readonly IOrderService _orderService;
+        private readonly IPaymentService _paymentService;
         private readonly IShoppingCartService _shoppingCartService;
 
         public PaymentController(
-            IOrderService orderService,
+            IPaymentService paymentService,
             IShoppingCartService shoppingCartService)
         {
-            _orderService = orderService;
+            _paymentService = paymentService;
             _shoppingCartService = shoppingCartService;
         }
 
         [HttpPost]
         [Route("payAndGetInvoice")]
-        public async Task<IHttpActionResult> GetInvoiceAsync([FromBody] OrderCreateDTO orderCreateDTO)
+        public async Task<IHttpActionResult> GetInvoiceAsync([FromBody] PaymentCreateDTO paymentCreateDTO)
         {
-            var paymentResult = await _orderService.ExecutePayment(orderCreateDTO);
+            var paymentResult = await _paymentService.ExecutePaymentAsync(paymentCreateDTO);
             await _shoppingCartService.CleatCartAsync();
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
@@ -43,9 +44,9 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route("pay")]
-        public async Task<IHttpActionResult> PayAsync([FromBody] OrderCreateDTO orderCreateDTO)
+        public async Task<IHttpActionResult> PayAsync([FromBody] PaymentCreateDTO paymentCreateDTO)
         {
-            var paymentResult = await _orderService.ExecutePayment(orderCreateDTO);
+            var paymentResult = await _paymentService.ExecutePaymentAsync(paymentCreateDTO);
             await _shoppingCartService.CleatCartAsync();
             return Json(paymentResult.OrderId);
         }

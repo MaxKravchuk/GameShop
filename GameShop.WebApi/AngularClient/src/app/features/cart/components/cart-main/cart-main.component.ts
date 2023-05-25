@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CartItem } from "../../../../core/models/CartItem";
 import { CartService } from "../../../../core/services/cartService/cart.service";
+import { OrderService } from "../../../../core/services/orderService/order.service";
+import { CreateOrderModel } from "../../../../core/models/CreateOrderModel";
+import { NavigationExtras, Router } from "@angular/router";
 
 @Component({
     selector: 'app-cart-main',
@@ -13,7 +16,10 @@ export class CartMainComponent implements OnInit {
 
     totalPrice: number = 0;
 
-    constructor(private shoppingCartService: CartService) {}
+    constructor(
+        private shoppingCartService: CartService,
+        private orderService: OrderService,
+        private router: Router) {}
 
     ngOnInit(): void {
         this.fetchCart();
@@ -31,6 +37,20 @@ export class CartMainComponent implements OnInit {
         this.shoppingCartService.deleteItemFromCart(gameKey).subscribe({
             next: (): void => {
                 this.fetchCart();
+            }
+        });
+    }
+
+    createOrder(): void {
+        const data : CreateOrderModel = {
+            CustomerId: 1,
+            OrderedAt: new Date().toISOString(),
+        };
+
+        this.orderService.createOrder(data).subscribe({
+            next: (data: number): void => {
+                const navExtras: NavigationExtras = { state: { customerId: 1, orderId: data } };
+                this.router.navigateByUrl('/order', navExtras);
             }
         });
     }

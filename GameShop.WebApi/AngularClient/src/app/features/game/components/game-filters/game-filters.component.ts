@@ -68,7 +68,6 @@ export class GameFiltersComponent implements OnInit {
     }
 
     clearFilters(): void {
-        this.form.reset();
         this.form.reset({
             SortedBy: '',
             GameName: '',

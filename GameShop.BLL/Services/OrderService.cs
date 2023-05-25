@@ -24,47 +24,29 @@ namespace GameShop.BLL.Services
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
         private readonly IValidator<OrderCreateDTO> _validator;
-        private readonly IPaymentStrategyFactory _paymentStrategyFactory;
 
         public OrderService(
             IUnitOfWork unitOfWork,
             IRedisProvider<CartItemDTO> redisProvider,
             IMapper mapper,
             ILoggerManager loggerManager,
-            IValidator<OrderCreateDTO> validator,
-            IPaymentStrategyFactory paymentStrategyFactory)
+            IValidator<OrderCreateDTO> validator)
         {
             _unitOfWork = unitOfWork;
             _redisProvider = redisProvider;
             _mapper = mapper;
             _loggerManager = loggerManager;
             _validator = validator;
-            _paymentStrategyFactory = paymentStrategyFactory;
         }
 
-        public async Task<PaymentResultDTO> ExecutePayment(OrderCreateDTO orderCreateDTO)
-        {
-            var newOrder = await CreateOrderAsync(orderCreateDTO);
-
-            var strategyType = orderCreateDTO.Strategy.ToEnum<PaymentTypes>();
-            var strategy = _paymentStrategyFactory.GetPaymentStrategy(strategyType);
-
-            var paymentResult = strategy.Pay(newOrder);
-            if (!paymentResult.IsPaymentSuccessful)
-            {
-                throw new BadRequestException("Payment is not successful");
-            }
-
-            return strategy.Pay(newOrder);
-        }
-
-        private async Task<Order> CreateOrderAsync(OrderCreateDTO orderCreateDTO)
+        public async Task<int> CreateOrderAsync(OrderCreateDTO orderCreateDTO)
         {
             await _validator.ValidateAndThrowAsync(orderCreateDTO);
             var newOrder = _mapper.Map<Order>(orderCreateDTO);
+            newOrder.IsPaid = false;
             _unitOfWork.OrderRepository.Insert(newOrder);
 
-            var redisKey = orderCreateDTO.CustomerID == 0 ? "CartItems" : $"CartItems-{orderCreateDTO.CustomerID}";
+            var redisKey = orderCreateDTO.CustomerID == 1 ? "CartItems" : $"CartItems-{orderCreateDTO.CustomerID}";
             var cartItems = await _redisProvider.GetValuesAsync(redisKey);
 
             if (!cartItems.Any())
@@ -98,7 +80,7 @@ namespace GameShop.BLL.Services
 
             await _unitOfWork.SaveAsync();
             _loggerManager.LogInfo($"Order with id {newOrder.Id} created succesfully");
-            return newOrder;
+            return newOrder.Id;
         }
     }
 }

@@ -4,7 +4,7 @@ import { OrderMainComponent } from "./components/order-main/order-main.component
 
 const routes: Routes = [
     {
-        path: ':CustomerId',
+        path: '',
         component: OrderMainComponent
     }
 ];

@@ -3,7 +3,7 @@
     public enum PaymentTypes
     {
         Bank,
-        iBox,
+        IBox,
         Visa
     }
 }
