@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameShop.BLL.DTO.OrderDTOs;
+﻿using System.Threading.Tasks;
 using GameShop.BLL.DTO.PaymentDTOs;
 using GameShop.BLL.DTO.StrategyDTOs;
 

@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
-using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.DTO.PaymentDTOs;
 using GameShop.BLL.Services.Interfaces;
 

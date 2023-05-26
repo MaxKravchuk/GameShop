@@ -4,7 +4,7 @@
 </div>
 <div class="pagination">
     <p>Page size</p>
-    <select (change)="pageSizeChange($event)">
+    <select id="pageSizeSelect" (change)="pageSizeChange($event)">
         <option value="" selected disabled hidden>Page size</option>
         <option *ngFor="let size of pageSizeOptions" [value]="size">{{size}}</option>
     </select>

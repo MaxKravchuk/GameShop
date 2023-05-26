@@ -43,9 +43,6 @@ namespace GameShop.BLL.Tests.UtilTests.ValidatorTests
         [InlineData("", "Desc", "1111", 10.10, 1, false)]
         [InlineData("Game", "", "1111", 10, 1, false)]
         [InlineData("Game", "Desc", "", 10, 1, false)]
-        [InlineData("Game", "Desc", "1111", default, 1, false)]
-        [InlineData("Game", "Desc", "1111", 10, default, false)]
-        [InlineData("Game", "Desc", "1111", 10, 1, default)]
         public void GameCreateDTOValidator_Validate_InvalidInput_ShouldFail(
             string name, string desc, string key, decimal price, short unitsInStock, bool discontinued)
         {
@@ -67,6 +64,32 @@ namespace GameShop.BLL.Tests.UtilTests.ValidatorTests
 
             // Assert
             result.IsValid.Should().BeFalse();
+        }
+
+        [Theory]
+        [InlineData("Game", "Desc", "1111", null, null, null)]
+        public void GameCreateDTOValidator_Validate_InvalidInputWithNulls_ShouldFail(
+            string name, string desc, string key, decimal? price, short? unitsInStock, bool? discontinued)
+        {
+            // Arrange
+            var commentCreateDTO = new GameCreateDTO
+            {
+                Name = name,
+                Description = desc,
+                Key = key,
+                GenresId = new List<int> { 1, 2 },
+                PlatformTypeId = new List<int> { 1, 2 },
+                Price = price,
+                UnitsInStock = unitsInStock,
+                Discontinued = discontinued
+            };
+
+            // Act
+            var result = _validationRules.Validate(commentCreateDTO);
+
+            // Assert
+            result.IsValid.Should().BeFalse();
+            Assert.Equal(3, result.Errors.Count);
         }
 
         [Fact]
