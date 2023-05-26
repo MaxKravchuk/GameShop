@@ -35,4 +35,24 @@ export class CommentService {
                 })
             );
     }
+
+    deleteComment(commentId: number): Observable<Comment> {
+        return this.http.delete<Comment>(`${this.apiUrl}deleteComment/${commentId}`)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
+
+    banComment(banDuration: string): Observable<any> {
+        return this.http.post<string>(`${this.apiUrl}ban`,{ banDuration })
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
 }

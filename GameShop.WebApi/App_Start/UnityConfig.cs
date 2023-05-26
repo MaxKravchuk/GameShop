@@ -1,16 +1,26 @@
 ﻿using System.Configuration;
+using System.Linq;
 using System.Web.Http;
 using AutoMapper;
 using FluentValidation;
 using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.DTO.GameDTOs;
+using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.DTO.PublisherDTOs;
 using GameShop.BLL.DTO.RedisDTOs;
+using GameShop.BLL.Enums;
+using GameShop.BLL.Filters;
+using GameShop.BLL.Filters.Interfaces;
 using GameShop.BLL.Services;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.BLL.Services.Utils;
 using GameShop.BLL.Services.Utils.Validators;
+using GameShop.BLL.Strategies.Factories;
+using GameShop.BLL.Strategies.Interfaces.Factories;
+using GameShop.BLL.Strategies.Interfaces.Strategies;
+using GameShop.BLL.Strategies.PaymentStrategies;
+using GameShop.BLL.Strategies.SortingStrategies;
 using GameShop.DAL.Context;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository;
@@ -42,6 +52,8 @@ namespace GameShop.WebApi
             container.RegisterType<IRepository<Genre>, Repository<Genre>>();
             container.RegisterType<IRepository<PlatformType>, Repository<PlatformType>>();
             container.RegisterType<IRepository<Publisher>, Repository<Publisher>>();
+            container.RegisterType<IRepository<DAL.Entities.Order>, Repository<DAL.Entities.Order>>();
+            container.RegisterType<IRepository<OrderDetails>, Repository<OrderDetails>>();
 
             container.RegisterType<IUnitOfWork, UnitOfWork>();
 
@@ -57,6 +69,9 @@ namespace GameShop.WebApi
             container.RegisterType<IPlatformTypeService, PlatformTypeService>();
             container.RegisterType<IPublisherService, PublisherService>();
             container.RegisterType<IShoppingCartService, ShoppingCartService>();
+            container.RegisterType<IOrderService, OrderService>();
+            container.RegisterType<IPaymentService, PaymentService>();
+            container.RegisterType<ICommentBanService, CommentBanService>();
 
             var log = LogManager.GetLogger(typeof(LoggerManager));
             container.RegisterInstance(typeof(ILog), log);
@@ -77,6 +92,29 @@ namespace GameShop.WebApi
                 (new ContainerControlledLifetimeManager());
             container.RegisterType<IValidator<CartItemDTO>, CartItemValidator>
                 (new ContainerControlledLifetimeManager());
+            container.RegisterType<IValidator<OrderCreateDTO>, OrderCreateDtoValidator>
+                (new ContainerControlledLifetimeManager());
+
+            container.RegisterType<IPaymentStrategyFactory, PaymentStrategyFactory>();
+            container.RegisterType<IPaymentStrategy, BankStrategy>(PaymentTypes.Bank.ToString());
+            container.RegisterType<IPaymentStrategy, IBoxStrategy>(PaymentTypes.IBox.ToString());
+            container.RegisterType<IPaymentStrategy, VisaStrategy>(PaymentTypes.Visa.ToString());
+
+            container.RegisterType<IFiltersFactory<IQueryable<Game>>, GameFiltersFactory>();
+            container.RegisterType<IOperation<IQueryable<Game>>, CreatedAtFilter>();
+            container.RegisterType<IOperation<IQueryable<Game>>, GenreFilter>();
+            container.RegisterType<IOperation<IQueryable<Game>>, NameFilter>();
+            container.RegisterType<IOperation<IQueryable<Game>>, PlatformTypeFilter>();
+            container.RegisterType<IOperation<IQueryable<Game>>, PriceFilter>();
+            container.RegisterType<IOperation<IQueryable<Game>>, PublisherFilter>();
+
+            container.RegisterType<IGameSortingFactory, SortingStrategyFactory>();
+            container.RegisterType<IGamesSortingStrategy, AscPriceStrategy>();
+            container.RegisterType<IGamesSortingStrategy, DateStrategy>();
+            container.RegisterType<IGamesSortingStrategy, DescPriceStrategy>();
+            container.RegisterType<IGamesSortingStrategy, MostCommentedStrategy>();
+            container.RegisterType<IGamesSortingStrategy, MostPopularStrategy>();
+
 
             httpConfiguration.DependencyResolver = new UnityDependencyResolver(container);
         }

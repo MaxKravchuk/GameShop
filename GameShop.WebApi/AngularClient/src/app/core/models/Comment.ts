@@ -9,4 +9,6 @@ export interface Comment extends BaseModel {
     GameKey?: string;
 
     ParentId?: number;
+
+    HasQuotation?: boolean;
 }

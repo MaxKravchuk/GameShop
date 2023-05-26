@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { catchError, Observable } from "rxjs";
 import { CreateGameModel } from "../../models/CreateGameModel";
 import { UtilsService } from "../helpers/utilsService/utils-service";
+import { PagedList } from "../../models/PagedList";
 
 
 @Injectable({
@@ -18,8 +19,8 @@ export class GameService {
         private utilsService: UtilsService
     ) {}
 
-    getAllGames(): Observable<Game[]> {
-        return this.http.get<Game[]>(`${this.apiUrl}getAll`)
+    getAllGames(filterParams: any): Observable<PagedList<Game>> {
+        return this.http.get<PagedList<Game>>(`${this.apiUrl}getAll/`, {params: filterParams})
             .pipe(
                 catchError(err => {
                     this.utilsService.handleError(err);

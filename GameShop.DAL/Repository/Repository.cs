@@ -83,7 +83,7 @@ namespace GameShop.DAL.Repository
 
         public void Insert(T entity)
         {
-            _context.Set<T>().Add(entity);
+            var x = _context.Set<T>().Add(entity);
         }
 
         public void Delete(T entityToDelete)

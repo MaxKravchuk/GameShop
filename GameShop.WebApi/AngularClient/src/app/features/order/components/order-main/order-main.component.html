@@ -1,0 +1,67 @@
+<div class="cont">
+    <div class="order-details">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Game Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let cartItem of cartItems">
+                <td><a routerLink="/games/details/{{cartItem.GameKey}}">{{ cartItem.GameName }}</a></td>
+                <td><p>{{ cartItem.Quantity }}</p></td>
+                <td><p>{{ cartItem.GamePrice }}</p></td>
+                <td><p>{{ cartItem.GamePrice! * cartItem.Quantity!}}</p></td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td style="text-align: center">{{totalQuantity}}</td>
+                <td style="text-align: center" [colSpan]="2">{{totalPrice}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="payment-methods">
+        <table class="table">
+            <tr>
+                <td><img src="assets/payment-methods-icons/bank-methode.svg" alt="Bank"></td>
+                <td>Bank Payment</td>
+                <td>Pay by generating an invoice</td>
+                <td>
+                    <button
+                    mat-stroked-button
+                    color="accent"
+                    (click)="generateInvoice()"
+                    >Pay</button>
+                </td>
+            </tr>
+            <tr>
+                <td><img src="assets/payment-methods-icons/IBOX.svg" alt="IBox Terminal"></td>
+                <td>IBox Terminal Payment</td>
+                <td>Pay using an IBox terminal</td>
+                <td>
+                    <button
+                    mat-stroked-button
+                    color="accent"
+                    (click)="redirectToiBox()"
+                    >Pay</button>
+                </td>
+            </tr>
+            <tr>
+                <td><img src="assets/payment-methods-icons/visa-svgrepo-com.svg" alt="Visa"></td>
+                <td>Visa Payment</td>
+                <td>Pay using a Visa card</td>
+                <td>
+                    <button
+                    mat-stroked-button
+                    color="accent"
+                    (click)="redirectToVisa()">
+                    Choose</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

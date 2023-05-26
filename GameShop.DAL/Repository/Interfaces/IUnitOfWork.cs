@@ -15,6 +15,10 @@ namespace GameShop.DAL.Repository.Interfaces
 
         IRepository<Publisher> PublisherRepository { get; }
 
+        IRepository<Order> OrderRepository { get; }
+
+        IRepository<OrderDetails> OrderDetailsRepository { get; }
+
         Task SaveAsync();
     }
 }

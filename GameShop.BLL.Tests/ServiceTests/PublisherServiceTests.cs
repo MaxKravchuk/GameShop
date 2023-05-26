@@ -14,7 +14,7 @@ using GameShop.DAL.Repository.Interfaces;
 using Moq;
 using Xunit;
 
-namespace BLL.Test.ServiceTests
+namespace GameShop.BLL.Tests.ServiceTests
 {
     public class PublisherServiceTests : IDisposable
     {

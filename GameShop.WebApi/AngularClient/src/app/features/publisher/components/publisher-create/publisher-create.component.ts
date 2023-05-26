@@ -11,7 +11,7 @@ import { UtilsService } from "../../../../core/services/helpers/utilsService/uti
 })
 export class PublisherCreateComponent implements OnInit {
 
-    private urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=]+$/;
+    private urlRegex: RegExp = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=]+$/;
 
     form!: FormGroup;
 

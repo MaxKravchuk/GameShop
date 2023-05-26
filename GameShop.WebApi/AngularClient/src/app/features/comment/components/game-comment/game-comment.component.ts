@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Comment } from "../../../../core/models/Comment";
-import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
-import { CommentShared } from "../../../../core/models/helpers/CommentShared";
 import { CommentService } from "../../../../core/services/commentService/comment.service";
+import { MatDialog } from "@angular/material/dialog";
+import { DeleteCommentDialogComponent } from "../delete-comment-dialog/delete-comment-dialog.component";
+import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
 
 @Component({
     selector: 'app-game-comment',
@@ -17,28 +18,30 @@ export class GameCommentComponent implements OnInit {
 
     @Input() gameKey?: string;
 
-    @Input() parentCommentId!: number;
+    @Input() parentComment!: Comment;
 
-    @Input() parentCommentName!: string;
+    @Input() comments!: Comment[];
 
     answersIsDisplayed: boolean = false;
 
-    comments: Comment[] = [];
+    //comments: Comment[] = [];
 
     constructor(
         private commentService: CommentService,
-        private sharedService: SharedService<CommentShared>
+        private dialog: MatDialog,
+        private sharedService: SharedService<{ action: string, parentComment: Comment }>
     ) {}
 
     ngOnInit(): void {
-        if (this.gameKey! != null) {
-            this.getCommentsByGameKey(this.gameKey!);
-        }
+
     }
 
-    onAnswerButtonClick(Name: string, Id: number): void {
-        const model: CommentShared = {Name: Name, CommentId: Id};
-        this.sharedService.sendData(model);
+    onAnswerButtonClick(): void {
+        this.sharedService.sendData({action: 'answer',parentComment: this.comment});
+    }
+
+    onQuoteButtonClick(): void {
+        this.sharedService.sendData({action: 'quote',parentComment: this.comment});
     }
 
     showAnswers(): void {
@@ -52,8 +55,23 @@ export class GameCommentComponent implements OnInit {
         }
     }
 
+    deleteComment(): void {
+        const dialogRef = this.dialog.open(DeleteCommentDialogComponent, {
+            autoFocus: false,
+            data: {
+                id: this.comment.Id
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((requireReload:boolean)=> {
+            if(requireReload) {
+                this.sharedService.reloadSource();
+            }
+        });
+    }
+
     private getCommentsByGameKey(gameKey: string): void {
-        this.commentService.getCommentsByGameKey(this.gameKey!).subscribe(
+        this.commentService.getCommentsByGameKey(gameKey).subscribe(
             (comment: Comment[]) => this.comments = comment
         );
     }

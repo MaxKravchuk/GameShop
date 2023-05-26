@@ -6,6 +6,8 @@
 
         public string Body { get; set; }
 
+        public bool HasQuotation { get; set; }
+
         public Game Game { get; set; }
 
         public int GameId { get; set; }

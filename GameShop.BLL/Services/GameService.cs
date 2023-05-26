@@ -1,14 +1,23 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
+using GameShop.BLL.DTO.FilterDTOs;
 using GameShop.BLL.DTO.GameDTOs;
+using GameShop.BLL.DTO.PaginationDTOs;
+using GameShop.BLL.Enums;
+using GameShop.BLL.Enums.Extensions;
 using GameShop.BLL.Exceptions;
+using GameShop.BLL.Filters.Interfaces;
+using GameShop.BLL.Pagination.Extensions;
+using GameShop.BLL.Pipelines;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
+using GameShop.BLL.Strategies.Interfaces.Factories;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository.Interfaces;
 
@@ -20,17 +29,23 @@ namespace GameShop.BLL.Services
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
         private readonly IValidator<GameCreateDTO> _validator;
+        private readonly IFiltersFactory<IQueryable<Game>> _filtersFactory;
+        private readonly IGameSortingFactory _gameSortingFactory;
 
         public GameService(
             IUnitOfWork unitOfWork,
             IMapper mapper,
             ILoggerManager loggerManager,
-            IValidator<GameCreateDTO> validator)
+            IValidator<GameCreateDTO> validator,
+            IFiltersFactory<IQueryable<Game>> filtersFactory,
+            IGameSortingFactory gameSortingFactory)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _loggerManager = loggerManager;
             _validator = validator;
+            _filtersFactory = filtersFactory;
+            _gameSortingFactory = gameSortingFactory;
         }
 
         public async Task CreateAsync(GameCreateDTO newGameDTO)
@@ -93,27 +108,48 @@ namespace GameShop.BLL.Services
 
         public async Task<GameReadDTO> GetGameByKeyAsync(string gameKey)
         {
-            var game = await _unitOfWork.GameRepository.GetAsync(
-                filter: g => g.Key == gameKey, includeProperties: "GamePlatformTypes,GameGenres,Publisher");
+            var game = (await _unitOfWork.GameRepository.GetAsync(
+                filter: g => g.Key == gameKey, includeProperties: "GamePlatformTypes,GameGenres,Publisher"))
+                    .SingleOrDefault();
 
-            if (game.SingleOrDefault() == null)
+            if (game == null)
             {
                 throw new NotFoundException($"Game with key {gameKey} not found");
             }
 
-            var model = _mapper.Map<GameReadDTO>(game.SingleOrDefault());
+            game.Views += 1;
+            var model = _mapper.Map<GameReadDTO>(game);
+
+            _unitOfWork.GameRepository.Update(game);
+            await _unitOfWork.SaveAsync();
+
             _loggerManager.LogInfo($"Game with key {gameKey} returned successfully");
             return model;
         }
 
-        public async Task<IEnumerable<GameReadListDTO>> GetAllGamesAsync()
+        public async Task<PagedListViewModel<GameReadListDTO>> GetAllGamesAsync(GameFiltersDTO gameFiltersDTO)
         {
-            var games = await _unitOfWork.GameRepository.GetAsync();
+            var query = _unitOfWork.GameRepository.GetQuery(
+                filter: null,
+                includeProperties: "GameGenres,Comments,GamePlatformTypes,Publisher");
 
-            var models = _mapper.Map<IEnumerable<GameReadListDTO>>(games);
+            var pipeline = new GameFiltersPipeline();
+            pipeline.Register(_filtersFactory.GetOperation(gameFiltersDTO));
+            query = pipeline.PerformOperation(query);
 
-            _loggerManager.LogInfo($"Games successfully returned with array size of {models.Count()}");
-            return models;
+            if (!string.IsNullOrEmpty(gameFiltersDTO.SortingOption))
+            {
+                var sortingType = gameFiltersDTO.SortingOption.ToEnum<SortingTypes>();
+                var sortingStrategy = _gameSortingFactory.GetGamesSortingStrategy(sortingType);
+                query = sortingStrategy.Sort(query);
+            }
+
+            var games = await query.ToListAsync();
+            var pagedGames = games.ToPagedList(gameFiltersDTO.PageNumber, gameFiltersDTO.PageSize);
+            var pagedModels = _mapper.Map<PagedListViewModel<GameReadListDTO>>(pagedGames);
+
+            _loggerManager.LogInfo($"Games successfully returned with array size of {pagedModels.Entities.Count()}");
+            return pagedModels;
         }
 
         public async Task<IEnumerable<GameReadListDTO>> GetGamesByGenreAsync(int genreId)

@@ -18,6 +18,18 @@ const routes: Routes = [
     {
         path: 'cart',
         loadChildren: () => import('./features/cart/cart.module').then(m => m.CartModule)
+    },
+    {
+        path: 'order',
+        loadChildren: () => import('./features/order/order.module').then(m => m.OrderModule)
+    },
+    {
+        path: 'payment',
+        loadChildren: () => import('./features/payment/payment.module').then(m => m.PaymentModule)
+    },
+    {
+        path: 'comment',
+        loadChildren: () => import('./features/comment/comment.module').then(m => m.CommentModule)
     }
 ];
 

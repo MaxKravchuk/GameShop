@@ -37,5 +37,13 @@ namespace GameShop.WebApi.Controllers
             await _shoppingCartService.DeleteItemFromListAsync(gameKey);
             return Ok();
         }
+
+        [HttpGet]
+        [Route("numberOfGames/{gameKey}")]
+        public async Task<IHttpActionResult> GetNumberOfGamesInCartByGameKeyAsync(string gameKey)
+        {
+            var numberOfGames = await _shoppingCartService.GetNumberOfGamesByGameKeyAsync(gameKey);
+            return Json(numberOfGames);
+        }
     }
 }

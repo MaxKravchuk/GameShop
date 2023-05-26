@@ -1,4 +1,4 @@
-<table class="cart-table">
+<table class="table">
     <thead>
     <tr>
         <th>Game Name</th>
@@ -22,4 +22,9 @@
 </table>
 <h3>Checkout</h3>
 <p>Total Price: {{ totalPrice }}</p>
-<button mat-raised-button disabled>Checkout</button>
+<button
+    [disabled]="cartItems.length == 0"
+    mat-raised-button
+    (click)="createOrder()"
+    >Make order
+</button>

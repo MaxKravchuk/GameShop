@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using GameShop.BLL.DTO.FilterDTOs;
 using GameShop.BLL.DTO.GameDTOs;
+using GameShop.BLL.DTO.PaginationDTOs;
 
 namespace GameShop.BLL.Services.Interfaces
 {
@@ -11,7 +13,7 @@ namespace GameShop.BLL.Services.Interfaces
 
         Task<GameReadDTO> GetGameByKeyAsync(string gameKey);
 
-        Task<IEnumerable<GameReadListDTO>> GetAllGamesAsync();
+        Task<PagedListViewModel<GameReadListDTO>> GetAllGamesAsync(GameFiltersDTO gameFiltersDTO);
 
         Task<IEnumerable<GameReadListDTO>> GetGamesByGenreAsync(int genreId);
 

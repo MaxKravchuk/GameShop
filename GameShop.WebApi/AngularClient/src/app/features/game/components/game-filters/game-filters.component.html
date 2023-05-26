@@ -1,0 +1,128 @@
+<div [formGroup]="form" class="filters">
+    <mat-form-field appearance="fill">
+        <mat-label>Game name</mat-label>
+        <input
+            matInput
+            type="string"
+            placeholder="Enter game name"
+            formControlName="GameName"
+            (change)="handleChanges($event)">
+        <mat-error *ngIf="form.controls['GameName'].invalid">Min length is 3</mat-error>
+    </mat-form-field>
+    <div class="filter-price">
+        <mat-form-field>
+            <mat-label>Price from</mat-label>
+            <input
+                matInput
+                formControlName="PriceFrom"
+                (change)="handleChanges($event)">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Price to</mat-label>
+            <input
+                matInput
+                formControlName="PriceTo"
+                (change)="handleChanges($event)">
+        </mat-form-field>
+    </div>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Sorted by
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-radio-group
+            aria-label="Select an sorting option"
+            color="primary"
+            formControlName="SortedBy"
+            (change)="handleChanges($event)">
+            <mat-radio-button value="MostPopular">Most popular</mat-radio-button>
+            <mat-radio-button value="MostCommented">Most commented</mat-radio-button>
+            <mat-radio-button value="AscPrice">By price asc</mat-radio-button>
+            <mat-radio-button value="DescPrice">By price desc</mat-radio-button>
+            <mat-radio-button value="Date">Newest</mat-radio-button>
+        </mat-radio-group>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Genres
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field appearance="outline">
+            <mat-select
+                formControlName="GenreIds"
+                multiple>
+                <mat-option
+                    *ngFor="let gameGenre of genres"
+                    [value]="gameGenre.Id"
+                    (click)="handleChanges($event)">
+                    {{gameGenre.Name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Platforms
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field appearance="outline">
+            <mat-select
+                formControlName="PlatformIds"
+                multiple>
+                <mat-option
+                    *ngFor="let platform of platforms"
+                    [value]="platform.Id"
+                    (click)="handleChanges($event)">
+                    {{platform.Type}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Publishers
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field appearance="outline">
+            <mat-select
+                formControlName="PublisherIds"
+                multiple>
+                <mat-option
+                    *ngFor="let publisher of publishers"
+                    [value]="publisher.Id"
+                    (click)="handleChanges($event)">
+                    {{publisher.CompanyName}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Date
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-radio-group
+            aria-label="Select an date filter"
+            color="primary"
+            formControlName="DateFilter"
+            (change)="handleChanges($event)">
+            <mat-radio-button value="lastWeek">Last week</mat-radio-button>
+            <mat-radio-button value="lastMonth">Last month</mat-radio-button>
+            <mat-radio-button value="lastYear">Last year</mat-radio-button>
+            <mat-radio-button value="last2Years">2 years</mat-radio-button>
+            <mat-radio-button value="last3Years">3 years</mat-radio-button>
+        </mat-radio-group>
+    </mat-expansion-panel>
+    <div class="filter-button">
+        <button mat-raised-button
+                color="primary"
+                [disabled]="form.invalid"
+                (click)="setFilters()">Filter</button>
+        <button mat-raised-button color="primary" (click)="clearFilters()">Clear all</button>
+    </div>
+</div>

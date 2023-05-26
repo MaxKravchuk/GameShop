@@ -5,5 +5,7 @@
         public string GameKey { get; set; }
 
         public int? ParentId { get; set; } = null;
+
+        public bool HasQuotation { get; set; } = false;
     }
 }

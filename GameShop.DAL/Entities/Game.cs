@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GameShop.DAL.Entities
 {
@@ -15,6 +16,10 @@ namespace GameShop.DAL.Entities
         public short UnitsInStock { get; set; }
 
         public bool Discontinued { get; set; } = true;
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public int Views { get; set; } = 0;
 
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 

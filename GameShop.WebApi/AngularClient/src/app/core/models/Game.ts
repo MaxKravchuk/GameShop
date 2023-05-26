@@ -13,7 +13,7 @@ export interface Game extends BaseModel {
 
     Price?: number;
 
-    UnitsInStock?: boolean;
+    UnitsInStock?: number;
 
     Discontinued?: boolean;
 

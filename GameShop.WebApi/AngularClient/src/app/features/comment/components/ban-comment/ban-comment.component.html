@@ -1,0 +1,13 @@
+<div>
+    <mat-radio-group
+        aria-label="Select a ban duration"
+        color="primary"
+        (change)="handleClick($event)">
+        <mat-radio-button value="1hour">1 hour</mat-radio-button>
+        <mat-radio-button value="1day">1 day</mat-radio-button>
+        <mat-radio-button value="1week">1 week</mat-radio-button>
+        <mat-radio-button value="1month">1 month</mat-radio-button>
+        <mat-radio-button value="Permanent">Permanent</mat-radio-button>
+    </mat-radio-group>
+</div>
+<a mat-button (click)="goBack()">Back</a>

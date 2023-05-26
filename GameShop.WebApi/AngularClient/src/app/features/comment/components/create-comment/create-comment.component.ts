@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CommentService } from "../../../../core/services/commentService/comment.service";
 import { Comment } from "../../../../core/models/Comment";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
-import { CommentShared } from "../../../../core/models/helpers/CommentShared";
 import { Subscription } from "rxjs";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
 
@@ -16,16 +15,18 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
 
     @Input() gameKey?: string;
 
-    receivedData: CommentShared = {Name: ''};
+    parentComment?: Comment = undefined;
+
+    action: string = 'new';
 
     form!: FormGroup;
 
-    private receivedDataSub: Subscription = new Subscription();
+    getCommentActionSubscription: Subscription = new Subscription();
 
     constructor(
         private formBuilder: FormBuilder,
         private commentService: CommentService,
-        private sharedService: SharedService<CommentShared>,
+        private sharedService: SharedService<{ action: string, parentComment: Comment }>,
         private utilsService: UtilsService
     ) {}
 
@@ -35,17 +36,21 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
             Body: ['', Validators.required]
         });
 
-        this.receivedDataSub = this.sharedService.getData$().subscribe((data: CommentShared): void => {
-            if (this.receivedData.Name == data.Name && this.receivedData.CommentId == data.CommentId) {
-                this.receivedData.Name = '';
-            } else {
-                this.receivedData = data;
+        this.getCommentActionSubscription = this.sharedService.getData$().subscribe({
+            next: (data: { action: string, parentComment: Comment }): void => {
+                if (this.action === data['action'] && this.parentComment === data['parentComment']) {
+                    this.action = 'new';
+                    this.parentComment = undefined;
+                    return;
+                }
+                this.action = data['action'];
+                this.parentComment = data['parentComment'];
             }
         });
     }
 
     ngOnDestroy(): void {
-        this.receivedDataSub.unsubscribe();
+        this.getCommentActionSubscription.unsubscribe();
     }
 
     onSaveForm(): void {
@@ -56,7 +61,8 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
         const data: Comment = {
             ...this.form.value,
             GameKey: this.gameKey,
-            ParentId: this.receivedData.CommentId
+            ParentId: this.parentComment?.Id,
+            HasQuotation: this.action === 'quote'
         } as Comment;
 
         this.commentService.createComment(data).subscribe({
@@ -65,5 +71,8 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
                 this.sharedService.reloadSource();
             }
         });
+
+        this.action = 'new';
+        this.parentComment = undefined;
     }
 }
