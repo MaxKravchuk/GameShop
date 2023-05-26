@@ -103,6 +103,7 @@
     <Compile Include="Configurations\CommentConfiguration.cs" />
     <Compile Include="Configurations\PublisherConfiguration.cs" />
     <Compile Include="Context\GameShopContext.cs" />
+    <Compile Include="Context\GameShopInitializer.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\Game.cs" />

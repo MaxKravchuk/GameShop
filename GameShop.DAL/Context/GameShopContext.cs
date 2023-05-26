@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using DAL.Migrations;
 using GameShop.DAL.Entities;
 
 namespace GameShop.DAL.Context
@@ -7,6 +8,7 @@ namespace GameShop.DAL.Context
     {
         public GameShopContext() : base("name=DefaultConnectingString")
         {
+            Database.SetInitializer(new GameShopInitializer());
         }
 
         public DbSet<Comment> Comments { get; set; }
