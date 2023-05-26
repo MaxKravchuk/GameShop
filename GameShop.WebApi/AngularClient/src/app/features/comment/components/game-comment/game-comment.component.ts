@@ -20,9 +20,11 @@ export class GameCommentComponent implements OnInit {
 
     @Input() parentComment!: Comment;
 
+    @Input() comments!: Comment[];
+
     answersIsDisplayed: boolean = false;
 
-    comments: Comment[] = [];
+    //comments: Comment[] = [];
 
     constructor(
         private commentService: CommentService,
@@ -31,9 +33,7 @@ export class GameCommentComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        if (this.gameKey! != null) {
-            this.getCommentsByGameKey(this.gameKey!);
-        }
+
     }
 
     onAnswerButtonClick(): void {
