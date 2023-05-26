@@ -40,7 +40,6 @@ export class GameDetailsComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        console.log("GameDetailsComponent");
         this.gameKey = this.activeRoute.snapshot.paramMap.get('Key');
 
         if (this.gameKey != null) {
