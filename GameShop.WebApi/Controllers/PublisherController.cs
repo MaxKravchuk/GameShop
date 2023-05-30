@@ -2,6 +2,7 @@
 using System.Web.Http;
 using GameShop.BLL.DTO.PublisherDTOs;
 using GameShop.BLL.Services.Interfaces;
+using GameShop.WebApi.Filters;
 
 namespace GameShop.WebApi.Controllers
 {
@@ -33,6 +34,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getAll")]
+        [JwtAuthenticationFilter]
         public async Task<IHttpActionResult> GetAllPublishersAsync()
         {
             var publishers = await _publisherService.GetAllPublishersAsync();

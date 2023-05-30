@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
 using GameShop.BLL.Services.Interfaces;
+using GameShop.WebApi.Filters;
 
 namespace GameShop.WebApi.Controllers
 {
@@ -17,6 +18,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getAll")]
+        [JwtAuthenticationFilter]
         public async Task<IHttpActionResult> GetAllGenresAsync()
         {
             var result = await _genreService.GetAsync();

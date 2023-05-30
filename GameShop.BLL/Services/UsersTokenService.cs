@@ -28,10 +28,18 @@ namespace GameShop.BLL.Services
 
         public async Task AddUserTokenAsync(string nickName, string refreshToken)
         {
+            var token = await _unitOfWork.UserTokensRepository.GetQuery(filter: x => x.User.NickName == nickName)
+                .SingleOrDefaultAsync();
+            if (token != null)
+            {
+                await UpdateUserTokenAsync(nickName, refreshToken);
+                return;
+            }
+
             var user = await _unitOfWork.UserRepository.GetQuery(filter: x => x.NickName == nickName)
                 .SingleOrDefaultAsync();
 
-            var token = new UserTokens
+            var newToken = new UserTokens
             {
                 UserId = user.Id,
                 User = user,
@@ -39,7 +47,7 @@ namespace GameShop.BLL.Services
                 RefreshTokenExpiryTime = DateTime.Now.AddDays(7)
             };
 
-            _unitOfWork.UserTokensRepository.Insert(token);
+            _unitOfWork.UserTokensRepository.Insert(newToken);
             await _unitOfWork.SaveAsync();
         }
 
