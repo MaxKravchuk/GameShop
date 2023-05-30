@@ -27,7 +27,7 @@ namespace GameShop.WebApi.Controllers
         [JwtAuthenticationFilter]
         public async Task<IHttpActionResult> LoginAsync([FromUri] UserCreateDTO userCreateDTO)
         {
-            var isValid = await _userService.IsValidUserCredentials(userCreateDTO);
+            var isValid = await _userService.IsValidUserCredentialsAsync(userCreateDTO);
             if (!isValid)
             {
                 throw new BadRequestException("Invalid credentials");
@@ -43,7 +43,7 @@ namespace GameShop.WebApi.Controllers
         [JwtAuthenticationFilter]
         public async Task<IHttpActionResult> RegisterAsync(UserCreateDTO userCreateDTO)
         {
-            await _userService.CreateUser(userCreateDTO);
+            await _userService.CreateUserAsync(userCreateDTO);
             return Ok();
         }
     }

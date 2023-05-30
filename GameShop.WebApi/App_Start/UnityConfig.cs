@@ -8,6 +8,8 @@ using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.DTO.PublisherDTOs;
 using GameShop.BLL.DTO.RedisDTOs;
+using GameShop.BLL.DTO.RoleDTOs;
+using GameShop.BLL.DTO.UserDTOs;
 using GameShop.BLL.Enums;
 using GameShop.BLL.Filters;
 using GameShop.BLL.Filters.Interfaces;
@@ -75,6 +77,7 @@ namespace GameShop.WebApi
             container.RegisterType<IPaymentService, PaymentService>();
             container.RegisterType<ICommentBanService, CommentBanService>();
             container.RegisterType<IUserService, UserService>();
+            container.RegisterType<IRoleService, RoleService>();
             container.RegisterType<IPasswordProvider, PasswordProvider>();
             container.RegisterType<IJwtTokenProvider, JwtTokenProvider>();
 
@@ -98,6 +101,10 @@ namespace GameShop.WebApi
             container.RegisterType<IValidator<CartItemDTO>, CartItemValidator>
                 (new ContainerControlledLifetimeManager());
             container.RegisterType<IValidator<OrderCreateDTO>, OrderCreateDtoValidator>
+                (new ContainerControlledLifetimeManager());
+            container.RegisterType<IValidator<UserCreateDTO>, UserCreateDtoValidator>
+                (new ContainerControlledLifetimeManager());
+            container.RegisterType<IValidator<RoleBaseDTO>, RoleCreateDtoValidator>
                 (new ContainerControlledLifetimeManager());
 
             container.RegisterType<IPaymentStrategyFactory, PaymentStrategyFactory>();

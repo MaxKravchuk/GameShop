@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameShop.BLL.DTO.UserDTOs
+namespace GameShop.BLL.DTO.RoleDTOs
 {
-    public class UserCreateDTO : UserBaseDTO
+    public class RoleUpdateReadListDTO : RoleBaseDTO
     {
-        public string Role { get; set; }
+        public int Id { get; set; }
     }
 }

@@ -9,16 +9,22 @@ namespace GameShop.BLL.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<bool> IsValidUserCredentials(UserBaseDTO userBaseDTO);
+        Task<bool> IsValidUserCredentialsAsync(UserBaseDTO userBaseDTO);
 
-        Task<bool> IsAnExistingUser(string nickName);
+        Task<bool> IsAnExistingUserAsync(string nickName);
 
         Task<string> GetRoleAsync(string nickName);
 
-        Task CreateUser(UserCreateDTO userCreateDTO);
+        Task CreateUserAsync(UserCreateDTO userCreateDTO);
 
-        void UpdateUser(UserUpdateDTO userUpdateDTO);
+        Task CreateUserWithRoleAsync(UserCreateDTO userCreateDTO);
 
-        void DeleteUser(string login);
+        Task UpdateUserAsync(UserUpdateDTO userUpdateDTO);
+
+        Task DeleteUserAsync(int userId);
+
+        Task<UserReadDTO> GetUserByIdAsync(int userId);
+
+        Task<IEnumerable<UserReadListDTO>> GetUsersAsync();
     }
 }
