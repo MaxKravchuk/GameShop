@@ -57,6 +57,7 @@ namespace GameShop.WebApi
             container.RegisterType<IRepository<DAL.Entities.Order>, Repository<DAL.Entities.Order>>();
             container.RegisterType<IRepository<OrderDetails>, Repository<OrderDetails>>();
             container.RegisterType<IRepository<User>, Repository<User>>();
+            container.RegisterType<IRepository<UserTokens>, Repository<UserTokens>>();
             container.RegisterType<IRepository<DAL.Entities.Role>, Repository<DAL.Entities.Role>>();
 
             container.RegisterType<IUnitOfWork, UnitOfWork>();
@@ -77,6 +78,7 @@ namespace GameShop.WebApi
             container.RegisterType<IPaymentService, PaymentService>();
             container.RegisterType<ICommentBanService, CommentBanService>();
             container.RegisterType<IUserService, UserService>();
+            container.RegisterType<IUsersTokenService, UsersTokenService>();
             container.RegisterType<IRoleService, RoleService>();
             container.RegisterType<IPasswordProvider, PasswordProvider>();
             container.RegisterType<IJwtTokenProvider, JwtTokenProvider>();

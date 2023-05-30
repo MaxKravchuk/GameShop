@@ -25,6 +25,10 @@ namespace GameShop.DAL.Context
 
         public DbSet<OrderDetails> OrderDetails { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<UserTokens> UserTokens { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.AddFromAssembly(GetType().Assembly);

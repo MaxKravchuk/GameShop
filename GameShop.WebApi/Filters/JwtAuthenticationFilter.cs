@@ -52,7 +52,7 @@ namespace GameShop.WebApi.Filters
             if (_allowedRoles.Length > 0)
             {
                 var userRoles = principal.Claims
-                    .Where(c => c.Type == "userRole")
+                    .Where(c => c.Type == ClaimTypes.Role)
                     .Select(c => c.Value);
 
                 if (!_allowedRoles.Any(role => userRoles.Contains(role)))

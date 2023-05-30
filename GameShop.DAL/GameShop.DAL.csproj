@@ -115,6 +115,7 @@
     <Compile Include="Entities\Publisher.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\UserTokens.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Migrations\202304051514505_init.cs" />
     <Compile Include="Migrations\202304051514505_init.designer.cs">
@@ -172,6 +173,14 @@
     <Compile Include="Migrations\202305300759207_InitRoles.designer.cs">
       <DependentUpon>202305300759207_InitRoles.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202305301536522_AddUserTokens.cs" />
+    <Compile Include="Migrations\202305301536522_AddUserTokens.designer.cs">
+      <DependentUpon>202305301536522_AddUserTokens.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305301615328_UpdatedUserTokens.cs" />
+    <Compile Include="Migrations\202305301615328_UpdatedUserTokens.designer.cs">
+      <DependentUpon>202305301615328_UpdatedUserTokens.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Interfaces\IRepository.cs" />
@@ -227,6 +236,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202305300759207_InitRoles.resx">
       <DependentUpon>202305300759207_InitRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305301536522_AddUserTokens.resx">
+      <DependentUpon>202305301536522_AddUserTokens.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305301615328_UpdatedUserTokens.resx">
+      <DependentUpon>202305301615328_UpdatedUserTokens.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

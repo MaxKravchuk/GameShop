@@ -22,14 +22,14 @@ namespace GameShop.BLL.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
-        private readonly IValidator<UserBaseDTO> _validator;
+        private readonly IValidator<UserCreateDTO> _validator;
 
         public UserService(
             IPasswordProvider passwordProvider,
             IUnitOfWork unitOfWork,
             IMapper mapper,
             ILoggerManager loggerManager,
-            IValidator<UserBaseDTO> validator)
+            IValidator<UserCreateDTO> validator)
         {
             _passwordProvider = passwordProvider;
             _unitOfWork = unitOfWork;
@@ -40,8 +40,8 @@ namespace GameShop.BLL.Services
 
         public async Task<bool> IsAnExistingUserAsync(string nickName)
         {
-            var user = _unitOfWork.UserRepository.GetQuery(filter: u => u.NickName == nickName);
-            return await user.SingleOrDefaultAsync() != null;
+            var user = await _unitOfWork.UserRepository.GetQuery(filter: u => u.NickName == nickName).SingleOrDefaultAsync();
+            return user != null;
         }
 
         public async Task<bool> IsValidUserCredentialsAsync(UserBaseDTO userBaseDTO)

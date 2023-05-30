@@ -13,13 +13,16 @@ namespace GameShop.WebApi.Controllers
     {
         private readonly IUserService _userService;
         private readonly IJwtTokenProvider _jwtTokenProvider;
+        private readonly IUsersTokenService _usersTokenService;
 
         public AuthController(
             IUserService userService,
-            IJwtTokenProvider jwtTokenProvider)
+            IJwtTokenProvider jwtTokenProvider,
+            IUsersTokenService usersTokenService)
         {
             _userService = userService;
             _jwtTokenProvider = jwtTokenProvider;
+            _usersTokenService = usersTokenService;
         }
 
         [HttpGet]
@@ -34,8 +37,10 @@ namespace GameShop.WebApi.Controllers
             }
 
             var role = await _userService.GetRoleAsync(userCreateDTO.NickName);
-            var token = _jwtTokenProvider.GenerateToken(userCreateDTO.NickName, role);
-            return Ok(token);
+            var authResponse = _jwtTokenProvider.GetAuthenticatedResponse(userCreateDTO.NickName, role);
+            await _usersTokenService.AddUserTokenAsync(userCreateDTO.NickName, authResponse.RefreshToken);
+
+            return Ok(authResponse);
         }
 
         [HttpPost]

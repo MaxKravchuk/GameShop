@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using GameShop.BLL.DTO.AuthDTOs;
 
 namespace GameShop.BLL.Services.Interfaces.Utils
 {
@@ -11,6 +12,10 @@ namespace GameShop.BLL.Services.Interfaces.Utils
     {
         string GenerateToken(string username, string role);
 
+        string GenerateRefreshToken();
+
         ClaimsPrincipal ValidateToken(string token);
+
+        AuthenticatedResponse GetAuthenticatedResponse(string username, string role);
     }
 }

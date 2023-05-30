@@ -26,6 +26,9 @@ namespace GameShop.DAL.Configurations
                 .WithMany(x => x.UsersRole)
                 .HasForeignKey(x => x.RoleId)
                 .WillCascadeOnDelete(false);
+
+            HasOptional(x => x.RefreshToken)
+                .WithRequired(x => x.User);
         }
     }
 }

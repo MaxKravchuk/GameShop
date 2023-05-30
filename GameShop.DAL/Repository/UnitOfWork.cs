@@ -17,6 +17,7 @@ namespace GameShop.DAL.Repository
         private readonly Lazy<IRepository<Order>> _orderReposiroty;
         private readonly Lazy<IRepository<OrderDetails>> _orderDetailsReposiroty;
         private readonly Lazy<IRepository<User>> _userReposiroty;
+        private readonly Lazy<IRepository<UserTokens>> _userTokensReposiroty;
         private readonly Lazy<IRepository<Role>> _roleReposiroty;
         private bool _disposed = false;
 
@@ -30,6 +31,7 @@ namespace GameShop.DAL.Repository
             Lazy<IRepository<Order>> orderReposiroty,
             Lazy<IRepository<OrderDetails>> orderDetailsReposiroty,
             Lazy<IRepository<User>> userReposiroty,
+            Lazy<IRepository<UserTokens>> userTokensReposiroty,
             Lazy<IRepository<Role>> roleReposiroty)
         {
             _context = context;
@@ -41,6 +43,7 @@ namespace GameShop.DAL.Repository
             _orderReposiroty = orderReposiroty;
             _orderDetailsReposiroty = orderDetailsReposiroty;
             _userReposiroty = userReposiroty;
+            _userTokensReposiroty = userTokensReposiroty;
             _roleReposiroty = roleReposiroty;
         }
 
@@ -59,6 +62,8 @@ namespace GameShop.DAL.Repository
         public IRepository<OrderDetails> OrderDetailsRepository => _orderDetailsReposiroty.Value;
 
         public IRepository<User> UserRepository => _userReposiroty.Value;
+
+        public IRepository<UserTokens> UserTokensRepository => _userTokensReposiroty.Value;
 
         public IRepository<Role> RoleRepository => _roleReposiroty.Value;
 

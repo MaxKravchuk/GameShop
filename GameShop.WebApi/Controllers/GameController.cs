@@ -46,7 +46,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getAll")]
-        [JwtAuthenticationFilter("Administrator")]
+        [JwtAuthenticationFilter]
         public async Task<IHttpActionResult> GetAllGamesAsync([FromUri] GameFiltersDTO gameFiltersDTO)
         {
             var games = await _gameService.GetAllGamesAsync(gameFiltersDTO);
