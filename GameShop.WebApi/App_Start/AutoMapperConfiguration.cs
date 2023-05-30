@@ -6,6 +6,7 @@ using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.DTO.PlatformTypeDTOs;
 using GameShop.BLL.DTO.PublisherDTOs;
+using GameShop.BLL.DTO.UserDTOs;
 using GameShop.BLL.Pagination;
 using GameShop.DAL.Entities;
 
@@ -82,6 +83,8 @@ namespace GameShop.WebApi.App_Start
                 .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
                 .ForMember(dest => dest.ListOfOrderDetails, opt => opt.Ignore())
                 .ForMember(dest => dest.IsPaid, opt => opt.Ignore());
+
+            CreateMap<UserCreateDTO, User>();
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Web.Http;
 using GameShop.BLL.DTO.FilterDTOs;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.Services.Interfaces;
+using GameShop.WebApi.Filters;
 
 namespace GameShop.WebApi.Controllers
 {
@@ -45,6 +46,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getAll")]
+        [JwtAuthenticationFilter("Administrator")]
         public async Task<IHttpActionResult> GetAllGamesAsync([FromUri] GameFiltersDTO gameFiltersDTO)
         {
             var games = await _gameService.GetAllGamesAsync(gameFiltersDTO);

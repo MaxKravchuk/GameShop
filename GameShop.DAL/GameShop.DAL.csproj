@@ -102,6 +102,7 @@
     <Compile Include="Configurations\GameConfiguration.cs" />
     <Compile Include="Configurations\CommentConfiguration.cs" />
     <Compile Include="Configurations\PublisherConfiguration.cs" />
+    <Compile Include="Configurations\UserConfiguration.cs" />
     <Compile Include="Context\GameShopContext.cs" />
     <Compile Include="Context\GameShopInitializer.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
@@ -112,6 +113,8 @@
     <Compile Include="Entities\PlatformType.cs" />
     <Compile Include="Entities\Genre.cs" />
     <Compile Include="Entities\Publisher.cs" />
+    <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Migrations\202304051514505_init.cs" />
     <Compile Include="Migrations\202304051514505_init.designer.cs">
@@ -156,6 +159,18 @@
     <Compile Include="Migrations\202305251709001_AddIsPaidToOrder.cs" />
     <Compile Include="Migrations\202305251709001_AddIsPaidToOrder.designer.cs">
       <DependentUpon>202305251709001_AddIsPaidToOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305291608229_AddUser.cs" />
+    <Compile Include="Migrations\202305291608229_AddUser.Designer.cs">
+      <DependentUpon>202305291608229_AddUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305300746468_AddRoles.cs" />
+    <Compile Include="Migrations\202305300746468_AddRoles.designer.cs">
+      <DependentUpon>202305300746468_AddRoles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305300759207_InitRoles.cs" />
+    <Compile Include="Migrations\202305300759207_InitRoles.designer.cs">
+      <DependentUpon>202305300759207_InitRoles.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -203,6 +218,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202305251709001_AddIsPaidToOrder.resx">
       <DependentUpon>202305251709001_AddIsPaidToOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305291608229_AddUser.resx">
+      <DependentUpon>202305291608229_AddUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305300746468_AddRoles.resx">
+      <DependentUpon>202305300746468_AddRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305300759207_InitRoles.resx">
+      <DependentUpon>202305300759207_InitRoles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
