@@ -18,7 +18,6 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getAll")]
-        [JwtAuthenticationFilter]
         public async Task<IHttpActionResult> GetAllGenresAsync()
         {
             var result = await _genreService.GetAsync();

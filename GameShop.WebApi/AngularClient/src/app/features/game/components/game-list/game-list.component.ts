@@ -33,7 +33,7 @@ export class GameListComponent implements OnInit, OnDestroy {
     constructor(
         private gameService: GameService,
         private sharedService: SharedService<FilterModel>,
-        private router: Router
+        private router: Router,
     ) {}
 
     ngOnInit(): void {

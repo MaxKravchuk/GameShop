@@ -27,7 +27,6 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("login")]
-        [JwtAuthenticationFilter]
         public async Task<IHttpActionResult> LoginAsync([FromUri] UserCreateDTO userCreateDTO)
         {
             var isValid = await _userService.IsValidUserCredentialsAsync(userCreateDTO);
@@ -40,13 +39,12 @@ namespace GameShop.WebApi.Controllers
             var authResponse = _jwtTokenProvider.GetAuthenticatedResponse(userCreateDTO.NickName, role);
             await _usersTokenService.AddUserTokenAsync(userCreateDTO.NickName, authResponse.RefreshToken);
 
-            return Ok(authResponse);
+            return Json(authResponse);
         }
 
         [HttpPost]
         [Route("register")]
-        [JwtAuthenticationFilter]
-        public async Task<IHttpActionResult> RegisterAsync(UserCreateDTO userCreateDTO)
+        public async Task<IHttpActionResult> RegisterAsync([FromBody] UserCreateDTO userCreateDTO)
         {
             await _userService.CreateUserAsync(userCreateDTO);
             return Ok();

@@ -38,6 +38,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getDetailsByKey/{gameKey}")]
+        [JwtAuthorize]
         public async Task<IHttpActionResult> GetGameDetailsByKeyAsync(string gameKey)
         {
             var game = await _gameService.GetGameByKeyAsync(gameKey);
@@ -46,7 +47,6 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getAll")]
-        [JwtAuthenticationFilter]
         public async Task<IHttpActionResult> GetAllGamesAsync([FromUri] GameFiltersDTO gameFiltersDTO)
         {
             var games = await _gameService.GetAllGamesAsync(gameFiltersDTO);

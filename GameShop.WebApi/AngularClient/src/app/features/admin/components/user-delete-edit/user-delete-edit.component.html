@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>Edit role</h1>
+<div mat-dialog-content>
+    <div [formGroup]="form" class="create-form">
+        <div class="mat-title">You are editing user {{user.NickName}}</div>
+        <p>
+            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-label>Role name</mat-label>
+                <input
+                    matInput
+                    formControlName="NickName"
+                    type="string"
+                    minlength="1"
+                    placeholder="{{user.NickName}}">
+                <mat-hint>Length must be greater than 1</mat-hint>
+                <mat-error *ngIf="form.controls['NickName'].invalid">Length must be greater than 1</mat-error>
+            </mat-form-field>
+        </p>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Discard</button>
+    <button mat-raised-button color="warn" (click)="onEditClick()">
+        Edit
+    </button>
+    <button mat-raised-button color="warn" (click)="onDeleteClick()">
+        Delete
+    </button>
+</div>

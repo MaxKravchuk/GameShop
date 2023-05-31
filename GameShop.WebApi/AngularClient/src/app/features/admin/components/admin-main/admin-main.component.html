@@ -1,0 +1,21 @@
+<div class="main">
+    <div class="users">
+        <div *ngFor="let user of users">
+            <p>{{user.NickName}}</p>
+            <div class="user-CRUD">
+                <button (click)="editDeleteUser(user)">Edit/Delete</button>
+            </div>
+        </div>
+    </div>
+    <div class="addButtons">
+        <button (click)="addUser()">Add User</button>
+        <button (click)="addRole()">Add Role</button>
+    </div>
+    <div class="roles">
+        <div *ngFor="let role of roles">
+            <p>{{role.Name}}</p>
+            <div class="role-CRUD">
+                <button (click)="editDeleteRole(role)">Edit/Delete</button>
+        </div>
+    </div>
+</div>

@@ -4,9 +4,28 @@
             <p>Number of games: {{numberOfGames}}</p>
         </div>
         <a mat-button routerLink="/" routerLinkActive="active">Game Store</a>
-        <a mat-button routerLink="/cart/viewcart" routerLinkActive="active">Shopping Cart</a>
+        <a
+           *ngIf="authService.isAuthorized()"
+           mat-button
+           routerLink="/cart/viewcart"
+           routerLinkActive="active"
+        >Shopping Cart</a>
+        <a
+            *ngIf="authService.isAuthorized() && authService.isInRole('Administrator')"
+            mat-button
+            routerLink="/admin/main"
+            routerLinkActive="active">
+            Admin panel
+        </a>
     </div>
     <div class="right-header">
-        <a mat-button routerLink="/auth/login">Log in</a>
+        <a
+            *ngIf="!authService.isAuthorized()"
+            mat-button
+            routerLink="/auth/login">Log in</a>
+        <a
+            *ngIf="authService.isAuthorized()"
+            mat-button
+            (click)="logOut()">Log out</a>
     </div>
 </mat-toolbar>

@@ -80,10 +80,11 @@ namespace GameShop.BLL.Services
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task<UserTokenReadDTO> GetRefreshTokenAsync(string userNickName)
+        public async Task<UserTokenReadDTO> GetRefreshTokenAsync(string oldRefreshToken)
         {
             var token = await _unitOfWork.UserTokensRepository.GetQuery(
-                filter: x => x.User.NickName == userNickName).SingleOrDefaultAsync();
+                filter: x => x.RefreshToken == oldRefreshToken,
+                includeProperties: "User").SingleOrDefaultAsync();
             if (token == null)
             {
                 throw new NotFoundException("invalid user nickname");
@@ -92,7 +93,8 @@ namespace GameShop.BLL.Services
             var model = new UserTokenReadDTO
             {
                 RefreshToken = token.RefreshToken,
-                RefreshTokenExpiryTime = token.RefreshTokenExpiryTime
+                RefreshTokenExpiryTime = token.RefreshTokenExpiryTime,
+                UserNickName = token.User.NickName
             };
             return model;
         }

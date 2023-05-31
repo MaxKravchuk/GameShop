@@ -18,7 +18,6 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getAll")]
-        [JwtAuthenticationFilter]
         public async Task<IHttpActionResult> GetAllPlatformTypes()
         {
             var result = await _platformTypeService.GetAsync();

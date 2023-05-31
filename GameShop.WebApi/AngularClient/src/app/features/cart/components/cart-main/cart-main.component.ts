@@ -4,6 +4,7 @@ import { CartService } from "../../../../core/services/cartService/cart.service"
 import { OrderService } from "../../../../core/services/orderService/order.service";
 import { CreateOrderModel } from "../../../../core/models/CreateOrderModel";
 import { NavigationExtras, Router } from "@angular/router";
+import { AuthService } from "../../../../core/services/authService/auth.service";
 
 @Component({
     selector: 'app-cart-main',
@@ -19,7 +20,8 @@ export class CartMainComponent implements OnInit {
     constructor(
         private shoppingCartService: CartService,
         private orderService: OrderService,
-        private router: Router) {}
+        private router: Router,
+        private authS: AuthService) {}
 
     ngOnInit(): void {
         this.fetchCart();

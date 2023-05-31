@@ -3,6 +3,8 @@ import { GameService } from "../../core/services/gameService/game.service";
 import { Subscription } from "rxjs";
 import { SharedService } from "../../core/services/helpers/sharedService/shared.service";
 import { Game } from "../../core/models/Game";
+import { AuthService } from "../../core/services/authService/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-header',
@@ -16,8 +18,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private reloadSourceSub: Subscription = new Subscription();
 
     constructor(
+        public authService: AuthService,
         private gameService: GameService,
-        private sharedService: SharedService<Game>
+        private sharedService: SharedService<Game>,
+        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -32,6 +36,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.reloadSourceSub.unsubscribe();
+    }
+
+    logOut(): void {
+        this.authService.logout();
+        this.router.navigate(['/']);
     }
 
     private getNumberOfGames(): void {

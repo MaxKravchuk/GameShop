@@ -34,7 +34,6 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getAll")]
-        [JwtAuthenticationFilter]
         public async Task<IHttpActionResult> GetAllPublishersAsync()
         {
             var publishers = await _publisherService.GetAllPublishersAsync();

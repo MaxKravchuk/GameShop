@@ -41,22 +41,21 @@ namespace GameShop.WebApi.Controllers
             var refreshToken = tokenApiModel.RefreshToken;
 
             var principal = _jwtTokenProvider.ValidateToken(accessToken);
-            var userName = principal.Identity.Name;
 
-            if (!await _userService.IsAnExistingUserAsync(userName))
+            if (principal != null)
             {
                 throw new BadRequestException();
             }
 
-            var role = await _userService.GetRoleAsync(userName);
-            var exRefreshToken = await _usersTokenService.GetRefreshTokenAsync(userName);
+            var exRefreshToken = await _usersTokenService.GetRefreshTokenAsync(refreshToken);
+            var role = await _userService.GetRoleAsync(exRefreshToken.UserNickName);
             if (exRefreshToken.RefreshToken != refreshToken || exRefreshToken.RefreshTokenExpiryTime < DateTime.UtcNow)
             {
                 throw new BadRequestException();
             }
 
-            var responce = _jwtTokenProvider.GetAuthenticatedResponse(userName, role);
-            await _usersTokenService.UpdateUserTokenAsync(userName, responce.RefreshToken);
+            var responce = _jwtTokenProvider.GetAuthenticatedResponse(exRefreshToken.UserNickName, role);
+            await _usersTokenService.UpdateUserTokenAsync(exRefreshToken.UserNickName, responce.RefreshToken);
 
             return Ok(responce);
         }

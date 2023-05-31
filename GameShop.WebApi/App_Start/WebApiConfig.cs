@@ -14,7 +14,6 @@ namespace GameShop.WebApi.App_Start
             config.Filters.Add(new LogIPFilter());
             config.Filters.Add(new LogPerformanceFilter());
             config.Filters.Add(new ApiExceptionFilter());
-            config.Filters.Add(new JwtAuthenticationFilter());
 
             config.Routes.MapHttpRoute("Main", "api/{controller}");
 

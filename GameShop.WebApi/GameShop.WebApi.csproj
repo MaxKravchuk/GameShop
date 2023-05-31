@@ -234,11 +234,12 @@
     <Compile Include="Controllers\GenreController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PublisherController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\TokenController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\ApiExceptionFilter.cs" />
-    <Compile Include="Filters\JwtAuthenticationFilter.cs" />
+    <Compile Include="Filters\JwtAuthorizeAttribute.cs" />
     <Compile Include="Filters\LogIPFilter.cs" />
     <Compile Include="Filters\LogPerformanceFilter.cs" />
     <Compile Include="Global.asax.cs">

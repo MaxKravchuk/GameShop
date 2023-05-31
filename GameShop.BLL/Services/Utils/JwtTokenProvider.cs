@@ -17,13 +17,12 @@ namespace GameShop.BLL.Services.Utils
     {
         private const string SecretKey = "B7E7556636054C5086D4B9B7470A5D37DEECBD36F986D50FFD7A4B4230D6ED31";
 
-
         public string GenerateToken(string username, string role)
         {
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, username),
-                new Claim(ClaimTypes.Role, role)
+                new Claim("UserName", username),
+                new Claim("Role", role)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey));
@@ -31,9 +30,8 @@ namespace GameShop.BLL.Services.Utils
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(5),
+                expires: DateTime.UtcNow.AddMinutes(20),
                 signingCredentials: credentials);
-
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
@@ -56,8 +54,10 @@ namespace GameShop.BLL.Services.Utils
             {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
+                ClockSkew = TimeSpan.FromMinutes(20),
                 ValidateIssuer = false,
                 ValidateAudience = false,
+                ValidateLifetime = true
             };
 
             try
@@ -78,7 +78,7 @@ namespace GameShop.BLL.Services.Utils
             var responseModel = new AuthenticatedResponse
             {
                 Token = accessToken,
-                RefreshToken = refreshToken
+                RefreshToken = refreshToken,
             };
 
             return responseModel;

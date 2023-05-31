@@ -11,5 +11,7 @@ namespace GameShop.BLL.DTO.AuthDTOs
         public string RefreshToken { get; set; }
 
         public DateTime RefreshTokenExpiryTime { get; set; }
+
+        public string UserNickName { get; set; }
     }
 }
