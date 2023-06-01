@@ -5,8 +5,8 @@ import { Role } from "../../../../core/models/Role";
 import { RoleService } from "../../../../core/services/roleService/role.service";
 import { forkJoin } from "rxjs";
 import { MatDialog } from "@angular/material/dialog";
-import { RoleDeleteEditComponent } from "../role-delete-edit/role-delete-edit.component";
-import { UserDeleteEditComponent } from "../user-delete-edit/user-delete-edit.component";
+import { RoleCrudComponent } from "../dialogs/role-crud/role-crud.component";
+import { UserCrudComponent } from "../dialogs/user-crud/user-crud.component";
 
 @Component({
   selector: 'app-admin-main',
@@ -36,7 +36,7 @@ export class AdminMainComponent implements OnInit {
     }
 
     addUser(): void {
-        const dialogRef = this.dialog.open(UserDeleteEditComponent, {
+        const dialogRef = this.dialog.open(UserCrudComponent, {
             autoFocus: false,
             data: {
                 user: null
@@ -51,7 +51,7 @@ export class AdminMainComponent implements OnInit {
     }
 
     editDeleteUser(user: User): void {
-        const dialogRef = this.dialog.open(UserDeleteEditComponent, {
+        const dialogRef = this.dialog.open(UserCrudComponent, {
             autoFocus: false,
             data: {
                 user: user
@@ -66,7 +66,7 @@ export class AdminMainComponent implements OnInit {
     }
 
     addRole(): void {
-        const dialogRef = this.dialog.open(RoleDeleteEditComponent, {
+        const dialogRef = this.dialog.open(RoleCrudComponent, {
             autoFocus: false,
             data: {
                 role: null
@@ -81,7 +81,7 @@ export class AdminMainComponent implements OnInit {
     }
 
     editDeleteRole(role: Role): void {
-        const dialogRef = this.dialog.open(RoleDeleteEditComponent, {
+        const dialogRef = this.dialog.open(RoleCrudComponent, {
             autoFocus: false,
             data: {
                 role: role

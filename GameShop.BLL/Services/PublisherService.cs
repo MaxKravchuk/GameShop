@@ -66,5 +66,33 @@ namespace GameShop.BLL.Services
             _loggerManager.LogInfo($"Publishers successfully returned with array size of {models.Count()}");
             return models;
         }
+
+        public async Task UpdatePublisherAsync(PublisherUpdateDTO publisherUpdateDTO)
+        {
+            var publisherToUpdate = await _unitOfWork.PublisherRepository.GetByIdAsync(publisherUpdateDTO.Id);
+            if (publisherToUpdate == null)
+            {
+                throw new NotFoundException();
+            }
+
+            _mapper.Map(publisherUpdateDTO, publisherToUpdate);
+
+            _unitOfWork.PublisherRepository.Update(publisherToUpdate);
+            await _unitOfWork.SaveAsync();
+            _loggerManager.LogInfo("Publisher updated");
+        }
+
+        public async Task DeletePublisherAsync(int publisherId)
+        {
+            var publisherToDelete = await _unitOfWork.PublisherRepository.GetByIdAsync(publisherId);
+            if (publisherToDelete == null)
+            {
+                throw new NotFoundException();
+            }
+
+            _unitOfWork.PublisherRepository.Delete(publisherToDelete);
+            await _unitOfWork.SaveAsync();
+            _loggerManager.LogInfo("Publisher deleted");
+        }
     }
 }

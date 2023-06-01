@@ -1,4 +1,6 @@
-<a mat-button routerLink="/games/create" color="primary">Create game</a>
-<a mat-button routerLink="/publishers/create" color="primary">Create publisher</a>
-<a mat-button routerLink="/genres/create" color="primary">Create genre</a>
-<a mat-button routerLink="/platform/create" color="primary">Create platform</a>
+<div class="manager-buttons">
+    <a mat-button routerLink="/games/create">Create game</a>
+    <a mat-button (click)="onAddGenre()">Create genre</a>
+    <a mat-button (click)="onAddPublisher()">Create publisher</a>
+    <a mat-button (click)="onAddPlatformType()">Create platform type</a>
+</div>

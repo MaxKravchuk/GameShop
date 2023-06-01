@@ -1,17 +1,17 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { Role } from "../../../../core/models/Role";
-import { AdminMainComponent } from "../admin-main/admin-main.component";
-import { RoleService } from "../../../../core/services/roleService/role.service";
-import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
+import { Role } from "../../../../../core/models/Role";
+import { AdminMainComponent } from "../../admin-main/admin-main.component";
+import { RoleService } from "../../../../../core/services/roleService/role.service";
+import { UtilsService } from "../../../../../core/services/helpers/utilsService/utils-service";
 
 @Component({
-  selector: 'app-role-delete-edit',
-  templateUrl: './role-delete-edit.component.html',
-  styleUrls: ['./role-delete-edit.component.css']
+  selector: 'app-role-crud',
+  templateUrl: './role-crud.component.html',
+  styleUrls: ['./role-crud.component.css']
 })
-export class RoleDeleteEditComponent implements OnInit {
+export class RoleCrudComponent implements OnInit {
 
     form!: FormGroup;
 

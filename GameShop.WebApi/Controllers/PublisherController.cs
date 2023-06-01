@@ -39,5 +39,21 @@ namespace GameShop.WebApi.Controllers
             var publishers = await _publisherService.GetAllPublishersAsync();
             return Json(publishers);
         }
+
+        [HttpPut]
+        [Route()]
+        public async Task<IHttpActionResult> UpdatePublisherAsync([FromBody] PublisherUpdateDTO publisherUpdateDTO)
+        {
+            await _publisherService.UpdatePublisherAsync(publisherUpdateDTO);
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route()]
+        public async Task<IHttpActionResult> DeletePublisherAsync(int publisherId)
+        {
+            await _publisherService.DeletePublisherAsync(publisherId);
+            return Ok();
+        }
     }
 }

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GenreCreateComponent } from './genre-create.component';
+import { UserCrudComponent } from './user-crud.component';
 
-describe('GenreCreateComponent', () => {
-  let component: GenreCreateComponent;
-  let fixture: ComponentFixture<GenreCreateComponent>;
+describe('UserEditComponent', () => {
+  let component: UserCrudComponent;
+  let fixture: ComponentFixture<UserCrudComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GenreCreateComponent ]
+      declarations: [ UserCrudComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GenreCreateComponent);
+    fixture = TestBed.createComponent(UserCrudComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

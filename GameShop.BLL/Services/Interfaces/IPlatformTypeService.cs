@@ -10,8 +10,6 @@ namespace GameShop.BLL.Services.Interfaces
 
         Task<IEnumerable<PlatformTypeReadListDTO>> GetAsync();
 
-        Task<PlatformTypeReadDTO> GetByIdAsync(int id);
-
         Task UpdateAsync(PlatformTypeUpdateDTO platformTypeToUpdateDTO);
 
         Task DeleteAsync(int id);

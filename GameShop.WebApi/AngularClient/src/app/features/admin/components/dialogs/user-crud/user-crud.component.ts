@@ -1,19 +1,19 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { User } from "../../../../core/models/User";
+import { User } from "../../../../../core/models/User";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { AdminMainComponent } from "../admin-main/admin-main.component";
-import { UserService } from "../../../../core/services/userService/user.service";
-import { Role } from "../../../../core/models/Role";
-import { RoleService } from "../../../../core/services/roleService/role.service";
-import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
+import { AdminMainComponent } from "../../admin-main/admin-main.component";
+import { UserService } from "../../../../../core/services/userService/user.service";
+import { Role } from "../../../../../core/models/Role";
+import { RoleService } from "../../../../../core/services/roleService/role.service";
+import { UtilsService } from "../../../../../core/services/helpers/utilsService/utils-service";
 
 @Component({
-  selector: 'app-user-delete-edit',
-  templateUrl: './user-delete-edit.component.html',
-  styleUrls: ['./user-delete-edit.component.css']
+  selector: 'app-user-crud',
+  templateUrl: './user-crud.component.html',
+  styleUrls: ['./user-crud.component.css']
 })
-export class UserDeleteEditComponent implements OnInit {
+export class UserCrudComponent implements OnInit {
 
     form!: FormGroup;
 

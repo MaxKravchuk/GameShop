@@ -25,4 +25,34 @@ export class PlatformTypeService {
                 })
             );
     }
+
+    createPlatformType(platformType: PlatformType): Observable<PlatformType> {
+        return this.http.post<PlatformType>(`${this.apiUrl}`, platformType)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
+
+    updatePlatformType(platformType: PlatformType): Observable<PlatformType> {
+        return this.http.put<PlatformType>(`${this.apiUrl}`, platformType)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
+
+    deletePlatformType(id: number): Observable<PlatformType> {
+        return this.http.delete<PlatformType>(`${this.apiUrl}${id}`)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
 }

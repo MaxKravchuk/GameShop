@@ -163,6 +163,7 @@
     <Compile Include="DTO\PublisherDTOs\PublisherCreateDTO.cs" />
     <Compile Include="DTO\PublisherDTOs\PublisherReadDTO.cs" />
     <Compile Include="DTO\PublisherDTOs\PublisherReadListDTO.cs" />
+    <Compile Include="DTO\PublisherDTOs\PublisherUpdateDTO.cs" />
     <Compile Include="DTO\RedisDTOs\CartItemDTO.cs" />
     <Compile Include="DTO\PaymentDTOs\PaymentResultDTO.cs" />
     <Compile Include="DTO\RoleDTOs\RoleBaseDTO.cs" />

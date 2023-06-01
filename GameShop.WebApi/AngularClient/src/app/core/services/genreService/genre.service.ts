@@ -26,5 +26,33 @@ export class GenreService {
             );
     }
 
-    
+    createGenre(genre: Genre): Observable<Genre> {
+        return this.http.post<Genre>(`${this.apiUrl}`, genre)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
+
+    updateGenre(genre: Genre): Observable<Genre> {
+        return this.http.put<Genre>(`${this.apiUrl}`, genre)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
+
+    deleteGenre(id: number): Observable<Genre> {
+        return this.http.delete<Genre>(`${this.apiUrl}${id}`)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
 }

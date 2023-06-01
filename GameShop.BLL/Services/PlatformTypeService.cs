@@ -60,21 +60,6 @@ namespace GameShop.BLL.Services
             return platformTypesDTO;
         }
 
-        public async Task<PlatformTypeReadDTO> GetByIdAsync(int id)
-        {
-            var platformType = await _unitOfWork.PlatformTypeRepository.GetByIdAsync(id);
-
-            if (platformType == null)
-            {
-                throw new NotFoundException($"Platform type with id {id} does not found");
-            }
-
-            var platformTypeDTO = _mapper.Map<PlatformTypeReadDTO>(platformType);
-
-            _loggerManager.LogInfo($"Platform type with id {id} successfully returned");
-            return platformTypeDTO;
-        }
-
         public async Task UpdateAsync(PlatformTypeUpdateDTO platformTypeToUpdateDTO)
         {
             var platformTypeToUpdate = (await _unitOfWork.PlatformTypeRepository.GetAsync(

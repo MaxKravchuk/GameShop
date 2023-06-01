@@ -11,5 +11,9 @@ namespace GameShop.BLL.Services.Interfaces
         Task CreatePublisherAsync(PublisherCreateDTO publisherCreateDTO);
 
         Task<IEnumerable<PublisherReadListDTO>> GetAllPublishersAsync();
+
+        Task UpdatePublisherAsync(PublisherUpdateDTO publisherUpdateDTO);
+
+        Task DeletePublisherAsync(int publisherId);
     }
 }

@@ -6,8 +6,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { AdminMainComponent } from "./components/admin-main/admin-main.component";
-import { UserDeleteEditComponent } from './components/user-delete-edit/user-delete-edit.component';
-import { RoleDeleteEditComponent } from './components/role-delete-edit/role-delete-edit.component';
+import { UserCrudComponent } from './components/dialogs/user-crud/user-crud.component';
+import { RoleCrudComponent } from './components/dialogs/role-crud/role-crud.component';
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatOptionModule } from "@angular/material/core";
 import { MatSelectModule } from "@angular/material/select";
@@ -16,8 +16,8 @@ import { MatSelectModule } from "@angular/material/select";
 @NgModule({
     declarations: [
         AdminMainComponent,
-        UserDeleteEditComponent,
-        RoleDeleteEditComponent,
+        UserCrudComponent,
+        RoleCrudComponent,
     ],
     imports: [
         CommonModule,

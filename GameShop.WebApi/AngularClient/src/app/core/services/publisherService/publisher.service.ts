@@ -45,4 +45,24 @@ export class PublisherService {
                 })
             );
     }
+
+    updatePublisher(publisher: Publisher): Observable<Publisher> {
+        return this.http.put<Publisher>(`${this.apiUrl}`, publisher)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
+
+    deletePublisher(id: number): Observable<Publisher> {
+        return this.http.delete<Publisher>(`${this.apiUrl}${id}`)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
 }
