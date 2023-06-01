@@ -19,14 +19,6 @@ namespace GameShop.BLL.Services.Utils.Validators
                 .NotEmpty()
                 .WithMessage("Game key cannot be empty");
 
-            RuleFor(g => g.GenresId)
-                .NotEmpty()
-                .WithMessage("Game cannot be without genres");
-
-            RuleFor(g => g.PlatformTypeId)
-                .NotEmpty()
-                .WithMessage("Game cannot be without platform types");
-
             RuleFor(g => g.Price)
                 .NotEmpty()
                 .WithMessage("Game cannot be free");

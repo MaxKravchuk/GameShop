@@ -38,6 +38,18 @@ const routes: Routes = [
     {
         path: 'admin',
         loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule)
+    },
+    {
+        path: 'manager',
+        loadChildren: () => import('./features/manager/manager.module').then(m => m.ManagerModule)
+    },
+    {
+        path: 'genre',
+        loadChildren: () => import('./features/genre/genre.module').then(m => m.GenreModule)
+    },
+    {
+        path: 'platform',
+        loadChildren: () => import('./features/platform/platform.module').then(m => m.PlatformModule)
     }
 ];
 

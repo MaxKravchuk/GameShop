@@ -17,6 +17,13 @@
             routerLinkActive="active">
             Admin panel
         </a>
+        <a
+            *ngIf="authService.isAuthorized() && authService.isInRole('Manager')"
+            mat-button
+            routerLink="/manager/main"
+            routerLinkActive="active">
+            Manager panel
+        </a>
     </div>
     <div class="right-header">
         <a
