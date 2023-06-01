@@ -92,6 +92,16 @@ namespace GameShop.DAL.Repository
             Update(entityToDelete);
         }
 
+        public void HardDelete(T entityToDelete)
+        {
+            if (_context.Entry(entityToDelete).State == EntityState.Detached)
+            {
+                _context.Set<T>().Attach(entityToDelete);
+            }
+
+            _context.Set<T>().Remove(entityToDelete);
+        }
+
         public void Update(T entityToUpdate)
         {
             if (_context.Entry(entityToUpdate).State == EntityState.Detached)

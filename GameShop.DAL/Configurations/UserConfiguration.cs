@@ -22,9 +22,8 @@ namespace GameShop.DAL.Configurations
             Property(x => x.PasswordHash)
                 .IsRequired();
 
-            HasRequired(x => x.UserRole)
+            HasOptional(x => x.UserRole)
                 .WithMany(x => x.UsersRole)
-                .HasForeignKey(x => x.RoleId)
                 .WillCascadeOnDelete(false);
 
             HasOptional(x => x.RefreshToken)

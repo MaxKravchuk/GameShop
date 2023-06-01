@@ -14,7 +14,7 @@ namespace GameShop.DAL.Entities
 
         public Role UserRole { get; set; }
 
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
 
         public UserTokens RefreshToken { get; set; }
 

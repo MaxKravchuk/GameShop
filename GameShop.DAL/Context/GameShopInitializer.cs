@@ -157,11 +157,48 @@ namespace GameShop.DAL.Context
                 CreatedAt = new System.DateTime(2011, 11, 18)
             });
 
+            var roles = new List<Role>
+            {
+                new Role
+                {
+                    Id = 1,
+                    Name = "Administrator"
+                },
+                new Role
+                {
+                    Id = 2,
+                    Name = "Manager"
+                },
+                new Role
+                {
+                    Id = 3,
+                    Name = " Moderator"
+                },
+                new Role
+                {
+                    Id = 4,
+                    Name = "User"
+                }
+            };
+
+            var users = new List<User>
+            {
+                new User
+                {
+                    Id = 1,
+                    NickName = "Admin",
+                    PasswordHash="tPJ2961axLgS0j72JD3YXA==:sM3IkDn7jMgApmhGNDN/qhPbyek3StQcdPaucKyMOhM=",
+                    UserRole = roles.Single(r => r.Name == "Administrator")
+                }
+            };
+
             context.Comments.AddRange(dComments);
             context.Genres.AddRange(dGenres);
             context.PlatformTypes.AddRange(dPt);
             context.Games.AddRange(games);
             context.Publishers.AddRange(publishers);
+            context.Roles.AddRange(roles);
+            context.Users.AddRange(users);
             context.SaveChanges();
             base.Seed(context);
         }

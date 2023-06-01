@@ -40,29 +40,29 @@ namespace GameShop.BLL.Services
 
         public async Task<bool> IsAnExistingUserAsync(string nickName)
         {
-            var user = await _unitOfWork.UserRepository.GetQuery(filter: u => u.NickName == nickName).SingleOrDefaultAsync();
+            var user = await _unitOfWork.UserRepository.GetQuery(filter: u => u.NickName == nickName)
+                .SingleOrDefaultAsync();
             return user != null;
         }
 
-        public async Task<bool> IsValidUserCredentialsAsync(UserBaseDTO userBaseDTO)
+        public async Task<bool> IsValidUserCredentialsAsync(UserCreateDTO userCreateDTO)
         {
-            if (string.IsNullOrEmpty(userBaseDTO.NickName) || string.IsNullOrEmpty(userBaseDTO.Password))
+            if (string.IsNullOrEmpty(userCreateDTO.NickName) || string.IsNullOrEmpty(userCreateDTO.Password))
             {
                 throw new BadRequestException();
             }
 
-            var user = await _unitOfWork.UserRepository.GetQuery(filter: u => u.NickName == userBaseDTO.NickName)
+            var user = await _unitOfWork.UserRepository.GetQuery(filter: u => u.NickName == userCreateDTO.NickName)
                 .SingleOrDefaultAsync();
 
-            return user != null && _passwordProvider.IsPasswordValid(userBaseDTO.Password, user.PasswordHash);
+            return user != null && _passwordProvider.IsPasswordValid(userCreateDTO.Password, user.PasswordHash);
         }
 
         public async Task<string> GetRoleAsync(string nickName)
         {
             var user = await _unitOfWork.UserRepository.GetQuery(
                 filter: u => u.NickName == nickName,
-                includeProperties: "UserRole")
-                .SingleOrDefaultAsync();
+                includeProperties: "UserRole").SingleOrDefaultAsync();
 
             if (user == null)
             {
@@ -79,7 +79,7 @@ namespace GameShop.BLL.Services
             var user = _mapper.Map<User>(userCreateDTO);
             user.PasswordHash = _passwordProvider.GetPasswordHash(userCreateDTO.Password);
             var role = await _unitOfWork.RoleRepository.GetQuery(filter: x => x.Name == "User").SingleOrDefaultAsync();
-            user.RoleId = role.Id;
+            user.UserRole = role;
 
             _unitOfWork.UserRepository.Insert(user);
             await _unitOfWork.SaveAsync();
@@ -87,26 +87,25 @@ namespace GameShop.BLL.Services
             _loggerManager.LogInfo($"User with nickname {user.NickName} created succesfully");
         }
 
-        public async Task CreateUserWithRoleAsync(UserCreateDTO userCreateDTO)
+        public async Task CreateUserWithRoleAsync(UserWithRoleCreateDTO userWithRoleCreateDTO)
         {
-            await _validator.ValidateAndThrowAsync(userCreateDTO);
+            await _validator.ValidateAndThrowAsync(userWithRoleCreateDTO);
 
-            var user = _mapper.Map<User>(userCreateDTO);
-            user.PasswordHash = _passwordProvider.GetPasswordHash(userCreateDTO.Password);
+            var user = _mapper.Map<User>(userWithRoleCreateDTO);
+            user.PasswordHash = _passwordProvider.GetPasswordHash(userWithRoleCreateDTO.Password);
 
-            var role = await _unitOfWork.RoleRepository.GetQuery(filter: x => x.Name == userCreateDTO.Role)
-                .SingleOrDefaultAsync();
+            var role = await _unitOfWork.RoleRepository.GetByIdAsync(userWithRoleCreateDTO.RoleId);
             if (role == null)
             {
                 throw new BadRequestException("Invalid role");
             }
 
-            user.RoleId = role.Id;
+            user.UserRole = role;
 
             _unitOfWork.UserRepository.Insert(user);
             await _unitOfWork.SaveAsync();
 
-            _loggerManager.LogInfo($"User with nickname {user.NickName} and roleId {user.RoleId} created succesfully");
+            _loggerManager.LogInfo($"User with nickname {user.NickName} created succesfully");
         }
 
         public async Task DeleteUserAsync(int userId)
@@ -124,43 +123,25 @@ namespace GameShop.BLL.Services
 
         public async Task UpdateUserAsync(UserUpdateDTO userUpdateDTO)
         {
-            await _validator.ValidateAndThrowAsync(userUpdateDTO);
-
-            var userToUpdate = await _unitOfWork.UserRepository.GetQuery(filter: x => x.NickName == userUpdateDTO.NickName)
-                .SingleOrDefaultAsync();
+            var userToUpdate = await _unitOfWork.UserRepository.GetByIdAsync(userUpdateDTO.Id);
+            var role = await _unitOfWork.RoleRepository.GetByIdAsync(userUpdateDTO.RoleId);
 
             if (userToUpdate == null)
             {
-                throw new NotFoundException($"User with nickname {userUpdateDTO.NickName} does not found");
+                throw new NotFoundException($"User with nickname {userUpdateDTO.Id} or " +
+                    $"role with id {userUpdateDTO.RoleId} does not found");
             }
 
-            _mapper.Map(userUpdateDTO, userToUpdate);
+            userToUpdate.RoleId = role.Id;
 
             _unitOfWork.UserRepository.Update(userToUpdate);
             await _unitOfWork.SaveAsync();
             _loggerManager.LogInfo($"Genre with id {userToUpdate.Id} was updated successfully");
         }
 
-        public async Task<UserReadDTO> GetUserByIdAsync(int userId)
-        {
-            var user = await _unitOfWork.UserRepository.GetByIdAsync(
-                userId,
-                includeProperties: "UserRole");
-
-            if (user == null)
-            {
-                throw new NotFoundException($"User with id {userId} does not found");
-            }
-
-            var model = _mapper.Map<UserReadDTO>(user);
-            _loggerManager.LogInfo(
-                $"User was returned successfully");
-            return model;
-        }
-
         public async Task<IEnumerable<UserReadListDTO>> GetUsersAsync()
         {
-            var users = await _unitOfWork.UserRepository.GetAsync();
+            var users = await _unitOfWork.UserRepository.GetAsync(includeProperties: "UserRole");
 
             var usersDTO = _mapper.Map<IEnumerable<UserReadListDTO>>(users);
 

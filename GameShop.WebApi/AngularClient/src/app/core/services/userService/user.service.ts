@@ -26,4 +26,44 @@ export class UserService {
                 })
             );
     }
+
+    createUser(user: User): Observable<User> {
+        return this.http.post<User>(`${this.apiUrl}createUser`, user)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
+
+    createUserWithRole(user: User): Observable<User>{
+        return this.http.post<User>(`${this.apiUrl}createUserWithRole`, user)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
+
+    updateUser(user: User): Observable<User> {
+        return this.http.put<User>(`${this.apiUrl}`, user)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
+
+    deleteUser(id: number): Observable<User> {
+        return this.http.delete<User>(`${this.apiUrl}/deleteUser/${id}`)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
 }

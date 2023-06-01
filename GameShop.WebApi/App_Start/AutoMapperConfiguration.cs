@@ -86,11 +86,11 @@ namespace GameShop.WebApi.App_Start
                 .ForMember(dest => dest.IsPaid, opt => opt.Ignore());
 
             CreateMap<UserCreateDTO, User>();
+            CreateMap<User, UserReadListDTO>()
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.UserRole.Name));
 
-            CreateMap<User, UserReadListDTO>();
-
-            CreateMap<Role, RoleReadDTO>();
             CreateMap<Role, RoleUpdateReadListDTO>();
+            CreateMap<RoleCreateDTO, Role>();
         }
     }
 }

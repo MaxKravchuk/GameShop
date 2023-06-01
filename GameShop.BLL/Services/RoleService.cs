@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ namespace GameShop.BLL.Services
             _validator = validator;
         }
 
-        public async Task CreateRoleAsync(RoleBaseDTO roleBaseDTO)
+        public async Task CreateRoleAsync(RoleCreateDTO roleBaseDTO)
         {
             await _validator.ValidateAndThrowAsync(roleBaseDTO);
 
@@ -52,26 +53,17 @@ namespace GameShop.BLL.Services
                 throw new NotFoundException($"Role with id {roleId} have not found");
             }
 
-            _unitOfWork.RoleRepository.Delete(roleToDelete);
-            await _unitOfWork.SaveAsync();
-            _loggerManager.LogInfo($"Role with id {roleId} have been deleted successfully");
-        }
+            var users = await _unitOfWork.UserRepository.GetQuery(filter: u => u.UserRole.Id == roleId).ToListAsync();
 
-        public async Task<RoleReadDTO> GetRoleByIdAsync(int roleId)
-        {
-            var role = await _unitOfWork.RoleRepository.GetByIdAsync(
-                roleId,
-                includeProperties: "UsersRole");
-
-            if (role == null)
+            foreach (var user in users)
             {
-                throw new NotFoundException($"Role with id {roleId} have not found");
+                user.RoleId = null;
+                _unitOfWork.UserRepository.Update(user);
             }
 
-            var model = _mapper.Map<RoleReadDTO>(role);
-            _loggerManager.LogInfo(
-                $"Role was returned successfully");
-            return model;
+            _unitOfWork.RoleRepository.HardDelete(roleToDelete);
+            await _unitOfWork.SaveAsync();
+            _loggerManager.LogInfo($"Role with id {roleId} have been deleted successfully");
         }
 
         public async Task<IEnumerable<RoleUpdateReadListDTO>> GetRolesAsync()

@@ -9,8 +9,8 @@ import { AdminMainComponent } from "./components/admin-main/admin-main.component
 import { UserDeleteEditComponent } from './components/user-delete-edit/user-delete-edit.component';
 import { RoleDeleteEditComponent } from './components/role-delete-edit/role-delete-edit.component';
 import { MatDialogModule } from "@angular/material/dialog";
-import { UserAddComponent } from './components/user-add/user-add.component';
-import { RoleAddComponent } from './components/role-add/role-add.component';
+import { MatOptionModule } from "@angular/material/core";
+import { MatSelectModule } from "@angular/material/select";
 
 
 @NgModule({
@@ -18,8 +18,6 @@ import { RoleAddComponent } from './components/role-add/role-add.component';
         AdminMainComponent,
         UserDeleteEditComponent,
         RoleDeleteEditComponent,
-        UserAddComponent,
-        RoleAddComponent
     ],
     imports: [
         CommonModule,
@@ -29,7 +27,9 @@ import { RoleAddComponent } from './components/role-add/role-add.component';
         MatFormFieldModule,
         MatInputModule,
         ReactiveFormsModule,
-        MatDialogModule
+        MatDialogModule,
+        MatOptionModule,
+        MatSelectModule
     ]
 })
 export class AdminModule {

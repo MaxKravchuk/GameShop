@@ -25,4 +25,34 @@ export class RoleService {
                 })
             );
     }
+
+    createRole(role: Role): Observable<Role> {
+        return this.http.post<Role>(`${this.apiUrl}`, role)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
+
+    updateRole(role: Role): Observable<Role> {
+        return this.http.put<Role>(`${this.apiUrl}`, role)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
+
+    deleteRole(id: number): Observable<Role> {
+        return this.http.delete<Role>(`${this.apiUrl}`, {params: {roleId: id}})
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
 }

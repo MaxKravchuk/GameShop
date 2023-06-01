@@ -169,10 +169,6 @@
     <Compile Include="Migrations\202305300746468_AddRoles.designer.cs">
       <DependentUpon>202305300746468_AddRoles.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202305300759207_InitRoles.cs" />
-    <Compile Include="Migrations\202305300759207_InitRoles.designer.cs">
-      <DependentUpon>202305300759207_InitRoles.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202305301536522_AddUserTokens.cs" />
     <Compile Include="Migrations\202305301536522_AddUserTokens.designer.cs">
       <DependentUpon>202305301536522_AddUserTokens.cs</DependentUpon>
@@ -180,6 +176,10 @@
     <Compile Include="Migrations\202305301615328_UpdatedUserTokens.cs" />
     <Compile Include="Migrations\202305301615328_UpdatedUserTokens.designer.cs">
       <DependentUpon>202305301615328_UpdatedUserTokens.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306010908100_OptionalUserRolechange.cs" />
+    <Compile Include="Migrations\202306010908100_OptionalUserRolechange.designer.cs">
+      <DependentUpon>202306010908100_OptionalUserRolechange.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -234,14 +234,14 @@
     <EmbeddedResource Include="Migrations\202305300746468_AddRoles.resx">
       <DependentUpon>202305300746468_AddRoles.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202305300759207_InitRoles.resx">
-      <DependentUpon>202305300759207_InitRoles.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202305301536522_AddUserTokens.resx">
       <DependentUpon>202305301536522_AddUserTokens.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202305301615328_UpdatedUserTokens.resx">
       <DependentUpon>202305301615328_UpdatedUserTokens.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306010908100_OptionalUserRolechange.resx">
+      <DependentUpon>202306010908100_OptionalUserRolechange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

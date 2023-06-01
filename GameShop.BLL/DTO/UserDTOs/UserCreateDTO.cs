@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace GameShop.BLL.DTO.UserDTOs
 {
-    public class UserCreateDTO : UserBaseDTO
+    public class UserCreateDTO
     {
-        public string Role { get; set; }
+        public string NickName { get; set; }
+
+        public string Password { get; set; }
     }
 }

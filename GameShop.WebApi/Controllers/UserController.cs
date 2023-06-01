@@ -29,14 +29,6 @@ namespace GameShop.WebApi.Controllers
             return Json(users);
         }
 
-        [HttpGet]
-        [Route("getById/{userId}")]
-        public async Task<IHttpActionResult> GetUserByNickNameAsync(int userId)
-        {
-            var user = await _userService.GetUserByIdAsync(userId);
-            return Json(user);
-        }
-
         [HttpPost]
         [Route("createUser")]
         public async Task<IHttpActionResult> CreateNewUserAsync([FromBody] UserCreateDTO userCreateDTO)
@@ -47,9 +39,9 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route("createUserWithRole")]
-        public async Task<IHttpActionResult> CreateNewUserWithRoleAsync([FromBody] UserCreateDTO userCreateDTO)
+        public async Task<IHttpActionResult> CreateNewUserWithRoleAsync([FromBody] UserWithRoleCreateDTO userWithRoleCreateDTO)
         {
-            await _userService.CreateUserWithRoleAsync(userCreateDTO);
+            await _userService.CreateUserWithRoleAsync(userWithRoleCreateDTO);
             return Ok();
         }
 

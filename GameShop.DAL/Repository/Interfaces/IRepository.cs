@@ -26,6 +26,8 @@ namespace GameShop.DAL.Repository.Interfaces
 
         void Delete(T entityToDelete);
 
+        void HardDelete(T entityToDelete);
+
         void Update(T entityToUpdate);
 
         Task<int> GetCountAsync();

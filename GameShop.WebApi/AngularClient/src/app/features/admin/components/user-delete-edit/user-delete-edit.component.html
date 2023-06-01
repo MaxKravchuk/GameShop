@@ -1,28 +1,59 @@
-<h1 mat-dialog-title>Edit role</h1>
+<h1 *ngIf="isAdding" mat-dialog-title>Create user</h1>
+<h1 *ngIf="!isAdding" mat-dialog-title>Edit user</h1>
 <div mat-dialog-content>
     <div [formGroup]="form" class="create-form">
-        <div class="mat-title">You are editing user {{user.NickName}}</div>
+        <div *ngIf="isAdding" class="mat-title">You are creating new user</div>
+        <div *ngIf="!isAdding" class="mat-title">
+            You are editing user {{user.NickName}} with role {{user.Role}}
+        </div>
         <p>
             <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
-                <mat-label>Role name</mat-label>
+                <mat-label>User nickname</mat-label>
                 <input
                     matInput
                     formControlName="NickName"
                     type="string"
                     minlength="1"
-                    placeholder="{{user.NickName}}">
+                    placeholder="Nick name">
                 <mat-hint>Length must be greater than 1</mat-hint>
                 <mat-error *ngIf="form.controls['NickName'].invalid">Length must be greater than 1</mat-error>
             </mat-form-field>
         </p>
+        <p>
+            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-label>User password</mat-label>
+                <input
+                    matInput
+                    formControlName="Password"
+                    type="string"
+                    minlength="1"
+                    placeholder="Password">
+                <mat-hint>Length must be greater than 1</mat-hint>
+                <mat-error *ngIf="form.controls['Password'].invalid">Length must be greater than 1</mat-error>
+            </mat-form-field>
+        </p>
+        <div>
+            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-label>Role</mat-label>
+                <mat-select formControlName="RoleId">
+                    <mat-option *ngFor="let role of roles" [value]="role.Id">
+                        {{role.Name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.controls['RoleId'].invalid">Role must be specified</mat-error>
+            </mat-form-field>
+        </div>
     </div>
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">Discard</button>
-    <button mat-raised-button color="warn" (click)="onEditClick()">
+    <button mat-stroked-button (click)="onNoClick()">Discard</button>
+    <button *ngIf="isAdding" mat-raised-button color="primary" (click)="onSaveClick()">
+        Save
+    </button>
+    <button *ngIf="!isAdding" mat-raised-button color="warn" (click)="onEditClick()">
         Edit
     </button>
-    <button mat-raised-button color="warn" (click)="onDeleteClick()">
+    <button *ngIf="!isAdding" mat-raised-button color="warn" (click)="onDeleteClick()">
         Delete
     </button>
 </div>

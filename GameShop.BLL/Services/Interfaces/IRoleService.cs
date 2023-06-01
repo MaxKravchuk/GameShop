@@ -9,14 +9,12 @@ namespace GameShop.BLL.Services.Interfaces
 {
     public interface IRoleService
     {
-        Task CreateRoleAsync(RoleBaseDTO roleBaseDTO);
+        Task CreateRoleAsync(RoleCreateDTO roleBaseDTO);
 
         Task DeleteRoleAsync(int roleId);
 
         Task UpdateRoleAsync(RoleUpdateReadListDTO roleBaseDTO);
 
         Task<IEnumerable<RoleUpdateReadListDTO>> GetRolesAsync();
-
-        Task<RoleReadDTO> GetRoleByIdAsync(int roleId);
     }
 }

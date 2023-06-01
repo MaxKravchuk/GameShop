@@ -167,13 +167,12 @@
     <Compile Include="DTO\PaymentDTOs\PaymentResultDTO.cs" />
     <Compile Include="DTO\RoleDTOs\RoleBaseDTO.cs" />
     <Compile Include="DTO\RoleDTOs\RoleCreateDTO.cs" />
-    <Compile Include="DTO\RoleDTOs\RoleReadDTO.cs" />
     <Compile Include="DTO\RoleDTOs\RoleUpdateReadListDTO.cs" />
     <Compile Include="DTO\UserDTOs\UserBaseDTO.cs" />
     <Compile Include="DTO\UserDTOs\UserCreateDTO.cs" />
-    <Compile Include="DTO\UserDTOs\UserReadDTO.cs" />
     <Compile Include="DTO\UserDTOs\UserReadListDTO.cs" />
     <Compile Include="DTO\UserDTOs\UserUpdateDTO.cs" />
+    <Compile Include="DTO\UserDTOs\UserWithRoleCreateDTO.cs" />
     <Compile Include="Enums\CreatedAtTypes.cs" />
     <Compile Include="Enums\Extensions\ToEnumExtension.cs" />
     <Compile Include="Enums\PaymentTypes.cs" />

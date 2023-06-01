@@ -8,8 +8,6 @@ namespace GameShop.BLL.DTO.UserDTOs
 {
     public class UserBaseDTO
     {
-        public string NickName { get; set; }
-
-        public string Password { get; set; }
+        public int Id { get; set; }
     }
 }

@@ -29,14 +29,6 @@ namespace GameShop.WebApi.Controllers
             return Json(roles);
         }
 
-        [HttpGet]
-        [Route("getById/{roleId}")]
-        public async Task<IHttpActionResult> GetRoleByIdAsync(int roleId)
-        {
-            var role = await _roleService.GetRoleByIdAsync(roleId);
-            return Json(role);
-        }
-
         [HttpPost]
         [Route()]
         public async Task<IHttpActionResult> CreateRoleAsync([FromBody] RoleCreateDTO roleCreateDTO)
@@ -54,7 +46,7 @@ namespace GameShop.WebApi.Controllers
         }
 
         [HttpDelete]
-        [Route("")]
+        [Route()]
         public async Task<IHttpActionResult> DeleteRoleAsync(int roleId)
         {
             await _roleService.DeleteRoleAsync(roleId);

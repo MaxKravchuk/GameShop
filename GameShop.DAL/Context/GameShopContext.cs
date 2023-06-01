@@ -29,6 +29,8 @@ namespace GameShop.DAL.Context
 
         public DbSet<UserTokens> UserTokens { get; set; }
 
+        public DbSet<Role> Roles { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.AddFromAssembly(GetType().Assembly);

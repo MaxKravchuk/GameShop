@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace GameShop.BLL.DTO.UserDTOs
 {
-    public class UserReadDTO : UserBaseDTO
+    public class UserWithRoleCreateDTO : UserCreateDTO
     {
-        public string Role { get; set; }
+        public int RoleId { get; set; }
     }
 }

@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { Role } from "../../../../core/models/Role";
 import { AdminMainComponent } from "../admin-main/admin-main.component";
 import { RoleService } from "../../../../core/services/roleService/role.service";
+import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
 
 @Component({
   selector: 'app-role-delete-edit',
@@ -16,11 +17,14 @@ export class RoleDeleteEditComponent implements OnInit {
 
     role!: Role;
 
+    isAdding: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         @Inject(MAT_DIALOG_DATA) private data : {role: Role},
         private dialogRef: MatDialogRef<AdminMainComponent>,
-        private roleService: RoleService
+        private roleService: RoleService,
+        private utilsService: UtilsService
     ) { }
 
     ngOnInit(): void {
@@ -28,19 +32,30 @@ export class RoleDeleteEditComponent implements OnInit {
             Name: [''],
         });
 
-        this.role = this.data.role;
+        if (this.data.role == null) {
+            this.isAdding = true;
+        }
+        else {
+            this.role = this.data.role;
+        }
     }
 
     onNoClick(): void {
         this.dialogRef.close(false);
     }
 
-    onEditClick(): void {
-        const newRole: Role = this.form.value as Role;
-        console.log(newRole);
+    onDeleteClick(): void {
+        this.roleService.deleteRole(this.role.Id!).subscribe((role: Role): void => {
+            this.utilsService.openWithMessage("Role deleted successfully!");
+            this.dialogRef.close(true);
+        });
     }
 
-    onDeleteClick(): void {
-
+    onSaveClick(): void {
+        const newRole: Role = this.form.value as Role;
+        this.roleService.createRole(newRole).subscribe((role: Role): void => {
+            this.utilsService.openWithMessage("Role created successfully!");
+            this.dialogRef.close(true);
+        });
     }
 }

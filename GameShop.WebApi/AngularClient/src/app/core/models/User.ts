@@ -1,3 +1,10 @@
 export interface User {
-    NickName: string;
+
+    Id?: number;
+
+    NickName?: string;
+
+    Password?: string;
+
+    Role?: string;
 }

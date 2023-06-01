@@ -7,13 +7,13 @@ namespace DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class InitRoles : IMigrationMetadata
+    public sealed partial class OptionalUserRolechange : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitRoles));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(OptionalUserRolechange));
         
         string IMigrationMetadata.Id
         {
-            get { return "202305300759207_InitRoles"; }
+            get { return "202306010908100_OptionalUserRolechange"; }
         }
         
         string IMigrationMetadata.Source
