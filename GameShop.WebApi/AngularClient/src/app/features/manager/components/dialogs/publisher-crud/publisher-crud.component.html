@@ -1,0 +1,63 @@
+<h1 *ngIf="isAdding" mat-dialog-title>Create publisher</h1>
+<h1 *ngIf="!isAdding" mat-dialog-title>Edit publisher</h1>
+<div mat-dialog-content>
+    <div [formGroup]="form" class="create-form">
+        <div *ngIf="isAdding" class="mat-title">You are creating new publisher</div>
+        <div *ngIf="!isAdding" class="mat-title">You are editing publisher {{publisher.CompanyName}}</div>
+        <p>
+            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-label>Company name</mat-label>
+                <input
+                    matInput
+                    formControlName="CompanyName"
+                    type="string"
+                    minlength="1"
+                    placeholder="Company name">
+                <mat-hint>Length must be greater than 1</mat-hint>
+                <mat-error *ngIf="form.controls['CompanyName'].invalid">Length must be greater than 1</mat-error>
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-label>Description</mat-label>
+                <input
+                    matInput
+                    formControlName="Description"
+                    type="string"
+                    minlength="1"
+                    placeholder="Description">
+                <mat-hint>Length must be greater than 1</mat-hint>
+                <mat-error *ngIf="form.controls['Description'].invalid">Length must be greater than 1</mat-error>
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-label>Home page</mat-label>
+                <input
+                    matInput
+                    formControlName="HomePage"
+                    type="string"
+                    minlength="1"
+                    placeholder="Home page">
+                <mat-hint>Length must be greater than 1</mat-hint>
+                <mat-error *ngIf="form.controls['HomePage'].invalid">This is not URL</mat-error>
+            </mat-form-field>
+        </p>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-stroked-button (click)="onNoClick()">Discard</button>
+    <button *ngIf="isAdding"
+            [disabled]="!form.valid"
+            mat-raised-button color="primary" (click)="onSaveClick()">
+        Save
+    </button>
+    <button *ngIf="!isAdding"
+            [disabled]="!form.valid"
+            mat-raised-button color="warn" (click)="onEditClick()">
+        Edit
+    </button>
+    <button *ngIf="!isAdding" mat-raised-button color="warn" (click)="onDeleteClick()">
+        Delete
+    </button>
+</div>

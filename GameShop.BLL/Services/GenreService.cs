@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -42,6 +43,14 @@ namespace GameShop.BLL.Services
             if (genreToDelete == null)
             {
                 throw new NotFoundException($"Genre with id {id} does not found");
+            }
+
+            var games = await _unitOfWork.GameRepository
+                .GetQuery(filter: g => g.GameGenres.Any(gg => gg.Name == genreToDelete.Name)).ToListAsync();
+            foreach (var game in games)
+            {
+                game.GameGenres.Remove(genreToDelete);
+                _unitOfWork.GameRepository.Update(game);
             }
 
             _unitOfWork.GenreRepository.Delete(genreToDelete);

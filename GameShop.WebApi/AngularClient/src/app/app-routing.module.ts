@@ -43,14 +43,6 @@ const routes: Routes = [
         path: 'manager',
         loadChildren: () => import('./features/manager/manager.module').then(m => m.ManagerModule)
     },
-    {
-        path: 'genre',
-        loadChildren: () => import('./features/genre/genre.module').then(m => m.GenreModule)
-    },
-    {
-        path: 'platform',
-        loadChildren: () => import('./features/platform/platform.module').then(m => m.PlatformModule)
-    }
 ];
 
 @NgModule({

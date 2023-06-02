@@ -25,7 +25,7 @@ namespace GameShop.DAL.Configurations
                 .IsRequired();
 
             HasMany<Game>(x => x.Games)
-                .WithRequired(x => x.Publisher)
+                .WithOptional(x => x.Publisher)
                 .HasForeignKey(x => x.PublisherId);
         }
     }

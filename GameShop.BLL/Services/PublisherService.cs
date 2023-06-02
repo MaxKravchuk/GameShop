@@ -90,6 +90,13 @@ namespace GameShop.BLL.Services
                 throw new NotFoundException();
             }
 
+            var games = await _unitOfWork.GameRepository.GetAsync(filter: g => g.PublisherId == publisherId);
+            foreach (var game in games)
+            {
+                game.Publisher = null;
+                _unitOfWork.GameRepository.Update(game);
+            }
+
             _unitOfWork.PublisherRepository.Delete(publisherToDelete);
             await _unitOfWork.SaveAsync();
             _loggerManager.LogInfo("Publisher deleted");

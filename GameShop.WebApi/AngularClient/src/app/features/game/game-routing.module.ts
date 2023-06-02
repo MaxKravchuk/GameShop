@@ -8,6 +8,7 @@ const routes: Routes = [
         path: 'details/:Key',
         component: GameDetailsComponent,
     },
+    //Todo Delete this route and component
     {
         path: 'create',
         component: GameCreateComponent

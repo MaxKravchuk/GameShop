@@ -57,7 +57,7 @@ export class PublisherService {
     }
 
     deletePublisher(id: number): Observable<Publisher> {
-        return this.http.delete<Publisher>(`${this.apiUrl}${id}`)
+        return this.http.delete<Publisher>(`${this.apiUrl}?publisherId=${id}`)
             .pipe(
                 catchError(err => {
                     this.utilsService.handleError(err);

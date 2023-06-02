@@ -1,6 +1,27 @@
-<div class="manager-buttons">
-    <a mat-button routerLink="/games/create">Create game</a>
-    <a mat-button (click)="onAddGenre()">Create genre</a>
-    <a mat-button (click)="onAddPublisher()">Create publisher</a>
-    <a mat-button (click)="onAddPlatformType()">Create platform type</a>
+<div class="main">
+    <div class="genre-crud">
+        <a mat-button color="accent" (click)="addGenre()">Create genre</a>
+        <div *ngFor="let genre of genres">
+            <p>{{genre.Name}}</p>
+            <a mat-button (click)="editDeleteGenre(genre)">Edit/Delete</a>
+        </div>
+    </div>
+    <div class="platformType-crud">
+        <a mat-button color="accent" (click)="addPlatformType()">Create platform type</a>
+        <div *ngFor="let platformType of platformTypes">
+            <p>{{platformType.Type}}</p>
+            <a mat-button (click)="editDeletePlatformType(platformType)">Edit/Delete</a>
+        </div>
+    </div>
+    <div class="publisher-crud">
+        <a mat-button color="accent" (click)="addPublisher()">Create publisher</a>
+        <div *ngFor="let publisher of publishers">
+            <p>{{publisher.CompanyName}}</p>
+            <a mat-button (click)="editDeletePublisher(publisher)">Edit/Delete</a>
+        </div>
+    </div>
+    <div class="game-crud">
+        <a mat-button color="accent" (click)="addGame()">Create game</a>
+        <app-game-list [IsManager]="true"></app-game-list>
+    </div>
 </div>

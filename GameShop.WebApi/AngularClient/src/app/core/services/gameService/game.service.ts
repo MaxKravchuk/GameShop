@@ -75,4 +75,24 @@ export class GameService {
                 })
             );
     }
+
+    updateGame(game: Game): Observable<Game> {
+        return this.http.put<Game>(`${this.apiUrl}`, game)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
+
+    deleteGame(gameKey: string): Observable<Game> {
+        return this.http.delete<Game>(`${this.apiUrl}delete/${gameKey}`)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
 }

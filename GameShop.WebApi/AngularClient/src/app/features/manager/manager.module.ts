@@ -8,22 +8,36 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { ReactiveFormsModule } from "@angular/forms";
+import { GameModule } from "../game/game.module";
+import { ManagerRoutingModule } from "./manager-routing.module";
+import { MatOptionModule } from "@angular/material/core";
+import { MatSelectModule } from "@angular/material/select";
+import { PlatformTypeCrudComponent } from './components/dialogs/platform-type-crud/platform-type-crud.component';
+import { PublisherCrudComponent } from './components/dialogs/publisher-crud/publisher-crud.component';
+import { GameCrudComponent } from './components/dialogs/game-crud/game-crud.component';
 
 
 
 @NgModule({
-  declarations: [
-    ManagerMainComponent,
-    GenreCrudComponent
-  ],
+    declarations: [
+        ManagerMainComponent,
+        GenreCrudComponent,
+        PlatformTypeCrudComponent,
+        PublisherCrudComponent,
+        GameCrudComponent
+    ],
     imports: [
+        ManagerRoutingModule,
         CommonModule,
         MatButtonModule,
         RouterLink,
         MatDialogModule,
         MatFormFieldModule,
         MatInputModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        GameModule,
+        MatOptionModule,
+        MatSelectModule
     ]
 })
 export class ManagerModule { }

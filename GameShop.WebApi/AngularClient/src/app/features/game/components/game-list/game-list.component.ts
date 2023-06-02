@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Game } from "../../../../core/models/Game";
 import { GameService } from "../../../../core/services/gameService/game.service";
 import { PagedList } from "../../../../core/models/PagedList";
@@ -6,6 +6,9 @@ import { Subscription } from "rxjs";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
 import { Router } from "@angular/router";
 import { FilterModel } from "../../../../core/models/FilterModel";
+import { MatDialog } from "@angular/material/dialog";
+import { GenreCrudComponent } from "../../../manager/components/dialogs/genre-crud/genre-crud.component";
+import { GameCrudComponent } from "../../../manager/components/dialogs/game-crud/game-crud.component";
 
 @Component({
     selector: 'app-game-list',
@@ -13,6 +16,8 @@ import { FilterModel } from "../../../../core/models/FilterModel";
     styleUrls: ['./game-list.component.css']
 })
 export class GameListComponent implements OnInit, OnDestroy {
+
+    @Input() IsManager?: boolean;
 
     games?: Game[] = [];
 
@@ -34,6 +39,7 @@ export class GameListComponent implements OnInit, OnDestroy {
         private gameService: GameService,
         private sharedService: SharedService<FilterModel>,
         private router: Router,
+        private dialog: MatDialog
     ) {}
 
     ngOnInit(): void {
@@ -63,6 +69,21 @@ export class GameListComponent implements OnInit, OnDestroy {
     nextPage(): void {
         this.pageIndex++;
         this.updateGames(this.receivedData!);
+    }
+
+    editDeleteGame(game: Game): void {
+        const dialogRef = this.dialog.open(GameCrudComponent, {
+            autoFocus: false,
+            data: {
+                game: game,
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((requireReload:boolean): void => {
+            if(requireReload) {
+                this.ngOnInit();
+            }
+        });
     }
 
     private updateGames(filterParams: FilterModel): void {

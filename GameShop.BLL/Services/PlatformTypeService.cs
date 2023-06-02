@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -42,6 +43,14 @@ namespace GameShop.BLL.Services
             if (platformType == null)
             {
                 throw new NotFoundException($"Platform type with id {id} does not found");
+            }
+
+            var games = await _unitOfWork.GameRepository
+                .GetQuery(filter: g => g.GamePlatformTypes.Any(pt => pt.Type == platformType.Type)).ToListAsync();
+            foreach (var game in games)
+            {
+                game.GamePlatformTypes.Remove(platformType);
+                _unitOfWork.GameRepository.Update(game);
             }
 
             _unitOfWork.PlatformTypeRepository.Delete(platformType);

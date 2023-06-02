@@ -181,6 +181,10 @@
     <Compile Include="Migrations\202306010908100_OptionalUserRolechange.designer.cs">
       <DependentUpon>202306010908100_OptionalUserRolechange.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306021319079_OptionalPublisherForGame.cs" />
+    <Compile Include="Migrations\202306021319079_OptionalPublisherForGame.designer.cs">
+      <DependentUpon>202306021319079_OptionalPublisherForGame.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Interfaces\IRepository.cs" />
@@ -242,6 +246,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306010908100_OptionalUserRolechange.resx">
       <DependentUpon>202306010908100_OptionalUserRolechange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306021319079_OptionalPublisherForGame.resx">
+      <DependentUpon>202306021319079_OptionalPublisherForGame.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

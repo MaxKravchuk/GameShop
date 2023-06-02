@@ -45,6 +45,8 @@ namespace GameShop.WebApi.App_Start
             CreateMap<Genre, GenreReadListDTO>();
 
             CreateMap<PlatformType, PlatformTypeReadListDTO>();
+            CreateMap<PlatformTypeCreateDTO, PlatformType>();
+            CreateMap<PlatformTypeUpdateDTO, PlatformType>();
 
             CreateMap<Game, GameReadDTO>()
                 .ForMember(dest => dest.PlatformTypes, opt => opt.MapFrom(src => src.GamePlatformTypes))

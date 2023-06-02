@@ -47,7 +47,7 @@ export class PlatformTypeService {
     }
 
     deletePlatformType(id: number): Observable<PlatformType> {
-        return this.http.delete<PlatformType>(`${this.apiUrl}${id}`)
+        return this.http.delete<PlatformType>(`${this.apiUrl}`, {params:{platformTypeId: id}})
             .pipe(
                 catchError(err => {
                     this.utilsService.handleError(err);

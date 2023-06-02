@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlatformCreateComponent } from './platform-create.component';
+import { PublisherCrudComponent } from './publisher-crud.component';
 
-describe('PlatformCreateComponent', () => {
-  let component: PlatformCreateComponent;
-  let fixture: ComponentFixture<PlatformCreateComponent>;
+describe('PublisherCrudComponent', () => {
+  let component: PublisherCrudComponent;
+  let fixture: ComponentFixture<PublisherCrudComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PlatformCreateComponent ]
+      declarations: [ PublisherCrudComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PlatformCreateComponent);
+    fixture = TestBed.createComponent(PublisherCrudComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
