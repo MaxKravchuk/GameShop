@@ -29,11 +29,13 @@
             </div>
             <div class="right-buttons">
                 <a
+                    *ngIf="isModerator"
                     mat-raised-button
                     color="warn"
                     (click)="deleteComment()"
                 >Delete</a>
                 <a
+                    *ngIf="isModerator"
                     mat-raised-button
                     color="warn"
                     routerLink="/comment/ban"

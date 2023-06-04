@@ -49,7 +49,7 @@ namespace GameShop.BLL.Services
         {
             if (string.IsNullOrEmpty(userCreateDTO.NickName) || string.IsNullOrEmpty(userCreateDTO.Password))
             {
-                throw new BadRequestException();
+                throw new BadRequestException("Invalid credentials");
             }
 
             var user = await _unitOfWork.UserRepository.GetQuery(filter: u => u.NickName == userCreateDTO.NickName)
@@ -66,7 +66,7 @@ namespace GameShop.BLL.Services
 
             if (user == null)
             {
-                throw new NotFoundException();
+                throw new NotFoundException($"User with nickname {nickName} was not found");
             }
 
             return user.UserRole.Name;
@@ -84,10 +84,10 @@ namespace GameShop.BLL.Services
             _unitOfWork.UserRepository.Insert(user);
             await _unitOfWork.SaveAsync();
 
-            _loggerManager.LogInfo($"User with nickname {user.NickName} created succesfully");
+            _loggerManager.LogInfo($"User with nickname {user.NickName} was created succesfully");
         }
 
-        public async Task CreateUserWithRoleAsync(UserWithRoleCreateDTO userWithRoleCreateDTO)
+        public async Task CreateUserWithRoleAsync(UserCreateWithRoleDTO userWithRoleCreateDTO)
         {
             await _validator.ValidateAndThrowAsync(userWithRoleCreateDTO);
 
@@ -113,7 +113,7 @@ namespace GameShop.BLL.Services
             var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
             if (user == null)
             {
-                throw new NotFoundException($"User with id {userId} does not found");
+                throw new NotFoundException($"User with id {userId} was not found");
             }
 
             _unitOfWork.UserRepository.Delete(user);
@@ -126,10 +126,10 @@ namespace GameShop.BLL.Services
             var userToUpdate = await _unitOfWork.UserRepository.GetByIdAsync(userUpdateDTO.Id);
             var role = await _unitOfWork.RoleRepository.GetByIdAsync(userUpdateDTO.RoleId);
 
-            if (userToUpdate == null)
+            if (userToUpdate == null || role == null)
             {
                 throw new NotFoundException($"User with nickname {userUpdateDTO.Id} or " +
-                    $"role with id {userUpdateDTO.RoleId} does not found");
+                    $"role with id {userUpdateDTO.RoleId} were not found");
             }
 
             userToUpdate.RoleId = role.Id;

@@ -37,14 +37,6 @@ namespace GameShop.WebApi.Controllers
             return Ok();
         }
 
-        [HttpPut]
-        [Route()]
-        public async Task<IHttpActionResult> UpdateRoleAsync([FromBody] RoleUpdateReadListDTO roleUpdateReadListDTO)
-        {
-            await _roleService.UpdateRoleAsync(roleUpdateReadListDTO);
-            return Ok();
-        }
-
         [HttpDelete]
         [Route()]
         public async Task<IHttpActionResult> DeleteRoleAsync(int roleId)

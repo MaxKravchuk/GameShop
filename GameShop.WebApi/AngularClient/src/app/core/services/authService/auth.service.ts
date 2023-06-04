@@ -91,7 +91,7 @@ export class AuthService {
     }
 
     isInRole(role:string): boolean {
-        return role === this.getRole();
+        return role === this.getRole()?.trim();
     }
 
     getAccessToken(): string | null {

@@ -18,6 +18,7 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatSliderModule } from "@angular/material/slider";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatPaginatorModule } from "@angular/material/paginator";
+import { NgSelectModule } from "@ng-select/ng-select";
 
 @NgModule({
     declarations: [
@@ -47,7 +48,8 @@ import { MatPaginatorModule } from "@angular/material/paginator";
         MatCheckboxModule,
         MatSliderModule,
         MatRadioModule,
-        MatPaginatorModule
+        MatPaginatorModule,
+        NgSelectModule
     ]
 })
 export class GameModule {

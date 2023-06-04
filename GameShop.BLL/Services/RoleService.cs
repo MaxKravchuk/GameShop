@@ -20,7 +20,7 @@ namespace GameShop.BLL.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
-        private readonly IValidator<RoleBaseDTO> _validator;
+        private readonly IValidator<RoleCreateDTO> _validator;
 
         public RoleService(
             IUnitOfWork unitOfWork,
@@ -41,7 +41,7 @@ namespace GameShop.BLL.Services
             var role = _mapper.Map<Role>(roleBaseDTO);
             _unitOfWork.RoleRepository.Insert(role);
             await _unitOfWork.SaveAsync();
-            _loggerManager.LogInfo($"Role - {roleBaseDTO.Name} created successfully");
+            _loggerManager.LogInfo($"Role - {roleBaseDTO.Name} was created successfully");
         }
 
         public async Task DeleteRoleAsync(int roleId)
@@ -50,7 +50,7 @@ namespace GameShop.BLL.Services
 
             if (roleToDelete == null)
             {
-                throw new NotFoundException($"Role with id {roleId} have not found");
+                throw new NotFoundException($"Role with id {roleId} was not found");
             }
 
             var users = await _unitOfWork.UserRepository.GetQuery(filter: u => u.UserRole.Id == roleId).ToListAsync();
@@ -63,36 +63,18 @@ namespace GameShop.BLL.Services
 
             _unitOfWork.RoleRepository.HardDelete(roleToDelete);
             await _unitOfWork.SaveAsync();
-            _loggerManager.LogInfo($"Role with id {roleId} have been deleted successfully");
+            _loggerManager.LogInfo($"Role with id {roleId} was deleted successfully");
         }
 
-        public async Task<IEnumerable<RoleUpdateReadListDTO>> GetRolesAsync()
+        public async Task<IEnumerable<RoleReadListDTO>> GetRolesAsync()
         {
             var roles = await _unitOfWork.RoleRepository.GetAsync();
 
-            var rolesDTO = _mapper.Map<IEnumerable<RoleUpdateReadListDTO>>(roles);
+            var rolesDTO = _mapper.Map<IEnumerable<RoleReadListDTO>>(roles);
 
             _loggerManager.LogInfo(
                 $"Roles were returned successfully in array size of {rolesDTO.Count()}");
             return rolesDTO;
-        }
-
-        public async Task UpdateRoleAsync(RoleUpdateReadListDTO roleUpdateReadListDTO)
-        {
-            await _validator.ValidateAndThrowAsync(roleUpdateReadListDTO);
-
-            var roleToUpdate = await _unitOfWork.RoleRepository.GetByIdAsync(roleUpdateReadListDTO.Id);
-
-            if (roleToUpdate == null)
-            {
-                throw new NotFoundException($"User with nickname {roleToUpdate.Name} does not found");
-            }
-
-            _mapper.Map(roleUpdateReadListDTO, roleToUpdate);
-
-            _unitOfWork.RoleRepository.Update(roleToUpdate);
-            await _unitOfWork.SaveAsync();
-            _loggerManager.LogInfo($"Genre with id {roleToUpdate.Id} was updated successfully");
         }
     }
 }

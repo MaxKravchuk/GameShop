@@ -77,7 +77,7 @@ export class GameService {
     }
 
     updateGame(game: Game): Observable<Game> {
-        return this.http.put<Game>(`${this.apiUrl}`, game)
+        return this.http.put<Game>(`${this.apiUrl}update`, game)
             .pipe(
                 catchError(err => {
                     this.utilsService.handleError(err);

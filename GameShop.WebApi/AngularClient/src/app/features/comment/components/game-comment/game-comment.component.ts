@@ -4,6 +4,7 @@ import { CommentService } from "../../../../core/services/commentService/comment
 import { MatDialog } from "@angular/material/dialog";
 import { DeleteCommentDialogComponent } from "../delete-comment-dialog/delete-comment-dialog.component";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
+import { AuthService } from "../../../../core/services/authService/auth.service";
 
 @Component({
     selector: 'app-game-comment',
@@ -24,16 +25,17 @@ export class GameCommentComponent implements OnInit {
 
     answersIsDisplayed: boolean = false;
 
-    //comments: Comment[] = [];
+    isModerator!: boolean;
 
     constructor(
         private commentService: CommentService,
         private dialog: MatDialog,
+        private authService: AuthService,
         private sharedService: SharedService<{ action: string, parentComment: Comment }>
     ) {}
 
     ngOnInit(): void {
-
+        this.isModerator = this.authService.isInRole('Moderator');
     }
 
     onAnswerButtonClick(): void {

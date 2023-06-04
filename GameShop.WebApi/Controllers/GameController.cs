@@ -22,6 +22,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route()]
+        [JwtAuthorize]
         public async Task<IHttpActionResult> CreateGameAsync([FromBody] GameCreateDTO gameCreateViewModel)
         {
             await _gameService.CreateAsync(gameCreateViewModel);
@@ -30,6 +31,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPut]
         [Route("update")]
+        [JwtAuthorize]
         public async Task<IHttpActionResult> UpdateGameAsync([FromBody] GameUpdateDTO gameUpdateViewModel)
         {
             await _gameService.UpdateAsync(gameUpdateViewModel);
@@ -38,7 +40,6 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getDetailsByKey/{gameKey}")]
-        [JwtAuthorize]
         public async Task<IHttpActionResult> GetGameDetailsByKeyAsync(string gameKey)
         {
             var game = await _gameService.GetGameByKeyAsync(gameKey);
@@ -71,6 +72,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpDelete]
         [Route("delete/{gameKey}")]
+        [JwtAuthorize]
         public async Task<IHttpActionResult> DeleteGameAsync(string gameKey)
         {
             await _gameService.DeleteAsync(gameKey);
@@ -79,6 +81,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("downloadGame/{gameKey}")]
+        [JwtAuthorize]
         public async Task<HttpResponseMessage> DownloadGameAsync(string gameKey)
         {
             var stream = await _gameService.GenerateGameFileAsync(gameKey);

@@ -10,6 +10,8 @@ import { CartService } from "../../../../core/services/cartService/cart.service"
 import { CartItem } from "../../../../core/models/CartItem";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
 import { concatMap, forkJoin, Observable } from "rxjs";
+import { AuthService } from "../../../../core/services/authService/auth.service";
+import { compareSegments } from "@angular/compiler-cli/src/ngtsc/sourcemaps/src/segment_marker";
 
 @Component({
     selector: 'app-game-details',
@@ -20,11 +22,13 @@ export class GameDetailsComponent implements OnInit {
 
     game!: Game;
 
+    IsDeleted!: boolean;
+
     genres?: Genre[] = [];
 
     platformTypes?: PlatformType[] = [];
 
-    publisher?: Publisher;
+    publisher?: Publisher | null;
 
     gameKey?: string | null;
 
@@ -36,7 +40,8 @@ export class GameDetailsComponent implements OnInit {
         private gameService: GameService,
         private shoppingCartService: CartService,
         private utilsService: UtilsService,
-        private activeRoute: ActivatedRoute
+        private activeRoute: ActivatedRoute,
+        private authService: AuthService
     ) {}
 
     ngOnInit(): void {
@@ -95,14 +100,11 @@ export class GameDetailsComponent implements OnInit {
                 this.publisher = gameDetails.PublisherReadDTO;
                 this.isAvailable = gameDetails.UnitsInStock! > 0;
                 this.isAvailable = numberOfGames < gameDetails.UnitsInStock!;
+                this.IsDeleted = gameDetails.IsDeleted!;
+                if (this.authService.isInRole('User') && gameDetails.IsDeleted) {
+                    this.isAvailable = false;
+                }
             }
         );
-        // this.gameService.getGameDetailsByKey(Key).subscribe((data: Game): void => {
-        //     this.game = data;
-        //     this.genres = data.Genres;
-        //     this.platformTypes = data.PlatformTypes;
-        //     this.publisher = data.PublisherReadDTO;
-        //     this.isAvailable = data.UnitsInStock! > 0;
-        // });
     }
 }

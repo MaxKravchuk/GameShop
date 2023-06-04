@@ -54,11 +54,15 @@ namespace GameShop.BLL.Services
 
             var gameToAdd = _mapper.Map<Game>(newGameDTO);
 
-            var allGenres = await _unitOfWork.GenreRepository.GetAsync(
-                filter: g => newGameDTO.GenresId.Contains(g.Id));
+            var allGenres = newGameDTO.GenresId == null ?
+                    new List<Genre>() :
+                    await _unitOfWork.GenreRepository
+                        .GetQuery(filter: g => newGameDTO.GenresId.Contains(g.Id)).ToListAsync();
 
-            var allPlatformTypes = await _unitOfWork.PlatformTypeRepository.GetAsync(
-                filter: plt => newGameDTO.PlatformTypeId.Contains(plt.Id));
+            var allPlatformTypes = newGameDTO.PlatformTypeId == null ?
+                new List<PlatformType>() :
+                await _unitOfWork.PlatformTypeRepository
+                    .GetQuery(filter: plt => newGameDTO.PlatformTypeId.Contains(plt.Id)).ToListAsync();
 
             foreach (var genreId in newGameDTO.GenresId)
             {
@@ -108,9 +112,9 @@ namespace GameShop.BLL.Services
 
         public async Task<GameReadDTO> GetGameByKeyAsync(string gameKey)
         {
-            var game = (await _unitOfWork.GameRepository.GetAsync(
-                filter: g => g.Key == gameKey, includeProperties: "GamePlatformTypes,GameGenres,Publisher"))
-                    .SingleOrDefault();
+            var game = await _unitOfWork.GameRepository.GetPureQuery(
+                filter: g => g.Key == gameKey, includeProperties: "GamePlatformTypes,GameGenres,Publisher")
+                .SingleOrDefaultAsync();
 
             if (game == null)
             {
@@ -127,7 +131,7 @@ namespace GameShop.BLL.Services
             return model;
         }
 
-        public async Task<PagedListViewModel<GameReadListDTO>> GetAllGamesAsync(GameFiltersDTO gameFiltersDTO)
+        public async Task<PagedListViewModel<GameReadDTO>> GetAllGamesAsync(GameFiltersDTO gameFiltersDTO)
         {
             var query = _unitOfWork.GameRepository.GetQuery(
                 filter: null,
@@ -146,7 +150,7 @@ namespace GameShop.BLL.Services
 
             var games = await query.ToListAsync();
             var pagedGames = games.ToPagedList(gameFiltersDTO.PageNumber, gameFiltersDTO.PageSize);
-            var pagedModels = _mapper.Map<PagedListViewModel<GameReadListDTO>>(pagedGames);
+            var pagedModels = _mapper.Map<PagedListViewModel<GameReadDTO>>(pagedGames);
 
             _loggerManager.LogInfo($"Games successfully returned with array size of {pagedModels.Entities.Count()}");
             return pagedModels;
@@ -194,11 +198,15 @@ namespace GameShop.BLL.Services
             exGame.GamePlatformTypes.Clear();
             exGame.GameGenres.Clear();
 
-            var allGenres = await _unitOfWork.GenreRepository.GetAsync(
-                filter: g => updatedGameDTO.GenresId.Contains(g.Id));
+            var allGenres = updatedGameDTO.GenresId == null ?
+                    new List<Genre>() :
+                    await _unitOfWork.GenreRepository
+                        .GetQuery(filter: g => updatedGameDTO.GenresId.Contains(g.Id)).ToListAsync();
 
-            var allPlatformTypes = await _unitOfWork.PlatformTypeRepository.GetAsync(
-                filter: plt => updatedGameDTO.PlatformTypeId.Contains(plt.Id));
+            var allPlatformTypes = updatedGameDTO.PlatformTypeId == null ?
+                new List<PlatformType>() :
+                await _unitOfWork.PlatformTypeRepository
+                    .GetQuery(filter: plt => updatedGameDTO.PlatformTypeId.Contains(plt.Id)).ToListAsync();
 
             foreach (var genreId in updatedGameDTO.GenresId)
             {

@@ -7,16 +7,32 @@
         <p>Price: {{game.Price}}</p>
         <p>Units in stock: {{game.UnitsInStock}}</p>
         <p>Discontinued: {{game.Discontinued}}</p>
-        <a routerLink="/publishers/details/{{publisher!.CompanyName}}">Publisher: {{publisher!.CompanyName}}</a>
+        <p *ngIf="publisher === null">Publisher unknown</p>
+        <a *ngIf="publisher !== null"
+            routerLink="/publishers/details/{{publisher!.CompanyName}}">Publisher: {{publisher!.CompanyName}}</a>
     </div>
-    <p>Genres:</p>
-    <p *ngFor="let genre of genres">{{genre.Name}}</p>
-    <p>PlatformType:</p>
-    <p *ngFor="let platformType of platformTypes">{{platformType.Type}}</p>
+    <div [ngSwitch]="genres!.length">
+        <p>Genres:</p>
+        <div *ngSwitchCase="0">
+            <p>Other</p>
+        </div>
+        <div *ngSwitchDefault>
+            <p *ngFor="let genre of genres">{{genre.Name}}</p>
+        </div>
+    </div>
+    <div [ngSwitch]="platformTypes!.length">
+        <p>PlatformType:</p>
+        <div *ngSwitchCase="0">
+            <p>Other</p>
+        </div>
+        <div *ngSwitchDefault>
+            <p *ngFor="let platformType of platformTypes">{{platformType.Type}}</p>
+        </div>
+    </div>
     <a mat-button color="primary" (click)="downloadGame()">Download</a>
     <a mat-button
        color="accent"
        [disabled]="!isAvailable"
        (click)="buyGame()">Buy game</a>
-    <app-comments-list [gameKey]="game.Key!"></app-comments-list>
+    <app-comments-list [game]="game"></app-comments-list>
 </div>

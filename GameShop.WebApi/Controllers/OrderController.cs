@@ -2,10 +2,12 @@
 using System.Web.Http;
 using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.Services.Interfaces;
+using GameShop.WebApi.Filters;
 
 namespace GameShop.WebApi.Controllers
 {
     [RoutePrefix("api/orders")]
+    [JwtAuthorize]
     public class OrderController : ApiController
     {
         private readonly IOrderService _orderService;

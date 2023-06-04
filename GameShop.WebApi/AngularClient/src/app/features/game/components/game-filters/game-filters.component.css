@@ -24,3 +24,8 @@
     grid-template-columns: 1fr 1fr;
     grid-gap: 5px;
 }
+
+mat-optgroup:hover, mat-option:hover {
+    font-weight: bold;
+    cursor: pointer;
+}

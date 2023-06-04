@@ -49,9 +49,9 @@ export class GameCrudComponent implements OnInit {
             Name: ['', Validators.required],
             Description: ['', [Validators.required,Validators.minLength(50)]],
             Key: ['', Validators.required],
-            GenresId: ['', Validators.required],
-            PlatformTypeId: ['', Validators.required],
-            PublisherId: ['', Validators.required],
+            GenresId: [''],
+            PlatformTypeId: [''],
+            PublisherId: [''],
             Price: ['', [Validators.required, Validators.min(0)]],
             UnitsInStock: ['', [Validators.required, Validators.min(1)]],
         });
@@ -71,6 +71,10 @@ export class GameCrudComponent implements OnInit {
         }
         else {
             this.game = this.data.game;
+            this.form.patchValue(this.game);
+            this.form.controls['GenresId'].setValue(this.game.Genres?.map(x => x.Id));
+            this.form.controls['PlatformTypeId'].setValue(this.game.PlatformTypes?.map(x => x.Id));
+            this.form.controls['PublisherId'].setValue(this.game.PublisherReadDTO?.Id);
         }
     }
 
@@ -94,7 +98,13 @@ export class GameCrudComponent implements OnInit {
 
     onEditClick(): void {
         const data: CreateGameModel = this.form.value as CreateGameModel;
-        console.log(data);
+        data.Id = this.game.Id;
+        this.gameService.updateGame(data).subscribe({
+            next: (): void => {
+                this.utilsService.openWithMessage('Game updated successfully');
+                this.dialogRef.close(true);
+            }
+        });
     }
 
     onDeleteClick(): void {

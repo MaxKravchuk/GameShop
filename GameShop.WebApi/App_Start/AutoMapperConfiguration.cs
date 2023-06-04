@@ -42,7 +42,8 @@ namespace GameShop.WebApi.App_Start
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
                 .ForMember(dest => dest.Views, opt => opt.Ignore());
 
-            CreateMap<Genre, GenreReadListDTO>();
+            CreateMap<Genre, GenreReadListDTO>()
+                .ForMember(dest => dest.ParentId, opt => opt.MapFrom(src => src.ParentGenreId));
 
             CreateMap<PlatformType, PlatformTypeReadListDTO>();
             CreateMap<PlatformTypeCreateDTO, PlatformType>();
@@ -56,6 +57,11 @@ namespace GameShop.WebApi.App_Start
             CreateMap<Game, GameReadListDTO>();
 
             CreateMap<PagedList<Game>, PagedListViewModel<GameReadListDTO>>()
+                .ForMember(dest => dest.HasNext, opt => opt.MapFrom(src => src.HasNext))
+                .ForMember(dest => dest.HasPrevious, opt => opt.MapFrom(src => src.HasPrevious))
+                .ForMember(dest => dest.Entities, opt => opt.MapFrom(src => src));
+
+            CreateMap<PagedList<Game>, PagedListViewModel<GameReadDTO>>()
                 .ForMember(dest => dest.HasNext, opt => opt.MapFrom(src => src.HasNext))
                 .ForMember(dest => dest.HasPrevious, opt => opt.MapFrom(src => src.HasPrevious))
                 .ForMember(dest => dest.Entities, opt => opt.MapFrom(src => src));
@@ -91,7 +97,7 @@ namespace GameShop.WebApi.App_Start
             CreateMap<User, UserReadListDTO>()
                 .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.UserRole.Name));
 
-            CreateMap<Role, RoleUpdateReadListDTO>();
+            CreateMap<Role, RoleReadListDTO>();
             CreateMap<RoleCreateDTO, Role>();
         }
     }

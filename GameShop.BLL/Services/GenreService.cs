@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using GameShop.BLL.DTO.GenreDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services.Interfaces;
@@ -17,19 +18,24 @@ namespace GameShop.BLL.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
+        private readonly IValidator<GenreCreateDTO> _validator;
 
         public GenreService(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            ILoggerManager loggerManager)
+            ILoggerManager loggerManager,
+            IValidator<GenreCreateDTO> validator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _loggerManager = loggerManager;
+            _validator = validator;
         }
 
         public async Task CreateAsync(GenreCreateDTO genreToAddDTO)
         {
+            await _validator.ValidateAndThrowAsync(genreToAddDTO);
+
             var genreToAdd = _mapper.Map<Genre>(genreToAddDTO);
             _unitOfWork.GenreRepository.Insert(genreToAdd);
             await _unitOfWork.SaveAsync();
@@ -42,7 +48,7 @@ namespace GameShop.BLL.Services
 
             if (genreToDelete == null)
             {
-                throw new NotFoundException($"Genre with id {id} does not found");
+                throw new NotFoundException($"Genre with id {id} was not found");
             }
 
             var games = await _unitOfWork.GameRepository
@@ -69,28 +75,15 @@ namespace GameShop.BLL.Services
             return genresDTO;
         }
 
-        public async Task<GenreReadDTO> GetByIdAsync(int id)
-        {
-            var genre = await _unitOfWork.GenreRepository.GetByIdAsync(id);
-
-            if (genre == null)
-            {
-                throw new NotFoundException($"Genre with id {id} does not found");
-            }
-
-            var genreDTO = _mapper.Map<GenreReadDTO>(genre);
-
-            _loggerManager.LogInfo($"Genre with id {id} successfully returned");
-            return genreDTO;
-        }
-
         public async Task UpdateAsync(GenreUpdateDTO genreToUpdateDTO)
         {
+            await _validator.ValidateAndThrowAsync(genreToUpdateDTO);
+
             var genreToUpdate = await _unitOfWork.GenreRepository.GetByIdAsync(genreToUpdateDTO.Id);
 
             if (genreToUpdate == null)
             {
-                throw new NotFoundException($"Genre with id {genreToUpdateDTO.Id} does not found");
+                throw new NotFoundException($"Genre with id {genreToUpdateDTO.Id} was not found");
             }
 
             _mapper.Map(genreToUpdateDTO, genreToUpdate);

@@ -172,7 +172,7 @@ namespace GameShop.DAL.Context
                 new Role
                 {
                     Id = 3,
-                    Name = " Moderator"
+                    Name = "Moderator"
                 },
                 new Role
                 {
@@ -187,8 +187,29 @@ namespace GameShop.DAL.Context
                 {
                     Id = 1,
                     NickName = "Admin",
-                    PasswordHash="tPJ2961axLgS0j72JD3YXA==:sM3IkDn7jMgApmhGNDN/qhPbyek3StQcdPaucKyMOhM=",
+                    PasswordHash = "tPJ2961axLgS0j72JD3YXA==:sM3IkDn7jMgApmhGNDN/qhPbyek3StQcdPaucKyMOhM=",
                     UserRole = roles.Single(r => r.Name == "Administrator")
+                },
+                new User
+                {
+                    Id = 2,
+                    NickName = "Manager",
+                    PasswordHash = "I5/44bczTGdQIsp0//oqGg==:cPwe+gvQuAZS36MMmwp9cQcgMc/aCRCuw+kd+8udasg=",
+                    UserRole = roles.Single(r => r.Name == "Manager")
+                },
+                new User
+                {
+                    Id = 3,
+                    NickName = "Moderator",
+                    PasswordHash = "uovCGb+KE+S+3hUki/LkAw==:3Ric1fAVAojiRiruTZ/zkBO3Qi18PSiCKfgF1WqWVcs=",
+                    UserRole = roles.Single(r => r.Name == "Moderator")
+                },
+                new User
+                {
+                    Id = 4,
+                    NickName = "User",
+                    PasswordHash = "TTxTccL/Xi9IMO8/SGndIw==:QrhN4yc0Pl3IrPYtSYaHkQMt9FmW7N4wkzGCnzYusSs=",
+                    UserRole = roles.Single(r => r.Name == "User")
                 }
             };
 

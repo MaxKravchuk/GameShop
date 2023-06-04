@@ -6,6 +6,6 @@
         [comment]="rootComment"
         [replies]="comments | repliesPipe:rootComment.Id!"
         [parentComment]="rootComment"
-        [gameKey]="gameKey!"></app-game-comment>
+        [gameKey]="game.Key!"></app-game-comment>
 </div>
-<app-create-comment [gameKey]="gameKey!"></app-create-comment>
+<app-create-comment [game]="game"></app-create-comment>

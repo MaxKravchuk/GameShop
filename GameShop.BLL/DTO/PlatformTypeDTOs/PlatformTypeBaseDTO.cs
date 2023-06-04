@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameShop.BLL.DTO.UserDTOs
+namespace GameShop.BLL.DTO.PlatformTypeDTOs
 {
-    public class UserWithRoleCreateDTO : UserCreateDTO
+    public class PlatformTypeBaseDTO
     {
-        public int RoleId { get; set; }
+        public string Type { get; set; }
     }
 }

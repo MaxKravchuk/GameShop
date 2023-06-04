@@ -10,8 +10,6 @@ namespace GameShop.BLL.Services.Interfaces
 
         Task<IEnumerable<GenreReadListDTO>> GetAsync();
 
-        Task<GenreReadDTO> GetByIdAsync(int id);
-
         Task UpdateAsync(GenreUpdateDTO genreToUpdateDTO);
 
         Task DeleteAsync(int id);

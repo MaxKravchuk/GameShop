@@ -22,6 +22,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route("leaveComment")]
+        [JwtAuthorize]
         public async Task<IHttpActionResult> CreateCommentAsync([FromBody] CommentCreateDTO commentCreateViewModel)
         {
             await _commentService.CreateAsync(commentCreateViewModel);
@@ -38,6 +39,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpDelete]
         [Route("deleteComment/{commentId}")]
+        [JwtAuthorize]
         public async Task<IHttpActionResult> DeleteCommentAsync([FromUri] int commentId)
         {
             await _commentService.DeleteAsync(commentId);
@@ -46,6 +48,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route("ban")]
+        [JwtAuthorize]
         public IHttpActionResult Ban([FromBody] string banDuration)
         {
             _commentBanService.Ban(banDuration);

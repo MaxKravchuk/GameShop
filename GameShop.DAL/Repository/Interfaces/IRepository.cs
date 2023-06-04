@@ -14,6 +14,11 @@ namespace GameShop.DAL.Repository.Interfaces
               Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
               string includeProperties = "");
 
+        IQueryable<T> GetPureQuery(
+            Expression<Func<T, bool>> filter,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            string includeProperties = "");
+
         Task<IEnumerable<T>> GetAsync(
             Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,

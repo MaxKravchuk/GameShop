@@ -27,16 +27,6 @@ export class UserService {
             );
     }
 
-    createUser(user: User): Observable<User> {
-        return this.http.post<User>(`${this.apiUrl}createUser`, user)
-            .pipe(
-                catchError(err => {
-                    this.utilsService.handleError(err);
-                    return [];
-                })
-            );
-    }
-
     createUserWithRole(user: User): Observable<User>{
         return this.http.post<User>(`${this.apiUrl}createUserWithRole`, user)
             .pipe(

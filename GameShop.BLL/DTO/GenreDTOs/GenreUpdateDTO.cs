@@ -2,7 +2,7 @@
 
 namespace GameShop.BLL.DTO.GenreDTOs
 {
-    public class GenreUpdateDTO : GenreBaseDTO
+    public class GenreUpdateDTO : GenreCreateDTO
     {
         public int Id { get; set; }
     }

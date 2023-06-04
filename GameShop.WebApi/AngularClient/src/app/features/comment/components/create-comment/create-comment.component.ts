@@ -5,6 +5,8 @@ import { Comment } from "../../../../core/models/Comment";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
 import { Subscription } from "rxjs";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
+import { Game } from "../../../../core/models/Game";
+import { AuthService } from "../../../../core/services/authService/auth.service";
 
 @Component({
     selector: 'app-create-comment',
@@ -13,7 +15,7 @@ import { UtilsService } from "../../../../core/services/helpers/utilsService/uti
 })
 export class CreateCommentComponent implements OnInit, OnDestroy {
 
-    @Input() gameKey?: string;
+    @Input() game!: Game;
 
     parentComment?: Comment = undefined;
 
@@ -23,11 +25,14 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
 
     getCommentActionSubscription: Subscription = new Subscription();
 
+    IsCommentable: boolean = true;
+
     constructor(
         private formBuilder: FormBuilder,
         private commentService: CommentService,
         private sharedService: SharedService<{ action: string, parentComment: Comment }>,
-        private utilsService: UtilsService
+        private utilsService: UtilsService,
+        private authService: AuthService
     ) {}
 
     ngOnInit(): void {
@@ -35,6 +40,11 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
             Name: ['', Validators.required],
             Body: ['', Validators.required]
         });
+
+        if (this.authService.isInRole('User') && this.game.IsDeleted!) {
+            console.log(this.authService.isInRole('User'), this.game.IsDeleted!);
+            this.IsCommentable = false;
+        }
 
         this.getCommentActionSubscription = this.sharedService.getData$().subscribe({
             next: (data: { action: string, parentComment: Comment }): void => {
@@ -60,7 +70,7 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
 
         const data: Comment = {
             ...this.form.value,
-            GameKey: this.gameKey,
+            GameKey: this.game.Key!,
             ParentId: this.parentComment?.Id,
             HasQuotation: this.action === 'quote'
         } as Comment;

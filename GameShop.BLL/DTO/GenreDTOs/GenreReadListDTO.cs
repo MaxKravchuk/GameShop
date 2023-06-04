@@ -1,4 +1,6 @@
-﻿namespace GameShop.BLL.DTO.GenreDTOs
+﻿using System.Collections.Generic;
+
+namespace GameShop.BLL.DTO.GenreDTOs
 {
     public class GenreReadListDTO : GenreBaseDTO
     {

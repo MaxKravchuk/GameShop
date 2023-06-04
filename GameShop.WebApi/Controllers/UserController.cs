@@ -30,16 +30,8 @@ namespace GameShop.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("createUser")]
-        public async Task<IHttpActionResult> CreateNewUserAsync([FromBody] UserCreateDTO userCreateDTO)
-        {
-            await _userService.CreateUserAsync(userCreateDTO);
-            return Ok();
-        }
-
-        [HttpPost]
         [Route("createUserWithRole")]
-        public async Task<IHttpActionResult> CreateNewUserWithRoleAsync([FromBody] UserWithRoleCreateDTO userWithRoleCreateDTO)
+        public async Task<IHttpActionResult> CreateNewUserWithRoleAsync([FromBody] UserCreateWithRoleDTO userWithRoleCreateDTO)
         {
             await _userService.CreateUserWithRoleAsync(userWithRoleCreateDTO);
             return Ok();

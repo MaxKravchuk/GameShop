@@ -5,7 +5,9 @@ using AutoMapper;
 using FluentValidation;
 using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.DTO.GameDTOs;
+using GameShop.BLL.DTO.GenreDTOs;
 using GameShop.BLL.DTO.OrderDTOs;
+using GameShop.BLL.DTO.PlatformTypeDTOs;
 using GameShop.BLL.DTO.PublisherDTOs;
 using GameShop.BLL.DTO.RedisDTOs;
 using GameShop.BLL.DTO.RoleDTOs;
@@ -105,6 +107,10 @@ namespace GameShop.WebApi
             container.RegisterType<IValidator<OrderCreateDTO>, OrderCreateDtoValidator>
                 (new ContainerControlledLifetimeManager());
             container.RegisterType<IValidator<UserCreateDTO>, UserCreateDtoValidator>
+                (new ContainerControlledLifetimeManager());
+            container.RegisterType<IValidator<GenreCreateDTO>, GenreCreateDtoValidator>
+                (new ContainerControlledLifetimeManager());
+            container.RegisterType<IValidator<PlatformTypeCreateDTO>, PlatformTypeCreateDtoValidator>
                 (new ContainerControlledLifetimeManager());
             container.RegisterType<IValidator<RoleBaseDTO>, RoleCreateDtoValidator>
                 (new ContainerControlledLifetimeManager());

@@ -34,6 +34,7 @@ namespace GameShop.BLL.Services
         public async Task CreatePublisherAsync(PublisherCreateDTO publisherCreateDTO)
         {
             await _validator.ValidateAndThrowAsync(publisherCreateDTO);
+
             var newPublisher = _mapper.Map<Publisher>(publisherCreateDTO);
             _unitOfWork.PublisherRepository.Insert(newPublisher);
             await _unitOfWork.SaveAsync();
@@ -69,10 +70,12 @@ namespace GameShop.BLL.Services
 
         public async Task UpdatePublisherAsync(PublisherUpdateDTO publisherUpdateDTO)
         {
+            await _validator.ValidateAndThrowAsync(publisherUpdateDTO);
+
             var publisherToUpdate = await _unitOfWork.PublisherRepository.GetByIdAsync(publisherUpdateDTO.Id);
             if (publisherToUpdate == null)
             {
-                throw new NotFoundException();
+                throw new NotFoundException($"Publisher with id {publisherUpdateDTO.Id} was not found");
             }
 
             _mapper.Map(publisherUpdateDTO, publisherToUpdate);
@@ -87,7 +90,7 @@ namespace GameShop.BLL.Services
             var publisherToDelete = await _unitOfWork.PublisherRepository.GetByIdAsync(publisherId);
             if (publisherToDelete == null)
             {
-                throw new NotFoundException();
+                throw new NotFoundException($"Publisher with id {publisherId} was not found");
             }
 
             var games = await _unitOfWork.GameRepository.GetAsync(filter: g => g.PublisherId == publisherId);

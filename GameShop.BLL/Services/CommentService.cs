@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -93,8 +94,8 @@ namespace GameShop.BLL.Services
                 throw new BadRequestException("An empty game key is set");
             }
 
-            var games = await _unitOfWork.GameRepository.GetAsync(filter: g => g.Key == gameKey);
-            var game = games.SingleOrDefault();
+            var game = await _unitOfWork.GameRepository
+                .GetPureQuery(filter: g => g.Key == gameKey).SingleOrDefaultAsync();
 
             if (game == null)
             {

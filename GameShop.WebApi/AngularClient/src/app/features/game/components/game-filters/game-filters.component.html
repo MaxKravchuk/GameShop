@@ -54,10 +54,10 @@
                 formControlName="GenreIds"
                 multiple>
                 <mat-option
-                    *ngFor="let gameGenre of genres"
-                    [value]="gameGenre.Id"
+                    *ngFor="let genre of genres"
+                    [value]="genre.Id"
                     (click)="handleChanges($event)">
-                    {{gameGenre.Name}}
+                    {{genre.Name}}
                 </mat-option>
             </mat-select>
         </mat-form-field>

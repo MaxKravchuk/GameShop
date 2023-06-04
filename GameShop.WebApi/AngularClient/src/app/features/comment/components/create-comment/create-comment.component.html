@@ -34,7 +34,11 @@
         </p>
     </div>
     <div class="buttons-div">
-        <button mat-raised-button type="submit" color="primary" [disabled]="!form.valid" (click)="onSaveForm()">
+        <button mat-raised-button
+                type="submit"
+                color="primary"
+                [disabled]="!(form.valid && IsCommentable)"
+                (click)="onSaveForm()">
             Comment
         </button>
     </div>

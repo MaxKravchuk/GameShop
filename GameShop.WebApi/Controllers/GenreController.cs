@@ -27,6 +27,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route()]
+        [JwtAuthorize]
         public async Task<IHttpActionResult> CreateGenreAsync([FromBody] GenreCreateDTO genreCreateDTO)
         {
             await _genreService.CreateAsync(genreCreateDTO);
@@ -35,6 +36,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPut]
         [Route()]
+        [JwtAuthorize]
         public async Task<IHttpActionResult> UpdateGenreAsync([FromBody] GenreUpdateDTO genreUpdateDTO)
         {
             await _genreService.UpdateAsync(genreUpdateDTO);
@@ -43,6 +45,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpDelete]
         [Route("{genreId}")]
+        [JwtAuthorize]
         public async Task<IHttpActionResult> DeleteGenreAsync(int genreId)
         {
             await _genreService.DeleteAsync(genreId);

@@ -18,6 +18,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route()]
+        [JwtAuthorize]
         public async Task<IHttpActionResult> CreatePublisherAsync([FromBody] PublisherCreateDTO publisherCreateDTO)
         {
             await _publisherService.CreatePublisherAsync(publisherCreateDTO);
@@ -42,6 +43,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPut]
         [Route()]
+        [JwtAuthorize]
         public async Task<IHttpActionResult> UpdatePublisherAsync([FromBody] PublisherUpdateDTO publisherUpdateDTO)
         {
             await _publisherService.UpdatePublisherAsync(publisherUpdateDTO);
@@ -50,6 +52,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpDelete]
         [Route()]
+        [JwtAuthorize]
         public async Task<IHttpActionResult> DeletePublisherAsync(int publisherId)
         {
             await _publisherService.DeletePublisherAsync(publisherId);

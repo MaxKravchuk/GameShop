@@ -13,8 +13,6 @@ namespace GameShop.BLL.Services.Interfaces
 
         Task DeleteRoleAsync(int roleId);
 
-        Task UpdateRoleAsync(RoleUpdateReadListDTO roleBaseDTO);
-
-        Task<IEnumerable<RoleUpdateReadListDTO>> GetRolesAsync();
+        Task<IEnumerable<RoleReadListDTO>> GetRolesAsync();
     }
 }

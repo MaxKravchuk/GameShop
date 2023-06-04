@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using GameShop.BLL.DTO.PlatformTypeDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services.Interfaces;
@@ -17,19 +18,24 @@ namespace GameShop.BLL.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
+        private readonly IValidator<PlatformTypeCreateDTO> _validator;
 
         public PlatformTypeService(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            ILoggerManager loggerManager)
+            ILoggerManager loggerManager,
+            IValidator<PlatformTypeCreateDTO> validator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _loggerManager = loggerManager;
+            _validator = validator;
         }
 
         public async Task CreateAsync(PlatformTypeCreateDTO platformTypeToAddDTO)
         {
+            await _validator.ValidateAndThrowAsync(platformTypeToAddDTO);
+
             var platformTypeToAdd = _mapper.Map<PlatformType>(platformTypeToAddDTO);
             _unitOfWork.PlatformTypeRepository.Insert(platformTypeToAdd);
             await _unitOfWork.SaveAsync();
@@ -42,7 +48,7 @@ namespace GameShop.BLL.Services
 
             if (platformType == null)
             {
-                throw new NotFoundException($"Platform type with id {id} does not found");
+                throw new NotFoundException($"Platform type with id {id} was not found");
             }
 
             var games = await _unitOfWork.GameRepository
@@ -71,12 +77,14 @@ namespace GameShop.BLL.Services
 
         public async Task UpdateAsync(PlatformTypeUpdateDTO platformTypeToUpdateDTO)
         {
+            await _validator.ValidateAndThrowAsync(platformTypeToUpdateDTO);
+
             var platformTypeToUpdate = (await _unitOfWork.PlatformTypeRepository.GetAsync(
                 filter: plt => plt.Type == platformTypeToUpdateDTO.Type)).SingleOrDefault();
 
             if (platformTypeToUpdate == null)
             {
-                throw new NotFoundException($"Platform type with type {platformTypeToUpdateDTO.Type} does not found");
+                throw new NotFoundException($"Platform type with type {platformTypeToUpdateDTO.Type} was not found");
             }
 
             _mapper.Map(platformTypeToUpdateDTO, platformTypeToUpdate);

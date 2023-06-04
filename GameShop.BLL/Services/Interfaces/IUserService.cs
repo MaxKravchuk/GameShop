@@ -17,7 +17,7 @@ namespace GameShop.BLL.Services.Interfaces
 
         Task CreateUserAsync(UserCreateDTO userCreateDTO);
 
-        Task CreateUserWithRoleAsync(UserWithRoleCreateDTO userWithRoleCreateDTO);
+        Task CreateUserWithRoleAsync(UserCreateWithRoleDTO userWithRoleCreateDTO);
 
         Task UpdateUserAsync(UserUpdateDTO userUpdateDTO);
 

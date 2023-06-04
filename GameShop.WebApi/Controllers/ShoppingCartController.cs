@@ -2,10 +2,12 @@
 using System.Web.Http;
 using GameShop.BLL.DTO.RedisDTOs;
 using GameShop.BLL.Services.Interfaces;
+using GameShop.WebApi.Filters;
 
 namespace GameShop.WebApi.Controllers
 {
     [RoutePrefix("api/shoppingcart")]
+    [JwtAuthorize]
     public class ShoppingCartController : ApiController
     {
         private readonly IShoppingCartService _shoppingCartService;
