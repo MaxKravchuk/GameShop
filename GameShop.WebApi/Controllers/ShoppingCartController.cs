@@ -26,25 +26,25 @@ namespace GameShop.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("getAll")]
-        public async Task<IHttpActionResult> GetGamesFromCartAsync()
+        [Route("getAll/{customerId}")]
+        public async Task<IHttpActionResult> GetGamesFromCartAsync(int customerId)
         {
-            return Json(await _shoppingCartService.GetCartItemsAsync());
+            return Json(await _shoppingCartService.GetCartItemsAsync(customerId));
         }
 
         [HttpDelete]
-        [Route("delete/{gameKey}")]
-        public async Task<IHttpActionResult> DeleteGameFromCartAsync(string gameKey)
+        [Route("delete/{customerId}-{gameKey}")]
+        public async Task<IHttpActionResult> DeleteGameFromCartAsync(int customerId, string gameKey)
         {
-            await _shoppingCartService.DeleteItemFromListAsync(gameKey);
+            await _shoppingCartService.DeleteItemFromListAsync(customerId, gameKey);
             return Ok();
         }
 
         [HttpGet]
-        [Route("numberOfGames/{gameKey}")]
-        public async Task<IHttpActionResult> GetNumberOfGamesInCartByGameKeyAsync(string gameKey)
+        [Route("numberOfGames/{customerId}-{gameKey}")]
+        public async Task<IHttpActionResult> GetNumberOfGamesInCartByGameKeyAsync(int customerId, string gameKey)
         {
-            var numberOfGames = await _shoppingCartService.GetNumberOfGamesByGameKeyAsync(gameKey);
+            var numberOfGames = await _shoppingCartService.GetNumberOfGamesByGameKeyAsync(customerId, gameKey);
             return Json(numberOfGames);
         }
     }

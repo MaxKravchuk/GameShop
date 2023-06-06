@@ -36,7 +36,8 @@ namespace GameShop.WebApi.Controllers
             }
 
             var role = await _userService.GetRoleAsync(userCreateDTO.NickName);
-            var authResponse = _jwtTokenProvider.GetAuthenticatedResponse(userCreateDTO.NickName, role);
+            var userId = await _userService.GetIdAsync(userCreateDTO.NickName);
+            var authResponse = _jwtTokenProvider.GetAuthenticatedResponse(userId, userCreateDTO.NickName, role);
             await _usersTokenService.AddUserTokenAsync(userCreateDTO.NickName, authResponse.RefreshToken);
 
             return Json(authResponse);

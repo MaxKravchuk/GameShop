@@ -69,7 +69,7 @@ export class AuthService {
         if (tokenStr != null){
             try{
                 const bearerToken : any = jwtDecode(tokenStr);
-                return bearerToken.Name;
+                return bearerToken.Id;
             }
             catch(err){
                 return null;

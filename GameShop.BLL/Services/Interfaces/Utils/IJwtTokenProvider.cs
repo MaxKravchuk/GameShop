@@ -10,12 +10,12 @@ namespace GameShop.BLL.Services.Interfaces.Utils
 {
     public interface IJwtTokenProvider
     {
-        string GenerateToken(string username, string role);
+        string GenerateToken(int id, string username, string role);
 
         string GenerateRefreshToken();
 
         ClaimsPrincipal ValidateToken(string token);
 
-        AuthenticatedResponse GetAuthenticatedResponse(string username, string role);
+        AuthenticatedResponse GetAuthenticatedResponse(int id, string username, string role);
     }
 }

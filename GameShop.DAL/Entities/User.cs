@@ -19,5 +19,7 @@ namespace GameShop.DAL.Entities
         public UserTokens RefreshToken { get; set; }
 
         public int RefreshTokenId { get; set; }
+
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }

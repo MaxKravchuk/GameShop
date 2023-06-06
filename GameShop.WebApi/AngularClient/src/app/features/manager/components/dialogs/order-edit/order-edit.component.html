@@ -1,0 +1,55 @@
+<h1 mat-dialog-title>Edit order</h1>
+<div mat-dialog-content>
+    <div class="order-info">
+        <p>Customer nick name: {{ order.CustomerNickName }}</p>
+        <p>OrderedAt: {{ order.OrderedAt | date }}</p>
+    </div>
+    <div [formGroup]="form" class="create-form">
+        <div class="mat-title">You are editing order {{order.Id}}</div>
+        <div>
+            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-label>Order status</mat-label>
+                <mat-select formControlName="Status">
+                    <mat-option *ngFor="let status of statuses" [value]="status">
+                        {{ status }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="order-details" formArrayName="OrderDetails">
+            <div *ngFor="let orderDetail of orderDetails.controls; let i = index" [formGroupName]="i" class="order-detail">
+                <p>{{orderDetail.get('GameKey')?.value}}</p>
+                <div>
+                    <mat-form-field [ngStyle]="{'width':'225px'}" appearance="outline">
+                        <mat-label>Quantity</mat-label>
+                        <input
+                            matInput
+                            formControlName="Quantity"
+                            type="string">
+                        <mat-hint>Number must be greater than 1</mat-hint>
+                        <mat-error *ngIf="orderDetail.get('Quantity')?.invalid">Number must be greater than 1</mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field [ngStyle]="{'width':'225px'}" appearance="outline">
+                        <mat-label>Discount</mat-label>
+                        <input
+                            matInput
+                            formControlName="Discount"
+                            type="string">
+                        <mat-hint>Number must be greater than 0</mat-hint>
+                        <mat-error *ngIf="orderDetail.get('Discount')?.invalid">Number must be greater than 0</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-stroked-button (click)="onNoClick()">Discard</button>
+    <button
+        [disabled]="!form.valid"
+        mat-raised-button color="warn" (click)="onEditClick()"
+    >Edit
+    </button>
+</div>

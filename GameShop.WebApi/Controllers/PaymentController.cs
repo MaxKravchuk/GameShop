@@ -29,7 +29,7 @@ namespace GameShop.WebApi.Controllers
         public async Task<IHttpActionResult> GetInvoiceAsync([FromBody] PaymentCreateDTO paymentCreateDTO)
         {
             var paymentResult = await _paymentService.ExecutePaymentAsync(paymentCreateDTO);
-            await _shoppingCartService.CleatCartAsync();
+            await _shoppingCartService.CleatCartAsync(paymentCreateDTO.CustomerId);
 
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
             result.Content = new StreamContent(paymentResult.InvoiceMemoryStream);
@@ -48,7 +48,7 @@ namespace GameShop.WebApi.Controllers
         public async Task<IHttpActionResult> PayAsync([FromBody] PaymentCreateDTO paymentCreateDTO)
         {
             var paymentResult = await _paymentService.ExecutePaymentAsync(paymentCreateDTO);
-            await _shoppingCartService.CleatCartAsync();
+            await _shoppingCartService.CleatCartAsync(paymentCreateDTO.CustomerId);
             return Json(paymentResult.OrderId);
         }
     }

@@ -15,6 +15,8 @@ import { MatSelectModule } from "@angular/material/select";
 import { PlatformTypeCrudComponent } from './components/dialogs/platform-type-crud/platform-type-crud.component';
 import { PublisherCrudComponent } from './components/dialogs/publisher-crud/publisher-crud.component';
 import { GameCrudComponent } from './components/dialogs/game-crud/game-crud.component';
+import { OrdersMainComponent } from './components/orders-main/orders-main.component';
+import { OrderEditComponent } from './components/dialogs/order-edit/order-edit.component';
 
 
 
@@ -24,7 +26,9 @@ import { GameCrudComponent } from './components/dialogs/game-crud/game-crud.comp
         GenreCrudComponent,
         PlatformTypeCrudComponent,
         PublisherCrudComponent,
-        GameCrudComponent
+        GameCrudComponent,
+        OrdersMainComponent,
+        OrderEditComponent
     ],
     imports: [
         ManagerRoutingModule,

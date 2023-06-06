@@ -2,6 +2,7 @@
 using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.DTO.GenreDTOs;
+using GameShop.BLL.DTO.OrderDetails;
 using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.DTO.PlatformTypeDTOs;
@@ -61,11 +62,6 @@ namespace GameShop.WebApi.App_Start
                 .ForMember(dest => dest.HasPrevious, opt => opt.MapFrom(src => src.HasPrevious))
                 .ForMember(dest => dest.Entities, opt => opt.MapFrom(src => src));
 
-            CreateMap<PagedList<Game>, PagedListViewModel<GameReadDTO>>()
-                .ForMember(dest => dest.HasNext, opt => opt.MapFrom(src => src.HasNext))
-                .ForMember(dest => dest.HasPrevious, opt => opt.MapFrom(src => src.HasPrevious))
-                .ForMember(dest => dest.Entities, opt => opt.MapFrom(src => src));
-
             CreateMap<GameUpdateDTO, Game>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
@@ -92,6 +88,16 @@ namespace GameShop.WebApi.App_Start
                 .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
                 .ForMember(dest => dest.ListOfOrderDetails, opt => opt.Ignore())
                 .ForMember(dest => dest.IsPaid, opt => opt.Ignore());
+
+            CreateMap<Order, OrderReadListDTO>()
+                .ForMember(dest => dest.CustomerNickName, opt => opt.MapFrom(src => src.Customer.NickName));
+
+            CreateMap<Order, OrderReadDTO>()
+                .ForMember(dest => dest.OrderDetails, opt => opt.MapFrom(src => src.ListOfOrderDetails))
+                .ForMember(dest => dest.CustomerNickName, opt => opt.MapFrom(src => src.Customer.NickName));
+
+            CreateMap<OrderDetails, OrderDetailsReadListDTO>()
+                .ForMember(dest => dest.GameKey, opt => opt.MapFrom(src => src.Game.Key));
 
             CreateMap<UserCreateDTO, User>();
             CreateMap<User, UserReadListDTO>()

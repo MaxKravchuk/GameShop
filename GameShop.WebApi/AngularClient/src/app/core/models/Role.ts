@@ -1,6 +1,6 @@
-export interface Role {
+import { BaseModel } from "./BaseModel";
 
-    Id?: number;
+export interface Role extends BaseModel {
 
     Name?: string;
 }

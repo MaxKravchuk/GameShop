@@ -35,7 +35,7 @@ export class OrderMainComponent implements OnInit{
         this.customerId = history.state.customerId;
         this.currentOrderId = history.state.orderId;
 
-        this.cartService.getCartItems().subscribe(
+        this.cartService.getCartItems(history.state.customerId!).subscribe(
             (data: CartItem[]): void => {
                 this.cartItems = data;
                 this.getTotal();

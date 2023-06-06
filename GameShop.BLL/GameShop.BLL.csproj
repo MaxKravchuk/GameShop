@@ -157,7 +157,12 @@
     <Compile Include="DTO\AuthDTOs\UserTokenReadDTO.cs" />
     <Compile Include="DTO\FilterDTOs\BaseFilterDTO.cs" />
     <Compile Include="DTO\FilterDTOs\GameFiltersDTO.cs" />
+    <Compile Include="DTO\OrderDetails\OrderDetailsReadListDTO.cs" />
+    <Compile Include="DTO\OrderDetails\OrderDetailsUpdateDTO.cs" />
+    <Compile Include="DTO\OrderDTOs\OrderReadDTO.cs" />
+    <Compile Include="DTO\OrderDTOs\OrderReadListDTO.cs" />
     <Compile Include="DTO\OrderDTOs\OrderCreateDTO.cs" />
+    <Compile Include="DTO\OrderDTOs\OrderUpdateDTO.cs" />
     <Compile Include="DTO\PaginationDTOs\PagedListViewModel.cs" />
     <Compile Include="DTO\PaymentDTOs\PaymentCreateDTO.cs" />
     <Compile Include="DTO\PlatformTypeDTOs\PlatformTypeBaseDTO.cs" />
@@ -178,6 +183,7 @@
     <Compile Include="DTO\UserDTOs\UserCreateWithRoleDTO.cs" />
     <Compile Include="Enums\CreatedAtTypes.cs" />
     <Compile Include="Enums\Extensions\ToEnumExtension.cs" />
+    <Compile Include="Enums\OrderStatusTypes.cs" />
     <Compile Include="Enums\PaymentTypes.cs" />
     <Compile Include="Enums\SortingTypes.cs" />
     <Compile Include="Exceptions\BadRequestException.cs" />

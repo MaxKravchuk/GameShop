@@ -25,5 +25,29 @@ namespace GameShop.WebApi.Controllers
 
             return Ok(newOrderId);
         }
+
+        [HttpGet]
+        [Route("getAll")]
+        public async Task<IHttpActionResult> GetAllAsync()
+        {
+            var orders = await _orderService.GetAllOrdersAsync();
+            return Json(orders);
+        }
+
+        [HttpGet]
+        [Route("getById/{orderId}")]
+        public async Task<IHttpActionResult> GetByIdAsync(int orderId)
+        {
+            var order = await _orderService.GetOrderById(orderId);
+            return Json(order);
+        }
+
+        [HttpPut]
+        [Route()]
+        public async Task<IHttpActionResult> UpdateOrderAsync([FromBody] OrderUpdateDTO orderUpdateDTO)
+        {
+            await _orderService.UpdateOrderAsync(orderUpdateDTO);
+            return Ok();
+        }
     }
 }

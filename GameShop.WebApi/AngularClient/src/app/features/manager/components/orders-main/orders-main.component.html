@@ -1,0 +1,25 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Order id</th>
+        <th>Customer nickname</th>
+        <th>Ordered at</th>
+        <th>Order status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let order of orders">
+        <td><p>{{ order.Id }}</p></td>
+        <td><p>{{ order.CustomerNickName }}</p></td>
+        <td><p>{{ order.OrderedAt | date }}</p></td>
+        <ng-container [ngSwitch]="order.Status">
+            <td *ngSwitchCase="null"><p>Unknown</p></td>
+            <td *ngSwitchDefault><p>{{ order.Status }}</p></td>
+        </ng-container>
+        <td>
+            <button mat-raised-button color="warn" (click)="onEdit(order.Id!)">Edit</button>
+        </td>
+    </tr>
+    </tbody>
+</table>

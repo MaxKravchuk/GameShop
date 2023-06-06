@@ -17,10 +17,11 @@ namespace GameShop.BLL.Services.Utils
     {
         private const string SecretKey = "B7E7556636054C5086D4B9B7470A5D37DEECBD36F986D50FFD7A4B4230D6ED31";
 
-        public string GenerateToken(string username, string role)
+        public string GenerateToken(int id, string username, string role)
         {
             var claims = new[]
             {
+                new Claim("Id", id.ToString()),
                 new Claim("UserName", username),
                 new Claim("Role", role)
             };
@@ -70,9 +71,9 @@ namespace GameShop.BLL.Services.Utils
             }
         }
 
-        public AuthenticatedResponse GetAuthenticatedResponse(string username, string role)
+        public AuthenticatedResponse GetAuthenticatedResponse(int id, string username, string role)
         {
-            var accessToken = GenerateToken(username, role);
+            var accessToken = GenerateToken(id, username, role);
             var refreshToken = GenerateRefreshToken();
 
             var responseModel = new AuthenticatedResponse

@@ -1,6 +1,6 @@
-export interface User {
+import { BaseModel } from "./BaseModel";
 
-    Id?: number;
+export interface User extends BaseModel {
 
     NickName?: string;
 

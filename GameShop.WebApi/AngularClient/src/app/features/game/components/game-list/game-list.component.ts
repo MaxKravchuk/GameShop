@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Game } from "../../../../core/models/Game";
 import { GameService } from "../../../../core/services/gameService/game.service";
 import { PagedList } from "../../../../core/models/PagedList";
-import { Subscription } from "rxjs";
+import { Subscription, switchMap } from "rxjs";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
 import { Router } from "@angular/router";
 import { FilterModel } from "../../../../core/models/FilterModel";
@@ -71,16 +71,20 @@ export class GameListComponent implements OnInit, OnDestroy {
         this.updateGames(this.receivedData!);
     }
 
-    editDeleteGame(game: Game): void {
-        const dialogRef = this.dialog.open(GameCrudComponent, {
-            autoFocus: false,
-            data: {
-                game: game,
-            }
-        });
+    editDeleteGame(gameKey: string): void {
+        this.gameService.getGameDetailsByKey(gameKey).pipe(
+            switchMap((gameData: Game) => {
+                const dialogRef = this.dialog.open(GameCrudComponent, {
+                    autoFocus: false,
+                    data: {
+                        game: gameData,
+                    }
+                });
 
-        dialogRef.afterClosed().subscribe((requireReload:boolean): void => {
-            if(requireReload) {
+                return dialogRef.afterClosed();
+            })
+        ).subscribe((requireReload: boolean): void => {
+            if (requireReload) {
                 this.ngOnInit();
             }
         });

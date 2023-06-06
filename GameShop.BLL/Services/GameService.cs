@@ -131,7 +131,7 @@ namespace GameShop.BLL.Services
             return model;
         }
 
-        public async Task<PagedListViewModel<GameReadDTO>> GetAllGamesAsync(GameFiltersDTO gameFiltersDTO)
+        public async Task<PagedListViewModel<GameReadListDTO>> GetAllGamesAsync(GameFiltersDTO gameFiltersDTO)
         {
             var query = _unitOfWork.GameRepository.GetQuery(
                 filter: null,
@@ -150,7 +150,7 @@ namespace GameShop.BLL.Services
 
             var games = await query.ToListAsync();
             var pagedGames = games.ToPagedList(gameFiltersDTO.PageNumber, gameFiltersDTO.PageSize);
-            var pagedModels = _mapper.Map<PagedListViewModel<GameReadDTO>>(pagedGames);
+            var pagedModels = _mapper.Map<PagedListViewModel<GameReadListDTO>>(pagedGames);
 
             _loggerManager.LogInfo($"Games successfully returned with array size of {pagedModels.Entities.Count()}");
             return pagedModels;

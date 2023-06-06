@@ -20,9 +20,16 @@
         <a
             *ngIf="authService.isAuthorized() && authService.isInRole('Manager')"
             mat-button
-            routerLink="/manager/main"
+            routerLink="/manager/managerPanel"
             routerLinkActive="active">
             Manager panel
+        </a>
+        <a
+            *ngIf="authService.isAuthorized() && authService.isInRole('Manager')"
+            mat-button
+            routerLink="/manager/orders"
+            routerLinkActive="active">
+            Orders
         </a>
     </div>
     <div class="right-header">

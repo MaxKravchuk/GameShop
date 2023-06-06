@@ -15,6 +15,8 @@ namespace GameShop.BLL.Services.Interfaces
 
         Task<string> GetRoleAsync(string userName);
 
+        Task<int> GetIdAsync(string nickName);
+
         Task CreateUserAsync(UserCreateDTO userCreateDTO);
 
         Task CreateUserWithRoleAsync(UserCreateWithRoleDTO userWithRoleCreateDTO);

@@ -7,7 +7,13 @@ namespace GameShop.DAL.Entities
     {
         public int CustomerId { get; set; }
 
+        public User Customer { get; set; }
+
+        public string Status { get; set; }
+
         public DateTime OrderedAt { get; set; }
+
+        public DateTime? ShippedDate { get; set; }
 
         public bool IsPaid { get; set; }
 

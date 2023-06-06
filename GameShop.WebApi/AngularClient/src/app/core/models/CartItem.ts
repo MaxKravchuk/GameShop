@@ -1,5 +1,7 @@
 export interface CartItem {
 
+    CustomerId?: number;
+
     GameKey?: string;
 
     GameName?: string;

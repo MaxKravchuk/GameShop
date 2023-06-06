@@ -28,6 +28,11 @@ namespace GameShop.DAL.Configurations
 
             HasOptional(x => x.RefreshToken)
                 .WithRequired(x => x.User);
+
+            HasMany(x => x.Orders)
+                .WithRequired(x => x.Customer)
+                .HasForeignKey(x => x.CustomerId)
+                .WillCascadeOnDelete(false);
         }
     }
 }

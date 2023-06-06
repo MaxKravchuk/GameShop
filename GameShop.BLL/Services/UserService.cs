@@ -72,6 +72,19 @@ namespace GameShop.BLL.Services
             return user.UserRole.Name;
         }
 
+        public async Task<int> GetIdAsync(string nickName)
+        {
+            var user = await _unitOfWork.UserRepository.GetQuery(
+                filter: u => u.NickName == nickName).SingleOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new NotFoundException($"User with nickname {nickName} was not found");
+            }
+
+            return user.Id;
+        }
+
         public async Task CreateUserAsync(UserCreateDTO userCreateDTO)
         {
             await _validator.ValidateAndThrowAsync(userCreateDTO);
@@ -132,7 +145,7 @@ namespace GameShop.BLL.Services
                     $"role with id {userUpdateDTO.RoleId} were not found");
             }
 
-            userToUpdate.RoleId = role.Id;
+            userToUpdate.UserRole = role;
 
             _unitOfWork.UserRepository.Update(userToUpdate);
             await _unitOfWork.SaveAsync();

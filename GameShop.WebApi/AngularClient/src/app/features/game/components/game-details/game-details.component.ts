@@ -36,6 +36,8 @@ export class GameDetailsComponent implements OnInit {
 
     gamesInCart?: number;
 
+    customerId!: number;
+
     constructor(
         private gameService: GameService,
         private shoppingCartService: CartService,
@@ -45,6 +47,8 @@ export class GameDetailsComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        this.customerId = this.authService.getUserId();
+
         this.gameKey = this.activeRoute.snapshot.paramMap.get('Key');
 
         if (this.gameKey != null) {
@@ -65,6 +69,7 @@ export class GameDetailsComponent implements OnInit {
         this.isAvailable = false;
 
         let cartItem: CartItem = {
+            CustomerId: this.customerId,
             GameKey: this.game.Key!,
             GameName: this.game.Name!,
             GamePrice: this.game.Price!,
@@ -72,7 +77,8 @@ export class GameDetailsComponent implements OnInit {
 
         this.shoppingCartService.addToCart(cartItem)
             .pipe(
-                concatMap(() => this.shoppingCartService.getNumberOfGamesInCart(this.gameKey!))
+                concatMap(() => this.shoppingCartService
+                    .getNumberOfGamesInCart(this.customerId, this.gameKey!))
             ).subscribe({
             next: (data: number): void => {
                 this.gamesInCart = data;
@@ -90,7 +96,8 @@ export class GameDetailsComponent implements OnInit {
 
     private getGameDetailsByKey(Key: string): void {
         const gameDetails$: Observable<Game> = this.gameService.getGameDetailsByKey(Key);
-        const numberOfGames$: Observable<number> = this.shoppingCartService.getNumberOfGamesInCart(this.gameKey!);
+        const numberOfGames$: Observable<number> = this.shoppingCartService
+            .getNumberOfGamesInCart(this.customerId, this.gameKey!);
 
         forkJoin([gameDetails$, numberOfGames$]).subscribe(
             ([gameDetails, numberOfGames]: [Game, number]) => {
