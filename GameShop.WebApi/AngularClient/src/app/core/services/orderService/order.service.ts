@@ -44,8 +44,17 @@ export class OrderService {
         );
     }
 
-    updateOrder(order: Order): Observable<Order> {
-        return this.http.put<Order>(this.apiUrl, order).pipe(
+    updateOrderStatus(order: Order): Observable<Order> {
+        return this.http.put<Order>(`${this.apiUrl}updateStatus`, order).pipe(
+            catchError(err => {
+                this.utilsService.handleError(err);
+                return [];
+            })
+        );
+    }
+
+    updateOrderDetails(order: Order): Observable<Order> {
+        return this.http.put<Order>(`${this.apiUrl}updateOrderDetails`, order).pipe(
             catchError(err => {
                 this.utilsService.handleError(err);
                 return [];

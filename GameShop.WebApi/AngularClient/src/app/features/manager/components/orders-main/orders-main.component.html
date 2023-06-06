@@ -17,8 +17,9 @@
             <td *ngSwitchCase="null"><p>Unknown</p></td>
             <td *ngSwitchDefault><p>{{ order.Status }}</p></td>
         </ng-container>
-        <td>
+        <td class="table-buttons">
             <button mat-raised-button color="warn" (click)="onEdit(order.Id!)">Edit</button>
+            <button mat-raised-button color="warn" (click)="onChangeStatus(order)">Change status</button>
         </td>
     </tr>
     </tbody>

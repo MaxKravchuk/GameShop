@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
+using GameShop.BLL.DTO.OrderDetails;
 using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.DTO.RedisDTOs;
 using GameShop.BLL.Enums;
@@ -119,16 +120,50 @@ namespace GameShop.BLL.Services
             return model;
         }
 
-        public async Task UpdateOrderAsync(OrderUpdateDTO orderUpdateDTO)
+        public async Task UpdateOrderDetailsAsync(OrderUpdateDTO orderUpdateDTO)
         {
-            var exOrder = await _unitOfWork.OrderRepository.GetByIdAsync(orderUpdateDTO.Id);
+            var exOrder = await _unitOfWork.OrderRepository.GetQuery(
+                filter: x => x.Id == orderUpdateDTO.Id,
+                includeProperties: "ListOfOrderDetails").SingleOrDefaultAsync();
             if (exOrder == null)
             {
                 throw new NotFoundException($"Order with id {orderUpdateDTO.Id} was not found");
             }
 
-            OrderStatusTypes newOrderStatusTypes;
+            var games = (await _unitOfWork.GameRepository.GetAsync())
+                .ToDictionary(x => x.Key);
 
+            foreach (var detail in orderUpdateDTO.OrderDetails)
+            {
+                if (!games.TryGetValue(detail.GameKey, out var game))
+                {
+                    throw new BadRequestException($"Game with key {detail.GameKey} was not found");
+                }
+
+                if (!IsEnoughGamesAvailable(game, exOrder, detail))
+                {
+                    throw new BadRequestException("Not enough games");
+                }
+
+                var existingOrderDetail = exOrder.ListOfOrderDetails
+                    .FirstOrDefault(od => od.GameId == game.Id);
+
+                if (existingOrderDetail != null)
+                {
+                    existingOrderDetail.Quantity = detail.Quantity;
+                    existingOrderDetail.Discount = detail.Discount;
+                }
+            }
+
+            _unitOfWork.OrderRepository.Update(exOrder);
+            await _unitOfWork.SaveAsync();
+            _loggerManager.LogInfo($"Order with id {orderUpdateDTO.Id} was updated");
+        }
+
+        public async Task UpdateOrderStatusAsync(OrderUpdateDTO orderUpdateDTO)
+        {
+            var exOrder = await _unitOfWork.OrderRepository.GetByIdAsync(orderUpdateDTO.Id);
+            OrderStatusTypes newOrderStatusTypes;
             try
             {
                 newOrderStatusTypes = orderUpdateDTO.Status.ToEnum<OrderStatusTypes>();
@@ -143,7 +178,16 @@ namespace GameShop.BLL.Services
 
             _unitOfWork.OrderRepository.Update(exOrder);
             await _unitOfWork.SaveAsync();
-            _loggerManager.LogInfo($"Order with id {orderUpdateDTO.Id} was updated");
+        }
+
+        private bool IsEnoughGamesAvailable(Game game, Order exOrder, OrderDetailsUpdateDTO detail)
+        {
+            var totalQuantityNeeded = detail.Quantity;
+            var currentQuantityInOrder = exOrder.ListOfOrderDetails
+                .Where(od => od.GameId == game.Id)
+                .Sum(od => od.Quantity);
+
+            return game.UnitsInStock + currentQuantityInOrder >= totalQuantityNeeded;
         }
     }
 }

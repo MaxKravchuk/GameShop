@@ -43,10 +43,18 @@ namespace GameShop.WebApi.Controllers
         }
 
         [HttpPut]
-        [Route()]
-        public async Task<IHttpActionResult> UpdateOrderAsync([FromBody] OrderUpdateDTO orderUpdateDTO)
+        [Route("updateStatus")]
+        public async Task<IHttpActionResult> UpdateOrderStatusAsync([FromBody] OrderUpdateDTO orderUpdateDTO)
         {
-            await _orderService.UpdateOrderAsync(orderUpdateDTO);
+            await _orderService.UpdateOrderStatusAsync(orderUpdateDTO);
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("updateOrderDetails")]
+        public async Task<IHttpActionResult> UpdateOrderDetailsAsync([FromBody] OrderUpdateDTO orderUpdateDTO)
+        {
+            await _orderService.UpdateOrderDetailsAsync(orderUpdateDTO);
             return Ok();
         }
     }

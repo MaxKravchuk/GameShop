@@ -20,15 +20,16 @@ export class UtilsService {
         });
     }
 
-    handleError(error: any): void{
+    handleError(error: any): void {
+        console.log(error);
         if (error.status === 400) {
-            this.openWithMessage(error.statusText);
+            this.openWithMessage(error.error);
         }
         else if (error.status === 403) {
-            this.openWithMessage(error.statusText);
+            this.openWithMessage(error.error);
         }
         else if (error.status === 404) {
-            this.openWithMessage(error.statusText);
+            this.openWithMessage(error.error);
         }
         else if (error.status === 500) {
             this.openWithMessage('An internal server error occurred. Please try again later.');

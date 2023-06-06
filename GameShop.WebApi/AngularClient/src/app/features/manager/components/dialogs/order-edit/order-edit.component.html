@@ -6,7 +6,7 @@
     </div>
     <div [formGroup]="form" class="create-form">
         <div class="mat-title">You are editing order {{order.Id}}</div>
-        <div>
+        <div *ngIf="isUpdatingStatus">
             <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
                 <mat-label>Order status</mat-label>
                 <mat-select formControlName="Status">
@@ -16,7 +16,8 @@
                 </mat-select>
             </mat-form-field>
         </div>
-        <div class="order-details" formArrayName="OrderDetails">
+        <div *ngIf="!isUpdatingStatus"
+            class="order-details" formArrayName="OrderDetails">
             <div *ngFor="let orderDetail of orderDetails.controls; let i = index" [formGroupName]="i" class="order-detail">
                 <p>{{orderDetail.get('GameKey')?.value}}</p>
                 <div>
@@ -48,8 +49,15 @@
 <div mat-dialog-actions>
     <button mat-stroked-button (click)="onNoClick()">Discard</button>
     <button
+        *ngIf="isUpdatingStatus"
         [disabled]="!form.valid"
-        mat-raised-button color="warn" (click)="onEditClick()"
+        mat-raised-button color="warn" (click)="onEditStatusClick()"
+    >Edit
+    </button>
+    <button
+        *ngIf="!isUpdatingStatus"
+        [disabled]="!form.valid"
+        mat-raised-button color="warn" (click)="onEditDetailsClick()"
     >Edit
     </button>
 </div>

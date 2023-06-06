@@ -12,6 +12,8 @@ namespace GameShop.BLL.Services.Interfaces
 
         Task<OrderReadDTO> GetOrderById(int orderId);
 
-        Task UpdateOrderAsync(OrderUpdateDTO orderUpdateDTO);
+        Task UpdateOrderStatusAsync(OrderUpdateDTO orderUpdateDTO);
+
+        Task UpdateOrderDetailsAsync(OrderUpdateDTO orderUpdateDTO);
     }
 }

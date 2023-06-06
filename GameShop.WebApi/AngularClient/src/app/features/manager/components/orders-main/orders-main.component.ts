@@ -34,6 +34,7 @@ export class OrdersMainComponent implements OnInit {
                     autoFocus: false,
                     data: {
                         order: order,
+                        isUpdatingStatus: false
                     }
                 });
 
@@ -41,6 +42,22 @@ export class OrdersMainComponent implements OnInit {
             })
         ).subscribe((requireReload: boolean): void => {
             if (requireReload) {
+                this.ngOnInit();
+            }
+        });
+    }
+
+    onChangeStatus(order: Order): void {
+        const dialogRef = this.dialog.open(OrderEditComponent, {
+            autoFocus: false,
+            data: {
+                order: order,
+                isUpdatingStatus: true
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((requireReload:boolean): void => {
+            if(requireReload) {
                 this.ngOnInit();
             }
         });
