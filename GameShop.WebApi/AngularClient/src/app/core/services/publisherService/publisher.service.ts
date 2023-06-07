@@ -26,6 +26,16 @@ export class PublisherService {
             );
     }
 
+    getPublisherByUserId(userId: number): Observable<Publisher> {
+        return this.http.get<Publisher>(`${this.apiUrl}${userId}`)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
+
     createPublisher(publisher: Publisher): Observable<Publisher> {
         return this.http.post<Publisher>(`${this.apiUrl}`, publisher)
             .pipe(

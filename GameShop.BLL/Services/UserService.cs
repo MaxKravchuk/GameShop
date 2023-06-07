@@ -113,6 +113,14 @@ namespace GameShop.BLL.Services
                 throw new BadRequestException("Invalid role");
             }
 
+            if (userWithRoleCreateDTO.PublisherId != null && role.Name == "Publisher")
+            {
+                var publisher = await _unitOfWork.PublisherRepository
+                    .GetByIdAsync((int)userWithRoleCreateDTO.PublisherId);
+
+                user.Publisher = publisher;
+            }
+
             user.UserRole = role;
 
             _unitOfWork.UserRepository.Insert(user);
@@ -136,13 +144,21 @@ namespace GameShop.BLL.Services
 
         public async Task UpdateUserAsync(UserUpdateDTO userUpdateDTO)
         {
-            var userToUpdate = await _unitOfWork.UserRepository.GetByIdAsync(userUpdateDTO.Id);
+            var userToUpdate = await _unitOfWork.UserRepository.GetQuery(
+                filter: u => u.Id == userUpdateDTO.Id,
+                includeProperties: "Publisher,UserRole").SingleOrDefaultAsync();
             var role = await _unitOfWork.RoleRepository.GetByIdAsync(userUpdateDTO.RoleId);
 
             if (userToUpdate == null || role == null)
             {
                 throw new NotFoundException($"User with nickname {userUpdateDTO.Id} or " +
                     $"role with id {userUpdateDTO.RoleId} were not found");
+            }
+
+            if (userToUpdate.UserRole.Name == "Publisher" && userToUpdate.UserRole.Name != role.Name)
+            {
+                userToUpdate.Publisher = null;
+                userToUpdate.PublisherId = null;
             }
 
             userToUpdate.UserRole = role;

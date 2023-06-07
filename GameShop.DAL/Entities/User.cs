@@ -16,6 +16,10 @@ namespace GameShop.DAL.Entities
 
         public int? RoleId { get; set; }
 
+        public Publisher Publisher { get; set; }
+
+        public int? PublisherId { get; set; }
+
         public UserTokens RefreshToken { get; set; }
 
         public int RefreshTokenId { get; set; }

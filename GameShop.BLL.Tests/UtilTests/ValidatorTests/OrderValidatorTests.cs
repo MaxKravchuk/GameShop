@@ -20,13 +20,13 @@ namespace GameShop.BLL.Tests.UtilTests.ValidatorTests
         {
             var order = new OrderCreateDTO
             {
-                CustomerID = -1,
+                CustomerId = -1,
                 OrderedAt = DateTime.UtcNow,
             };
 
             var result = _validationRules.TestValidate(order);
 
-            result.ShouldHaveValidationErrorFor(o => o.CustomerID)
+            result.ShouldHaveValidationErrorFor(o => o.CustomerId)
                   .WithErrorMessage("Customer ID cannot be empty");
         }
 
@@ -35,7 +35,7 @@ namespace GameShop.BLL.Tests.UtilTests.ValidatorTests
         {
             var order = new OrderCreateDTO
             {
-                CustomerID = 1,
+                CustomerId = 1,
                 OrderedAt = DateTime.MinValue, // or any other invalid value
             };
 

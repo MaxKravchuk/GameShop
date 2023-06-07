@@ -189,6 +189,10 @@
     <Compile Include="Migrations\202306061050357_ChangedOrder.designer.cs">
       <DependentUpon>202306061050357_ChangedOrder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306071836306_UserPublisherRelationship.cs" />
+    <Compile Include="Migrations\202306071836306_UserPublisherRelationship.designer.cs">
+      <DependentUpon>202306071836306_UserPublisherRelationship.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Interfaces\IRepository.cs" />
@@ -256,6 +260,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306061050357_ChangedOrder.resx">
       <DependentUpon>202306061050357_ChangedOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306071836306_UserPublisherRelationship.resx">
+      <DependentUpon>202306071836306_UserPublisherRelationship.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -22,7 +22,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route()]
-        [JwtAuthorize]
+        [JwtAuthorize(Roles = "Manager")]
         public async Task<IHttpActionResult> CreateGameAsync([FromBody] GameCreateDTO gameCreateViewModel)
         {
             await _gameService.CreateAsync(gameCreateViewModel);
@@ -31,7 +31,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPut]
         [Route("update")]
-        [JwtAuthorize]
+        [JwtAuthorize(Roles = "Manager, Publisher")]
         public async Task<IHttpActionResult> UpdateGameAsync([FromBody] GameUpdateDTO gameUpdateViewModel)
         {
             await _gameService.UpdateAsync(gameUpdateViewModel);
@@ -67,6 +67,14 @@ namespace GameShop.WebApi.Controllers
         public async Task<IHttpActionResult> GetAllGamesByPlatformTypeAsync(int platformTypeId)
         {
             var games = await _gameService.GetGamesByPlatformTypeAsync(platformTypeId);
+            return Json(games);
+        }
+
+        [HttpGet]
+        [Route("getGamesByPublisherId/{publisherId}")]
+        public async Task<IHttpActionResult> GetAllGamesByPublisherAsync(int publisherId)
+        {
+            var games = await _gameService.GetGamesByPublisherAsync(publisherId);
             return Json(games);
         }
 

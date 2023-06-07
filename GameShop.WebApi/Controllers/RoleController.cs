@@ -11,7 +11,7 @@ using GameShop.WebApi.Filters;
 namespace GameShop.WebApi.Controllers
 {
     [RoutePrefix("api/roles")]
-    [JwtAuthorize]
+    [JwtAuthorize(Roles = "Administrator")]
     public class RoleController : ApiController
     {
         private readonly IRoleService _roleService;

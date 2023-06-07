@@ -25,12 +25,23 @@ namespace GameShop.WebApi.Filters
             }
 
             var principal = jwtProvider.ValidateToken(token);
-            if (principal == null)
+            if (principal != null)
             {
-                return false;
+                actionContext.RequestContext.Principal = principal;
+                if (Roles != null && Roles.Length > 0)
+                {
+                    var userRoles = principal.Claims.Where(c => c.Type == "Role")
+                        .Select(c => c.Value);
+                    var roles = Roles.Split(',').Select(p => p.Trim()).ToList();
+                    if (!roles.Any(role => userRoles.Contains(role.ToString())))
+                    {
+                        return false;
+                    }
+                }
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)

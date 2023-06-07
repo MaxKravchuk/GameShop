@@ -58,6 +58,23 @@ namespace GameShop.BLL.Services
             return model;
         }
 
+        public async Task<PublisherReadDTO> GetPublisherByUserIdAsync(int userId)
+        {
+            var publishers = await _unitOfWork.PublisherRepository.GetAsync(
+                   filter: p => p.User.Id == userId,
+                   includeProperties: "Games,User");
+
+            if (publishers.SingleOrDefault() == null)
+            {
+                throw new NotFoundException($"Publisher with user id {userId} not found");
+            }
+
+            var publisher = publishers.SingleOrDefault();
+            var model = _mapper.Map<PublisherReadDTO>(publisher);
+            _loggerManager.LogInfo($"Publisher with user id {userId} returned successfully");
+            return model;
+        }
+
         public async Task<IEnumerable<PublisherReadListDTO>> GetAllPublishersAsync()
         {
             var publishers = await _unitOfWork.PublisherRepository.GetAsync();

@@ -85,11 +85,11 @@ namespace GameShop.BLL.Tests.ServiceTests
             {
                 new CartItemDTO
                 {
-                    GameKey = "item1", Quantity = 1
+                    GameKey = "item1", Quantity = 1, CustomerId = 1
                 },
                 new CartItemDTO
                 {
-                    GameKey = "item2", Quantity = 2
+                    GameKey = "item2", Quantity = 2, CustomerId = 1
                 }
             };
 
@@ -99,7 +99,7 @@ namespace GameShop.BLL.Tests.ServiceTests
                 .ReturnsAsync(cartItems);
 
             // Act
-            var result = await _shoppingCartService.GetCartItemsAsync();
+            var result = await _shoppingCartService.GetCartItemsAsync(1);
 
             // Assert
             _mockRedisProvider.Verify(x => x.GetValuesAsync(It.IsAny<string>()), Times.Once);
@@ -111,7 +111,7 @@ namespace GameShop.BLL.Tests.ServiceTests
         public async Task DeletItemFromList_ExistingItem_QuantityGreaterThan1()
         {
             // Arrange
-            var existingCartItem = new CartItemDTO { GameKey = "existing", Quantity = 2 };
+            var existingCartItem = new CartItemDTO { GameKey = "existing", Quantity = 2, CustomerId = 1 };
 
             _mockRedisProvider
                 .Setup(x => x
@@ -119,7 +119,7 @@ namespace GameShop.BLL.Tests.ServiceTests
                 .ReturnsAsync(existingCartItem);
 
             // Act
-            await _shoppingCartService.DeleteItemFromListAsync("existing");
+            await _shoppingCartService.DeleteItemFromListAsync(1, "existing");
 
             // Assert
             _mockRedisProvider.Verify(x => x.SetValueToListAsync(It.IsAny<string>(), "existing", existingCartItem), Times.Once);
@@ -133,7 +133,8 @@ namespace GameShop.BLL.Tests.ServiceTests
             var existingCartItem = new CartItemDTO
             {
                 GameKey = "gamekey",
-                Quantity = 2
+                Quantity = 2,
+                CustomerId = 1
             };
 
             _mockRedisProvider
@@ -142,7 +143,7 @@ namespace GameShop.BLL.Tests.ServiceTests
                 .ReturnsAsync(existingCartItem);
 
             // Act
-            await _shoppingCartService.DeleteItemFromListAsync(existingCartItem.GameKey);
+            await _shoppingCartService.DeleteItemFromListAsync(1, existingCartItem.GameKey);
 
             // Assert
             existingCartItem.Quantity -= 1;

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { User } from "../../../../../core/models/User";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { AdminMainComponent } from "../../admin-main/admin-main.component";
@@ -7,6 +7,9 @@ import { UserService } from "../../../../../core/services/userService/user.servi
 import { Role } from "../../../../../core/models/Role";
 import { RoleService } from "../../../../../core/services/roleService/role.service";
 import { UtilsService } from "../../../../../core/services/helpers/utilsService/utils-service";
+import { Publisher } from "../../../../../core/models/Publisher";
+import { PublisherService } from "../../../../../core/services/publisherService/publisher.service";
+import { forkJoin } from "rxjs";
 
 @Component({
   selector: 'app-user-crud',
@@ -23,28 +26,37 @@ export class UserCrudComponent implements OnInit {
 
     roles: Role[] = [];
 
+    publishers: Publisher[] = [];
+
+    isAddingPublisher: boolean = false;
+
     constructor(
         private formBuilder: FormBuilder,
         @Inject(MAT_DIALOG_DATA) private data : {user: User},
         private dialogRef: MatDialogRef<AdminMainComponent>,
         private roleService: RoleService,
         private userService: UserService,
+        private publisherService: PublisherService,
         private utilsService: UtilsService
     ) { }
 
     ngOnInit(): void {
         this.form = this.formBuilder.group({
-            NickName: ['', Validators.minLength(1)],
-            Password: ['', Validators.minLength(1)],
+            NickName: ['', [Validators.required,Validators.minLength(1)]],
+            Password: ['', [Validators.required,Validators.minLength(1)]],
             RoleId: [''],
         });
 
-        this.roleService.getAllRoles().subscribe((roles: Role[]): void => {
-            this.roles = roles;
-        });
+        forkJoin([this.roleService.getAllRoles(), this.publisherService.getAllPublishers()])
+            .subscribe(([roles, publishers] : [Role[], Publisher[]]): void => {
+                this.roles = roles;
+                this.publishers = publishers;
+            }
+        );
 
         if (this.data.user == null) {
             this.isAdding = true;
+            this.form.controls['RoleId'].setValidators(Validators.required);
         }
         else {
             this.user = this.data.user;
@@ -80,5 +92,18 @@ export class UserCrudComponent implements OnInit {
            this.utilsService.openWithMessage("User created successfully!");
            this.dialogRef.close(true);
         });
+    }
+
+    onRoleSelected(): void {
+        const selectedRoleId = this.form.controls['RoleId'].value;
+        const selectedRole: Role | undefined = this.roles.find((role: Role): boolean => role.Id === selectedRoleId);
+
+        if (selectedRole && selectedRole.Name === 'Publisher') {
+            this.isAddingPublisher = true;
+            this.form.addControl('PublisherId', new FormControl('', Validators.required));
+        } else {
+            this.isAddingPublisher = false;
+            this.form.removeControl('PublisherId');
+        }
     }
 }

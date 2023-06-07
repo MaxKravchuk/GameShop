@@ -57,7 +57,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Arrange
             var orderCreateDTO = new OrderCreateDTO
             {
-                CustomerID = 1,
+                CustomerId = 1,
                 OrderedAt = DateTime.UtcNow
             };
             var gameList = new List<Game> { new Game { Id = 1, Key = "test", UnitsInStock = 2 } };

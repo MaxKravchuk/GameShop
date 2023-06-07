@@ -180,6 +180,18 @@ namespace GameShop.BLL.Services
             return models;
         }
 
+        public async Task<IEnumerable<GameReadListDTO>> GetGamesByPublisherAsync(int publisherId)
+        {
+            var games = await _unitOfWork.GameRepository.GetAsync(filter:
+                    g => g.PublisherId == publisherId);
+
+            var models = _mapper.Map<IEnumerable<GameReadListDTO>>(games);
+
+            _loggerManager.LogInfo(
+                $"Games with publisher Id {publisherId} successfully returned with array size of {models.Count()}");
+            return models;
+        }
+
         public async Task UpdateAsync(GameUpdateDTO updatedGameDTO)
         {
             await _validator.ValidateAndThrowAsync(updatedGameDTO);

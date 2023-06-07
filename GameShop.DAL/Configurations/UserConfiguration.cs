@@ -33,6 +33,10 @@ namespace GameShop.DAL.Configurations
                 .WithRequired(x => x.Customer)
                 .HasForeignKey(x => x.CustomerId)
                 .WillCascadeOnDelete(false);
+
+            HasOptional(x => x.Publisher)
+                .WithOptionalDependent(x => x.User)
+                .WillCascadeOnDelete(false);
         }
     }
 }

@@ -95,4 +95,14 @@ export class GameService {
                 })
             );
     }
+
+    getGamesByPublisherId(publisherId: number): Observable<Game[]> {
+        return this.http.get<Game[]>(`${this.apiUrl}getGamesByPublisherId/${publisherId}`)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
 }

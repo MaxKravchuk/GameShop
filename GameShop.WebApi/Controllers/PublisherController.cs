@@ -18,7 +18,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route()]
-        [JwtAuthorize]
+        [JwtAuthorize(Roles = "Manager")]
         public async Task<IHttpActionResult> CreatePublisherAsync([FromBody] PublisherCreateDTO publisherCreateDTO)
         {
             await _publisherService.CreatePublisherAsync(publisherCreateDTO);
@@ -34,6 +34,14 @@ namespace GameShop.WebApi.Controllers
         }
 
         [HttpGet]
+        [Route("{userId}")]
+        public async Task<IHttpActionResult> GetPublisherByUserIdAsync(int userId)
+        {
+            var publisher = await _publisherService.GetPublisherByUserIdAsync(userId);
+            return Json(publisher);
+        }
+
+        [HttpGet]
         [Route("getAll")]
         public async Task<IHttpActionResult> GetAllPublishersAsync()
         {
@@ -43,7 +51,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPut]
         [Route()]
-        [JwtAuthorize]
+        [JwtAuthorize(Roles = "Manager, Publisher")]
         public async Task<IHttpActionResult> UpdatePublisherAsync([FromBody] PublisherUpdateDTO publisherUpdateDTO)
         {
             await _publisherService.UpdatePublisherAsync(publisherUpdateDTO);
@@ -52,7 +60,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpDelete]
         [Route()]
-        [JwtAuthorize]
+        [JwtAuthorize(Roles = "Manager")]
         public async Task<IHttpActionResult> DeletePublisherAsync(int publisherId)
         {
             await _publisherService.DeletePublisherAsync(publisherId);

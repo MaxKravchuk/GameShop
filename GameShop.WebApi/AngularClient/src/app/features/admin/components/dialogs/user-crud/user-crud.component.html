@@ -35,7 +35,7 @@
         <div>
             <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
                 <mat-label>Role</mat-label>
-                <mat-select formControlName="RoleId">
+                <mat-select formControlName="RoleId" (selectionChange)="onRoleSelected()">
                     <mat-option *ngFor="let role of roles" [value]="role.Id">
                         {{role.Name}}
                     </mat-option>
@@ -43,11 +43,24 @@
                 <mat-error *ngIf="form.controls['RoleId'].invalid">Role must be specified</mat-error>
             </mat-form-field>
         </div>
+        <div *ngIf="isAddingPublisher">
+            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-label>Publisher</mat-label>
+                <mat-select formControlName="PublisherId">
+                    <mat-option *ngFor="let publisher of publishers" [value]="publisher.Id">
+                        {{publisher.CompanyName}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.controls['PublisherId'].invalid">Publisher must be specified</mat-error>
+            </mat-form-field>
+        </div>
     </div>
 </div>
 <div mat-dialog-actions>
     <button mat-stroked-button (click)="onNoClick()">Discard</button>
-    <button *ngIf="isAdding" mat-raised-button color="primary" (click)="onSaveClick()">
+    <button *ngIf="isAdding"
+            [disabled]="!form.valid"
+            mat-raised-button color="primary" (click)="onSaveClick()">
         Save
     </button>
     <button *ngIf="!isAdding" mat-raised-button color="warn" (click)="onEditClick()">

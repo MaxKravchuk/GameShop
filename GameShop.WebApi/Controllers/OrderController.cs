@@ -7,7 +7,6 @@ using GameShop.WebApi.Filters;
 namespace GameShop.WebApi.Controllers
 {
     [RoutePrefix("api/orders")]
-    [JwtAuthorize]
     public class OrderController : ApiController
     {
         private readonly IOrderService _orderService;
@@ -19,6 +18,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route()]
+        [JwtAuthorize]
         public async Task<IHttpActionResult> CreateOrderAsync([FromBody] OrderCreateDTO orderCreateDTO)
         {
             var newOrderId = await _orderService.CreateOrderAsync(orderCreateDTO);
@@ -28,6 +28,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getAll")]
+        [JwtAuthorize(Roles = "Manager")]
         public async Task<IHttpActionResult> GetAllAsync()
         {
             var orders = await _orderService.GetAllOrdersAsync();
@@ -36,6 +37,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getById/{orderId}")]
+        [JwtAuthorize(Roles = "Manager")]
         public async Task<IHttpActionResult> GetByIdAsync(int orderId)
         {
             var order = await _orderService.GetOrderById(orderId);
@@ -44,6 +46,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPut]
         [Route("updateStatus")]
+        [JwtAuthorize(Roles = "Manager")]
         public async Task<IHttpActionResult> UpdateOrderStatusAsync([FromBody] OrderUpdateDTO orderUpdateDTO)
         {
             await _orderService.UpdateOrderStatusAsync(orderUpdateDTO);
@@ -52,6 +55,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPut]
         [Route("updateOrderDetails")]
+        [JwtAuthorize(Roles = "Manager")]
         public async Task<IHttpActionResult> UpdateOrderDetailsAsync([FromBody] OrderUpdateDTO orderUpdateDTO)
         {
             await _orderService.UpdateOrderDetailsAsync(orderUpdateDTO);

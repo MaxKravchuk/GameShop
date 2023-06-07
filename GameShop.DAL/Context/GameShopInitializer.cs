@@ -178,6 +178,11 @@ namespace GameShop.DAL.Context
                 {
                     Id = 4,
                     Name = "User"
+                },
+                new Role
+                {
+                    Id = 5,
+                    Name = "Publisher"
                 }
             };
 

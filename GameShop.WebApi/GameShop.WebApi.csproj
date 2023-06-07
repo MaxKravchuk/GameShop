@@ -239,7 +239,7 @@
     <Compile Include="Controllers\TokenController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\ApiExceptionFilter.cs" />
-    <Compile Include="Filters\JwtAuthorizeAttribute.cs" />
+    <Compile Include="Attributes\JwtAuthorizeAttribute.cs" />
     <Compile Include="Filters\LogIPFilter.cs" />
     <Compile Include="Filters\LogPerformanceFilter.cs" />
     <Compile Include="Global.asax.cs">

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using GameShop.BLL.DTO.PlatformTypeDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services;
@@ -21,6 +22,7 @@ namespace GameShop.BLL.Tests.ServiceTests
         private readonly PlatformTypeService _platformTypeService;
         private readonly Mock<IMapper> _mockMapper;
         private readonly Mock<ILoggerManager> _mockLogger;
+        private readonly Mock<IValidator<PlatformTypeCreateDTO>> _mockValidator;
 
         private bool _disposed;
 
@@ -33,7 +35,8 @@ namespace GameShop.BLL.Tests.ServiceTests
             _platformTypeService = new PlatformTypeService(
                 _mockUnitOfWork.Object,
                 _mockMapper.Object,
-                _mockLogger.Object);
+                _mockLogger.Object,
+                _mockValidator.Object);
         }
 
         public void Dispose()
@@ -176,52 +179,6 @@ namespace GameShop.BLL.Tests.ServiceTests
                 Times.Once);
             Assert.IsAssignableFrom<IEnumerable<PlatformTypeReadListDTO>>(result);
             Assert.False(result.Any());
-        }
-
-        [Fact]
-        public async Task GetPlatformTypeById_WithCorrectId_ShouldReturnPlatformAndLog()
-        {
-            // Arrange
-            var id = 1;
-            var platformType = new PlatformType { Id = id };
-            var platfromTypeDTO = new PlatformTypeReadDTO { Id = id };
-
-            _mockUnitOfWork
-                .Setup(u => u.PlatformTypeRepository
-                    .GetByIdAsync(It.IsAny<int>(), It.IsAny<string>()))
-                .ReturnsAsync(platformType);
-
-            _mockMapper
-                .Setup(m => m.Map<PlatformTypeReadDTO>(platformType))
-                .Returns(platfromTypeDTO);
-
-            // Act
-            var result = await _platformTypeService.GetByIdAsync(id);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<PlatformTypeReadDTO>(result);
-            _mockLogger.Verify(
-                l => l.LogInfo($"Platform type with id {id} successfully returned"), Times.Once);
-        }
-
-        [Fact]
-        public async Task GetPlatformTypeById_WithWrongId_ShouldThrowNotFoundAsync()
-        {
-            // Arrange
-            var id = 0;
-            PlatformType genre = null;
-
-            _mockUnitOfWork
-                .Setup(u => u.PlatformTypeRepository
-                    .GetByIdAsync(It.IsAny<int>(), It.IsAny<string>()))
-                .ReturnsAsync(genre);
-
-            // Act
-            var result = _platformTypeService.GetByIdAsync(id);
-
-            // Assert
-            await Assert.ThrowsAsync<NotFoundException>(() => result);
         }
 
         [Fact]

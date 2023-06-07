@@ -31,6 +31,13 @@
             routerLinkActive="active">
             Orders
         </a>
+        <a
+            *ngIf="authService.isAuthorized() && authService.isInRole('Publisher')"
+            mat-button
+            routerLink="/publishers/main"
+            routerLinkActive="active">
+            Publisher panel
+        </a>
     </div>
     <div class="right-header">
         <a

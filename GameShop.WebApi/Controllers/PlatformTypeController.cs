@@ -27,7 +27,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route()]
-        [JwtAuthorize]
+        [JwtAuthorize(Roles = "Manager")]
         public async Task<IHttpActionResult> CreatePlatformTypeAsync([FromBody] PlatformTypeCreateDTO platformTypeCreateDTO)
         {
             await _platformTypeService.CreateAsync(platformTypeCreateDTO);
@@ -36,7 +36,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPut]
         [Route()]
-        [JwtAuthorize]
+        [JwtAuthorize(Roles = "Manager")]
         public async Task<IHttpActionResult> UpdatePlatformTypeAsync([FromBody] PlatformTypeUpdateDTO platformTypeUpdateDTO)
         {
             await _platformTypeService.UpdateAsync(platformTypeUpdateDTO);
@@ -45,7 +45,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpDelete]
         [Route()]
-        [JwtAuthorize]
+        [JwtAuthorize(Roles = "Manager")]
         public async Task<IHttpActionResult> DeletePlatformTypeAsync(int platformTypeId)
         {
             await _platformTypeService.DeleteAsync(platformTypeId);
