@@ -77,7 +77,7 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             _mockUnitOfWork
                 .Setup(u => u.OrderDetailsRepository
-                    .Insert(It.IsAny<OrderDetails>()))
+                    .Insert(It.IsAny<OrderDetail>()))
                 .Verifiable();
 
             _mockUnitOfWork

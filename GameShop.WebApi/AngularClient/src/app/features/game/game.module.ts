@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameDetailsComponent } from "./components/game-details/game-details.component";
 import { GameRoutingModule } from "./game-routing.module";
-import { GameCreateComponent } from './components/game-create/game-create.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialogModule } from "@angular/material/dialog";
@@ -23,14 +22,12 @@ import { NgSelectModule } from "@ng-select/ng-select";
 @NgModule({
     declarations: [
         GameDetailsComponent,
-        GameCreateComponent,
         GameListComponent,
         GameFiltersComponent,
     ],
     exports: [
         GameListComponent,
         GameFiltersComponent,
-        GameCreateComponent,
     ],
     imports: [
         CommonModule,

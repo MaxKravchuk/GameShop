@@ -1,6 +1,6 @@
 ﻿namespace GameShop.DAL.Entities
 {
-    public class OrderDetails : BaseEntity
+    public class OrderDetail : BaseEntity
     {
         public Game Game { get; set; }
 

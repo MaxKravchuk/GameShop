@@ -17,6 +17,6 @@ namespace GameShop.DAL.Entities
 
         public bool IsPaid { get; set; }
 
-        public ICollection<OrderDetails> ListOfOrderDetails { get; set; } = new List<OrderDetails>();
+        public ICollection<OrderDetail> ListOfOrderDetails { get; set; } = new List<OrderDetail>();
     }
 }

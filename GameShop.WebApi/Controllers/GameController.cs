@@ -80,7 +80,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpDelete]
         [Route("delete/{gameKey}")]
-        [JwtAuthorize]
+        [JwtAuthorize(Roles = "Manager")]
         public async Task<IHttpActionResult> DeleteGameAsync(string gameKey)
         {
             await _gameService.DeleteAsync(gameKey);

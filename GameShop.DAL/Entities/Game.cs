@@ -31,6 +31,6 @@ namespace GameShop.DAL.Entities
 
         public int? PublisherId { get; set; }
 
-        public ICollection<OrderDetails> ListOfOrderDetails { get; set; } = new List<OrderDetails>();
+        public ICollection<OrderDetail> ListOfOrderDetails { get; set; } = new List<OrderDetail>();
     }
 }

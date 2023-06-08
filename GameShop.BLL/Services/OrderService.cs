@@ -68,7 +68,7 @@ namespace GameShop.BLL.Services
                     throw new BadRequestException("Not enough games");
                 }
 
-                var orderDetails = new OrderDetails
+                var orderDetails = new OrderDetail
                 {
                     GameId = gameToAdd.Id,
                     OrderId = newOrder.Id,

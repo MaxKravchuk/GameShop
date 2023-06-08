@@ -25,7 +25,9 @@ namespace GameShop.WebApi.App_Start
                 .ForMember(dest => dest.Game, opt => opt.Ignore())
                 .ForMember(dest => dest.GameId, opt => opt.Ignore())
                 .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
-                .ForMember(dest => dest.Parent, opt => opt.Ignore());
+                .ForMember(dest => dest.Parent, opt => opt.Ignore())
+                .ForMember(dest => dest.User, opt => opt.Ignore())
+                .ForMember(dest => dest.UserId, opt => opt.Ignore());
 
             CreateMap<Comment, CommentReadDTO>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
@@ -47,8 +49,14 @@ namespace GameShop.WebApi.App_Start
                 .ForMember(dest => dest.ParentId, opt => opt.MapFrom(src => src.ParentGenreId));
 
             CreateMap<PlatformType, PlatformTypeReadListDTO>();
-            CreateMap<PlatformTypeCreateDTO, PlatformType>();
-            CreateMap<PlatformTypeUpdateDTO, PlatformType>();
+            CreateMap<PlatformTypeCreateDTO, PlatformType>()
+                .ForMember(dest => dest.GamePlatformTypes, opt => opt.Ignore())
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
+
+            CreateMap<PlatformTypeUpdateDTO, PlatformType>()
+                 .ForMember(dest => dest.GamePlatformTypes, opt => opt.Ignore())
+                 .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
 
             CreateMap<Game, GameReadDTO>()
                 .ForMember(dest => dest.PlatformTypes, opt => opt.MapFrom(src => src.GamePlatformTypes))
@@ -76,7 +84,8 @@ namespace GameShop.WebApi.App_Start
             CreateMap<PublisherCreateDTO, Publisher>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
-                .ForMember(dest => dest.Games, opt => opt.Ignore());
+                .ForMember(dest => dest.Games, opt => opt.Ignore())
+                .ForMember(dest => dest.User, opt => opt.Ignore());
 
             CreateMap<Publisher, PublisherReadDTO>()
                 .ForMember(dest => dest.GameReadListDTOs, opt => opt.MapFrom(src => src.Games));
@@ -87,7 +96,10 @@ namespace GameShop.WebApi.App_Start
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
                 .ForMember(dest => dest.ListOfOrderDetails, opt => opt.Ignore())
-                .ForMember(dest => dest.IsPaid, opt => opt.Ignore());
+                .ForMember(dest => dest.IsPaid, opt => opt.Ignore())
+                .ForMember(dest => dest.Customer, opt => opt.Ignore())
+                .ForMember(dest => dest.Status, opt => opt.Ignore())
+                .ForMember(dest => dest.ShippedDate, opt => opt.Ignore());
 
             CreateMap<Order, OrderReadListDTO>()
                 .ForMember(dest => dest.CustomerNickName, opt => opt.MapFrom(src => src.Customer.NickName));
@@ -96,15 +108,33 @@ namespace GameShop.WebApi.App_Start
                 .ForMember(dest => dest.OrderDetails, opt => opt.MapFrom(src => src.ListOfOrderDetails))
                 .ForMember(dest => dest.CustomerNickName, opt => opt.MapFrom(src => src.Customer.NickName));
 
-            CreateMap<OrderDetails, OrderDetailsReadListDTO>()
-                .ForMember(dest => dest.GameKey, opt => opt.MapFrom(src => src.Game.Key));
+            CreateMap<OrderDetail, OrderDetailsReadListDTO>()
+                .ForMember(dest => dest.GameKey, opt => opt.MapFrom(src => src.Game.Key))
+                .ForMember(dest => dest.OrderDetailsId, opt => opt.Ignore());
 
-            CreateMap<UserCreateDTO, User>();
+            CreateMap<UserCreateDTO, User>()
+                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
+                .ForMember(dest => dest.UserRole, opt => opt.Ignore())
+                .ForMember(dest => dest.RoleId, opt => opt.Ignore())
+                .ForMember(dest => dest.Publisher, opt => opt.Ignore())
+                .ForMember(dest => dest.PublisherId, opt => opt.Ignore())
+                .ForMember(dest => dest.RefreshToken, opt => opt.Ignore())
+                .ForMember(dest => dest.RefreshTokenId, opt => opt.Ignore())
+                .ForMember(dest => dest.BannedTo, opt => opt.Ignore())
+                .ForMember(dest => dest.Orders, opt => opt.Ignore())
+                .ForMember(dest => dest.Comments, opt => opt.Ignore())
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
+
             CreateMap<User, UserReadListDTO>()
-                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.UserRole.Name));
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.UserRole.Name))
+                .ForMember(dest => dest.Password, opt => opt.Ignore());
 
             CreateMap<Role, RoleReadListDTO>();
-            CreateMap<RoleCreateDTO, Role>();
+            CreateMap<RoleCreateDTO, Role>()
+                .ForMember(dest => dest.UsersRole, opt => opt.Ignore())
+                .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
         }
     }
 }

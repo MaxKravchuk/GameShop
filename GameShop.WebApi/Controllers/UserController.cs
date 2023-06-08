@@ -11,7 +11,6 @@ using GameShop.WebApi.Filters;
 namespace GameShop.WebApi.Controllers
 {
     [RoutePrefix("api/users")]
-    [JwtAuthorize]
     public class UserController : ApiController
     {
         private readonly IUserService _userService;
@@ -23,6 +22,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getAll")]
+        [JwtAuthorize(Roles ="Administrator")]
         public async Task<IHttpActionResult> GetAllUsersAsync()
         {
             var users = await _userService.GetUsersAsync();
@@ -31,6 +31,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route("createUserWithRole")]
+        [JwtAuthorize(Roles = "Administrator")]
         public async Task<IHttpActionResult> CreateNewUserWithRoleAsync([FromBody] UserCreateWithRoleDTO userWithRoleCreateDTO)
         {
             await _userService.CreateUserWithRoleAsync(userWithRoleCreateDTO);
@@ -39,6 +40,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPut]
         [Route()]
+        [JwtAuthorize(Roles = "Administrator")]
         public async Task<IHttpActionResult> UpdateUserAsync([FromBody] UserUpdateDTO userUpdateDTO)
         {
             await _userService.UpdateUserAsync(userUpdateDTO);
@@ -47,6 +49,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpDelete]
         [Route("deleteUser/{userId}")]
+        [JwtAuthorize(Roles = "Administrator")]
         public async Task<IHttpActionResult> DeleteUserAsync(int userId)
         {
             await _userService.DeleteUserAsync(userId);
@@ -55,6 +58,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("isBanned/{nickName}")]
+        [JwtAuthorize]
         public async Task<IHttpActionResult> IsUserBanned(string nickName)
         {
             var result = await _userService.IsAnExistingUserBannedAsync(nickName);
@@ -63,6 +67,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPut]
         [Route("banUser")]
+        [JwtAuthorize(Roles = "Moderator")]
         public async Task<IHttpActionResult> BanUserAsync([FromBody] UserBanDTO userBanDTO)
         {
             await _userService.BanUserAsync(userBanDTO);

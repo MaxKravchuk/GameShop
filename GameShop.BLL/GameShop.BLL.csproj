@@ -204,9 +204,7 @@
     <Compile Include="Pagination\PagedList.cs" />
     <Compile Include="Pipelines\GameFiltersPipeline.cs" />
     <Compile Include="Pipelines\Interfaces\IPipelinebase.cs" />
-    <Compile Include="Services\CommentBanService.cs" />
     <Compile Include="Services\CommentService.cs" />
-    <Compile Include="Services\Interfaces\ICommentBanService.cs" />
     <Compile Include="Services\Interfaces\IOrderService.cs" />
     <Compile Include="Services\Interfaces\IRoleService.cs" />
     <Compile Include="Services\Interfaces\IUsersTokenService.cs" />

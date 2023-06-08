@@ -23,7 +23,7 @@ namespace GameShop.DAL.Context
 
         public DbSet<Order> Orders { get; set; }
 
-        public DbSet<OrderDetails> OrderDetails { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
 
         public DbSet<User> Users { get; set; }
 

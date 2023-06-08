@@ -10,14 +10,11 @@ namespace GameShop.WebApi.Controllers
     public class CommentController : ApiController
     {
         private readonly ICommentService _commentService;
-        private readonly ICommentBanService _commentBanService;
 
         public CommentController(
-            ICommentService commentService,
-            ICommentBanService commentBanService)
+            ICommentService commentService)
         {
             _commentService = commentService;
-            _commentBanService = commentBanService;
         }
 
         [HttpPost]
@@ -43,15 +40,6 @@ namespace GameShop.WebApi.Controllers
         public async Task<IHttpActionResult> DeleteCommentAsync([FromUri] int commentId)
         {
             await _commentService.DeleteAsync(commentId);
-            return Ok();
-        }
-
-        [HttpPost]
-        [Route("ban")]
-        [JwtAuthorize(Roles = "Moderator")]
-        public IHttpActionResult Ban([FromBody] string banDuration)
-        {
-            _commentBanService.Ban(banDuration);
             return Ok();
         }
     }
