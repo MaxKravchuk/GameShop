@@ -52,5 +52,21 @@ namespace GameShop.WebApi.Controllers
             await _userService.DeleteUserAsync(userId);
             return Ok();
         }
+
+        [HttpGet]
+        [Route("isBanned/{nickName}")]
+        public async Task<IHttpActionResult> IsUserBanned(string nickName)
+        {
+            var result = await _userService.IsAnExistingUserBannedAsync(nickName);
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [Route("banUser")]
+        public async Task<IHttpActionResult> BanUserAsync([FromBody] UserBanDTO userBanDTO)
+        {
+            await _userService.BanUserAsync(userBanDTO);
+            return Ok();
+        }
     }
 }

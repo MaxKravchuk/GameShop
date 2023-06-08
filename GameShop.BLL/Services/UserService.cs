@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
 using GameShop.BLL.DTO.UserDTOs;
+using GameShop.BLL.Enums;
 using GameShop.BLL.Enums.Extensions;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
+using GameShop.BLL.Strategies.Interfaces.Factories;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository.Interfaces;
 
@@ -23,19 +25,22 @@ namespace GameShop.BLL.Services
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
         private readonly IValidator<UserCreateDTO> _validator;
+        private readonly IBanFactory _banFactory;
 
         public UserService(
             IPasswordProvider passwordProvider,
             IUnitOfWork unitOfWork,
             IMapper mapper,
             ILoggerManager loggerManager,
-            IValidator<UserCreateDTO> validator)
+            IValidator<UserCreateDTO> validator,
+            IBanFactory banFactory)
         {
             _passwordProvider = passwordProvider;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _loggerManager = loggerManager;
             _validator = validator;
+            _banFactory = banFactory;
         }
 
         public async Task<bool> IsAnExistingUserAsync(string nickName)
@@ -43,6 +48,19 @@ namespace GameShop.BLL.Services
             var user = await _unitOfWork.UserRepository.GetQuery(filter: u => u.NickName == nickName)
                 .SingleOrDefaultAsync();
             return user != null;
+        }
+
+        public async Task<bool> IsAnExistingUserBannedAsync(string nickName)
+        {
+            var user = await _unitOfWork.UserRepository.GetQuery(
+                filter: u => u.NickName == nickName).SingleOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new NotFoundException($"User with nickname {nickName} was not found");
+            }
+
+            return user.BannedTo > DateTime.UtcNow;
         }
 
         public async Task<bool> IsValidUserCredentialsAsync(UserCreateDTO userCreateDTO)
@@ -96,7 +114,6 @@ namespace GameShop.BLL.Services
 
             _unitOfWork.UserRepository.Insert(user);
             await _unitOfWork.SaveAsync();
-
             _loggerManager.LogInfo($"User with nickname {user.NickName} was created succesfully");
         }
 
@@ -177,6 +194,22 @@ namespace GameShop.BLL.Services
             _loggerManager.LogInfo(
                 $"Users were returned successfully in array size of {usersDTO.Count()}");
             return usersDTO;
+        }
+
+        public async Task BanUserAsync(UserBanDTO userBanDTO)
+        {
+            var user = await _unitOfWork.UserRepository.GetQuery(
+                filter: x => x.NickName == userBanDTO.NickName).SingleOrDefaultAsync();
+
+            if (!string.IsNullOrEmpty(userBanDTO.BanOption))
+            {
+                var banOption = userBanDTO.BanOption.ToEnum<BanOptions>();
+                var sortingStrategy = _banFactory.GetBanStrategy(banOption);
+                user = sortingStrategy.Ban(user);
+            }
+
+            _unitOfWork.UserRepository.Update(user);
+            await _unitOfWork.SaveAsync();
         }
     }
 }

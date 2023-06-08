@@ -12,11 +12,7 @@
                 <input
                     matInput
                     formControlName="Name"
-                    type="string"
-                    minlength="1"
-                    placeholder="Your name">
-                <mat-hint>Length must be greater than 1</mat-hint>
-                <mat-error *ngIf="form.controls['Name'].invalid">Length must be greater than 1</mat-error>
+                    type="string">
             </mat-form-field>
         </p>
         <p>
@@ -37,7 +33,7 @@
         <button mat-raised-button
                 type="submit"
                 color="primary"
-                [disabled]="!(form.valid && IsCommentable)"
+                [disabled]="!(form.valid && IsCommentable) || isBanned!"
                 (click)="onSaveForm()">
             Comment
         </button>

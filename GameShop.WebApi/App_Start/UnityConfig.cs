@@ -20,6 +20,7 @@ using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.BLL.Services.Utils;
 using GameShop.BLL.Services.Utils.Validators;
+using GameShop.BLL.Strategies.BanStrategies;
 using GameShop.BLL.Strategies.Factories;
 using GameShop.BLL.Strategies.Interfaces.Factories;
 using GameShop.BLL.Strategies.Interfaces.Strategies;
@@ -134,6 +135,13 @@ namespace GameShop.WebApi
             container.RegisterType<IGamesSortingStrategy, DescPriceStrategy>();
             container.RegisterType<IGamesSortingStrategy, MostCommentedStrategy>();
             container.RegisterType<IGamesSortingStrategy, MostPopularStrategy>();
+
+            container.RegisterType<IBanFactory, BanFactory>();
+            container.RegisterType<IBanStrategy, HourBanStrategy>();
+            container.RegisterType<IBanStrategy, DayBanStrategy>();
+            container.RegisterType<IBanStrategy, MonthBanStrategy>();
+            container.RegisterType<IBanStrategy, PermanentBanStrategy>();
+            container.RegisterType<IBanStrategy, WeekBanStrategy>();
 
 
             httpConfiguration.DependencyResolver = new UnityDependencyResolver(container);

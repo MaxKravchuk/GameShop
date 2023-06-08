@@ -13,6 +13,8 @@ namespace GameShop.BLL.Services.Interfaces
 
         Task<bool> IsAnExistingUserAsync(string nickName);
 
+        Task<bool> IsAnExistingUserBannedAsync(string nickName);
+
         Task<string> GetRoleAsync(string userName);
 
         Task<int> GetIdAsync(string nickName);
@@ -26,5 +28,7 @@ namespace GameShop.BLL.Services.Interfaces
         Task DeleteUserAsync(int userId);
 
         Task<IEnumerable<UserReadListDTO>> GetUsersAsync();
+
+        Task BanUserAsync(UserBanDTO userBanDTO);
     }
 }

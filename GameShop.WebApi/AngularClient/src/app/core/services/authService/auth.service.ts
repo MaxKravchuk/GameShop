@@ -90,6 +90,19 @@ export class AuthService {
         }
     }
 
+    getUserName() {
+        const tokenStr = localStorage.getItem('access_token');
+        if (tokenStr != null){
+            try{
+                const bearerToken : any = jwtDecode(tokenStr);
+                return bearerToken.UserName;
+            }
+            catch(err){
+                return null;
+            }
+        }
+    }
+
     isInRole(role:string): boolean {
         return role === this.getRole()?.trim();
     }

@@ -44,6 +44,15 @@ namespace GameShop.BLL.Services
                 newComment.Parent = parentComment;
             }
 
+            var user = await _unitOfWork.UserRepository.GetQuery(
+                filter: x => x.NickName == newCommentDTO.Name).SingleOrDefaultAsync();
+            if (user == null)
+            {
+                throw new NotFoundException($"User with nickname {newCommentDTO.Name} not found");
+            }
+
+            newComment.User = user;
+
             _unitOfWork.CommentRepository.Insert(newComment);
             await _unitOfWork.SaveAsync();
             _logger.LogInfo($"Comment for game`s key {newCommentDTO.GameKey} created successfully");

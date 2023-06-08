@@ -5,6 +5,8 @@ import { MatDialog } from "@angular/material/dialog";
 import { DeleteCommentDialogComponent } from "../delete-comment-dialog/delete-comment-dialog.component";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
 import { AuthService } from "../../../../core/services/authService/auth.service";
+import { GenreCrudComponent } from "../../../manager/components/dialogs/genre-crud/genre-crud.component";
+import { BanCommentComponent } from "../ban-comment/ban-comment.component";
 
 @Component({
     selector: 'app-game-comment',
@@ -31,6 +33,7 @@ export class GameCommentComponent implements OnInit {
         private commentService: CommentService,
         private dialog: MatDialog,
         private authService: AuthService,
+        private dialogService: MatDialog,
         private sharedService: SharedService<{ action: string, parentComment: Comment }>
     ) {}
 
@@ -76,5 +79,20 @@ export class GameCommentComponent implements OnInit {
         this.commentService.getCommentsByGameKey(gameKey).subscribe(
             (comment: Comment[]) => this.comments = comment
         );
+    }
+
+    onBanClick(nickName: string): void {
+        const dialogRef = this.dialog.open(BanCommentComponent, {
+            autoFocus: false,
+            data: {
+                nickName: nickName
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((requireReload:boolean): void => {
+            if(requireReload) {
+                this.ngOnInit();
+            }
+        });
     }
 }

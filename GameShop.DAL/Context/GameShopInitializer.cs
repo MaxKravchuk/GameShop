@@ -13,14 +13,6 @@ namespace GameShop.DAL.Context
     {
         protected override void Seed(GameShopContext context)
         {
-            List<Comment> dComments = new List<Comment>
-            {
-                new Comment { Id = 1, Name = "Admin", Body = "First comment", GameId = 1 },
-                new Comment { Id = 2, Name = "Bob", Body = "[Admin]Reply to admin", GameId = 1, ParentId = 1 },
-                new Comment { Id = 3, Name = "Bob", Body = "BlaBLa", GameId = 2 },
-                new Comment { Id = 3, Name = "Admin", Body = "[Bob]Hello", GameId = 2, ParentId = 2 }
-            };
-
             List<Genre> dGenres = new List<Genre>
             {
                 new Genre
@@ -218,7 +210,6 @@ namespace GameShop.DAL.Context
                 }
             };
 
-            context.Comments.AddRange(dComments);
             context.Genres.AddRange(dGenres);
             context.PlatformTypes.AddRange(dPt);
             context.Games.AddRange(games);

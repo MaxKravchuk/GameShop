@@ -193,6 +193,18 @@
     <Compile Include="Migrations\202306071836306_UserPublisherRelationship.designer.cs">
       <DependentUpon>202306071836306_UserPublisherRelationship.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306081508141_AddBannedTime.cs" />
+    <Compile Include="Migrations\202306081508141_AddBannedTime.designer.cs">
+      <DependentUpon>202306081508141_AddBannedTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306081518478_NullableDateTimeForUser.cs" />
+    <Compile Include="Migrations\202306081518478_NullableDateTimeForUser.designer.cs">
+      <DependentUpon>202306081518478_NullableDateTimeForUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306081541248_UserCommentRelationship.cs" />
+    <Compile Include="Migrations\202306081541248_UserCommentRelationship.designer.cs">
+      <DependentUpon>202306081541248_UserCommentRelationship.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Interfaces\IRepository.cs" />
@@ -263,6 +275,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306071836306_UserPublisherRelationship.resx">
       <DependentUpon>202306071836306_UserPublisherRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306081508141_AddBannedTime.resx">
+      <DependentUpon>202306081508141_AddBannedTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306081518478_NullableDateTimeForUser.resx">
+      <DependentUpon>202306081518478_NullableDateTimeForUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306081541248_UserCommentRelationship.resx">
+      <DependentUpon>202306081541248_UserCommentRelationship.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

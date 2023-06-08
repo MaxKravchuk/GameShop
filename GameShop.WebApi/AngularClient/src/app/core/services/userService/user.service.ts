@@ -56,4 +56,24 @@ export class UserService {
                 })
             );
     }
+
+    IsAnExistingUserBannedAsync(nickName: string): Observable<boolean> {
+        return this.http.get<boolean>(`${this.apiUrl}isBanned/${nickName}`)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
+
+    banUser(user: User): Observable<User> {
+        return this.http.put<User>(`${this.apiUrl}banUser`, user)
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
 }

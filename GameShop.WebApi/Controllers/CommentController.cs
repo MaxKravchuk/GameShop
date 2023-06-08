@@ -22,7 +22,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route("leaveComment")]
-        [JwtAuthorize(Roles = "Users, Moderators, Publishers")]
+        [JwtAuthorize(Roles = "User, Moderator, Publisher")]
         public async Task<IHttpActionResult> CreateCommentAsync([FromBody] CommentCreateDTO commentCreateViewModel)
         {
             await _commentService.CreateAsync(commentCreateViewModel);

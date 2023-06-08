@@ -37,6 +37,11 @@ namespace GameShop.DAL.Configurations
             HasOptional(x => x.Publisher)
                 .WithOptionalDependent(x => x.User)
                 .WillCascadeOnDelete(false);
+
+            HasMany(x => x.Comments)
+                .WithRequired(x => x.User)
+                .HasForeignKey(x => x.UserId)
+                .WillCascadeOnDelete(false);
         }
     }
 }

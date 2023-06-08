@@ -14,6 +14,8 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { BanCommentComponent } from './components/ban-comment/ban-comment.component';
 import { MatRadioModule } from "@angular/material/radio";
 import { CommentRoutingModule } from "./comment-routing.module";
+import { MatOptionModule } from "@angular/material/core";
+import { MatSelectModule } from "@angular/material/select";
 
 
 @NgModule({
@@ -41,7 +43,9 @@ import { CommentRoutingModule } from "./comment-routing.module";
         ReactiveFormsModule,
         MatDialogModule,
         MatRadioModule,
-        CommentRoutingModule
+        CommentRoutingModule,
+        MatOptionModule,
+        MatSelectModule
     ]
 })
 export class CommentModule {

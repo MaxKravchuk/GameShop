@@ -7,4 +7,6 @@ export interface User extends BaseModel {
     Password?: string;
 
     Role?: string;
+
+    BanOption?: string;
 }

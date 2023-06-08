@@ -24,6 +24,10 @@ namespace GameShop.DAL.Entities
 
         public int RefreshTokenId { get; set; }
 
+        public DateTime? BannedTo { get; set; }
+
         public ICollection<Order> Orders { get; set; } = new List<Order>();
+
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }
