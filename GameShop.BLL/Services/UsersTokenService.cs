@@ -16,28 +16,25 @@ namespace GameShop.BLL.Services
     public class UsersTokenService : IUsersTokenService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
         public UsersTokenService(
-            IUnitOfWork unitOfWork,
-            IMapper mapper)
+            IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         public async Task AddUserTokenAsync(string nickName, string refreshToken)
         {
-            var token = await _unitOfWork.UserTokensRepository.GetQuery(filter: x => x.User.NickName == nickName)
-                .SingleOrDefaultAsync();
+            var token = (await _unitOfWork.UserTokensRepository.GetAsync(filter: x => x.User.NickName == nickName))
+                .SingleOrDefault();
             if (token != null)
             {
                 await UpdateUserTokenAsync(nickName, refreshToken);
                 return;
             }
 
-            var user = await _unitOfWork.UserRepository.GetQuery(filter: x => x.NickName == nickName)
-                .SingleOrDefaultAsync();
+            var user = (await _unitOfWork.UserRepository.GetAsync(filter: x => x.NickName == nickName))
+                .SingleOrDefault();
 
             var newToken = new UserTokens
             {
@@ -53,11 +50,11 @@ namespace GameShop.BLL.Services
 
         public async Task DeleteUserTokenAsync(string nickName)
         {
-            var user = await _unitOfWork.UserRepository.GetQuery(filter: x => x.NickName == nickName)
-                .SingleOrDefaultAsync();
+            var user = (await _unitOfWork.UserRepository.GetAsync(filter: x => x.NickName == nickName))
+                .SingleOrDefault();
 
-            var token = await _unitOfWork.UserTokensRepository.GetQuery(filter: x => x.UserId == user.Id)
-                .SingleOrDefaultAsync();
+            var token = (await _unitOfWork.UserTokensRepository.GetAsync(filter: x => x.UserId == user.Id))
+                .SingleOrDefault();
 
             token.RefreshToken = null;
             token.RefreshTokenExpiryTime = default;
@@ -68,11 +65,11 @@ namespace GameShop.BLL.Services
 
         public async Task UpdateUserTokenAsync(string nickName, string refreshToken)
         {
-            var user = await _unitOfWork.UserRepository.GetQuery(filter: x => x.NickName == nickName)
-                .SingleOrDefaultAsync();
+            var user = (await _unitOfWork.UserRepository.GetAsync(filter: x => x.NickName == nickName))
+                .SingleOrDefault();
 
-            var token = await _unitOfWork.UserTokensRepository.GetQuery(filter: x => x.UserId == user.Id)
-                .SingleOrDefaultAsync();
+            var token = (await _unitOfWork.UserTokensRepository.GetAsync(filter: x => x.UserId == user.Id))
+                .SingleOrDefault();
 
             token.RefreshToken = refreshToken;
 
@@ -82,9 +79,9 @@ namespace GameShop.BLL.Services
 
         public async Task<UserTokenReadDTO> GetRefreshTokenAsync(string oldRefreshToken)
         {
-            var token = await _unitOfWork.UserTokensRepository.GetQuery(
+            var token = (await _unitOfWork.UserTokensRepository.GetAsync(
                 filter: x => x.RefreshToken == oldRefreshToken,
-                includeProperties: "User").SingleOrDefaultAsync();
+                includeProperties: "User")).SingleOrDefault();
             if (token == null)
             {
                 throw new NotFoundException("invalid user nickname");

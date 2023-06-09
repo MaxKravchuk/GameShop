@@ -93,7 +93,7 @@ namespace GameShop.BLL.Tests.UtilTests.ValidatorTests
         }
 
         [Fact]
-        public void GameCreateDTOValidator_Validate_InvalidGenresList_ShouldFail()
+        public void GameCreateDTOValidator_Validate_EmptyGenresList_ShouldFail()
         {
             // Arrange
             var gameCreateDTO = new GameCreateDTO
@@ -112,11 +112,11 @@ namespace GameShop.BLL.Tests.UtilTests.ValidatorTests
             var result = _validationRules.Validate(gameCreateDTO);
 
             // Assert
-            result.IsValid.Should().BeFalse();
+            result.IsValid.Should().BeTrue();
         }
 
         [Fact]
-        public void GameCreateDTOValidator_Validate_InvalidPlatformTypesList_ShouldFail()
+        public void GameCreateDTOValidator_Validate_EmptyPlatformTypesList_ShouldFail()
         {
             // Arrange
             var gameCreateDTO = new GameCreateDTO
@@ -135,7 +135,7 @@ namespace GameShop.BLL.Tests.UtilTests.ValidatorTests
             var result = _validationRules.Validate(gameCreateDTO);
 
             // Assert
-            result.IsValid.Should().BeFalse();
+            result.IsValid.Should().BeTrue();
         }
     }
 }

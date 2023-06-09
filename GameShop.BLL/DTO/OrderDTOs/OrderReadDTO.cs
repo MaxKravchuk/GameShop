@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GameShop.BLL.DTO.OrderDetails;
+using GameShop.BLL.DTO.OrderDetailDTOs;
 using GameShop.DAL.Entities;
 
 namespace GameShop.BLL.DTO.OrderDTOs

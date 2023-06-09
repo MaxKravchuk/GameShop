@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
+using BLL.Test.DbAsyncTests;
 using FluentValidation;
 using GameShop.BLL.DTO.GenreDTOs;
 using GameShop.BLL.Exceptions;
@@ -76,17 +77,33 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Arrange
             var id = 1;
             var genreToDelete = new Genre { Id = 1 };
+            var gameListWithGenre = new List<Game>
+            {
+                new Game
+                {
+                    GameGenres = new List<Genre> { genreToDelete }
+                }
+            };
 
             _mockUnitOfWork
                 .Setup(u => u.GenreRepository
                     .GetByIdAsync(
-                    It.IsAny<int>(),
-                    It.IsAny<string>()))
+                        It.IsAny<int>(),
+                        It.IsAny<string>()))
                 .ReturnsAsync(genreToDelete);
 
             _mockUnitOfWork
+                .Setup(u => u.GameRepository
+                    .GetAsync(
+                        It.IsAny<Expression<Func<Game, bool>>>(),
+                        It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<bool>()))
+                .ReturnsAsync(gameListWithGenre);
+
+            _mockUnitOfWork
                 .Setup(u => u.GenreRepository
-                    .Delete(genreToDelete))
+                    .Delete(It.IsAny<Genre>()))
                 .Verifiable();
 
             // Act
@@ -109,8 +126,8 @@ namespace GameShop.BLL.Tests.ServiceTests
             _mockUnitOfWork
                 .Setup(u => u.GenreRepository
                     .GetByIdAsync(
-                    It.IsAny<int>(),
-                    It.IsAny<string>()))
+                        It.IsAny<int>(),
+                        It.IsAny<string>()))
                 .ReturnsAsync(genreToDelete);
 
             // Act

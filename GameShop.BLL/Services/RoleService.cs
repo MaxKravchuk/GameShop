@@ -26,7 +26,7 @@ namespace GameShop.BLL.Services
             IUnitOfWork unitOfWork,
             IMapper mapper,
             ILoggerManager loggerManager,
-            IValidator<RoleBaseDTO> validator)
+            IValidator<RoleCreateDTO> validator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -53,7 +53,7 @@ namespace GameShop.BLL.Services
                 throw new NotFoundException($"Role with id {roleId} was not found");
             }
 
-            var users = await _unitOfWork.UserRepository.GetQuery(filter: u => u.UserRole.Id == roleId).ToListAsync();
+            var users = await _unitOfWork.UserRepository.GetAsync(filter: u => u.UserRole.Id == roleId);
 
             foreach (var user in users)
             {

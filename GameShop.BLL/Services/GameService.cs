@@ -57,12 +57,12 @@ namespace GameShop.BLL.Services
             var allGenres = newGameDTO.GenresId == null ?
                     new List<Genre>() :
                     await _unitOfWork.GenreRepository
-                        .GetQuery(filter: g => newGameDTO.GenresId.Contains(g.Id)).ToListAsync();
+                        .GetAsync(filter: g => newGameDTO.GenresId.Contains(g.Id));
 
             var allPlatformTypes = newGameDTO.PlatformTypeId == null ?
                 new List<PlatformType>() :
                 await _unitOfWork.PlatformTypeRepository
-                    .GetQuery(filter: plt => newGameDTO.PlatformTypeId.Contains(plt.Id)).ToListAsync();
+                    .GetAsync(filter: plt => newGameDTO.PlatformTypeId.Contains(plt.Id));
 
             foreach (var genreId in newGameDTO.GenresId)
             {
@@ -213,12 +213,12 @@ namespace GameShop.BLL.Services
             var allGenres = updatedGameDTO.GenresId == null ?
                     new List<Genre>() :
                     await _unitOfWork.GenreRepository
-                        .GetQuery(filter: g => updatedGameDTO.GenresId.Contains(g.Id)).ToListAsync();
+                        .GetAsync(filter: g => updatedGameDTO.GenresId.Contains(g.Id));
 
             var allPlatformTypes = updatedGameDTO.PlatformTypeId == null ?
                 new List<PlatformType>() :
                 await _unitOfWork.PlatformTypeRepository
-                    .GetQuery(filter: plt => updatedGameDTO.PlatformTypeId.Contains(plt.Id)).ToListAsync();
+                    .GetAsync(filter: plt => updatedGameDTO.PlatformTypeId.Contains(plt.Id));
 
             foreach (var genreId in updatedGameDTO.GenresId)
             {

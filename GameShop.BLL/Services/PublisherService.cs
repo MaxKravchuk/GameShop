@@ -47,12 +47,12 @@ namespace GameShop.BLL.Services
                 filter: p => p.CompanyName == companyName,
                 includeProperties: "Games");
 
-            if (publishers.SingleOrDefault() == null)
+            var publisher = publishers.SingleOrDefault();
+            if (publisher == null)
             {
                 throw new NotFoundException($"Publisher with company name {companyName} not found");
             }
 
-            var publisher = publishers.SingleOrDefault();
             var model = _mapper.Map<PublisherReadDTO>(publisher);
             _loggerManager.LogInfo($"Publisher with company name {companyName} returned successfully");
             return model;
@@ -64,12 +64,12 @@ namespace GameShop.BLL.Services
                    filter: p => p.User.Id == userId,
                    includeProperties: "Games,User");
 
-            if (publishers.SingleOrDefault() == null)
+            var publisher = publishers.SingleOrDefault();
+            if (publisher == null)
             {
                 throw new NotFoundException($"Publisher with user id {userId} not found");
             }
 
-            var publisher = publishers.SingleOrDefault();
             var model = _mapper.Map<PublisherReadDTO>(publisher);
             _loggerManager.LogInfo($"Publisher with user id {userId} returned successfully");
             return model;
@@ -99,7 +99,7 @@ namespace GameShop.BLL.Services
 
             _unitOfWork.PublisherRepository.Update(publisherToUpdate);
             await _unitOfWork.SaveAsync();
-            _loggerManager.LogInfo("Publisher updated");
+            _loggerManager.LogInfo($"Publisher with id {publisherUpdateDTO.Id} updated");
         }
 
         public async Task DeletePublisherAsync(int publisherId)
@@ -119,7 +119,7 @@ namespace GameShop.BLL.Services
 
             _unitOfWork.PublisherRepository.Delete(publisherToDelete);
             await _unitOfWork.SaveAsync();
-            _loggerManager.LogInfo("Publisher deleted");
+            _loggerManager.LogInfo($"Publisher with id {publisherId} deleted");
         }
     }
 }

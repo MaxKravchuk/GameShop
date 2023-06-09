@@ -41,11 +41,16 @@ namespace GameShop.BLL.Services
             if (newCommentDTO.ParentId != null)
             {
                 var parentComment = await _unitOfWork.CommentRepository.GetByIdAsync((int)newCommentDTO.ParentId);
+                if (parentComment == null)
+                {
+                    throw new NotFoundException($"Parent comment with id {newCommentDTO.ParentId} was not found");
+                }
+
                 newComment.Parent = parentComment;
             }
 
-            var user = await _unitOfWork.UserRepository.GetQuery(
-                filter: x => x.NickName == newCommentDTO.Name).SingleOrDefaultAsync();
+            var user = (await _unitOfWork.UserRepository.GetAsync(
+                filter: x => x.NickName == newCommentDTO.Name)).SingleOrDefault();
             if (user == null)
             {
                 throw new NotFoundException($"User with nickname {newCommentDTO.Name} not found");

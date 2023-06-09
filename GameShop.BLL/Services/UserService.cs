@@ -45,15 +45,15 @@ namespace GameShop.BLL.Services
 
         public async Task<bool> IsAnExistingUserAsync(string nickName)
         {
-            var user = await _unitOfWork.UserRepository.GetQuery(filter: u => u.NickName == nickName)
-                .SingleOrDefaultAsync();
+            var user = (await _unitOfWork.UserRepository.GetAsync(filter: u => u.NickName == nickName))
+                .SingleOrDefault();
             return user != null;
         }
 
         public async Task<bool> IsAnExistingUserBannedAsync(string nickName)
         {
-            var user = await _unitOfWork.UserRepository.GetQuery(
-                filter: u => u.NickName == nickName).SingleOrDefaultAsync();
+            var user = (await _unitOfWork.UserRepository.GetAsync(
+                filter: u => u.NickName == nickName)).SingleOrDefault();
 
             if (user == null)
             {
@@ -70,17 +70,17 @@ namespace GameShop.BLL.Services
                 throw new BadRequestException("Invalid credentials");
             }
 
-            var user = await _unitOfWork.UserRepository.GetQuery(filter: u => u.NickName == userCreateDTO.NickName)
-                .SingleOrDefaultAsync();
+            var user = (await _unitOfWork.UserRepository.GetAsync(filter: u => u.NickName == userCreateDTO.NickName))
+                .SingleOrDefault();
 
             return user != null && _passwordProvider.IsPasswordValid(userCreateDTO.Password, user.PasswordHash);
         }
 
         public async Task<string> GetRoleAsync(string nickName)
         {
-            var user = await _unitOfWork.UserRepository.GetQuery(
+            var user = (await _unitOfWork.UserRepository.GetAsync(
                 filter: u => u.NickName == nickName,
-                includeProperties: "UserRole").SingleOrDefaultAsync();
+                includeProperties: "UserRole")).SingleOrDefault();
 
             if (user == null)
             {
@@ -92,8 +92,8 @@ namespace GameShop.BLL.Services
 
         public async Task<int> GetIdAsync(string nickName)
         {
-            var user = await _unitOfWork.UserRepository.GetQuery(
-                filter: u => u.NickName == nickName).SingleOrDefaultAsync();
+            var user = (await _unitOfWork.UserRepository.GetAsync(
+                filter: u => u.NickName == nickName)).SingleOrDefault();
 
             if (user == null)
             {
@@ -109,7 +109,8 @@ namespace GameShop.BLL.Services
 
             var user = _mapper.Map<User>(userCreateDTO);
             user.PasswordHash = _passwordProvider.GetPasswordHash(userCreateDTO.Password);
-            var role = await _unitOfWork.RoleRepository.GetQuery(filter: x => x.Name == "User").SingleOrDefaultAsync();
+            var role = (await _unitOfWork.RoleRepository.GetAsync(filter: x => x.Name == "User"))
+                .SingleOrDefault();
             user.UserRole = role;
 
             _unitOfWork.UserRepository.Insert(user);
@@ -161,9 +162,9 @@ namespace GameShop.BLL.Services
 
         public async Task UpdateUserAsync(UserUpdateDTO userUpdateDTO)
         {
-            var userToUpdate = await _unitOfWork.UserRepository.GetQuery(
+            var userToUpdate = (await _unitOfWork.UserRepository.GetAsync(
                 filter: u => u.Id == userUpdateDTO.Id,
-                includeProperties: "Publisher,UserRole").SingleOrDefaultAsync();
+                includeProperties: "Publisher,UserRole")).SingleOrDefault();
             var role = await _unitOfWork.RoleRepository.GetByIdAsync(userUpdateDTO.RoleId);
 
             if (userToUpdate == null || role == null)
@@ -198,8 +199,8 @@ namespace GameShop.BLL.Services
 
         public async Task BanUserAsync(UserBanDTO userBanDTO)
         {
-            var user = await _unitOfWork.UserRepository.GetQuery(
-                filter: x => x.NickName == userBanDTO.NickName).SingleOrDefaultAsync();
+            var user = (await _unitOfWork.UserRepository.GetAsync(
+                filter: x => x.NickName == userBanDTO.NickName)).SingleOrDefault();
 
             if (!string.IsNullOrEmpty(userBanDTO.BanOption))
             {

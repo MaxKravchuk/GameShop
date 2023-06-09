@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
-using GameShop.BLL.DTO.OrderDetails;
+using GameShop.BLL.DTO.OrderDetailDTOs;
 using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.DTO.RedisDTOs;
 using GameShop.BLL.Enums;
@@ -91,9 +91,9 @@ namespace GameShop.BLL.Services
             var thirtyDaysAgo = System.DateTime.UtcNow.AddDays(-30);
 
             var orders = await _unitOfWork.OrderRepository
-                .GetQuery(
+                .GetAsync(
                 filter: x => x.OrderedAt >= thirtyDaysAgo,
-                includeProperties: "Customer").ToListAsync();
+                includeProperties: "Customer");
 
             var models = _mapper.Map<IEnumerable<OrderReadListDTO>>(orders);
 
@@ -103,28 +103,30 @@ namespace GameShop.BLL.Services
 
         public async Task<OrderReadDTO> GetOrderById(int orderId)
         {
-            var order = await _unitOfWork.OrderRepository.GetQuery(
+            var order = (await _unitOfWork.OrderRepository.GetAsync(
                 filter: x => x.Id == orderId,
-                includeProperties: "Customer").SingleOrDefaultAsync();
+                includeProperties: "Customer")).SingleOrDefault();
             if (order == null)
             {
                 throw new NotFoundException($"Order with id {orderId} was not found");
             }
 
-            var orderDetails = await _unitOfWork.OrderDetailsRepository.GetQuery(
+            var orderDetails = (await _unitOfWork.OrderDetailsRepository.GetAsync(
                 filter: x => x.OrderId == order.Id,
-                includeProperties: "Game").ToListAsync();
+                includeProperties: "Game")).ToList();
             order.ListOfOrderDetails = orderDetails;
 
             var model = _mapper.Map<OrderReadDTO>(order);
+            _loggerManager.LogInfo(
+                $"Order with id {orderId} was returned");
             return model;
         }
 
         public async Task UpdateOrderDetailsAsync(OrderUpdateDTO orderUpdateDTO)
         {
-            var exOrder = await _unitOfWork.OrderRepository.GetQuery(
+            var exOrder = (await _unitOfWork.OrderRepository.GetAsync(
                 filter: x => x.Id == orderUpdateDTO.Id,
-                includeProperties: "ListOfOrderDetails").SingleOrDefaultAsync();
+                includeProperties: "ListOfOrderDetails")).SingleOrDefault();
             if (exOrder == null)
             {
                 throw new NotFoundException($"Order with id {orderUpdateDTO.Id} was not found");
@@ -164,20 +166,14 @@ namespace GameShop.BLL.Services
         {
             var exOrder = await _unitOfWork.OrderRepository.GetByIdAsync(orderUpdateDTO.Id);
             OrderStatusTypes newOrderStatusTypes;
-            try
-            {
-                newOrderStatusTypes = orderUpdateDTO.Status.ToEnum<OrderStatusTypes>();
-            }
-            catch (Exception e)
-            {
-                throw new BadRequestException(e.Message);
-            }
 
+            newOrderStatusTypes = orderUpdateDTO.Status.ToEnum<OrderStatusTypes>();
             exOrder.Status = newOrderStatusTypes.ToString();
             exOrder.ShippedDate = DateTime.UtcNow;
 
             _unitOfWork.OrderRepository.Update(exOrder);
             await _unitOfWork.SaveAsync();
+            _loggerManager.LogInfo($"Order with id {orderUpdateDTO.Id} was updated");
         }
 
         private bool IsEnoughGamesAvailable(Game game, Order exOrder, OrderDetailsUpdateDTO detail)

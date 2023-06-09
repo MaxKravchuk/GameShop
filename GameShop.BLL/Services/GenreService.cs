@@ -52,7 +52,7 @@ namespace GameShop.BLL.Services
             }
 
             var games = await _unitOfWork.GameRepository
-                .GetQuery(filter: g => g.GameGenres.Any(gg => gg.Name == genreToDelete.Name)).ToListAsync();
+                .GetAsync(filter: g => g.GameGenres.Any(gg => gg.Name == genreToDelete.Name));
             foreach (var game in games)
             {
                 game.GameGenres.Remove(genreToDelete);

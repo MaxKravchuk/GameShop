@@ -104,7 +104,10 @@
     <Compile Include="ServiceTests\OrderServiceTests.cs" />
     <Compile Include="ServiceTests\PaymentServiceTests.cs" />
     <Compile Include="ServiceTests\PublisherServiceTests.cs" />
+    <Compile Include="ServiceTests\RoleServiceTests.cs" />
     <Compile Include="ServiceTests\ShoppingCartServiceTests.cs" />
+    <Compile Include="ServiceTests\UserServiceTests.cs" />
+    <Compile Include="ServiceTests\UsersTokenServiceTests.cs" />
     <Compile Include="UtilTests\MappingTests.cs" />
     <Compile Include="ServiceTests\PlatformTypeServiceTests.cs" />
     <Compile Include="ServiceTests\GenreServiceTests.cs" />

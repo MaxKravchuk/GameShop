@@ -52,7 +52,7 @@ namespace GameShop.BLL.Services
             }
 
             var games = await _unitOfWork.GameRepository
-                .GetQuery(filter: g => g.GamePlatformTypes.Any(pt => pt.Type == platformType.Type)).ToListAsync();
+                .GetAsync(filter: g => g.GamePlatformTypes.Any(pt => pt.Type == platformType.Type));
             foreach (var game in games)
             {
                 game.GamePlatformTypes.Remove(platformType);

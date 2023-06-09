@@ -2,7 +2,7 @@
 using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.DTO.GenreDTOs;
-using GameShop.BLL.DTO.OrderDetails;
+using GameShop.BLL.DTO.OrderDetailDTOs;
 using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.DTO.PlatformTypeDTOs;

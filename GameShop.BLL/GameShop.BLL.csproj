@@ -157,8 +157,8 @@
     <Compile Include="DTO\AuthDTOs\UserTokenReadDTO.cs" />
     <Compile Include="DTO\FilterDTOs\BaseFilterDTO.cs" />
     <Compile Include="DTO\FilterDTOs\GameFiltersDTO.cs" />
-    <Compile Include="DTO\OrderDetails\OrderDetailsReadListDTO.cs" />
-    <Compile Include="DTO\OrderDetails\OrderDetailsUpdateDTO.cs" />
+    <Compile Include="DTO\OrderDetailDTOs\OrderDetailsReadListDTO.cs" />
+    <Compile Include="DTO\OrderDetailDTOs\OrderDetailsUpdateDTO.cs" />
     <Compile Include="DTO\OrderDTOs\OrderReadDTO.cs" />
     <Compile Include="DTO\OrderDTOs\OrderReadListDTO.cs" />
     <Compile Include="DTO\OrderDTOs\OrderCreateDTO.cs" />
