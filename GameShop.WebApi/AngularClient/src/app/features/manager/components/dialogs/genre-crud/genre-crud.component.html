@@ -6,7 +6,7 @@
         <div *ngIf="!isAdding" class="mat-title">You are editing genre {{genre.Name}}</div>
         <p>
             <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
-                <mat-label>Role name</mat-label>
+                <mat-label>Genre name</mat-label>
                 <input
                     matInput
                     formControlName="Name"
@@ -20,7 +20,8 @@
         <div>
             <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
                 <mat-label>Parent</mat-label>
-                <mat-select formControlName="ParentId">
+                <mat-select formControlName="ParentGenreId">
+                    <mat-option [value]="null">None</mat-option>
                     <mat-option *ngFor="let genre of genres" [value]="genre.Id">
                         {{genre.Name}}
                     </mat-option>

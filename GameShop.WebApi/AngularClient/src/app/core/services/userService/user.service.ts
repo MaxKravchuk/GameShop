@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { UtilsService } from "../helpers/utilsService/utils-service";
 import { catchError, Observable } from "rxjs";
-import { Genre } from "../../models/Genre";
 import { User } from "../../models/User";
 import { PagedList } from "../../models/PagedList";
 

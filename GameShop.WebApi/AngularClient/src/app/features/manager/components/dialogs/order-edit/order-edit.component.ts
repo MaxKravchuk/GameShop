@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { OrdersMainComponent } from "../../orders-main/orders-main.component";
 import { Order } from "../../../../../core/models/Order";
@@ -54,8 +54,10 @@ export class OrderEditComponent implements OnInit {
         const newOrder: Order = this.order;
         newOrder.Status = this.form.value.Status;
 
-        this.orderService.updateOrderStatus(newOrder).subscribe((order: Order): void => {
-            this.dialogRef.close(true);
+        this.orderService.updateOrderStatus(newOrder).subscribe({
+            next: (): void => {
+                this.dialogRef.close(true);
+            }
         });
     }
 
@@ -63,8 +65,10 @@ export class OrderEditComponent implements OnInit {
         const newOrder: Order = this.order;
         newOrder.OrderDetails = this.form.value.OrderDetails;
 
-        this.orderService.updateOrderDetails(newOrder).subscribe((order: Order): void => {
-            this.dialogRef.close(true);
+        this.orderService.updateOrderDetails(newOrder).subscribe({
+            next: (): void => {
+                this.dialogRef.close(true);
+            }
         });
     }
 

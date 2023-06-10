@@ -4,7 +4,7 @@ import { PublisherService } from "../../../../core/services/publisherService/pub
 import { Genre } from "../../../../core/models/Genre";
 import { PlatformType } from "../../../../core/models/PlatformType";
 import { Publisher } from "../../../../core/models/Publisher";
-import { forkJoin, Subject } from "rxjs";
+import { Subject } from "rxjs";
 import { PlatformTypeService } from "../../../../core/services/platformTypeService/platform-type.service";
 import { MatDialog } from "@angular/material/dialog";
 import { GenreCrudComponent } from "../dialogs/genre-crud/genre-crud.component";
@@ -164,7 +164,7 @@ export class ManagerMainComponent implements OnInit {
             autoFocus: false,
             data: {
                 genre: genre,
-                genres: this.genres
+                genres: this.genres!.filter((g: Genre): boolean => g.Id !== genre.Id)
             }
         });
 

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { PaymentService } from "../../../../core/services/paymentService/payment.service";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
-import { CreateOrderModel } from "../../../../core/models/CreateOrderModel";
 import { Router } from "@angular/router";
 import { PaymentCreateDTO } from "../../../../core/models/PaymentCreateDTO";
 

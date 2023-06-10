@@ -5,7 +5,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { ManagerMainComponent } from "../../manager-main/manager-main.component";
 import { PlatformTypeService } from "../../../../../core/services/platformTypeService/platform-type.service";
 import { UtilsService } from "../../../../../core/services/helpers/utilsService/utils-service";
-import { Genre } from "../../../../../core/models/Genre";
 
 @Component({
   selector: 'app-platform-type-crud',
@@ -18,7 +17,8 @@ export class PlatformTypeCrudComponent implements OnInit {
 
     platformType!: PlatformType;
 
-    isAdding: boolean = false;
+    isAdding: boolean = false
+
     constructor(
         private formBuilder: FormBuilder,
         @Inject(MAT_DIALOG_DATA) private data : {platformType: PlatformType},
@@ -47,25 +47,34 @@ export class PlatformTypeCrudComponent implements OnInit {
     onSaveClick(): void {
         const newPlatformType: PlatformType = this.form.value as PlatformType;
 
-        this.platformTypeService.createPlatformType(newPlatformType).subscribe((platformType: PlatformType): void => {
-            this.utilsService.openWithMessage("Platform type created successfully!");
-            this.dialogRef.close(true);
+        this.platformTypeService.createPlatformType(newPlatformType)
+            .subscribe({
+                next: (): void => {
+                    this.utilsService.openWithMessage("Platform type created successfully!");
+                    this.dialogRef.close(true);
+                }
         });
     }
 
     onEditClick(): void {
         const newPlatformType: PlatformType = this.form.value as PlatformType;
-
-        this.platformTypeService.updatePlatformType(newPlatformType).subscribe((platformType: PlatformType): void => {
-            this.utilsService.openWithMessage("Platform type updated successfully!");
-            this.dialogRef.close(true);
+        newPlatformType.Id = this.platformType.Id;
+        this.platformTypeService.updatePlatformType(newPlatformType)
+            .subscribe({
+                next: (): void => {
+                    this.utilsService.openWithMessage("Platform type updated successfully!");
+                    this.dialogRef.close(true);
+                }
         });
     }
 
     onDeleteClick(): void {
-        this.platformTypeService.deletePlatformType(this.platformType.Id!).subscribe((platformType: PlatformType): void => {
-            this.utilsService.openWithMessage("Platform type deleted successfully!");
-            this.dialogRef.close(true);
+        this.platformTypeService.deletePlatformType(this.platformType.Id!)
+            .subscribe({
+                next: (): void => {
+                    this.utilsService.openWithMessage("Platform type deleted successfully!");
+                    this.dialogRef.close(true);
+                }
         });
     }
 }

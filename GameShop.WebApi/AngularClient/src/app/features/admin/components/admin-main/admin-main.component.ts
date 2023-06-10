@@ -3,7 +3,6 @@ import { UserService } from "../../../../core/services/userService/user.service"
 import { User } from "../../../../core/models/User";
 import { Role } from "../../../../core/models/Role";
 import { RoleService } from "../../../../core/services/roleService/role.service";
-import { forkJoin } from "rxjs";
 import { MatDialog } from "@angular/material/dialog";
 import { RoleCrudComponent } from "../dialogs/role-crud/role-crud.component";
 import { UserCrudComponent } from "../dialogs/user-crud/user-crud.component";

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PublisherService } from "../../../../core/services/publisherService/publisher.service";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Publisher } from "../../../../core/models/Publisher";
 import { AuthService } from "../../../../core/services/authService/auth.service";
 import { forkJoin, switchMap } from "rxjs";

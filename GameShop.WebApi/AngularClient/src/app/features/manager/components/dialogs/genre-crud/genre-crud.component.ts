@@ -31,18 +31,18 @@ export class GenreCrudComponent implements OnInit {
 
     ngOnInit(): void {
         this.form = this.formBuilder.group({
-            Name: ['', Validators.minLength(1)],
-            ParentId: [''],
+            Name: ['', [Validators.minLength(1), Validators.required]],
+            ParentGenreId: [''],
         });
 
         this.genres = this.data.genres;
 
         if (this.data.genre == null) {
             this.isAdding = true;
-            this.form.controls['ParentId'].hasValidator(Validators.required);
         }
         else {
             this.genre = this.data.genre;
+            this.form.patchValue(this.data.genre);
         }
     }
 
@@ -52,37 +52,32 @@ export class GenreCrudComponent implements OnInit {
 
     onSaveClick(): void {
         const newGenre: Genre = this.form.value as Genre;
-        if (this.genre !== undefined) {
-            newGenre.ParentId = this.genre.Id;
-        }
-        else {
-            newGenre.ParentId = undefined;
-        }
-        this.genreService.createGenre(newGenre).subscribe((genre: Genre): void => {
-            this.utilsService.openWithMessage("Genre created successfully!");
-            this.dialogRef.close(true);
+        this.genreService.createGenre(newGenre).subscribe({
+            next: (): void => {
+                this.utilsService.openWithMessage("Genre created successfully!");
+                this.dialogRef.close(true);
+            }
         });
     }
 
     onDeleteClick(): void {
-        this.genreService.deleteGenre(this.genre.Id!).subscribe((genre: Genre): void => {
-            this.utilsService.openWithMessage("Genre deleted successfully!");
-            this.dialogRef.close(true);
+        this.genreService.deleteGenre(this.genre.Id!).subscribe({
+            next: (): void => {
+                this.utilsService.openWithMessage("Genre deleted successfully!");
+                this.dialogRef.close(true);
+            }
         });
     }
 
     onEditClick(): void {
-        console.log(this.genre);
         const newGenre: Genre = this.form.value as Genre;
+        console.log(newGenre);
         newGenre.Id = this.genre.Id;
-        if (this.form.value['ParentId'] === '')
-        {
-            newGenre.ParentId = this.genre.ParentId;
-        }
-
-        this.genreService.updateGenre(newGenre).subscribe((genre: Genre): void => {
-            this.utilsService.openWithMessage("Genre updated successfully!");
-            this.dialogRef.close(true);
+        this.genreService.updateGenre(newGenre).subscribe({
+            next: (): void => {
+                this.utilsService.openWithMessage("Genre updated successfully!");
+                this.dialogRef.close(true);
+            }
         });
     }
 }

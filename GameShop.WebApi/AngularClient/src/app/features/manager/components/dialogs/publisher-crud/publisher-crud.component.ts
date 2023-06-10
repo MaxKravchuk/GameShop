@@ -41,6 +41,7 @@ export class PublisherCrudComponent implements OnInit {
         }
         else {
             this.publisher = this.data.publisher;
+            this.form.patchValue(this.data.publisher);
         }
     }
 

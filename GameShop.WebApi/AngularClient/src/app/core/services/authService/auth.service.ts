@@ -4,7 +4,6 @@ import { HttpClient } from "@angular/common/http";
 import { catchError, Observable, tap } from "rxjs";
 import { AuthenticatedResponseModel } from "../../models/AuthModels/AuthenticatedResponseModel";
 import { TokenApiModel } from "../../models/AuthModels/TokenApiModel";
-import moment from "moment";
 import jwtDecode from 'jwt-decode';
 import { RegistrationModel } from "../../models/AuthModels/RegistrationModel";
 

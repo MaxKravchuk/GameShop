@@ -11,7 +11,6 @@ import { CartItem } from "../../../../core/models/CartItem";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
 import { concatMap, forkJoin, Observable } from "rxjs";
 import { AuthService } from "../../../../core/services/authService/auth.service";
-import { compareSegments } from "@angular/compiler-cli/src/ngtsc/sourcemaps/src/segment_marker";
 
 @Component({
     selector: 'app-game-details',
@@ -96,6 +95,18 @@ export class GameDetailsComponent implements OnInit {
 
     private getGameDetailsByKey(Key: string): void {
         const gameDetails$: Observable<Game> = this.gameService.getGameDetailsByKey(Key);
+        if (this.customerId === undefined) {
+            gameDetails$.subscribe({
+                next: (gameDetails: Game): void => {
+                    this.game = gameDetails;
+                    this.genres = gameDetails.Genres;
+                    this.platformTypes = gameDetails.PlatformTypes;
+                    this.publisher = gameDetails.PublisherReadDTO;
+                }
+            });
+            return;
+        }
+
         const numberOfGames$: Observable<number> = this.shoppingCartService
             .getNumberOfGamesInCart(this.customerId, this.gameKey!);
 
@@ -105,8 +116,7 @@ export class GameDetailsComponent implements OnInit {
                 this.genres = gameDetails.Genres;
                 this.platformTypes = gameDetails.PlatformTypes;
                 this.publisher = gameDetails.PublisherReadDTO;
-                this.isAvailable = gameDetails.UnitsInStock! > 0;
-                this.isAvailable = numberOfGames < gameDetails.UnitsInStock!;
+                this.isAvailable = numberOfGames < gameDetails.UnitsInStock! && gameDetails.UnitsInStock! > 0;
                 this.IsDeleted = gameDetails.IsDeleted!;
                 if (this.authService.isInRole('User') && gameDetails.IsDeleted) {
                     this.isAvailable = false;

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CommentService } from "../../../../core/services/commentService/comment.service";
 import { Comment } from "../../../../core/models/Comment";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
-import { forkJoin, Subscription } from "rxjs";
+import { Subscription } from "rxjs";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
 import { Game } from "../../../../core/models/Game";
 import { AuthService } from "../../../../core/services/authService/auth.service";
@@ -44,23 +44,30 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
-        this.user.Id = this.authService.getUserId();
-        this.user.NickName = this.authService.getUserName();
-
-        this.userService.IsAnExistingUserBannedAsync(this.user.NickName!).subscribe(
-            (data: boolean): void => {
-                this.isBanned = data;
-                if (data) {
-                    this.form.controls['Body'].disable();
-                    this.form.controls['Body'].setValue('You are banned from commenting');
-                }
-            }
-        );
-
         this.form = this.formBuilder.group({
             Name: [{value: this.user.NickName, disabled: true}, Validators.required],
             Body: ['', Validators.required]
         });
+
+        this.user.Id = this.authService.getUserId();
+        this.user.NickName = this.authService.getUserName();
+
+        if (this.authService.isAuthorized() && !this.eligibleToComment()) {
+            this.userService.IsAnExistingUserBannedAsync(this.user.NickName!).subscribe(
+                (data: boolean): void => {
+                    this.isBanned = data;
+                    if (data) {
+                        this.form.controls['Body'].disable();
+                        this.form.controls['Body'].setValue('You are banned from commenting');
+                    }
+                }
+            );
+        }
+        else {
+            this.form.controls['Body'].disable();
+            this.form.controls['Body'].setValue('You are not eligible to comment');
+            this.IsCommentable = false;
+        }
 
         if (this.authService.isInRole('User') && this.game.IsDeleted!) {
             this.IsCommentable = false;
@@ -105,5 +112,11 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
 
         this.action = 'new';
         this.parentComment = undefined;
+    }
+
+    private eligibleToComment(): boolean {
+        return !this.authService.isInRole('User')
+            && !this.authService.isInRole('Moderator')
+            && !this.authService.isInRole('Publisher');
     }
 }

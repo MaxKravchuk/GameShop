@@ -5,7 +5,6 @@ import { MatDialog } from "@angular/material/dialog";
 import { DeleteCommentDialogComponent } from "../delete-comment-dialog/delete-comment-dialog.component";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
 import { AuthService } from "../../../../core/services/authService/auth.service";
-import { GenreCrudComponent } from "../../../manager/components/dialogs/genre-crud/genre-crud.component";
 import { BanCommentComponent } from "../ban-comment/ban-comment.component";
 
 @Component({
@@ -73,12 +72,6 @@ export class GameCommentComponent implements OnInit {
                 this.sharedService.reloadSource();
             }
         });
-    }
-
-    private getCommentsByGameKey(gameKey: string): void {
-        this.commentService.getCommentsByGameKey(gameKey).subscribe(
-            (comment: Comment[]) => this.comments = comment
-        );
     }
 
     onBanClick(nickName: string): void {

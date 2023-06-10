@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
-import { CreateGameModel } from "../../../../core/models/CreateGameModel";
 import { LoginModel } from "../../../../core/models/AuthModels/LoginModel";
 import { AuthService } from "../../../../core/services/authService/auth.service";
-import { AuthenticatedResponseModel } from "../../../../core/models/AuthModels/AuthenticatedResponseModel";
-import { catchError, throwError } from "rxjs";
 import { Router } from "@angular/router";
 import { RegistrationModel } from "../../../../core/models/AuthModels/RegistrationModel";
 
@@ -47,8 +44,10 @@ export class AuthMainComponent implements OnInit {
         data.userCreateDTO.password = this.form.value.Password;
 
         this.authService.login(data.userCreateDTO)
-            .subscribe((data) => {
-                this.handleLoginSuccess();
+            .subscribe({
+                next: (): void => {
+                    this.handleLoginSuccess();
+                }
             });
     }
 
