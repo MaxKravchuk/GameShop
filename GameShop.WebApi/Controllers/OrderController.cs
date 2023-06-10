@@ -40,7 +40,7 @@ namespace GameShop.WebApi.Controllers
         [JwtAuthorize(Roles = "Manager")]
         public async Task<IHttpActionResult> GetByIdAsync(int orderId)
         {
-            var order = await _orderService.GetOrderById(orderId);
+            var order = await _orderService.GetOrderByIdAsync(orderId);
             return Json(order);
         }
 

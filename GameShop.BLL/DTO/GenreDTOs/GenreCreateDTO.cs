@@ -2,6 +2,6 @@
 {
     public class GenreCreateDTO : GenreBaseDTO
     {
-        public int ParentGenreId { get; set; }
+        public int? ParentGenreId { get; set; }
     }
 }

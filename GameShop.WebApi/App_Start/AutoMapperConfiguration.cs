@@ -45,8 +45,7 @@ namespace GameShop.WebApi.App_Start
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
                 .ForMember(dest => dest.Views, opt => opt.Ignore());
 
-            CreateMap<Genre, GenreReadListDTO>()
-                .ForMember(dest => dest.ParentId, opt => opt.MapFrom(src => src.ParentGenreId));
+            CreateMap<Genre, GenreReadListDTO>();
 
             CreateMap<GenreCreateDTO, Genre>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())

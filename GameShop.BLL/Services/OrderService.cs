@@ -101,7 +101,7 @@ namespace GameShop.BLL.Services
             return models;
         }
 
-        public async Task<OrderReadDTO> GetOrderById(int orderId)
+        public async Task<OrderReadDTO> GetOrderByIdAsync(int orderId)
         {
             var order = (await _unitOfWork.OrderRepository.GetAsync(
                 filter: x => x.Id == orderId,
@@ -157,6 +157,7 @@ namespace GameShop.BLL.Services
                 }
             }
 
+            exOrder.Status = OrderStatusTypes.Unpaid.ToString();
             _unitOfWork.OrderRepository.Update(exOrder);
             await _unitOfWork.SaveAsync();
             _loggerManager.LogInfo($"Order with id {orderUpdateDTO.Id} was updated");

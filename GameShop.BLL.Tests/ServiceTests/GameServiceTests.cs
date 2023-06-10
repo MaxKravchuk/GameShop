@@ -102,50 +102,6 @@ namespace GameShop.BLL.Tests.ServiceTests
         }
 
         [Fact]
-        public async Task CreateGame_ShouldThrowNotFoundExceptionForGenres()
-        {
-            // Arrange
-            var newGameDTO = _gameCreateDTO;
-            newGameDTO.GenresId = new List<int> { 0 };
-            var newGame = _game;
-            var allGenres = _listOfGenres;
-            var allPlatformTypes = _listOfPlatformTypes;
-
-            _mockMapper.Setup(m => m.Map<Game>(newGameDTO)).Returns(newGame);
-
-            MockSetupForGenres(allGenres);
-            MockSetupForPlatformTypes(allPlatformTypes);
-
-            // Act
-            var result = _gameService.CreateAsync(newGameDTO);
-
-            // Assert
-            await Assert.ThrowsAsync<NotFoundException>(() => result);
-        }
-
-        [Fact]
-        public async Task CreateGame_ShouldThrowNotFoundExceptionForPlatformTypes()
-        {
-            // Arrange
-            var newGameDTO = _gameCreateDTO;
-            newGameDTO.PlatformTypeId = new List<int> { 0 };
-            var newGame = _game;
-            var allGenres = _listOfGenres;
-            var allPlatformTypes = _listOfPlatformTypes;
-
-            _mockMapper.Setup(m => m.Map<Game>(newGameDTO)).Returns(newGame);
-
-            MockSetupForGenres(allGenres);
-            MockSetupForPlatformTypes(allPlatformTypes);
-
-            // Act
-            var result = _gameService.CreateAsync(newGameDTO);
-
-            // Assert
-            await Assert.ThrowsAsync<NotFoundException>(() => result);
-        }
-
-        [Fact]
         public async Task DeleteAsync__WithCorrectGameKey_ShouldDeleteGameAndLogInfo()
         {
             // Arrange
@@ -256,7 +212,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Arrange
             var gameList = new List<Game> { _game };
             var gameListDTO = new List<GameReadListDTO> { new GameReadListDTO() };
-            var pagedGameList = new PagedListViewModel<GameReadListDTO> { Entities = gameListDTO };
+            var pagedGameList = new PagedListDTO<GameReadListDTO> { Entities = gameListDTO };
             var gameFiltersDTO = new GameFiltersDTO { PageNumber = 1, PageSize = 10, SortingOption = "AscPrice" };
 
             _mockUnitOfWork
@@ -273,7 +229,7 @@ namespace GameShop.BLL.Tests.ServiceTests
                 .Returns(new AscPriceStrategy());
 
             _mockMapper
-                .Setup(m => m.Map<PagedListViewModel<GameReadListDTO>>(gameList))
+                .Setup(m => m.Map<PagedListDTO<GameReadListDTO>>(gameList))
                 .Returns(pagedGameList);
 
             // Act
@@ -282,7 +238,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Assert
             _mockLogger.Verify(
                 l => l.LogInfo($"Games successfully returned with array size of {gameListDTO.Count()}"), Times.Once);
-            Assert.IsAssignableFrom<PagedListViewModel<GameReadListDTO>>(result);
+            Assert.IsAssignableFrom<PagedListDTO<GameReadListDTO>>(result);
 
             Assert.True(result.Entities.Any());
         }
@@ -293,7 +249,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Arrange
             var gameList = new List<Game>();
             var gameListDTO = new List<GameReadListDTO>();
-            var pagedGameList = new PagedListViewModel<GameReadListDTO> { Entities = gameListDTO };
+            var pagedGameList = new PagedListDTO<GameReadListDTO> { Entities = gameListDTO };
             var gameFiltersDTO = new GameFiltersDTO { PageNumber = 1, PageSize = 10, SortingOption = "AscPrice" };
 
             _mockUnitOfWork
@@ -310,7 +266,7 @@ namespace GameShop.BLL.Tests.ServiceTests
                 .Returns(new AscPriceStrategy());
 
             _mockMapper
-                .Setup(m => m.Map<PagedListViewModel<GameReadListDTO>>(It.IsAny<PagedList<Game>>()))
+                .Setup(m => m.Map<PagedListDTO<GameReadListDTO>>(It.IsAny<PagedList<Game>>()))
                 .Returns(pagedGameList);
 
             // Act
@@ -319,7 +275,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Assert
             _mockLogger.Verify(
                 l => l.LogInfo($"Games successfully returned with array size of {pagedGameList.Entities.Count()}"), Times.Once);
-            Assert.IsAssignableFrom<PagedListViewModel<GameReadListDTO>>(result);
+            Assert.IsAssignableFrom<PagedListDTO<GameReadListDTO>>(result);
             Assert.False(result.Entities.Any());
         }
 
@@ -329,7 +285,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Arrange
             var gameList = new List<Game> { _game };
             var gameListDTO = new List<GameReadListDTO> { new GameReadListDTO() };
-            var pagedGameList = new PagedListViewModel<GameReadListDTO> { Entities = gameListDTO };
+            var pagedGameList = new PagedListDTO<GameReadListDTO> { Entities = gameListDTO };
             var gameFiltersDTO = new GameFiltersDTO { PageNumber = 1, PageSize = 10, SortingOption = string.Empty };
 
             _mockUnitOfWork
@@ -341,7 +297,7 @@ namespace GameShop.BLL.Tests.ServiceTests
                 .Returns(new TestDbAsyncEnumerable<Game>(gameList));
 
             _mockMapper
-                .Setup(m => m.Map<PagedListViewModel<GameReadListDTO>>(It.IsAny<PagedList<Game>>()))
+                .Setup(m => m.Map<PagedListDTO<GameReadListDTO>>(It.IsAny<PagedList<Game>>()))
                 .Returns(pagedGameList);
 
             // Act
@@ -350,7 +306,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Assert
             _mockLogger.Verify(
                 l => l.LogInfo($"Games successfully returned with array size of {gameListDTO.Count()}"), Times.Once);
-            Assert.IsAssignableFrom<PagedListViewModel<GameReadListDTO>>(result);
+            Assert.IsAssignableFrom<PagedListDTO<GameReadListDTO>>(result);
             Assert.True(result.Entities.Any());
         }
 

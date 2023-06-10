@@ -203,12 +203,10 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             _mockUnitOfWork
                 .Setup(u => u.PlatformTypeRepository
-                    .GetAsync(
-                        It.IsAny<Expression<Func<PlatformType, bool>>>(),
-                        It.IsAny<Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>>>(),
-                        It.IsAny<string>(),
-                        It.IsAny<bool>()))
-                .ReturnsAsync(new List<PlatformType> { platformTypeToUpdate });
+                    .GetByIdAsync(
+                        It.IsAny<int>(),
+                        It.IsAny<string>()))
+                .ReturnsAsync(platformTypeToUpdate);
 
             _mockMapper
                 .Setup(m => m

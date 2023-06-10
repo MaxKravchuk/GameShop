@@ -10,7 +10,7 @@ namespace GameShop.BLL.Services.Interfaces
 
         Task<IEnumerable<OrderReadListDTO>> GetAllOrdersAsync();
 
-        Task<OrderReadDTO> GetOrderById(int orderId);
+        Task<OrderReadDTO> GetOrderByIdAsync(int orderId);
 
         Task UpdateOrderStatusAsync(OrderUpdateDTO orderUpdateDTO);
 

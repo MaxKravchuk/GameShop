@@ -54,7 +54,9 @@ namespace GameShop.BLL.Services
             }
 
             var games = await _unitOfWork.GameRepository
-                .GetAsync(filter: g => g.GamePlatformTypes.Any(pt => pt.Type == platformType.Type));
+                .GetAsync(
+                    filter: g => g.GamePlatformTypes.Any(pt => pt.Type == platformType.Type),
+                    includeProperties: "GamePlatformTypes");
             foreach (var game in games)
             {
                 game.GamePlatformTypes.Remove(platformType);
@@ -93,8 +95,7 @@ namespace GameShop.BLL.Services
         {
             await _validator.ValidateAndThrowAsync(platformTypeToUpdateDTO);
 
-            var platformTypeToUpdate = (await _unitOfWork.PlatformTypeRepository.GetAsync(
-                filter: plt => plt.Type == platformTypeToUpdateDTO.Type)).SingleOrDefault();
+            var platformTypeToUpdate = await _unitOfWork.PlatformTypeRepository.GetByIdAsync(platformTypeToUpdateDTO.Id);
 
             if (platformTypeToUpdate == null)
             {

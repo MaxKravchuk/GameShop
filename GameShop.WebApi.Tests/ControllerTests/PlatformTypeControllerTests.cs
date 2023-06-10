@@ -32,7 +32,7 @@ namespace GameShop.WebApi.Tests.ControllerTests
                 .ReturnsAsync(platformTypesList);
 
             // Act
-            var actionResult = await _platformTypeController.GetAllPlatformTypes();
+            var actionResult = await _platformTypeController.GetAllPlatformTypesAsync();
 
             // Assert
             Assert.IsType<JsonResult<IEnumerable<PlatformTypeReadListDTO>>>(actionResult);
@@ -52,7 +52,7 @@ namespace GameShop.WebApi.Tests.ControllerTests
                 .ReturnsAsync(platformTypesList);
 
             // Act
-            var actionResult = await _platformTypeController.GetAllPlatformTypes();
+            var actionResult = await _platformTypeController.GetAllPlatformTypesAsync();
 
             // Assert
             Assert.IsType<JsonResult<IEnumerable<PlatformTypeReadListDTO>>>(actionResult);

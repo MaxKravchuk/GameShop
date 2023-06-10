@@ -127,6 +127,7 @@ namespace GameShop.BLL.Services
             foreach (var game in games)
             {
                 game.Publisher = null;
+                game.PublisherId = null;
                 _unitOfWork.GameRepository.Update(game);
             }
 

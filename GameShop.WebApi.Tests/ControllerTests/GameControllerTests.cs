@@ -158,7 +158,7 @@ namespace GameShop.WebApi.Tests.ControllerTests
         {
             // Arrange
             var gamesList = new List<GameReadListDTO> { new GameReadListDTO() };
-            var pagedList = new PagedListViewModel<GameReadListDTO> { Entities = gamesList };
+            var pagedList = new PagedListDTO<GameReadListDTO> { Entities = gamesList };
             var gameFilterDTO = new GameFiltersDTO { PageNumber = 1, PageSize = 10 };
 
             _mockGameService
@@ -170,7 +170,7 @@ namespace GameShop.WebApi.Tests.ControllerTests
             var actionResult = await _gameController.GetAllGamesAsync(gameFilterDTO);
 
             // Assert
-            Assert.IsType<JsonResult<PagedListViewModel<GameReadListDTO>>>(actionResult);
+            Assert.IsType<JsonResult<PagedListDTO<GameReadListDTO>>>(actionResult);
             Assert.NotNull(actionResult);
             _mockGameService.Verify(s => s.GetAllGamesAsync(gameFilterDTO), Times.Once);
         }

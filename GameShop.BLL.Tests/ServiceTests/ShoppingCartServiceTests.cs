@@ -189,7 +189,6 @@ namespace GameShop.BLL.Tests.ServiceTests
         public async Task GetNumberOfGamesByGameKeyAsync_WithFilledCart_ShouldReturnLength()
         {
             // Arrange
-            var redisKey = "CartItems-1";
             var carItemDto = new CartItemDTO
             {
                 Quantity = 1
@@ -213,7 +212,6 @@ namespace GameShop.BLL.Tests.ServiceTests
         public async Task GetNumberOfGamesByGameKeyAsync_WithEmptyCart_ShouldReturnLength()
         {
             // Arrange
-            var redisKey = "CartItems-1";
             CartItemDTO carItemDto = null;
 
             _mockRedisProvider

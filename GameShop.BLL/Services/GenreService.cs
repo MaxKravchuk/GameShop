@@ -39,14 +39,9 @@ namespace GameShop.BLL.Services
             await _validator.ValidateAndThrowAsync(genreToAddDTO);
 
             var genreToAdd = _mapper.Map<Genre>(genreToAddDTO);
-            if (genreToAddDTO.ParentGenreId != 0)
+            if (genreToAddDTO.ParentGenreId != null)
             {
-                var parentGenre = await _unitOfWork.GenreRepository.GetByIdAsync(genreToAddDTO.ParentGenreId);
-                genreToAdd.ParentGenre = parentGenre;
-            }
-            else
-            {
-                genreToAdd.ParentGenreId = null;
+                genreToAdd.ParentGenreId = genreToAddDTO.ParentGenreId;
             }
 
             _unitOfWork.GenreRepository.Insert(genreToAdd);
@@ -64,7 +59,9 @@ namespace GameShop.BLL.Services
             }
 
             var games = await _unitOfWork.GameRepository
-                .GetAsync(filter: g => g.GameGenres.Any(gg => gg.Name == genreToDelete.Name));
+                .GetAsync(
+                filter: g => g.GameGenres.Any(gg => gg.Name == genreToDelete.Name),
+                includeProperties: "GameGenres");
             foreach (var game in games)
             {
                 game.GameGenres.Remove(genreToDelete);
@@ -108,6 +105,11 @@ namespace GameShop.BLL.Services
             if (genreToUpdate == null)
             {
                 throw new NotFoundException($"Genre with id {genreToUpdateDTO.Id} was not found");
+            }
+
+            if (genreToUpdateDTO.ParentGenreId != null)
+            {
+                genreToUpdate.ParentGenreId = genreToUpdateDTO.ParentGenreId;
             }
 
             _mapper.Map(genreToUpdateDTO, genreToUpdate);

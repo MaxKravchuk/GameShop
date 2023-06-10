@@ -180,7 +180,7 @@ namespace GameShop.BLL.Tests.ServiceTests
                 .Returns(orderReadDto);
 
             // Act
-            var result = _orderService.GetOrderById(orderId);
+            var result = await _orderService.GetOrderByIdAsync(orderId);
 
             // Assert
             Assert.NotNull(result);

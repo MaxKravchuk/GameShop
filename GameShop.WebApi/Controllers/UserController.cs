@@ -69,7 +69,7 @@ namespace GameShop.WebApi.Controllers
         [HttpGet]
         [Route("isBanned/{nickName}")]
         [JwtAuthorize]
-        public async Task<IHttpActionResult> IsUserBanned(string nickName)
+        public async Task<IHttpActionResult> IsUserBannedAsync(string nickName)
         {
             var result = await _userService.IsAnExistingUserBannedAsync(nickName);
             return Ok(result);
