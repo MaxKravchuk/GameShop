@@ -3,8 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
+using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.DTO.PublisherDTOs;
 using GameShop.BLL.Exceptions;
+using GameShop.BLL.Pagination.Extensions;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.DAL.Entities;
@@ -83,6 +85,17 @@ namespace GameShop.BLL.Services
 
             _loggerManager.LogInfo($"Publishers successfully returned with array size of {models.Count()}");
             return models;
+        }
+
+        public async Task<PagedListDTO<PublisherReadListDTO>> GetAllPublishersPagedAsync(PaginationRequestDTO paginationRequestDTO)
+        {
+            var publishers = await _unitOfWork.PublisherRepository.GetAsync();
+
+            var pagedPublishers = publishers.ToPagedList(paginationRequestDTO.PageNumber, paginationRequestDTO.PageSize);
+            var pagedModels = _mapper.Map<PagedListDTO<PublisherReadListDTO>>(pagedPublishers);
+
+            _loggerManager.LogInfo($"Publishers successfully returned with array size of {pagedModels.Entities.Count()}");
+            return pagedModels;
         }
 
         public async Task UpdatePublisherAsync(PublisherUpdateDTO publisherUpdateDTO)

@@ -5,4 +5,6 @@ export interface PagedList<T> {
     HasNext: boolean;
 
     HasPrevious: boolean;
+
+    TotalCount: number;
 }

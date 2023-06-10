@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.DTO.UserDTOs;
 
 namespace GameShop.BLL.Services.Interfaces
@@ -26,6 +27,8 @@ namespace GameShop.BLL.Services.Interfaces
         Task UpdateUserAsync(UserUpdateDTO userUpdateDTO);
 
         Task DeleteUserAsync(int userId);
+
+        Task<PagedListDTO<UserReadListDTO>> GetUsersPagedAsync(PaginationRequestDTO paginationRequestDTO);
 
         Task<IEnumerable<UserReadListDTO>> GetUsersAsync();
 

@@ -48,7 +48,21 @@ namespace GameShop.WebApi.App_Start
             CreateMap<Genre, GenreReadListDTO>()
                 .ForMember(dest => dest.ParentId, opt => opt.MapFrom(src => src.ParentGenreId));
 
+            CreateMap<GenreCreateDTO, Genre>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
+                .ForMember(dest => dest.GameGenres, opt => opt.Ignore())
+                .ForMember(dest => dest.ParentGenre, opt => opt.Ignore())
+                .ForMember(dest => dest.SubGenres, opt => opt.Ignore());
+
+            CreateMap<PagedList<Genre>, PagedListDTO<GenreReadListDTO>>()
+                .ForMember(dest => dest.Entities, opt => opt.MapFrom(src => src));
+
             CreateMap<PlatformType, PlatformTypeReadListDTO>();
+
+            CreateMap<PagedList<PlatformType>, PagedListDTO<PlatformTypeReadListDTO>>()
+                .ForMember(dest => dest.Entities, opt => opt.MapFrom(src => src));
+
             CreateMap<PlatformTypeCreateDTO, PlatformType>()
                 .ForMember(dest => dest.GamePlatformTypes, opt => opt.Ignore())
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -65,9 +79,7 @@ namespace GameShop.WebApi.App_Start
             
             CreateMap<Game, GameReadListDTO>();
 
-            CreateMap<PagedList<Game>, PagedListViewModel<GameReadListDTO>>()
-                .ForMember(dest => dest.HasNext, opt => opt.MapFrom(src => src.HasNext))
-                .ForMember(dest => dest.HasPrevious, opt => opt.MapFrom(src => src.HasPrevious))
+            CreateMap<PagedList<Game>, PagedListDTO<GameReadListDTO>>()
                 .ForMember(dest => dest.Entities, opt => opt.MapFrom(src => src));
 
             CreateMap<GameUpdateDTO, Game>()
@@ -91,6 +103,9 @@ namespace GameShop.WebApi.App_Start
                 .ForMember(dest => dest.GameReadListDTOs, opt => opt.MapFrom(src => src.Games));
 
             CreateMap<Publisher, PublisherReadListDTO>();
+
+            CreateMap<PagedList<Publisher>, PagedListDTO<PublisherReadListDTO>>()
+                .ForMember(dest => dest.Entities, opt => opt.MapFrom(src => src));
 
             CreateMap<OrderCreateDTO, Order>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -130,7 +145,14 @@ namespace GameShop.WebApi.App_Start
                 .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.UserRole.Name))
                 .ForMember(dest => dest.Password, opt => opt.Ignore());
 
+            CreateMap<PagedList<User>, PagedListDTO<UserReadListDTO>>()
+                .ForMember(dest => dest.Entities, opt => opt.MapFrom(src => src));
+
             CreateMap<Role, RoleReadListDTO>();
+
+            CreateMap<PagedList<Role>, PagedListDTO<RoleReadListDTO>>()
+                .ForMember(dest => dest.Entities, opt => opt.MapFrom(src => src));
+
             CreateMap<RoleCreateDTO, Role>()
                 .ForMember(dest => dest.UsersRole, opt => opt.Ignore())
                 .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())

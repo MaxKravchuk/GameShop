@@ -6,6 +6,12 @@
                 <button (click)="editDeleteUser(user)">Edit/Delete</button>
             </div>
         </div>
+        <app-pagination
+            [HasNext]="HasNextUser"
+            [HasPrevious]="HasPreviousUser"
+            [maxPageSize]="totalCountUsers"
+            (pageSizeEvent)="pageSizeChangeUser($event)"
+            (pageIndexEvent)="pageIndexChangeUser($event)"></app-pagination>
     </div>
     <div class="addButtons">
         <button (click)="addUser()">Add User</button>
@@ -16,6 +22,13 @@
             <p>{{role.Name}}</p>
             <div class="role-CRUD">
                 <button (click)="editDeleteRole(role)">Edit/Delete</button>
+            </div>
         </div>
+        <app-pagination
+            [HasNext]="HasNextRole"
+            [HasPrevious]="HasPreviousRole"
+            [maxPageSize]="totalCountRoles"
+            (pageSizeEvent)="pageSizeChangeRole($event)"
+            (pageIndexEvent)="pageIndexChangeRole($event)"></app-pagination>
     </div>
 </div>

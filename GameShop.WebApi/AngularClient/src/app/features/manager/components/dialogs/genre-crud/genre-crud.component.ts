@@ -52,7 +52,12 @@ export class GenreCrudComponent implements OnInit {
 
     onSaveClick(): void {
         const newGenre: Genre = this.form.value as Genre;
-        newGenre.ParentId = this.genre.Id;
+        if (this.genre !== undefined) {
+            newGenre.ParentId = this.genre.Id;
+        }
+        else {
+            newGenre.ParentId = undefined;
+        }
         this.genreService.createGenre(newGenre).subscribe((genre: Genre): void => {
             this.utilsService.openWithMessage("Genre created successfully!");
             this.dialogRef.close(true);

@@ -64,28 +64,14 @@ namespace GameShop.BLL.Services
                 await _unitOfWork.PlatformTypeRepository
                     .GetAsync(filter: plt => newGameDTO.PlatformTypeId.Contains(plt.Id));
 
-            foreach (var genreId in newGameDTO.GenresId)
+            foreach (var genre in allGenres)
             {
-                var genreToAdd = allGenres.SingleOrDefault(g => g.Id == genreId);
-
-                if (genreToAdd == null)
-                {
-                    throw new NotFoundException($"Genre with id {genreId} not found");
-                }
-
-                gameToAdd.GameGenres.Add(genreToAdd);
+                gameToAdd.GameGenres.Add(genre);
             }
 
-            foreach (var platformTypeId in newGameDTO.PlatformTypeId)
+            foreach (var platformType in allPlatformTypes)
             {
-                var platformTypeToAdd = allPlatformTypes.SingleOrDefault(plt => plt.Id == platformTypeId);
-
-                if (platformTypeToAdd == null)
-                {
-                    throw new NotFoundException($"Platform type with id {platformTypeId} not found");
-                }
-
-                gameToAdd.GamePlatformTypes.Add(platformTypeToAdd);
+                gameToAdd.GamePlatformTypes.Add(platformType);
             }
 
             _unitOfWork.GameRepository.Insert(gameToAdd);
@@ -131,7 +117,7 @@ namespace GameShop.BLL.Services
             return model;
         }
 
-        public async Task<PagedListViewModel<GameReadListDTO>> GetAllGamesAsync(GameFiltersDTO gameFiltersDTO)
+        public async Task<PagedListDTO<GameReadListDTO>> GetAllGamesAsync(GameFiltersDTO gameFiltersDTO)
         {
             var query = _unitOfWork.GameRepository.GetQuery(
                 filter: null,
@@ -150,7 +136,7 @@ namespace GameShop.BLL.Services
 
             var games = await query.ToListAsync();
             var pagedGames = games.ToPagedList(gameFiltersDTO.PageNumber, gameFiltersDTO.PageSize);
-            var pagedModels = _mapper.Map<PagedListViewModel<GameReadListDTO>>(pagedGames);
+            var pagedModels = _mapper.Map<PagedListDTO<GameReadListDTO>>(pagedGames);
 
             _loggerManager.LogInfo($"Games successfully returned with array size of {pagedModels.Entities.Count()}");
             return pagedModels;

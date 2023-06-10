@@ -6,10 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
+using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.DTO.UserDTOs;
 using GameShop.BLL.Enums;
 using GameShop.BLL.Enums.Extensions;
 using GameShop.BLL.Exceptions;
+using GameShop.BLL.Pagination.Extensions;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.BLL.Strategies.Interfaces.Factories;
@@ -186,15 +188,27 @@ namespace GameShop.BLL.Services
             _loggerManager.LogInfo($"Genre with id {userToUpdate.Id} was updated successfully");
         }
 
+        public async Task<PagedListDTO<UserReadListDTO>> GetUsersPagedAsync(PaginationRequestDTO paginationRequestDTO)
+        {
+            var users = await _unitOfWork.UserRepository.GetAsync(includeProperties: "UserRole");
+
+            var pagedUsers = users.ToPagedList(paginationRequestDTO.PageNumber, paginationRequestDTO.PageSize);
+            var pagedModels = _mapper.Map<PagedListDTO<UserReadListDTO>>(pagedUsers);
+
+            _loggerManager.LogInfo(
+                $"Users were returned successfully in array size of {pagedModels.Entities.Count()}");
+            return pagedModels;
+        }
+
         public async Task<IEnumerable<UserReadListDTO>> GetUsersAsync()
         {
             var users = await _unitOfWork.UserRepository.GetAsync(includeProperties: "UserRole");
 
-            var usersDTO = _mapper.Map<IEnumerable<UserReadListDTO>>(users);
+            var models = _mapper.Map<IEnumerable<UserReadListDTO>>(users);
 
             _loggerManager.LogInfo(
-                $"Users were returned successfully in array size of {usersDTO.Count()}");
-            return usersDTO;
+                $"Users were returned successfully in array size of {models.Count()}");
+            return models;
         }
 
         public async Task BanUserAsync(UserBanDTO userBanDTO)

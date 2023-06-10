@@ -163,7 +163,8 @@
     <Compile Include="DTO\OrderDTOs\OrderReadListDTO.cs" />
     <Compile Include="DTO\OrderDTOs\OrderCreateDTO.cs" />
     <Compile Include="DTO\OrderDTOs\OrderUpdateDTO.cs" />
-    <Compile Include="DTO\PaginationDTOs\PagedListViewModel.cs" />
+    <Compile Include="DTO\PaginationDTOs\PagedListDTO.cs" />
+    <Compile Include="DTO\PaginationDTOs\PaginationRequestDTO.cs" />
     <Compile Include="DTO\PaymentDTOs\PaymentCreateDTO.cs" />
     <Compile Include="DTO\PlatformTypeDTOs\PlatformTypeBaseDTO.cs" />
     <Compile Include="DTO\PublisherDTOs\PublisherBaseDTO.cs" />

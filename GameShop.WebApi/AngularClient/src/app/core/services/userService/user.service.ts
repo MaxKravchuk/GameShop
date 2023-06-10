@@ -4,6 +4,7 @@ import { UtilsService } from "../helpers/utilsService/utils-service";
 import { catchError, Observable } from "rxjs";
 import { Genre } from "../../models/Genre";
 import { User } from "../../models/User";
+import { PagedList } from "../../models/PagedList";
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,16 @@ export class UserService {
         private http: HttpClient,
         private utilsService: UtilsService
     ) { }
+
+    getAllUsersPaged(pagedParams: any): Observable<PagedList<User>> {
+        return this.http.get<PagedList<User>>(`${this.apiUrl}getAllPaged`, {params: pagedParams})
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
 
     getAllUsers(): Observable<User[]> {
         return this.http.get<User[]>(`${this.apiUrl}getAll`)

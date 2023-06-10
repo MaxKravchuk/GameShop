@@ -18,6 +18,7 @@ import { MatSliderModule } from "@angular/material/slider";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { NgSelectModule } from "@ng-select/ng-select";
+import { SharedModule } from "../shared/shared.module";
 
 @NgModule({
     declarations: [
@@ -46,7 +47,8 @@ import { NgSelectModule } from "@ng-select/ng-select";
         MatSliderModule,
         MatRadioModule,
         MatPaginatorModule,
-        NgSelectModule
+        NgSelectModule,
+        SharedModule
     ]
 })
 export class GameModule {

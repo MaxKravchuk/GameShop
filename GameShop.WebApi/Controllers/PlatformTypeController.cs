@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
+using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.DTO.PlatformTypeDTOs;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.WebApi.Filters;
@@ -19,9 +20,17 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("getAll")]
-        public async Task<IHttpActionResult> GetAllPlatformTypes()
+        public async Task<IHttpActionResult> GetAllPlatformTypesAsync()
         {
             var result = await _platformTypeService.GetAsync();
+            return Json(result);
+        }
+
+        [HttpGet]
+        [Route("getAllPaged")]
+        public async Task<IHttpActionResult> GetAllPlatformTypesPagedAsync([FromUri] PaginationRequestDTO paginationRequestDTO)
+        {
+            var result = await _platformTypeService.GetPagedAsync(paginationRequestDTO);
             return Json(result);
         }
 

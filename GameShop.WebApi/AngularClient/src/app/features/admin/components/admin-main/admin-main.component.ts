@@ -7,6 +7,7 @@ import { forkJoin } from "rxjs";
 import { MatDialog } from "@angular/material/dialog";
 import { RoleCrudComponent } from "../dialogs/role-crud/role-crud.component";
 import { UserCrudComponent } from "../dialogs/user-crud/user-crud.component";
+import { PagedList } from "../../../../core/models/PagedList";
 
 @Component({
   selector: 'app-admin-main',
@@ -15,9 +16,29 @@ import { UserCrudComponent } from "../dialogs/user-crud/user-crud.component";
 })
 export class AdminMainComponent implements OnInit {
 
-    users: User[] = [];
+    users?: User[] = [];
 
-    roles: Role[] = [];
+    roles?: Role[] = [];
+
+    pageSizeRole!: number;
+
+    pageSizeUser!: number;
+
+    totalCountRoles!: number;
+
+    totalCountUsers!: number;
+
+    pageIndexRole!: number;
+
+    pageIndexUser!: number;
+
+    HasNextRole!: boolean;
+
+    HasNextUser!: boolean;
+
+    HasPreviousRole!: boolean;
+
+    HasPreviousUser!: boolean;
 
     constructor(
         private userService: UserService,
@@ -26,12 +47,55 @@ export class AdminMainComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        forkJoin([
-            this.userService.getAllUsers(),
-            this.roleService.getAllRoles()
-            ]).subscribe(([users, roles]: [User[], Role[]]): void => {
-            this.users = users;
-            this.roles = roles;
+        this.updateRoles();
+        this.updateUsers();
+    }
+
+    pageSizeChangeRole(value: number): void {
+        this.pageSizeRole = value;
+        this.pageIndexRole = 1;
+        this.updateRoles();
+    }
+
+    pageSizeChangeUser(value: number): void {
+        this.pageSizeUser = value;
+        this.pageIndexUser = 1;
+        this.updateUsers();
+    }
+
+    pageIndexChangeRole(value: number): void {
+        this.pageIndexRole = value;
+        this.updateRoles();
+    }
+
+    pageIndexChangeUser(value: number): void {
+        this.pageIndexUser = value;
+        this.updateUsers();
+    }
+
+    updateRoles(): void {
+        let roleParams = {
+            pageNumber: this.pageIndexRole,
+            pageSize: this.pageSizeRole
+        };
+        this.roleService.getAllRolesPaged(roleParams).subscribe((roles: PagedList<Role>): void => {
+            this.roles = roles.Entities;
+            this.HasNextRole = roles.HasNext;
+            this.HasPreviousRole = roles.HasPrevious;
+            this.totalCountRoles = roles.TotalCount;
+        });
+    }
+
+    updateUsers(): void {
+        let userParams = {
+            pageNumber: this.pageIndexUser,
+            pageSize: this.pageSizeUser
+        };
+        this.userService.getAllUsersPaged(userParams).subscribe((users: PagedList<User>): void => {
+            this.users = users.Entities;
+            this.HasNextUser = users.HasNext;
+            this.HasPreviousUser = users.HasPrevious;
+            this.totalCountUsers = users.TotalCount;
         });
     }
 

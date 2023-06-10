@@ -6,8 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
+using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.DTO.RoleDTOs;
 using GameShop.BLL.Exceptions;
+using GameShop.BLL.Pagination.Extensions;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.DAL.Entities;
@@ -66,15 +68,27 @@ namespace GameShop.BLL.Services
             _loggerManager.LogInfo($"Role with id {roleId} was deleted successfully");
         }
 
+        public async Task<PagedListDTO<RoleReadListDTO>> GetRolesPagedAsync(PaginationRequestDTO paginationRequestDTO)
+        {
+            var roles = await _unitOfWork.RoleRepository.GetAsync();
+
+            var pagedRoles = roles.ToPagedList(paginationRequestDTO.PageNumber, paginationRequestDTO.PageSize);
+            var pagedModels = _mapper.Map<PagedListDTO<RoleReadListDTO>>(pagedRoles);
+
+            _loggerManager.LogInfo(
+                $"Roles were returned successfully in array size of {pagedModels.Entities.Count()}");
+            return pagedModels;
+        }
+
         public async Task<IEnumerable<RoleReadListDTO>> GetRolesAsync()
         {
             var roles = await _unitOfWork.RoleRepository.GetAsync();
 
-            var rolesDTO = _mapper.Map<IEnumerable<RoleReadListDTO>>(roles);
+            var models = _mapper.Map<IEnumerable<RoleReadListDTO>>(roles);
 
             _loggerManager.LogInfo(
-                $"Roles were returned successfully in array size of {rolesDTO.Count()}");
-            return rolesDTO;
+                $"Roles were returned successfully in array size of {models.Count()}");
+            return models;
         }
     }
 }

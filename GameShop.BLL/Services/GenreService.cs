@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
 using GameShop.BLL.DTO.GenreDTOs;
+using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.Exceptions;
+using GameShop.BLL.Pagination.Extensions;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.DAL.Entities;
@@ -37,6 +39,16 @@ namespace GameShop.BLL.Services
             await _validator.ValidateAndThrowAsync(genreToAddDTO);
 
             var genreToAdd = _mapper.Map<Genre>(genreToAddDTO);
+            if (genreToAddDTO.ParentGenreId != 0)
+            {
+                var parentGenre = await _unitOfWork.GenreRepository.GetByIdAsync(genreToAddDTO.ParentGenreId);
+                genreToAdd.ParentGenre = parentGenre;
+            }
+            else
+            {
+                genreToAdd.ParentGenreId = null;
+            }
+
             _unitOfWork.GenreRepository.Insert(genreToAdd);
             await _unitOfWork.SaveAsync();
             _loggerManager.LogInfo($"Genre with name {genreToAdd.Name} was created successfully");
@@ -73,6 +85,18 @@ namespace GameShop.BLL.Services
             _loggerManager.LogInfo(
                 $"Genres were returned successfully in array size of {genresDTO.Count()}");
             return genresDTO;
+        }
+
+        public async Task<PagedListDTO<GenreReadListDTO>> GetPagedAsync(PaginationRequestDTO paginationRequestDTO)
+        {
+            var genres = await _unitOfWork.GenreRepository.GetAsync();
+
+            var pagedGenres = genres.ToPagedList(paginationRequestDTO.PageNumber, paginationRequestDTO.PageSize);
+            var pagedModels = _mapper.Map<PagedListDTO<GenreReadListDTO>>(pagedGenres);
+
+            _loggerManager.LogInfo(
+                $"Genres were returned successfully in array size of {pagedModels.Entities.Count()}");
+            return pagedModels;
         }
 
         public async Task UpdateAsync(GenreUpdateDTO genreToUpdateDTO)

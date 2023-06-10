@@ -112,7 +112,7 @@ namespace GameShop.WebApi
                 (new ContainerControlledLifetimeManager());
             container.RegisterType<IValidator<PlatformTypeCreateDTO>, PlatformTypeCreateDtoValidator>
                 (new ContainerControlledLifetimeManager());
-            container.RegisterType<IValidator<RoleBaseDTO>, RoleCreateDtoValidator>
+            container.RegisterType<IValidator<RoleCreateDTO>, RoleCreateDtoValidator>
                 (new ContainerControlledLifetimeManager());
 
             container.RegisterType<IPaymentStrategyFactory, PaymentStrategyFactory>();

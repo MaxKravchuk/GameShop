@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { UtilsService } from "../helpers/utilsService/utils-service";
 import { catchError, Observable } from "rxjs";
 import { Role } from "../../models/Role";
+import { PagedList } from "../../models/PagedList";
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,16 @@ export class RoleService {
         private http: HttpClient,
         private utilsService: UtilsService
     ) { }
+
+    getAllRolesPaged(pagedParams: any): Observable<PagedList<Role>> {
+        return this.http.get<PagedList<Role>>(`${this.apiUrl}getAllPaged`, {params: pagedParams})
+            .pipe(
+                catchError(err => {
+                    this.utilsService.handleError(err);
+                    return [];
+                })
+            );
+    }
 
     getAllRoles(): Observable<Role[]> {
         return this.http.get<Role[]>(`${this.apiUrl}getAll`)

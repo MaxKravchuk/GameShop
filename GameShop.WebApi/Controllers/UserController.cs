@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.DTO.UserDTOs;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.WebApi.Filters;
@@ -21,8 +22,17 @@ namespace GameShop.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("getAll")]
+        [Route("getAllPaged")]
         [JwtAuthorize(Roles ="Administrator")]
+        public async Task<IHttpActionResult> GetAllUsersPagedAsync([FromUri] PaginationRequestDTO paginationRequestDTO)
+        {
+            var users = await _userService.GetUsersPagedAsync(paginationRequestDTO);
+            return Json(users);
+        }
+
+        [HttpGet]
+        [Route("getAll")]
+        [JwtAuthorize(Roles = "Administrator")]
         public async Task<IHttpActionResult> GetAllUsersAsync()
         {
             var users = await _userService.GetUsersAsync();

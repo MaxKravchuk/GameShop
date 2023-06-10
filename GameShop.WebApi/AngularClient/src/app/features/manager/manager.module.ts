@@ -17,6 +17,7 @@ import { PublisherCrudComponent } from './components/dialogs/publisher-crud/publ
 import { GameCrudComponent } from './components/dialogs/game-crud/game-crud.component';
 import { OrdersMainComponent } from './components/orders-main/orders-main.component';
 import { OrderEditComponent } from './components/dialogs/order-edit/order-edit.component';
+import { SharedModule } from "../shared/shared.module";
 
 
 
@@ -41,7 +42,8 @@ import { OrderEditComponent } from './components/dialogs/order-edit/order-edit.c
         ReactiveFormsModule,
         GameModule,
         MatOptionModule,
-        MatSelectModule
+        MatSelectModule,
+        SharedModule
     ]
 })
 export class ManagerModule { }

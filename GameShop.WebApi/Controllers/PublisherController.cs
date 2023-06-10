@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
+using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.DTO.PublisherDTOs;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.WebApi.Filters;
@@ -39,6 +40,14 @@ namespace GameShop.WebApi.Controllers
         {
             var publisher = await _publisherService.GetPublisherByUserIdAsync(userId);
             return Json(publisher);
+        }
+
+        [HttpGet]
+        [Route("getAllPaged")]
+        public async Task<IHttpActionResult> GetAllPublishersPagedAsync([FromUri] PaginationRequestDTO paginationRequestDTO)
+        {
+            var publishers = await _publisherService.GetAllPublishersPagedAsync(paginationRequestDTO);
+            return Json(publishers);
         }
 
         [HttpGet]

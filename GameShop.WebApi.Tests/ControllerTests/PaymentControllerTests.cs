@@ -8,7 +8,7 @@ using GameShop.WebApi.Controllers;
 using Moq;
 using Xunit;
 
-namespace WebApi.Test.ControllerTests
+namespace GameShop.WebApi.Tests.ControllerTests
 {
     public class PaymentControllerTests
     {

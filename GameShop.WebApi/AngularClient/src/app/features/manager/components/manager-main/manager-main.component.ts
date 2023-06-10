@@ -4,13 +4,14 @@ import { PublisherService } from "../../../../core/services/publisherService/pub
 import { Genre } from "../../../../core/models/Genre";
 import { PlatformType } from "../../../../core/models/PlatformType";
 import { Publisher } from "../../../../core/models/Publisher";
-import { forkJoin } from "rxjs";
+import { forkJoin, Subject } from "rxjs";
 import { PlatformTypeService } from "../../../../core/services/platformTypeService/platform-type.service";
 import { MatDialog } from "@angular/material/dialog";
 import { GenreCrudComponent } from "../dialogs/genre-crud/genre-crud.component";
 import { PlatformTypeCrudComponent } from "../dialogs/platform-type-crud/platform-type-crud.component";
 import { PublisherCrudComponent } from "../dialogs/publisher-crud/publisher-crud.component";
 import { GameCrudComponent } from "../dialogs/game-crud/game-crud.component";
+import { PagedList } from "../../../../core/models/PagedList";
 
 @Component({
   selector: 'app-manager-main',
@@ -19,11 +20,43 @@ import { GameCrudComponent } from "../dialogs/game-crud/game-crud.component";
 })
 export class ManagerMainComponent implements OnInit {
 
-    genres: Genre[] = [];
+    genres?: Genre[] = [];
 
-    platformTypes: PlatformType[] = [];
+    platformTypes?: PlatformType[] = [];
 
-    publishers: Publisher[] = [];
+    publishers?: Publisher[] = [];
+
+    pageSizeGenre!: number;
+
+    pageSizePlt!: number;
+
+    pageSizePub!: number;
+
+    totalCountGenre!: number;
+
+    totalCountPlt!: number;
+
+    totalCountPub!: number;
+
+    pageIndexGenre!: number;
+
+    pageIndexPlt!: number;
+
+    pageIndexPub!: number;
+
+    HasNextGenre!: boolean;
+
+    HasNextPlt!: boolean;
+
+    HasNextPub!: boolean;
+
+    HasPreviousGenre!: boolean;
+
+    HasPreviousPlt!: boolean;
+
+    HasPreviousPub!: boolean;
+
+    reloadGames: Subject<boolean> = new Subject<boolean>();
 
     constructor(
         private genreService: GenreService,
@@ -33,16 +66,80 @@ export class ManagerMainComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        forkJoin([
-            this.genreService.getAllGenres(),
-            this.platformTypeService.getAllPlatformTypes(),
-            this.publisherService.getAllPublishers(),
-        ]).subscribe((
-            [genres, platformTypes, publishers] :
-                [Genre[], PlatformType[], Publisher[]]): void => {
-            this.genres = genres;
-            this.platformTypes = platformTypes;
-            this.publishers = publishers;
+        this.updateGenres();
+        this.updatePlatformTypes();
+        this.updatePublishers();
+    }
+
+    pageSizeChangeGenre(value: number): void {
+        this.pageSizeGenre = value;
+        this.pageIndexGenre = 1;
+        this.updateGenres();
+    }
+
+    pageSizeChangePlt(value: number): void {
+        this.pageSizePlt = value;
+        this.pageIndexPlt = 1;
+        this.updatePlatformTypes();
+    }
+
+    pageSizeChangePub(value: number): void {
+        this.pageSizePub = value;
+        this.pageIndexPub = 1;
+        this.updatePublishers();
+    }
+
+    pageIndexChangeGenre(value: number): void {
+        this.pageIndexGenre = value;
+        this.updateGenres();
+    }
+
+    pageIndexChangePlt(value: number): void {
+        this.pageIndexPlt = value;
+        this.updatePlatformTypes();
+    }
+
+    pageIndexChangePub(value: number): void {
+        this.pageIndexPub = value;
+        this.updatePublishers();
+    }
+
+    updateGenres(): void {
+        const pagedParams = {
+            pageSize: this.pageSizeGenre,
+            pageNumber: this.pageIndexGenre
+        };
+        this.genreService.getAllGenresPaged(pagedParams).subscribe((pagedResult: PagedList<Genre>):void => {
+            this.genres = pagedResult.Entities;
+            this.totalCountGenre = pagedResult.TotalCount;
+            this.HasNextGenre = pagedResult.HasNext;
+            this.HasPreviousGenre = pagedResult.HasPrevious;
+        });
+    }
+
+    updatePlatformTypes(): void {
+        const pagedParams = {
+            pageSize: this.pageSizePlt,
+            pageNumber: this.pageIndexPlt
+        };
+        this.platformTypeService.getAllPlatformTypesPaged(pagedParams).subscribe((pagedResult: PagedList<PlatformType>):void => {
+            this.platformTypes = pagedResult.Entities;
+            this.totalCountPlt = pagedResult.TotalCount;
+            this.HasNextPlt = pagedResult.HasNext;
+            this.HasPreviousPlt = pagedResult.HasPrevious;
+        });
+    }
+
+    updatePublishers(): void {
+        const pagedParams = {
+            pageSize: this.pageSizePub,
+            pageNumber: this.pageIndexPub
+        };
+        this.publisherService.getAllPublishersPaged(pagedParams).subscribe((pagedResult: PagedList<Publisher>):void => {
+            this.publishers = pagedResult.Entities;
+            this.totalCountPub = pagedResult.TotalCount;
+            this.HasNextPub = pagedResult.HasNext;
+            this.HasPreviousPub = pagedResult.HasPrevious;
         });
     }
 
@@ -57,7 +154,7 @@ export class ManagerMainComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((requireReload:boolean): void => {
             if(requireReload) {
-                this.ngOnInit();
+                this.updateGenres();
             }
         });
     }
@@ -73,7 +170,7 @@ export class ManagerMainComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((requireReload:boolean): void => {
             if(requireReload) {
-                this.ngOnInit();
+                this.updateGenres();
             }
         });
     }
@@ -88,7 +185,7 @@ export class ManagerMainComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((requireReload:boolean): void => {
             if(requireReload) {
-                this.ngOnInit();
+                this.updatePlatformTypes();
             }
         });
     }
@@ -103,7 +200,7 @@ export class ManagerMainComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((requireReload:boolean): void => {
             if(requireReload) {
-                this.ngOnInit();
+                this.updatePlatformTypes();
             }
         });
     }
@@ -118,7 +215,7 @@ export class ManagerMainComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((requireReload:boolean): void => {
             if(requireReload) {
-                this.ngOnInit();
+                this.updatePublishers();
             }
         });
     }
@@ -133,7 +230,7 @@ export class ManagerMainComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((requireReload:boolean): void => {
             if(requireReload) {
-                this.ngOnInit();
+                this.updatePublishers();
             }
         });
     }
@@ -148,7 +245,7 @@ export class ManagerMainComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe((requireReload:boolean): void => {
             if(requireReload) {
-                this.ngOnInit();
+                this.reloadGames.next(true);
             }
         });
     }

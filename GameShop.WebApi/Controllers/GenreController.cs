@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
 using GameShop.BLL.DTO.GenreDTOs;
+using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.WebApi.Filters;
 
@@ -22,6 +23,14 @@ namespace GameShop.WebApi.Controllers
         public async Task<IHttpActionResult> GetAllGenresAsync()
         {
             var result = await _genreService.GetAsync();
+            return Json(result);
+        }
+
+        [HttpGet]
+        [Route("getAllPaged")]
+        public async Task<IHttpActionResult> GetAllGenresPagedAsync([FromUri] PaginationRequestDTO paginationRequestDTO)
+        {
+            var result = await _genreService.GetPagedAsync(paginationRequestDTO);
             return Json(result);
         }
 

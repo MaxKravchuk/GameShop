@@ -197,7 +197,7 @@ namespace GameShop.WebApi.Tests.ControllerTests
         }
 
         [Fact]
-        public async Task GetAllGamesByGenre_WithCorrectPlatformTypeId_ShouldReturnGameListJsonResult()
+        public async Task GetAllGamesByPlatformType_WithCorrectPlatformTypeId_ShouldReturnGameListJsonResult()
         {
             // Arrange
             var platformTypeId = 1;
@@ -205,7 +205,7 @@ namespace GameShop.WebApi.Tests.ControllerTests
 
             _mockGameService
                 .Setup(s => s
-                    .GetGamesByGenreAsync(It.IsAny<int>()))
+                    .GetGamesByPlatformTypeAsync(It.IsAny<int>()))
                 .ReturnsAsync(gamesList);
 
             // Act
@@ -215,6 +215,31 @@ namespace GameShop.WebApi.Tests.ControllerTests
             Assert.IsType<JsonResult<IEnumerable<GameReadListDTO>>>(actionResult);
             Assert.NotNull(actionResult);
             _mockGameService.Verify(s => s.GetGamesByPlatformTypeAsync(platformTypeId), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetAllGamesByPublisherAsync_ReturnsJsonResult_WithGames()
+        {
+            // Arrange
+            int publisherId = 1;
+            var expectedGames = new List<GameReadListDTO>
+            {
+                new GameReadListDTO()
+            };
+
+            _mockGameService
+                .Setup(s => s
+                    .GetGamesByPublisherAsync(It.IsAny<int>()))
+                .ReturnsAsync(expectedGames);
+
+            // Act
+            var result = await _gameController.GetAllGamesByPublisherAsync(publisherId);
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult<IEnumerable<GameReadListDTO>>>(result);
+            var actualGames = Assert.IsType<List<GameReadListDTO>>(jsonResult.Content);
+            Assert.Equal(expectedGames.Count, actualGames.Count);
+            _mockGameService.Verify(s => s.GetGamesByPublisherAsync(publisherId), Times.Once);
         }
 
         [Fact]
@@ -308,6 +333,27 @@ namespace GameShop.WebApi.Tests.ControllerTests
 
             // Assert
             await Assert.ThrowsAsync<NotFoundException>(() => actionResult);
+        }
+
+        [Fact]
+        public async Task GetNumberOfGamesAsync_ReturnsOkResult_WithNumberOfGames()
+        {
+            // Arrange
+            int expectedNumberOfGames = 10;
+
+            _mockGameService
+                .Setup(s => s
+                    .GetNumberOfGamesAsync())
+                .ReturnsAsync(expectedNumberOfGames);
+
+            // Act
+            var result = await _gameController.GetNumberOfGamesAsync();
+
+            // Assert
+            var okResult = Assert.IsType<OkNegotiatedContentResult<int>>(result);
+            var actualNumberOfGames = Assert.IsType<int>(okResult.Content);
+            Assert.Equal(expectedNumberOfGames, actualNumberOfGames);
+            _mockGameService.Verify(s => s.GetNumberOfGamesAsync(), Times.Once);
         }
     }
 }

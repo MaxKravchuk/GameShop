@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http.Results;
 using GameShop.BLL.DTO.OrderDTOs;
 using GameShop.BLL.Services.Interfaces;
@@ -6,7 +7,7 @@ using GameShop.WebApi.Controllers;
 using Moq;
 using Xunit;
 
-namespace WebApi.Test.ControllerTests
+namespace GameShop.WebApi.Tests.ControllerTests
 {
     public class OrderControllerTests
     {
@@ -39,6 +40,28 @@ namespace WebApi.Test.ControllerTests
             var okResult = Assert.IsType<OkNegotiatedContentResult<int>>(response);
             var newOrder = Assert.IsType<int>(okResult.Content);
             Assert.Equal(1, newOrder);
+        }
+
+        [Fact]
+        public async Task GetAllAsync_WithValidRole_ReturnsJsonResult()
+        {
+            // Arrange
+            var orders = new List<OrderReadListDTO>
+            {
+                new OrderReadListDTO()
+            };
+
+            _mockOrderService
+                .Setup(s => s
+                    .GetAllOrdersAsync())
+                .ReturnsAsync(orders);
+
+            // Act
+            var result = await _orderController.GetAllAsync();
+
+            // Assert
+            var jsonResult = Assert.IsType<JsonResult<IEnumerable<OrderReadListDTO>>>(result);
+            _mockOrderService.Verify(s => s.GetAllOrdersAsync(), Times.Once);
         }
     }
 }
