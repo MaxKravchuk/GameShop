@@ -9,6 +9,5 @@ namespace GameShop.BLL.DTO.PaginationDTOs
 {
     public class PaginationRequestDTO : PaginationParameters
     {
-
     }
 }
