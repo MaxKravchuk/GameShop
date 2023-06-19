@@ -47,9 +47,8 @@ namespace GameShop.BLL.Services
 
         public async Task<bool> IsAnExistingUserAsync(string nickName)
         {
-            var user = (await _unitOfWork.UserRepository.GetAsync(filter: u => u.NickName == nickName))
-                .SingleOrDefault();
-            return user != null;
+            var user = await _unitOfWork.UserRepository.GetQuery(filter: u => u.NickName == nickName).AnyAsync();
+            return user;
         }
 
         public async Task<bool> IsAnExistingUserBannedAsync(string nickName)

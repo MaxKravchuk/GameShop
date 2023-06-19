@@ -5,34 +5,34 @@
         </div>
         <a mat-button routerLink="/" routerLinkActive="active">Game Store</a>
         <a
-           *ngIf="authService.isAuthorized()"
+           [appHasPermissions]="''"
            mat-button
            routerLink="/cart/viewcart"
            routerLinkActive="active"
         >Shopping Cart</a>
         <a
-            *ngIf="authService.isAuthorized() && authService.isInRole('Administrator')"
+            [appHasPermissions]="'Administrator'"
             mat-button
             routerLink="/admin/main"
             routerLinkActive="active">
             Admin panel
         </a>
         <a
-            *ngIf="authService.isAuthorized() && authService.isInRole('Manager')"
+            [appHasPermissions]="'Manager'"
             mat-button
             routerLink="/manager/managerPanel"
             routerLinkActive="active">
             Manager panel
         </a>
         <a
-            *ngIf="authService.isAuthorized() && authService.isInRole('Manager')"
+            [appHasPermissions]="'Manager'"
             mat-button
             routerLink="/manager/orders"
             routerLinkActive="active">
             Orders
         </a>
         <a
-            *ngIf="authService.isAuthorized() && authService.isInRole('Publisher')"
+            [appHasPermissions]="'Publisher'"
             mat-button
             routerLink="/publishers/main"
             routerLinkActive="active">
@@ -41,11 +41,11 @@
     </div>
     <div class="right-header">
         <a
-            *ngIf="!authService.isAuthorized()"
+            *appIsAuthorized
             mat-button
             routerLink="/auth/login">Log in</a>
         <a
-            *ngIf="authService.isAuthorized()"
+            *appIsAuthorized
             mat-button
             (click)="logOut()">Log out</a>
     </div>

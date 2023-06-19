@@ -3,8 +3,7 @@ import {
     HttpRequest,
     HttpHandler,
     HttpEvent,
-    HttpInterceptor, HttpErrorResponse
-} from '@angular/common/http';
+    HttpInterceptor } from '@angular/common/http';
 import { BehaviorSubject, catchError, filter, Observable, switchMap, take, throwError } from 'rxjs';
 import { AuthService } from "../services/authService/auth.service";
 import { TokenApiModel } from "../models/AuthModels/TokenApiModel";
@@ -13,9 +12,6 @@ import { Router } from "@angular/router";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-
-    private isRefreshing: boolean = false;
-    private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
     constructor(
         private authService: AuthService,

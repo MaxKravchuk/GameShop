@@ -71,11 +71,6 @@ export class GameCrudComponent implements OnInit {
         }
         else {
             this.game = this.data.game;
-            this.gameService.getGameDetailsByKey(this.game.Key!).subscribe(
-                (game: Game): void => {
-
-                }
-            );
             this.form.patchValue(this.game);
             this.form.controls['GenresId'].setValue(this.game.Genres?.map(x => x.Id));
             this.form.controls['PlatformTypeId'].setValue(this.game.PlatformTypes?.map(x => x.Id));

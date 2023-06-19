@@ -12,7 +12,7 @@ namespace GameShop.BLL.Strategies.BanStrategies
     {
         public User Ban(User user)
         {
-            user.BannedTo = DateTime.UtcNow.AddYears(9999);
+            user.BannedTo = DateTime.MaxValue;
             return user;
         }
     }

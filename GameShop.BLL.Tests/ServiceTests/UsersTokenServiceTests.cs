@@ -4,8 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using GameShop.BLL.DTO.AuthDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services;
+using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository.Interfaces;
 using Moq;
@@ -16,6 +18,7 @@ namespace GameShop.BLL.Tests.ServiceTests
     public class UsersTokenServiceTests : IDisposable
     {
         private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+        private readonly Mock<IJwtTokenProvider> _mockJwtProvider;
         private readonly UsersTokenService _usersTokenService;
 
         private bool _disposed;
@@ -23,9 +26,11 @@ namespace GameShop.BLL.Tests.ServiceTests
         public UsersTokenServiceTests()
         {
             _mockUnitOfWork = new Mock<IUnitOfWork>();
+            _mockJwtProvider = new Mock<IJwtTokenProvider>();
 
             _usersTokenService = new UsersTokenService(
-                _mockUnitOfWork.Object);
+                _mockUnitOfWork.Object,
+                _mockJwtProvider.Object);
         }
 
         public void Dispose()
@@ -109,16 +114,23 @@ namespace GameShop.BLL.Tests.ServiceTests
         {
             // Arrange
             var nickName = "john";
-            var user = new User { Id = 1, NickName = nickName };
-            var userToken = new UserTokens { UserId = user.Id, RefreshToken = "oldRefreshToken" };
+            var role = new Role { Name = "test" };
+            var user = new User { Id = 1, NickName = nickName, UserRole = role };
+            var userToken = new UserTokens
+            {
+                UserId = user.Id,
+                RefreshToken = "oldRefreshToken",
+                RefreshTokenExpiryTime = DateTime.UtcNow.AddSeconds(30)
+            };
+            var authResponce = new AuthenticatedResponse { Token = "token", RefreshToken = "refToken" };
 
             _mockUnitOfWork
                 .Setup(u => u.UserTokensRepository
                     .GetAsync(
-                       It.IsAny<Expression<Func<UserTokens, bool>>>(),
-                       It.IsAny<Func<IQueryable<UserTokens>, IOrderedQueryable<UserTokens>>>(),
-                       It.IsAny<string>(),
-                       It.IsAny<bool>()))
+                        It.IsAny<Expression<Func<UserTokens, bool>>>(),
+                        It.IsAny<Func<IQueryable<UserTokens>, IOrderedQueryable<UserTokens>>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<bool>()))
                 .ReturnsAsync(new List<UserTokens> { userToken });
 
             _mockUnitOfWork
@@ -130,65 +142,126 @@ namespace GameShop.BLL.Tests.ServiceTests
                        It.IsAny<bool>()))
                 .ReturnsAsync(new List<User> { user });
 
+            _mockJwtProvider
+                .Setup(jwt => jwt
+                    .GetAuthenticatedResponse(
+                        It.IsAny<int>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()))
+                .Returns(authResponce);
+
+            _mockUnitOfWork
+                .Setup(u => u.UserTokensRepository
+                    .Update(
+                        It.IsAny<UserTokens>()))
+                .Verifiable();
+
             // Act
-            var newRefreshToken = "newRefreshToken";
-            await _usersTokenService.UpdateUserTokenAsync(nickName, newRefreshToken);
+            await _usersTokenService.UpdateUserTokenAsync("oldRefreshToken");
 
             // Assert
             _mockUnitOfWork.Verify(u => u.UserTokensRepository.Update(It.IsAny<UserTokens>()), Times.Once);
             _mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
-
-            Assert.Equal(newRefreshToken, userToken.RefreshToken);
         }
 
         [Fact]
-        public async Task GetRefreshTokenAsync_ReturnsUserToken()
+        public async Task UpdateUserTokenAsync_ShouldThrowNotFoundExceptionForToken()
         {
             // Arrange
-            var oldRefreshToken = "oldRefreshToken";
+            var nickName = "john";
+            var role = new Role { Name = "test" };
+            var user = new User { Id = 1, NickName = nickName, UserRole = role };
             var userToken = new UserTokens
             {
-                RefreshToken = oldRefreshToken,
-                RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7),
-                User = new User { NickName = "john" }
+                UserId = user.Id,
+                RefreshToken = "oldRefreshToken",
+                RefreshTokenExpiryTime = DateTime.UtcNow.AddSeconds(30)
             };
 
             _mockUnitOfWork
                 .Setup(u => u.UserTokensRepository
                     .GetAsync(
-                       It.IsAny<Expression<Func<UserTokens, bool>>>(),
-                       It.IsAny<Func<IQueryable<UserTokens>, IOrderedQueryable<UserTokens>>>(),
-                       It.IsAny<string>(),
-                       It.IsAny<bool>()))
-                .ReturnsAsync(new List<UserTokens> { userToken });
+                        It.IsAny<Expression<Func<UserTokens, bool>>>(),
+                        It.IsAny<Func<IQueryable<UserTokens>, IOrderedQueryable<UserTokens>>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<bool>()))
+                .ReturnsAsync(Enumerable.Empty<UserTokens>());
 
             // Act
-            var result = await _usersTokenService.GetRefreshTokenAsync(oldRefreshToken);
+            var result = _usersTokenService.UpdateUserTokenAsync("oldRefreshToken");
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal(oldRefreshToken, result.RefreshToken);
-            Assert.Equal(userToken.RefreshTokenExpiryTime, result.RefreshTokenExpiryTime);
-            Assert.Equal(userToken.User.NickName, result.UserNickName);
+            await Assert.ThrowsAsync<NotFoundException>(() => result);
         }
 
         [Fact]
-        public async Task GetRefreshTokenAsync_ThrowsNotFoundException_WhenTokenNotFound()
+        public async Task UpdateUserTokenAsync_ShouldThrowBadRequestException()
         {
             // Arrange
-            var oldRefreshToken = "oldRefreshToken";
+            var nickName = "john";
+            var role = new Role { Name = "test" };
+            var user = new User { Id = 1, NickName = nickName, UserRole = role };
+            var userToken = new UserTokens
+            {
+                UserId = user.Id,
+                RefreshToken = "oldRefreshToken",
+                RefreshTokenExpiryTime = DateTime.UtcNow.AddSeconds(-30)
+            };
 
             _mockUnitOfWork
                 .Setup(u => u.UserTokensRepository
                     .GetAsync(
+                        It.IsAny<Expression<Func<UserTokens, bool>>>(),
+                        It.IsAny<Func<IQueryable<UserTokens>, IOrderedQueryable<UserTokens>>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<bool>()))
+                .ReturnsAsync(new List<UserTokens> { userToken });
+
+            // Act
+            var result = _usersTokenService.UpdateUserTokenAsync("oldRefreshToken");
+
+            // Assert
+            await Assert.ThrowsAsync<BadRequestException>(() => result);
+        }
+
+        [Fact]
+        public async Task UpdateUserTokenAsync_ShouldThrowNotFoundExceptionForUser()
+        {
+            // Arrange
+            var nickName = "john";
+            var role = new Role { Name = "test" };
+            var user = new User { Id = 1, NickName = nickName, UserRole = role };
+            var userToken = new UserTokens
+            {
+                UserId = user.Id,
+                User = user,
+                RefreshToken = "oldRefreshToken",
+                RefreshTokenExpiryTime = DateTime.UtcNow.AddSeconds(30)
+            };
+
+            _mockUnitOfWork
+               .Setup(u => u.UserTokensRepository
+                   .GetAsync(
                        It.IsAny<Expression<Func<UserTokens, bool>>>(),
                        It.IsAny<Func<IQueryable<UserTokens>, IOrderedQueryable<UserTokens>>>(),
                        It.IsAny<string>(),
                        It.IsAny<bool>()))
-                .ReturnsAsync(Enumerable.Empty<UserTokens>());
+               .ReturnsAsync(new List<UserTokens> { userToken });
 
-            // Act & Assert
-            await Assert.ThrowsAsync<NotFoundException>(() => _usersTokenService.GetRefreshTokenAsync(oldRefreshToken));
+            _mockUnitOfWork
+                .Setup(u => u.UserRepository
+                    .GetAsync(
+                       It.IsAny<Expression<Func<User, bool>>>(),
+                       It.IsAny<Func<IQueryable<User>, IOrderedQueryable<User>>>(),
+                       It.IsAny<string>(),
+                       It.IsAny<bool>()))
+                .ReturnsAsync(Enumerable.Empty<User>());
+
+            // Act
+            var result = _usersTokenService.UpdateUserTokenAsync("oldRefreshToken");
+
+            // Assert
+            await Assert.ThrowsAsync<NotFoundException>(() => result);
         }
 
         protected virtual void Dispose(bool disposing)

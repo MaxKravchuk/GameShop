@@ -32,31 +32,12 @@ namespace GameShop.WebApi.Controllers
         [Route("refresh")]
         public async Task<IHttpActionResult> RefreshAsync(TokenApiModel tokenApiModel)
         {
-            if (tokenApiModel is null)
+            if (tokenApiModel is null || _jwtTokenProvider.ValidateToken(tokenApiModel.AccessToken) != null)
             {
-                throw new BadRequestException();
+                throw new BadRequestException("Invalid token data");
             }
 
-            var accessToken = tokenApiModel.AccessToken;
-            var refreshToken = tokenApiModel.RefreshToken;
-
-            var principal = _jwtTokenProvider.ValidateToken(accessToken);
-
-            if (principal != null)
-            {
-                throw new BadRequestException();
-            }
-
-            var exRefreshToken = await _usersTokenService.GetRefreshTokenAsync(refreshToken);
-            var role = await _userService.GetRoleAsync(exRefreshToken.UserNickName);
-            var userId = await _userService.GetIdAsync(exRefreshToken.UserNickName);
-            if (exRefreshToken.RefreshToken != refreshToken || exRefreshToken.RefreshTokenExpiryTime < DateTime.UtcNow)
-            {
-                throw new BadRequestException();
-            }
-
-            var responce = _jwtTokenProvider.GetAuthenticatedResponse(userId, exRefreshToken.UserNickName, role);
-            await _usersTokenService.UpdateUserTokenAsync(exRefreshToken.UserNickName, responce.RefreshToken);
+            var responce = await _usersTokenService.UpdateUserTokenAsync(tokenApiModel.RefreshToken);
 
             return Ok(responce);
         }

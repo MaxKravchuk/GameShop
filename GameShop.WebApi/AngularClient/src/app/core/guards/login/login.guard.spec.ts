@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UnauthGuard } from './unauth.guard';
+import { UnauthGuard } from './login.guard';
 
 describe('UnauthGuard', () => {
   let guard: UnauthGuard;

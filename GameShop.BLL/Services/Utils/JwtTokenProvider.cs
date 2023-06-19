@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -15,7 +16,8 @@ namespace GameShop.BLL.Services.Utils
 {
     public class JwtTokenProvider : IJwtTokenProvider
     {
-        private const string SecretKey = "B7E7556636054C5086D4B9B7470A5D37DEECBD36F986D50FFD7A4B4230D6ED31";
+        private readonly string _secretKey = ConfigurationManager.AppSettings["SecretKey"];
+        private readonly int _expMinutes = int.Parse(ConfigurationManager.AppSettings["ExpirationMinutes"]);
 
         public string GenerateToken(int id, string username, string role)
         {
@@ -26,12 +28,12 @@ namespace GameShop.BLL.Services.Utils
                 new Claim("Role", role)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(20),
+                expires: DateTime.UtcNow.AddMinutes(_expMinutes),
                 signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
@@ -49,13 +51,13 @@ namespace GameShop.BLL.Services.Utils
         public ClaimsPrincipal ValidateToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(SecretKey);
+            var key = Encoding.UTF8.GetBytes(_secretKey);
 
             var validationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key),
-                ClockSkew = TimeSpan.FromMinutes(20),
+                ClockSkew = TimeSpan.FromMinutes(_expMinutes),
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 ValidateLifetime = true

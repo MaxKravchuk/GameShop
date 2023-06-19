@@ -7,13 +7,18 @@ import { RouterModule } from "@angular/router";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
 import { GameModule } from "../features/game/game.module";
+import { HasPermissionsDirective } from "../core/directives/has-permision/has-permissions.directive";
+import { AppModule } from "../app.module";
+import { IsAuthorizedDirective } from "../core/directives/is-authorized/is-authorized.directive";
 
 
 @NgModule({
     declarations: [
         HeaderComponent,
         FooterComponent,
-        MainComponent
+        MainComponent,
+        HasPermissionsDirective,
+        IsAuthorizedDirective
     ],
     exports: [
         HeaderComponent,

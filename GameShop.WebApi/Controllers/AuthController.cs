@@ -35,11 +35,7 @@ namespace GameShop.WebApi.Controllers
                 throw new BadRequestException("Invalid credentials");
             }
 
-            var role = await _userService.GetRoleAsync(userCreateDTO.NickName);
-            var userId = await _userService.GetIdAsync(userCreateDTO.NickName);
-            var authResponse = _jwtTokenProvider.GetAuthenticatedResponse(userId, userCreateDTO.NickName, role);
-            await _usersTokenService.AddUserTokenAsync(userCreateDTO.NickName, authResponse.RefreshToken);
-
+            var authResponse = await _usersTokenService.AddUserTokenAsync(userCreateDTO);
             return Json(authResponse);
         }
 
