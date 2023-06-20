@@ -168,8 +168,9 @@ namespace GameShop.BLL.Services
 
         public async Task<IEnumerable<GameReadListDTO>> GetGamesByPublisherAsync(int publisherId)
         {
-            var games = await _unitOfWork.GameRepository.GetAsync(filter:
-                    g => g.PublisherId == publisherId);
+            var games = await _unitOfWork.GameRepository.GetAsync(
+                filter: g => g.PublisherId == publisherId,
+                includeProperties: "Publisher");
 
             var models = _mapper.Map<IEnumerable<GameReadListDTO>>(games);
 

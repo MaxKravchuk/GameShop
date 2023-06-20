@@ -7,9 +7,7 @@ import { RouterModule } from "@angular/router";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
 import { GameModule } from "../features/game/game.module";
-import { HasPermissionsDirective } from "../core/directives/has-permision/has-permissions.directive";
-import { AppModule } from "../app.module";
-import { IsAuthorizedDirective } from "../core/directives/is-authorized/is-authorized.directive";
+import { SharedModule } from "../features/shared/shared.module";
 
 
 @NgModule({
@@ -17,8 +15,6 @@ import { IsAuthorizedDirective } from "../core/directives/is-authorized/is-autho
         HeaderComponent,
         FooterComponent,
         MainComponent,
-        HasPermissionsDirective,
-        IsAuthorizedDirective
     ],
     exports: [
         HeaderComponent,
@@ -31,6 +27,7 @@ import { IsAuthorizedDirective } from "../core/directives/is-authorized/is-autho
         MatToolbarModule,
         MatButtonModule,
         GameModule,
+        SharedModule,
     ]
 })
 export class LayoutModule {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UtilsService } from "../helpers/utilsService/utils-service";
 import { HttpClient } from "@angular/common/http";
-import { catchError, Observable, tap } from "rxjs";
+import { BehaviorSubject, catchError, Observable, tap } from "rxjs";
 import { AuthenticatedResponseModel } from "../../models/AuthModels/AuthenticatedResponseModel";
 import { TokenApiModel } from "../../models/AuthModels/TokenApiModel";
 import jwtDecode from 'jwt-decode';
@@ -14,6 +14,8 @@ export class AuthService {
 
     private authUrl: string = '/api/auth/';
     private tokenUrl: string = '/api/tokens/';
+    private userRoleSub: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(this.getRole());
+    private isAuthorizedSub: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.isAuthorized());
 
     constructor(
         private http: HttpClient,
@@ -26,6 +28,8 @@ export class AuthService {
                 tap(
                     (res: AuthenticatedResponseModel): void => {
                         this.setSession(res);
+                        this.userRoleSub.next(this.getRole());
+                        this.isAuthorizedSub.next(this.isAuthorized());
                     }
                 ),
                 catchError(err => {
@@ -61,6 +65,8 @@ export class AuthService {
     logout(): void {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
+        this.isAuthorizedSub.next(false);
+        this.userRoleSub.next(this.getRole());
     }
 
     getUserId() {
@@ -106,6 +112,10 @@ export class AuthService {
         return role === this.getRole()?.trim();
     }
 
+    getUserRole$(): Observable<string | null> {
+        return this.userRoleSub.asObservable();
+    }
+
     getAccessToken(): string | null {
         return localStorage.getItem('access_token');
     }
@@ -124,6 +134,10 @@ export class AuthService {
 
     isAuthorized(): boolean {
         return localStorage.getItem('access_token') != null
+    }
+
+    getIsAuthorized$(): Observable<boolean> {
+        return this.isAuthorizedSub.asObservable();
     }
 
     private setSession(authResult: AuthenticatedResponseModel): void {

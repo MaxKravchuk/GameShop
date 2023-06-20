@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { GameService } from "../../core/services/gameService/game.service";
-import { Subscription } from "rxjs";
+import { Observable, Subscription } from "rxjs";
 import { SharedService } from "../../core/services/helpers/sharedService/shared.service";
 import { Game } from "../../core/models/Game";
 import { AuthService } from "../../core/services/authService/auth.service";
@@ -17,6 +17,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     private reloadSourceSub: Subscription = new Subscription();
 
+    isAuthorized$!: Observable<boolean>;
+
     constructor(
         public authService: AuthService,
         private gameService: GameService,
@@ -25,6 +27,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.isAuthorized$ = this.authService.getIsAuthorized$();
+
         this.reloadSourceSub = this.sharedService.reloadSource$.subscribe({
             next: (): void => {
                 this.getNumberOfGames();
