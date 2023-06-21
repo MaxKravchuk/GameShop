@@ -13,11 +13,13 @@ namespace GameShop.BLL.Services.Interfaces
 
         Task<GameReadDTO> GetGameByKeyAsync(string gameKey);
 
-        Task<PagedListViewModel<GameReadListDTO>> GetAllGamesAsync(GameFiltersDTO gameFiltersDTO);
+        Task<PagedListDTO<GameReadListDTO>> GetAllGamesAsync(GameFiltersDTO gameFiltersDTO);
 
         Task<IEnumerable<GameReadListDTO>> GetGamesByGenreAsync(int genreId);
 
         Task<IEnumerable<GameReadListDTO>> GetGamesByPlatformTypeAsync(int platformTypeId);
+
+        Task<IEnumerable<GameReadListDTO>> GetGamesByPublisherAsync(int publisherId);
 
         Task UpdateAsync(GameUpdateDTO updatedGameDTO);
 

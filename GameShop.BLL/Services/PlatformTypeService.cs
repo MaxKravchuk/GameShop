@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
+using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.DTO.PlatformTypeDTOs;
 using GameShop.BLL.Exceptions;
+using GameShop.BLL.Pagination.Extensions;
 using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.DAL.Entities;
@@ -16,19 +20,24 @@ namespace GameShop.BLL.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
+        private readonly IValidator<PlatformTypeCreateDTO> _validator;
 
         public PlatformTypeService(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            ILoggerManager loggerManager)
+            ILoggerManager loggerManager,
+            IValidator<PlatformTypeCreateDTO> validator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _loggerManager = loggerManager;
+            _validator = validator;
         }
 
         public async Task CreateAsync(PlatformTypeCreateDTO platformTypeToAddDTO)
         {
+            await _validator.ValidateAndThrowAsync(platformTypeToAddDTO);
+
             var platformTypeToAdd = _mapper.Map<PlatformType>(platformTypeToAddDTO);
             _unitOfWork.PlatformTypeRepository.Insert(platformTypeToAdd);
             await _unitOfWork.SaveAsync();
@@ -41,7 +50,17 @@ namespace GameShop.BLL.Services
 
             if (platformType == null)
             {
-                throw new NotFoundException($"Platform type with id {id} does not found");
+                throw new NotFoundException($"Platform type with id {id} was not found");
+            }
+
+            var games = await _unitOfWork.GameRepository
+                .GetAsync(
+                    filter: g => g.GamePlatformTypes.Any(pt => pt.Type == platformType.Type),
+                    includeProperties: "GamePlatformTypes");
+            foreach (var game in games)
+            {
+                game.GamePlatformTypes.Remove(platformType);
+                _unitOfWork.GameRepository.Update(game);
             }
 
             _unitOfWork.PlatformTypeRepository.Delete(platformType);
@@ -60,29 +79,27 @@ namespace GameShop.BLL.Services
             return platformTypesDTO;
         }
 
-        public async Task<PlatformTypeReadDTO> GetByIdAsync(int id)
+        public async Task<PagedListDTO<PlatformTypeReadListDTO>> GetPagedAsync(PaginationRequestDTO paginationRequestDTO)
         {
-            var platformType = await _unitOfWork.PlatformTypeRepository.GetByIdAsync(id);
+            var platformTypes = await _unitOfWork.PlatformTypeRepository.GetAsync();
 
-            if (platformType == null)
-            {
-                throw new NotFoundException($"Platform type with id {id} does not found");
-            }
+            var pagedPlatformTypes = platformTypes.ToPagedList(paginationRequestDTO.PageNumber, paginationRequestDTO.PageSize);
+            var pagedModels = _mapper.Map<PagedListDTO<PlatformTypeReadListDTO>>(pagedPlatformTypes);
 
-            var platformTypeDTO = _mapper.Map<PlatformTypeReadDTO>(platformType);
-
-            _loggerManager.LogInfo($"Platform type with id {id} successfully returned");
-            return platformTypeDTO;
+            _loggerManager.LogInfo(
+                $"Platform types were returned successfully in array size of {pagedModels.Entities.Count()}");
+            return pagedModels;
         }
 
         public async Task UpdateAsync(PlatformTypeUpdateDTO platformTypeToUpdateDTO)
         {
-            var platformTypeToUpdate = (await _unitOfWork.PlatformTypeRepository.GetAsync(
-                filter: plt => plt.Type == platformTypeToUpdateDTO.Type)).SingleOrDefault();
+            await _validator.ValidateAndThrowAsync(platformTypeToUpdateDTO);
+
+            var platformTypeToUpdate = await _unitOfWork.PlatformTypeRepository.GetByIdAsync(platformTypeToUpdateDTO.Id);
 
             if (platformTypeToUpdate == null)
             {
-                throw new NotFoundException($"Platform type with type {platformTypeToUpdateDTO.Type} does not found");
+                throw new NotFoundException($"Platform type with type {platformTypeToUpdateDTO.Type} was not found");
             }
 
             _mapper.Map(platformTypeToUpdateDTO, platformTypeToUpdate);

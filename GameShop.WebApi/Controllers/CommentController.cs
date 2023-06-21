@@ -2,6 +2,7 @@
 using System.Web.Http;
 using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.Services.Interfaces;
+using GameShop.WebApi.Filters;
 
 namespace GameShop.WebApi.Controllers
 {
@@ -9,18 +10,16 @@ namespace GameShop.WebApi.Controllers
     public class CommentController : ApiController
     {
         private readonly ICommentService _commentService;
-        private readonly ICommentBanService _commentBanService;
 
         public CommentController(
-            ICommentService commentService,
-            ICommentBanService commentBanService)
+            ICommentService commentService)
         {
             _commentService = commentService;
-            _commentBanService = commentBanService;
         }
 
         [HttpPost]
         [Route("leaveComment")]
+        [JwtAuthorize(Roles = "User, Moderator, Publisher")]
         public async Task<IHttpActionResult> CreateCommentAsync([FromBody] CommentCreateDTO commentCreateViewModel)
         {
             await _commentService.CreateAsync(commentCreateViewModel);
@@ -37,17 +36,10 @@ namespace GameShop.WebApi.Controllers
 
         [HttpDelete]
         [Route("deleteComment/{commentId}")]
+        [JwtAuthorize(Roles = "Moderator")]
         public async Task<IHttpActionResult> DeleteCommentAsync([FromUri] int commentId)
         {
             await _commentService.DeleteAsync(commentId);
-            return Ok();
-        }
-
-        [HttpPost]
-        [Route("ban")]
-        public IHttpActionResult Ban([FromBody] string banDuration)
-        {
-            _commentBanService.Ban(banDuration);
             return Ok();
         }
     }

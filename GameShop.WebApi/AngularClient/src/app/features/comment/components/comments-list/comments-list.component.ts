@@ -3,6 +3,7 @@ import { Comment } from "../../../../core/models/Comment";
 import { CommentService } from "../../../../core/services/commentService/comment.service";
 import { Subscription } from "rxjs";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
+import { Game } from "../../../../core/models/Game";
 
 @Component({
     selector: 'app-comments-list',
@@ -11,7 +12,7 @@ import { SharedService } from "../../../../core/services/helpers/sharedService/s
 })
 export class CommentsListComponent implements OnInit, OnDestroy {
 
-    @Input() gameKey!: string;
+    @Input() game!: Game;
 
     comments: Comment[] = [];
 
@@ -38,7 +39,7 @@ export class CommentsListComponent implements OnInit, OnDestroy {
     }
 
     private getComments(): void {
-        this.commentService.getCommentsByGameKey(this.gameKey).subscribe(
+        this.commentService.getCommentsByGameKey(this.game.Key!).subscribe(
             (comments: Comment[]): void => {
                 this.comments = comments;
                 this.rootComments = this.getRootComments();

@@ -7,7 +7,7 @@ using GameShop.WebApi.Controllers;
 using Moq;
 using Xunit;
 
-namespace WebApi.Test.ControllerTests
+namespace GameShop.WebApi.Tests.ControllerTests
 {
     public class ShoppingCartControllerTests
     {
@@ -38,18 +38,18 @@ namespace WebApi.Test.ControllerTests
         public async Task GetCartItemAsync_ShouldReturnListFromCache()
         {
             // Arrange
-            var cartItems = new List<CartItemDTO> { new CartItemDTO() };
+            var cartItems = new List<CartItemDTO> { new CartItemDTO { CustomerId = 1 } };
 
             _mockShoppingCartService
                 .Setup(x => x
-                    .GetCartItemsAsync())
+                    .GetCartItemsAsync(It.IsAny<int>()))
                 .ReturnsAsync(cartItems);
 
             // Act
-            var actionResult = await _shoppingCartController.GetGamesFromCartAsync();
+            var actionResult = await _shoppingCartController.GetGamesFromCartAsync(1);
 
             // Assert
-            _mockShoppingCartService.Verify(x => x.GetCartItemsAsync(), Times.Once);
+            _mockShoppingCartService.Verify(x => x.GetCartItemsAsync(1), Times.Once);
             Assert.IsType<JsonResult<IEnumerable<CartItemDTO>>>(actionResult);
             var jsonResult = (JsonResult<IEnumerable<CartItemDTO>>)actionResult;
             Assert.Equal(cartItems, jsonResult.Content);
@@ -62,10 +62,10 @@ namespace WebApi.Test.ControllerTests
             var gameKey = "test";
 
             // Act
-            var result = await _shoppingCartController.DeleteGameFromCartAsync(gameKey);
+            var result = await _shoppingCartController.DeleteGameFromCartAsync(1, gameKey);
 
             // Assert
-            _mockShoppingCartService.Verify(x => x.DeleteItemFromListAsync(gameKey), Times.Once);
+            _mockShoppingCartService.Verify(x => x.DeleteItemFromListAsync(1, gameKey), Times.Once);
             Assert.IsType<OkResult>(result);
         }
     }

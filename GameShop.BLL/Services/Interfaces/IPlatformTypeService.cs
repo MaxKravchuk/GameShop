@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GameShop.BLL.DTO.PaginationDTOs;
 using GameShop.BLL.DTO.PlatformTypeDTOs;
 
 namespace GameShop.BLL.Services.Interfaces
@@ -10,7 +11,7 @@ namespace GameShop.BLL.Services.Interfaces
 
         Task<IEnumerable<PlatformTypeReadListDTO>> GetAsync();
 
-        Task<PlatformTypeReadDTO> GetByIdAsync(int id);
+        Task<PagedListDTO<PlatformTypeReadListDTO>> GetPagedAsync(PaginationRequestDTO paginationRequestDTO);
 
         Task UpdateAsync(PlatformTypeUpdateDTO platformTypeToUpdateDTO);
 

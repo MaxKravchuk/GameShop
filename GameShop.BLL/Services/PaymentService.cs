@@ -38,12 +38,14 @@ namespace GameShop.BLL.Services
             if (!paymentResult.IsPaymentSuccessful)
             {
                 orderToPay.IsPaid = false;
+                orderToPay.Status = OrderStatusTypes.Unpaid.ToString();
                 throw new BadRequestException("Payment is not successful");
             }
             else
             {
                 _loggerManager.LogInfo("Payment done successfully");
                 orderToPay.IsPaid = true;
+                orderToPay.Status = OrderStatusTypes.Paid.ToString();
             }
 
             _unitOfWork.OrderRepository.Update(orderToPay);

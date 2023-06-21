@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -40,8 +41,22 @@ namespace GameShop.BLL.Services
             if (newCommentDTO.ParentId != null)
             {
                 var parentComment = await _unitOfWork.CommentRepository.GetByIdAsync((int)newCommentDTO.ParentId);
+                if (parentComment == null)
+                {
+                    throw new NotFoundException($"Parent comment with id {newCommentDTO.ParentId} was not found");
+                }
+
                 newComment.Parent = parentComment;
             }
+
+            var user = (await _unitOfWork.UserRepository.GetAsync(
+                filter: x => x.NickName == newCommentDTO.Name)).SingleOrDefault();
+            if (user == null)
+            {
+                throw new NotFoundException($"User with nickname {newCommentDTO.Name} not found");
+            }
+
+            newComment.User = user;
 
             _unitOfWork.CommentRepository.Insert(newComment);
             await _unitOfWork.SaveAsync();
@@ -93,8 +108,8 @@ namespace GameShop.BLL.Services
                 throw new BadRequestException("An empty game key is set");
             }
 
-            var games = await _unitOfWork.GameRepository.GetAsync(filter: g => g.Key == gameKey);
-            var game = games.SingleOrDefault();
+            var game = await _unitOfWork.GameRepository
+                .GetPureQuery(filter: g => g.Key == gameKey).SingleOrDefaultAsync();
 
             if (game == null)
             {

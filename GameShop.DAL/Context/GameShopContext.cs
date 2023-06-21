@@ -23,7 +23,13 @@ namespace GameShop.DAL.Context
 
         public DbSet<Order> Orders { get; set; }
 
-        public DbSet<OrderDetails> OrderDetails { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<UserTokens> UserTokens { get; set; }
+
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

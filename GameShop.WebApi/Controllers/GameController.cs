@@ -6,6 +6,7 @@ using System.Web.Http;
 using GameShop.BLL.DTO.FilterDTOs;
 using GameShop.BLL.DTO.GameDTOs;
 using GameShop.BLL.Services.Interfaces;
+using GameShop.WebApi.Filters;
 
 namespace GameShop.WebApi.Controllers
 {
@@ -21,6 +22,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPost]
         [Route()]
+        [JwtAuthorize(Roles = "Manager")]
         public async Task<IHttpActionResult> CreateGameAsync([FromBody] GameCreateDTO gameCreateViewModel)
         {
             await _gameService.CreateAsync(gameCreateViewModel);
@@ -29,6 +31,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpPut]
         [Route("update")]
+        [JwtAuthorize(Roles = "Manager, Publisher")]
         public async Task<IHttpActionResult> UpdateGameAsync([FromBody] GameUpdateDTO gameUpdateViewModel)
         {
             await _gameService.UpdateAsync(gameUpdateViewModel);
@@ -67,8 +70,17 @@ namespace GameShop.WebApi.Controllers
             return Json(games);
         }
 
+        [HttpGet]
+        [Route("getGamesByPublisherId/{publisherId}")]
+        public async Task<IHttpActionResult> GetAllGamesByPublisherAsync(int publisherId)
+        {
+            var games = await _gameService.GetGamesByPublisherAsync(publisherId);
+            return Json(games);
+        }
+
         [HttpDelete]
         [Route("delete/{gameKey}")]
+        [JwtAuthorize(Roles = "Manager")]
         public async Task<IHttpActionResult> DeleteGameAsync(string gameKey)
         {
             await _gameService.DeleteAsync(gameKey);
@@ -77,6 +89,7 @@ namespace GameShop.WebApi.Controllers
 
         [HttpGet]
         [Route("downloadGame/{gameKey}")]
+        [JwtAuthorize]
         public async Task<HttpResponseMessage> DownloadGameAsync(string gameKey)
         {
             var stream = await _gameService.GenerateGameFileAsync(gameKey);

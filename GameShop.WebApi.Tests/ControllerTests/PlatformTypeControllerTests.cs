@@ -7,7 +7,7 @@ using GameShop.WebApi.Controllers;
 using Moq;
 using Xunit;
 
-namespace WebApi.Test.ControllerTests
+namespace GameShop.WebApi.Tests.ControllerTests
 {
     public class PlatformTypeControllerTests
     {
@@ -32,7 +32,7 @@ namespace WebApi.Test.ControllerTests
                 .ReturnsAsync(platformTypesList);
 
             // Act
-            var actionResult = await _platformTypeController.GetAllPlatformTypes();
+            var actionResult = await _platformTypeController.GetAllPlatformTypesAsync();
 
             // Assert
             Assert.IsType<JsonResult<IEnumerable<PlatformTypeReadListDTO>>>(actionResult);
@@ -52,7 +52,7 @@ namespace WebApi.Test.ControllerTests
                 .ReturnsAsync(platformTypesList);
 
             // Act
-            var actionResult = await _platformTypeController.GetAllPlatformTypes();
+            var actionResult = await _platformTypeController.GetAllPlatformTypesAsync();
 
             // Assert
             Assert.IsType<JsonResult<IEnumerable<PlatformTypeReadListDTO>>>(actionResult);

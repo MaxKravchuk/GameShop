@@ -1,13 +1,13 @@
 <div *ngFor="let game of games">
     <p>{{game.Name}}</p>
     <a mat-button routerLink="/games/details/{{game.Key}}" color="accent">View</a>
+    <a *ngIf="IsManager && game!.IsDeleted == false"
+       mat-button
+       (click)="editDeleteGame(game.Key!)">Edit/Delete</a>
 </div>
-<div class="pagination">
-    <p>Page size</p>
-    <select id="pageSizeSelect" (change)="pageSizeChange($event)">
-        <option value="" selected disabled hidden>Page size</option>
-        <option *ngFor="let size of pageSizeOptions" [value]="size">{{size}}</option>
-    </select>
-    <button mat-button (click)="previousPage()" [disabled]="!HasPrevious">Previous</button>
-    <button mat-button (click)="nextPage()" [disabled]="!HasNext">Next</button>
-</div>
+<app-pagination
+    [HasNext] = "HasNext"
+    [HasPrevious] = "HasPrevious"
+    [maxPageSize]="MaxPageSize"
+    (pageIndexEvent)="pageIndexChanged($event)"
+    (pageSizeEvent)="pageSizeChange($event)"></app-pagination>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
+using BLL.Test.DbAsyncTests;
 using FluentValidation;
 using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.Exceptions;
@@ -53,16 +54,15 @@ namespace GameShop.BLL.Tests.ServiceTests
             var gameKey = "game_key";
             var comments = new List<Comment> { new Comment() };
             var commentReadDTOs = new List<CommentReadDTO> { new CommentReadDTO() };
-            var games = new List<Game> { new Game { Key = "game_key" } };
+            var gameList = new List<Game> { new Game { Key = "game_key" } };
 
             _mockUnitOfWork
                 .Setup(u => u.GameRepository
-                    .GetAsync(
+                    .GetPureQuery(
                         It.IsAny<Expression<Func<Game, bool>>>(),
                         It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
-                        It.IsAny<string>(),
-                        It.IsAny<bool>()))
-                .ReturnsAsync(games);
+                        It.IsAny<string>()))
+                .Returns(new TestDbAsyncEnumerable<Game>(gameList));
 
             _mockUnitOfWork
                 .Setup(x => x.CommentRepository.GetAsync(
@@ -90,15 +90,15 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Arrange
             var gameKey = "wrongKey";
             var comments = new List<Comment>();
+            var gameList = new List<Game>();
 
             _mockUnitOfWork
                 .Setup(u => u.GameRepository
-                    .GetAsync(
+                    .GetPureQuery(
                         It.IsAny<Expression<Func<Game, bool>>>(),
                         It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
-                        It.IsAny<string>(),
-                        It.IsAny<bool>()))
-                .ThrowsAsync(new NotFoundException());
+                        It.IsAny<string>()))
+                .Returns(new TestDbAsyncEnumerable<Game>(gameList));
 
             // Act & Assert
             await Assert.ThrowsAsync<NotFoundException>(() => _commentService.GetAllByGameKeyAsync(gameKey));
@@ -117,6 +117,7 @@ namespace GameShop.BLL.Tests.ServiceTests
                     It.IsAny<int>(),
                     It.IsAny<string>()))
                 .ReturnsAsync(comment);
+
             _mockMapper
                 .Setup(x => x.Map<CommentReadDTO>(comment))
                 .Returns(commentReadDTO);
@@ -158,58 +159,75 @@ namespace GameShop.BLL.Tests.ServiceTests
             {
                 GameKey = "gameKey",
                 Body = "test",
-                Name = "test"
+                Name = "test",
+                ParentId = 1
             };
             var game = new Game() { Id = 1, Key = "gameKey" };
-            var comment = new Comment();
+            var gameList = new List<Game> { game };
+            var user = new User() { Id = 1, NickName = "test" };
+            var userList = new List<User> { user };
+            var parentComment = new Comment()
+            {
+                Id = 1,
+            };
+            var newComment = new Comment()
+            {
+                Id = 2,
+                User = user,
+                Parent = parentComment
+            };
 
             _mockMapper.Setup(m => m.Map<Comment>(commentCreateDto))
-                      .Returns(comment);
+                      .Returns(newComment);
 
             _mockUnitOfWork
                 .Setup(u => u.GameRepository
-                    .GetAsync(
+                    .GetPureQuery(
                         It.IsAny<Expression<Func<Game, bool>>>(),
                         It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
-                        It.IsAny<string>(),
-                        It.IsAny<bool>()))
-                .ReturnsAsync(new List<Game> { game });
+                        It.IsAny<string>()))
+                .Returns(new TestDbAsyncEnumerable<Game>(gameList));
 
             _mockUnitOfWork
-                .Setup(u => u.CommentRepository.Insert(comment)).Verifiable();
+               .Setup(u => u.CommentRepository
+                   .GetByIdAsync(
+                       It.IsAny<int>(),
+                       It.IsAny<string>()))
+               .ReturnsAsync(parentComment);
+
+            _mockUnitOfWork
+                .Setup(u => u.UserRepository
+                    .GetAsync(
+                        It.IsAny<Expression<Func<User, bool>>>(),
+                        It.IsAny<Func<IQueryable<User>, IOrderedQueryable<User>>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<bool>()))
+                .ReturnsAsync(userList);
+
+            _mockUnitOfWork
+                .Setup(u => u.CommentRepository.Insert(It.IsAny<Comment>()))
+                .Verifiable();
 
             // Act
             await _commentService.CreateAsync(commentCreateDto);
 
             // Assert
-            _mockUnitOfWork.Verify(u => u.CommentRepository.Insert(comment), Times.Once);
+            _mockUnitOfWork.Verify(u => u.CommentRepository.Insert(newComment), Times.Once);
             _mockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
             _mockLogger.Verify(
                 l => l.LogInfo($"Comment for game`s key {commentCreateDto.GameKey} created successfully"), Times.Once);
         }
 
         [Fact]
-        public async Task CreateAsync_ShouldThrowBadRequestException()
+        public async Task CreateAsync_ShouldThrowBadRequestExceptionForGame()
         {
             // Arrange
             var commentCreateDto = new CommentCreateDTO() { GameKey = string.Empty };
-            var game = new Game();
+            var gameList = new List<Game> { new Game() };
             var comment = new Comment();
 
             _mockMapper.Setup(m => m.Map<Comment>(commentCreateDto))
                       .Returns(comment);
-
-            _mockUnitOfWork
-                .Setup(u => u.GameRepository
-                    .GetAsync(
-                        It.IsAny<Expression<Func<Game, bool>>>(),
-                        It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
-                        It.IsAny<string>(),
-                        It.IsAny<bool>()))
-                .ReturnsAsync(new List<Game> { game });
-
-            _mockUnitOfWork
-                .Setup(u => u.CommentRepository.Insert(comment)).Verifiable();
 
             // Act
             var result = _commentService.CreateAsync(commentCreateDto);
@@ -219,11 +237,11 @@ namespace GameShop.BLL.Tests.ServiceTests
         }
 
         [Fact]
-        public async Task CreateAsync_ShouldThrowNotFoundException()
+        public async Task CreateAsync_ShouldThrowNotFoundExceptionForGame()
         {
             // Arrange
             var commentCreateDto = new CommentCreateDTO() { GameKey = "black" };
-            var game = new Game() { Key = "white" };
+            var gameList = new List<Game>();
             var comment = new Comment();
 
             _mockMapper.Setup(m => m.Map<Comment>(commentCreateDto))
@@ -231,15 +249,91 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             _mockUnitOfWork
                 .Setup(u => u.GameRepository
-                    .GetAsync(
+                    .GetPureQuery(
                         It.IsAny<Expression<Func<Game, bool>>>(),
                         It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
-                        It.IsAny<string>(),
-                        It.IsAny<bool>()))
-                .ReturnsAsync(new List<Game>());
+                        It.IsAny<string>()))
+                .Returns(new TestDbAsyncEnumerable<Game>(gameList));
+
+            // Act
+            var result = _commentService.CreateAsync(commentCreateDto);
+
+            // Assert
+            await Assert.ThrowsAsync<NotFoundException>(() => result);
+        }
+
+        [Fact]
+        public async Task CreateAsync_ShouldThrowNotFoundForParentComment()
+        {
+            // Arrange
+            var commentCreateDto = new CommentCreateDTO()
+            {
+                GameKey = "gameKey",
+                Body = "test",
+                Name = "test",
+                ParentId = 0
+            };
+            var gameList = new List<Game> { new Game() { Id = 1, Key = "gameKey" } };
+            var comment = new Comment();
+
+            _mockMapper.Setup(m => m.Map<Comment>(commentCreateDto))
+                      .Returns(comment);
 
             _mockUnitOfWork
-                .Setup(u => u.CommentRepository.Insert(comment)).Verifiable();
+                .Setup(u => u.GameRepository
+                    .GetPureQuery(
+                        It.IsAny<Expression<Func<Game, bool>>>(),
+                        It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
+                        It.IsAny<string>()))
+                .Returns(new TestDbAsyncEnumerable<Game>(gameList));
+
+            _mockUnitOfWork
+                .Setup(u => u.CommentRepository
+                    .GetByIdAsync(
+                        It.IsAny<int>(),
+                        It.IsAny<string>()))
+                .ReturnsAsync((Comment)null);
+
+            // Act
+            var result = _commentService.CreateAsync(commentCreateDto);
+
+            // Assert
+            await Assert.ThrowsAsync<NotFoundException>(() => result);
+        }
+
+        [Fact]
+        public async Task CreateAsync_ShouldThrowNotFoundForUser()
+        {
+            // Arrange
+            var commentCreateDto = new CommentCreateDTO()
+            {
+                GameKey = "gameKey",
+                Body = "test",
+                Name = "test",
+            };
+            var gameList = new List<Game> { new Game() { Id = 1, Key = "gameKey" } };
+            var userList = new List<User>();
+            var comment = new Comment();
+
+            _mockMapper.Setup(m => m.Map<Comment>(commentCreateDto))
+                      .Returns(comment);
+
+            _mockUnitOfWork
+                .Setup(u => u.GameRepository
+                    .GetPureQuery(
+                        It.IsAny<Expression<Func<Game, bool>>>(),
+                        It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
+                        It.IsAny<string>()))
+                .Returns(new TestDbAsyncEnumerable<Game>(gameList));
+
+            _mockUnitOfWork
+                .Setup(u => u.UserRepository
+                    .GetAsync(
+                        It.IsAny<Expression<Func<User, bool>>>(),
+                        It.IsAny<Func<IQueryable<User>, IOrderedQueryable<User>>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<bool>()))
+                .ReturnsAsync(userList);
 
             // Act
             var result = _commentService.CreateAsync(commentCreateDto);

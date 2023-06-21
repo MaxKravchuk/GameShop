@@ -15,7 +15,10 @@ namespace GameShop.DAL.Repository
         private readonly Lazy<IRepository<PlatformType>> _platformTypeRepository;
         private readonly Lazy<IRepository<Publisher>> _publisherReposiroty;
         private readonly Lazy<IRepository<Order>> _orderReposiroty;
-        private readonly Lazy<IRepository<OrderDetails>> _orderDetailsReposiroty;
+        private readonly Lazy<IRepository<OrderDetail>> _orderDetailsReposiroty;
+        private readonly Lazy<IRepository<User>> _userReposiroty;
+        private readonly Lazy<IRepository<UserTokens>> _userTokensReposiroty;
+        private readonly Lazy<IRepository<Role>> _roleReposiroty;
         private bool _disposed = false;
 
         public UnitOfWork(
@@ -26,7 +29,10 @@ namespace GameShop.DAL.Repository
             Lazy<IRepository<PlatformType>> platformTypeRepository,
             Lazy<IRepository<Publisher>> publisherReposiroty,
             Lazy<IRepository<Order>> orderReposiroty,
-            Lazy<IRepository<OrderDetails>> orderDetailsReposiroty)
+            Lazy<IRepository<OrderDetail>> orderDetailsReposiroty,
+            Lazy<IRepository<User>> userReposiroty,
+            Lazy<IRepository<UserTokens>> userTokensReposiroty,
+            Lazy<IRepository<Role>> roleReposiroty)
         {
             _context = context;
             _commentRepository = commentRepository;
@@ -36,6 +42,9 @@ namespace GameShop.DAL.Repository
             _publisherReposiroty = publisherReposiroty;
             _orderReposiroty = orderReposiroty;
             _orderDetailsReposiroty = orderDetailsReposiroty;
+            _userReposiroty = userReposiroty;
+            _userTokensReposiroty = userTokensReposiroty;
+            _roleReposiroty = roleReposiroty;
         }
 
         public IRepository<Comment> CommentRepository => _commentRepository.Value;
@@ -50,7 +59,13 @@ namespace GameShop.DAL.Repository
 
         public IRepository<Order> OrderRepository => _orderReposiroty.Value;
 
-        public IRepository<OrderDetails> OrderDetailsRepository => _orderDetailsReposiroty.Value;
+        public IRepository<OrderDetail> OrderDetailsRepository => _orderDetailsReposiroty.Value;
+
+        public IRepository<User> UserRepository => _userReposiroty.Value;
+
+        public IRepository<UserTokens> UserTokensRepository => _userTokensReposiroty.Value;
+
+        public IRepository<Role> RoleRepository => _roleReposiroty.Value;
 
         public async Task SaveAsync()
         {

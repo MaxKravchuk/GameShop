@@ -1,0 +1,37 @@
+<h1 *ngIf="isAdding" mat-dialog-title>Create platform type</h1>
+<h1 *ngIf="!isAdding" mat-dialog-title>Edit platform type</h1>
+<div mat-dialog-content>
+    <div [formGroup]="form" class="create-form">
+        <div *ngIf="isAdding" class="mat-title">You are creating new platform type</div>
+        <div *ngIf="!isAdding" class="mat-title">You are editing platform type {{platformType.Type}}</div>
+        <p>
+            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-label>Platform type name</mat-label>
+                <input
+                    matInput
+                    formControlName="Type"
+                    type="string"
+                    minlength="1"
+                    placeholder="Platform type name">
+                <mat-hint>Length must be greater than 1</mat-hint>
+                <mat-error *ngIf="form.controls['Type'].invalid">Length must be greater than 1</mat-error>
+            </mat-form-field>
+        </p>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-stroked-button (click)="onNoClick()">Discard</button>
+    <button *ngIf="isAdding"
+            [disabled]="!form.valid"
+            mat-raised-button color="primary" (click)="onSaveClick()">
+        Save
+    </button>
+    <button *ngIf="!isAdding"
+            [disabled]="!form.valid"
+            mat-raised-button color="warn" (click)="onEditClick()">
+        Edit
+    </button>
+    <button *ngIf="!isAdding" mat-raised-button color="warn" (click)="onDeleteClick()">
+        Delete
+    </button>
+</div>

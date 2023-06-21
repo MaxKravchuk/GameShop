@@ -84,25 +84,12 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             _mockMapper.Setup(m => m.Map<Game>(newGameDTO)).Returns(newGame);
 
-            _mockUnitOfWork
-                .Setup(u => u.GenreRepository
-                .GetAsync(
-                It.IsAny<Expression<Func<Genre, bool>>>(),
-                It.IsAny<Func<IQueryable<Genre>, IOrderedQueryable<Genre>>>(),
-                It.IsAny<string>(),
-                It.IsAny<bool>()))
-            .ReturnsAsync(allGenres);
-
-            _mockUnitOfWork.Setup(u => u.PlatformTypeRepository
-            .GetAsync(
-                It.IsAny<Expression<Func<PlatformType, bool>>>(),
-                It.IsAny<Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>>>(),
-                It.IsAny<string>(),
-                It.IsAny<bool>()))
-            .ReturnsAsync(allPlatformTypes);
+            MockSetupForGenres(allGenres);
+            MockSetupForPlatformTypes(allPlatformTypes);
 
             _mockUnitOfWork
-                .Setup(u => u.GameRepository.Insert(newGame)).Verifiable();
+                .Setup(u => u.GameRepository.Insert(It.IsAny<Game>()))
+                .Verifiable();
 
             // Act
             await _gameService.CreateAsync(newGameDTO);
@@ -112,84 +99,6 @@ namespace GameShop.BLL.Tests.ServiceTests
             _mockUnitOfWork.Verify(u => u.SaveAsync(), Times.Once);
             _mockLogger.Verify(
                 l => l.LogInfo($"Game with key {newGameDTO.Key} created successfully"), Times.Once);
-        }
-
-        [Fact]
-        public async Task CreateGame_ShouldThrowNotFoundExceptionForGenres()
-        {
-            // Arrange
-            var newGameDTO = _gameCreateDTO;
-            newGameDTO.GenresId = new List<int> { 0 };
-            var newGame = _game;
-            var allGenres = _listOfGenres;
-            var allPlatformTypes = _listOfPlatformTypes;
-
-            _mockMapper.Setup(m => m.Map<Game>(newGameDTO)).Returns(newGame);
-
-            _mockUnitOfWork
-                .Setup(u => u.GenreRepository
-                .GetAsync(
-                It.IsAny<Expression<Func<Genre, bool>>>(),
-                It.IsAny<Func<IQueryable<Genre>, IOrderedQueryable<Genre>>>(),
-                It.IsAny<string>(),
-                It.IsAny<bool>()))
-            .ReturnsAsync(allGenres);
-
-            _mockUnitOfWork.Setup(u => u.PlatformTypeRepository
-            .GetAsync(
-                It.IsAny<Expression<Func<PlatformType, bool>>>(),
-                It.IsAny<Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>>>(),
-                It.IsAny<string>(),
-                It.IsAny<bool>()))
-            .ReturnsAsync(allPlatformTypes);
-
-            _mockUnitOfWork
-                .Setup(u => u.GameRepository.Insert(newGame)).Verifiable();
-
-            // Act
-            var result = _gameService.CreateAsync(newGameDTO);
-
-            // Assert
-            await Assert.ThrowsAsync<NotFoundException>(() => result);
-        }
-
-        [Fact]
-        public async Task CreateGame_ShouldThrowNotFoundExceptionForPlatformTypes()
-        {
-            // Arrange
-            var newGameDTO = _gameCreateDTO;
-            newGameDTO.PlatformTypeId = new List<int> { 0 };
-            var newGame = _game;
-            var allGenres = _listOfGenres;
-            var allPlatformTypes = _listOfPlatformTypes;
-
-            _mockMapper.Setup(m => m.Map<Game>(newGameDTO)).Returns(newGame);
-
-            _mockUnitOfWork
-                .Setup(u => u.GenreRepository
-                .GetAsync(
-                It.IsAny<Expression<Func<Genre, bool>>>(),
-                It.IsAny<Func<IQueryable<Genre>, IOrderedQueryable<Genre>>>(),
-                It.IsAny<string>(),
-                It.IsAny<bool>()))
-            .ReturnsAsync(allGenres);
-
-            _mockUnitOfWork.Setup(u => u.PlatformTypeRepository
-            .GetAsync(
-                It.IsAny<Expression<Func<PlatformType, bool>>>(),
-                It.IsAny<Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>>>(),
-                It.IsAny<string>(),
-                It.IsAny<bool>()))
-            .ReturnsAsync(allPlatformTypes);
-
-            _mockUnitOfWork
-                .Setup(u => u.GameRepository.Insert(newGame)).Verifiable();
-
-            // Act
-            var result = _gameService.CreateAsync(newGameDTO);
-
-            // Assert
-            await Assert.ThrowsAsync<NotFoundException>(() => result);
         }
 
         [Fact]
@@ -256,12 +165,11 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             _mockUnitOfWork
                 .Setup(u => u.GameRepository
-                    .GetAsync(
+                    .GetPureQuery(
                         It.IsAny<Expression<Func<Game, bool>>>(),
                         It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
-                        It.IsAny<string>(),
-                        It.IsAny<bool>()))
-                .ReturnsAsync(new List<Game> { _game });
+                        It.IsAny<string>()))
+                .Returns(new TestDbAsyncEnumerable<Game>(new List<Game> { _game }));
 
             _mockMapper
                 .Setup(m => m.Map<GameReadDTO>(_game)).Returns(gameDTO);
@@ -285,12 +193,11 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             _mockUnitOfWork
                 .Setup(u => u.GameRepository
-                    .GetAsync(
+                    .GetPureQuery(
                         It.IsAny<Expression<Func<Game, bool>>>(),
                         It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
-                        It.IsAny<string>(),
-                        It.IsAny<bool>()))
-                .ReturnsAsync(new List<Game> { game });
+                        It.IsAny<string>()))
+                .Returns(new TestDbAsyncEnumerable<Game>(new List<Game> { game }));
 
             // Act
             var result = _gameService.GetGameByKeyAsync(gameKey);
@@ -305,7 +212,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Arrange
             var gameList = new List<Game> { _game };
             var gameListDTO = new List<GameReadListDTO> { new GameReadListDTO() };
-            var pagedGameList = new PagedListViewModel<GameReadListDTO> { Entities = gameListDTO };
+            var pagedGameList = new PagedListDTO<GameReadListDTO> { Entities = gameListDTO };
             var gameFiltersDTO = new GameFiltersDTO { PageNumber = 1, PageSize = 10, SortingOption = "AscPrice" };
 
             _mockUnitOfWork
@@ -322,7 +229,7 @@ namespace GameShop.BLL.Tests.ServiceTests
                 .Returns(new AscPriceStrategy());
 
             _mockMapper
-                .Setup(m => m.Map<PagedListViewModel<GameReadListDTO>>(gameList))
+                .Setup(m => m.Map<PagedListDTO<GameReadListDTO>>(gameList))
                 .Returns(pagedGameList);
 
             // Act
@@ -331,7 +238,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Assert
             _mockLogger.Verify(
                 l => l.LogInfo($"Games successfully returned with array size of {gameListDTO.Count()}"), Times.Once);
-            Assert.IsAssignableFrom<PagedListViewModel<GameReadListDTO>>(result);
+            Assert.IsAssignableFrom<PagedListDTO<GameReadListDTO>>(result);
 
             Assert.True(result.Entities.Any());
         }
@@ -342,7 +249,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Arrange
             var gameList = new List<Game>();
             var gameListDTO = new List<GameReadListDTO>();
-            var pagedGameList = new PagedListViewModel<GameReadListDTO> { Entities = gameListDTO };
+            var pagedGameList = new PagedListDTO<GameReadListDTO> { Entities = gameListDTO };
             var gameFiltersDTO = new GameFiltersDTO { PageNumber = 1, PageSize = 10, SortingOption = "AscPrice" };
 
             _mockUnitOfWork
@@ -359,7 +266,7 @@ namespace GameShop.BLL.Tests.ServiceTests
                 .Returns(new AscPriceStrategy());
 
             _mockMapper
-                .Setup(m => m.Map<PagedListViewModel<GameReadListDTO>>(It.IsAny<PagedList<Game>>()))
+                .Setup(m => m.Map<PagedListDTO<GameReadListDTO>>(It.IsAny<PagedList<Game>>()))
                 .Returns(pagedGameList);
 
             // Act
@@ -368,7 +275,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Assert
             _mockLogger.Verify(
                 l => l.LogInfo($"Games successfully returned with array size of {pagedGameList.Entities.Count()}"), Times.Once);
-            Assert.IsAssignableFrom<PagedListViewModel<GameReadListDTO>>(result);
+            Assert.IsAssignableFrom<PagedListDTO<GameReadListDTO>>(result);
             Assert.False(result.Entities.Any());
         }
 
@@ -378,7 +285,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Arrange
             var gameList = new List<Game> { _game };
             var gameListDTO = new List<GameReadListDTO> { new GameReadListDTO() };
-            var pagedGameList = new PagedListViewModel<GameReadListDTO> { Entities = gameListDTO };
+            var pagedGameList = new PagedListDTO<GameReadListDTO> { Entities = gameListDTO };
             var gameFiltersDTO = new GameFiltersDTO { PageNumber = 1, PageSize = 10, SortingOption = string.Empty };
 
             _mockUnitOfWork
@@ -390,7 +297,7 @@ namespace GameShop.BLL.Tests.ServiceTests
                 .Returns(new TestDbAsyncEnumerable<Game>(gameList));
 
             _mockMapper
-                .Setup(m => m.Map<PagedListViewModel<GameReadListDTO>>(It.IsAny<PagedList<Game>>()))
+                .Setup(m => m.Map<PagedListDTO<GameReadListDTO>>(It.IsAny<PagedList<Game>>()))
                 .Returns(pagedGameList);
 
             // Act
@@ -399,7 +306,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Assert
             _mockLogger.Verify(
                 l => l.LogInfo($"Games successfully returned with array size of {gameListDTO.Count()}"), Times.Once);
-            Assert.IsAssignableFrom<PagedListViewModel<GameReadListDTO>>(result);
+            Assert.IsAssignableFrom<PagedListDTO<GameReadListDTO>>(result);
             Assert.True(result.Entities.Any());
         }
 
@@ -557,6 +464,76 @@ namespace GameShop.BLL.Tests.ServiceTests
         }
 
         [Fact]
+        public async Task GetGamesByPublisherAsync_WithCorrectId_ShouldReturnFilledGameList()
+        {
+            // Arrange
+            var publisherId = 1;
+            var games = new List<Game>
+            {
+                new Game
+                {
+                    PublisherId = 1
+                }
+            };
+
+            var gamesDto = new List<GameReadListDTO>
+            {
+                new GameReadListDTO()
+            };
+
+            _mockUnitOfWork
+                .Setup(u => u.GameRepository
+                    .GetAsync(
+                        It.IsAny<Expression<Func<Game, bool>>>(),
+                        It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<bool>()))
+                .ReturnsAsync(games);
+
+            _mockMapper
+                .Setup(m => m.Map<IEnumerable<GameReadListDTO>>(It.IsAny<IEnumerable<Game>>()))
+                .Returns(gamesDto);
+
+            // Act
+            var result = await _gameService.GetGamesByPublisherAsync(publisherId);
+
+            // Assert
+            Assert.Single(result);
+            _mockLogger.Verify(
+                l => l.LogInfo(
+                 $"Games with publisher Id {publisherId} successfully returned with array size of {result.Count()}"),
+                Times.Once);
+        }
+
+        [Fact]
+        public async Task GetGamesByPublisherAsync_WithCorrectId_ShouldReturnEmptyList()
+        {
+            // Arrange
+            var publisherId = 1;
+            var games = new List<Game>();
+
+            _mockUnitOfWork
+                .Setup(u => u.GameRepository
+                    .GetAsync(
+                        It.IsAny<Expression<Func<Game, bool>>>(),
+                        It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<bool>()))
+                .ReturnsAsync(games);
+
+            _mockMapper
+                .Setup(m => m.Map<IEnumerable<GameReadListDTO>>(It.IsAny<IEnumerable<Game>>()))
+                .Verifiable();
+
+            // Act
+            var result = await _gameService.GetGamesByPublisherAsync(publisherId);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Empty(result);
+        }
+
+        [Fact]
         public async Task UpdateAsync_WithCorrectModel_ShouldUpdateAndLog()
         {
             // Arrange
@@ -617,7 +594,11 @@ namespace GameShop.BLL.Tests.ServiceTests
         public async Task UpdateAsync_WithCorrectModel_ShouldThrowNotFoundExceptionForGenres()
         {
             // Arrange
-            var gameToUpdate = new GameUpdateDTO() { GenresId = new List<int> { 0 }, PlatformTypeId = new List<int> { 1 } };
+            var gameToUpdate = new GameUpdateDTO()
+            {
+                GenresId = new List<int> { 0 },
+                PlatformTypeId = new List<int> { 1 }
+            };
             var exGame = _game;
             var allGenres = _listOfGenres;
             var allPlatformTypes = _listOfPlatformTypes;
@@ -716,6 +697,23 @@ namespace GameShop.BLL.Tests.ServiceTests
             await Assert.ThrowsAsync<NotFoundException>(() => _gameService.GenerateGameFileAsync(nonExistingGameKey));
         }
 
+        [Fact]
+        public async Task GetNumberOfGamesAsync_ShouldReturnListCount()
+        {
+            // Arrange
+            _mockUnitOfWork
+                .Setup(u => u.GameRepository
+                    .GetCountAsync())
+                .Verifiable();
+
+            // Act
+            var result = await _gameService.GetNumberOfGamesAsync();
+
+            // Assert
+            Assert.IsType<int>(result);
+            _mockUnitOfWork.Verify(u => u.GameRepository.GetCountAsync(), Times.Once);
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed)
@@ -772,22 +770,23 @@ namespace GameShop.BLL.Tests.ServiceTests
         {
             _mockUnitOfWork
                 .Setup(u => u.GenreRepository
-                .GetAsync(
-                It.IsAny<Expression<Func<Genre, bool>>>(),
-                It.IsAny<Func<IQueryable<Genre>, IOrderedQueryable<Genre>>>(),
-                It.IsAny<string>(),
-                It.IsAny<bool>()))
+                    .GetAsync(
+                        It.IsAny<Expression<Func<Genre, bool>>>(),
+                        It.IsAny<Func<IQueryable<Genre>, IOrderedQueryable<Genre>>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<bool>()))
             .ReturnsAsync(allGenres);
         }
 
         private void MockSetupForPlatformTypes(List<PlatformType> allPlatformTypes)
         {
-            _mockUnitOfWork.Setup(u => u.PlatformTypeRepository
-            .GetAsync(
-                It.IsAny<Expression<Func<PlatformType, bool>>>(),
-                It.IsAny<Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>>>(),
-                It.IsAny<string>(),
-                It.IsAny<bool>()))
+            _mockUnitOfWork
+                .Setup(u => u.PlatformTypeRepository
+                    .GetAsync(
+                        It.IsAny<Expression<Func<PlatformType, bool>>>(),
+                        It.IsAny<Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<bool>()))
             .ReturnsAsync(allPlatformTypes);
         }
     }

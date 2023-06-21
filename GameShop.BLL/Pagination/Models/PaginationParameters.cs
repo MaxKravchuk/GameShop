@@ -2,7 +2,6 @@
 {
     public abstract class PaginationParameters
     {
-        private const int MaxPageSize = 20;
         private int _pageSize = 20;
 
         public int PageNumber { get; set; } = 1;
@@ -16,7 +15,7 @@
 
             set
             {
-                _pageSize = value > MaxPageSize ? MaxPageSize : value;
+                _pageSize = value;
             }
         }
     }

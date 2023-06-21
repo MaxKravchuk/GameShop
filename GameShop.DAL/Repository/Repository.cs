@@ -42,6 +42,29 @@ namespace GameShop.DAL.Repository
             return set;
         }
 
+        public IQueryable<T> GetPureQuery(
+            Expression<Func<T, bool>> filter,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            string includeProperties = "")
+        {
+            IQueryable<T> set = filter == null ? _context.Set<T>()
+                : _context.Set<T>().Where(filter);
+
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                set = includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Aggregate(set, (current, includeProperty)
+                        => current.Include(includeProperty));
+            }
+
+            if (orderBy != null)
+            {
+                set = orderBy(set);
+            }
+
+            return set;
+        }
+
         public async Task<IEnumerable<T>> GetAsync(
             Expression<Func<T, bool>> filter = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
@@ -90,6 +113,16 @@ namespace GameShop.DAL.Repository
         {
             entityToDelete.IsDeleted = true;
             Update(entityToDelete);
+        }
+
+        public void HardDelete(T entityToDelete)
+        {
+            if (_context.Entry(entityToDelete).State == EntityState.Detached)
+            {
+                _context.Set<T>().Attach(entityToDelete);
+            }
+
+            _context.Set<T>().Remove(entityToDelete);
         }
 
         public void Update(T entityToUpdate)

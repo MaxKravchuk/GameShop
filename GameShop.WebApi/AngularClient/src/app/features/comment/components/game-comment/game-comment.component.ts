@@ -4,6 +4,8 @@ import { CommentService } from "../../../../core/services/commentService/comment
 import { MatDialog } from "@angular/material/dialog";
 import { DeleteCommentDialogComponent } from "../delete-comment-dialog/delete-comment-dialog.component";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
+import { AuthService } from "../../../../core/services/authService/auth.service";
+import { BanCommentComponent } from "../ban-comment/ban-comment.component";
 
 @Component({
     selector: 'app-game-comment',
@@ -24,16 +26,18 @@ export class GameCommentComponent implements OnInit {
 
     answersIsDisplayed: boolean = false;
 
-    //comments: Comment[] = [];
+    isModerator!: boolean;
 
     constructor(
         private commentService: CommentService,
         private dialog: MatDialog,
+        private authService: AuthService,
+        private dialogService: MatDialog,
         private sharedService: SharedService<{ action: string, parentComment: Comment }>
     ) {}
 
     ngOnInit(): void {
-
+        this.isModerator = this.authService.isInRole('Moderator');
     }
 
     onAnswerButtonClick(): void {
@@ -70,9 +74,18 @@ export class GameCommentComponent implements OnInit {
         });
     }
 
-    private getCommentsByGameKey(gameKey: string): void {
-        this.commentService.getCommentsByGameKey(gameKey).subscribe(
-            (comment: Comment[]) => this.comments = comment
-        );
+    onBanClick(nickName: string): void {
+        const dialogRef = this.dialog.open(BanCommentComponent, {
+            autoFocus: false,
+            data: {
+                nickName: nickName
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((requireReload:boolean): void => {
+            if(requireReload) {
+                this.ngOnInit();
+            }
+        });
     }
 }

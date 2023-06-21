@@ -13,17 +13,14 @@ namespace GameShop.WebApi.Tests.ControllerTests
     public class CommentControllerTests
     {
         private readonly Mock<ICommentService> _mockCommentService;
-        private readonly Mock<ICommentBanService> _mockCommentBanService;
         private readonly CommentController _commentController;
 
         public CommentControllerTests()
         {
             _mockCommentService = new Mock<ICommentService>();
-            _mockCommentBanService = new Mock<ICommentBanService>();
 
             _commentController = new CommentController(
-                _mockCommentService.Object,
-                _mockCommentBanService.Object);
+                _mockCommentService.Object);
         }
 
         [Fact]
@@ -155,24 +152,6 @@ namespace GameShop.WebApi.Tests.ControllerTests
 
             // Assert
             await Assert.ThrowsAsync<NotFoundException>(() => actionResult);
-        }
-
-        [Fact]
-        public void Ban_ShouldDoNothing()
-        {
-            // Assert
-            var banDuration = "1day";
-
-            _mockCommentBanService
-                .Setup(s => s
-                    .Ban(It.IsAny<string>()))
-                .Verifiable();
-
-            // Act
-            var actionResult = _commentController.Ban(banDuration);
-
-            // Assert
-            Assert.IsType<OkResult>(actionResult);
         }
     }
 }

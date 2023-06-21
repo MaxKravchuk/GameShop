@@ -1,7 +1,6 @@
 ﻿namespace GameShop.BLL.DTO.PlatformTypeDTOs
 {
-    public class PlatformTypeCreateDTO
+    public class PlatformTypeCreateDTO : PlatformTypeBaseDTO
     {
-        public string Type { get; set; }
     }
 }

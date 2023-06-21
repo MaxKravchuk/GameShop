@@ -42,12 +42,19 @@ namespace GameShop.BLL.Tests.ServiceTests
         public async Task AddCartItemAsync_ExistingItem()
         {
             // Arrange
-            var existingCartItem = new CartItemDTO { GameKey = "existing", Quantity = 1 };
-            var newCartItem = new CartItemDTO { GameKey = "existing", Quantity = 1 };
+            var existingCartItem = new CartItemDTO
+            {
+                CustomerId = 1,
+                GameKey = "existing",
+                Quantity = 1
+            };
+            var newCartItem = existingCartItem;
 
             _mockRedisProvider
                 .Setup(x => x
-                    .GetValueAsync(It.IsAny<string>(), "existing"))
+                    .GetValueAsync(
+                        It.IsAny<string>(),
+                        It.IsAny<string>()))
                 .ReturnsAsync(existingCartItem);
 
             // Act
@@ -55,7 +62,7 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             // Assert
             _mockRedisProvider.Verify(x => x.SetValueToListAsync(It.IsAny<string>(), "existing", existingCartItem), Times.Once);
-            _mockLogger.Verify(x => x.LogInfo("Item with key existing updated"), Times.Once);
+            _mockLogger.Verify(x => x.LogInfo($"Item with key {existingCartItem.GameKey} updated"), Times.Once);
         }
 
         [Fact]
@@ -66,7 +73,9 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             _mockRedisProvider
                 .Setup(x => x
-                    .GetValueAsync(It.IsAny<string>(), "new"))
+                    .GetValueAsync(
+                        It.IsAny<string>(),
+                        It.IsAny<string>()))
                 .ReturnsAsync(default(CartItemDTO));
 
             // Act
@@ -74,7 +83,7 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             // Assert
             _mockRedisProvider.Verify(x => x.SetValueToListAsync(It.IsAny<string>(), "new", newCartItem), Times.Once);
-            _mockLogger.Verify(x => x.LogInfo("New item with key new added to cart"), Times.Once);
+            _mockLogger.Verify(x => x.LogInfo($"New item with key {newCartItem.GameKey} added to cart"), Times.Once);
         }
 
         [Fact]
@@ -85,11 +94,11 @@ namespace GameShop.BLL.Tests.ServiceTests
             {
                 new CartItemDTO
                 {
-                    GameKey = "item1", Quantity = 1
+                    GameKey = "item1", Quantity = 1, CustomerId = 1
                 },
                 new CartItemDTO
                 {
-                    GameKey = "item2", Quantity = 2
+                    GameKey = "item2", Quantity = 2, CustomerId = 1
                 }
             };
 
@@ -99,7 +108,7 @@ namespace GameShop.BLL.Tests.ServiceTests
                 .ReturnsAsync(cartItems);
 
             // Act
-            var result = await _shoppingCartService.GetCartItemsAsync();
+            var result = await _shoppingCartService.GetCartItemsAsync(1);
 
             // Assert
             _mockRedisProvider.Verify(x => x.GetValuesAsync(It.IsAny<string>()), Times.Once);
@@ -111,19 +120,22 @@ namespace GameShop.BLL.Tests.ServiceTests
         public async Task DeletItemFromList_ExistingItem_QuantityGreaterThan1()
         {
             // Arrange
-            var existingCartItem = new CartItemDTO { GameKey = "existing", Quantity = 2 };
+            var gameKey = "existing";
+            var existingCartItem = new CartItemDTO { GameKey = gameKey, Quantity = 2, CustomerId = 1 };
 
             _mockRedisProvider
                 .Setup(x => x
-                    .GetValueAsync(It.IsAny<string>(), "existing"))
+                    .GetValueAsync(
+                        It.IsAny<string>(),
+                        It.IsAny<string>()))
                 .ReturnsAsync(existingCartItem);
 
             // Act
-            await _shoppingCartService.DeleteItemFromListAsync("existing");
+            await _shoppingCartService.DeleteItemFromListAsync(1, "existing");
 
             // Assert
             _mockRedisProvider.Verify(x => x.SetValueToListAsync(It.IsAny<string>(), "existing", existingCartItem), Times.Once);
-            _mockLogger.Verify(x => x.LogInfo("Item with game key existing is deleted"), Times.Once);
+            _mockLogger.Verify(x => x.LogInfo($"Item with game key {gameKey} is deleted"), Times.Once);
         }
 
         [Fact]
@@ -133,22 +145,87 @@ namespace GameShop.BLL.Tests.ServiceTests
             var existingCartItem = new CartItemDTO
             {
                 GameKey = "gamekey",
-                Quantity = 2
+                Quantity = 2,
+                CustomerId = 1
             };
 
             _mockRedisProvider
                 .Setup(x => x
-                    .GetValueAsync("CartItems", existingCartItem.GameKey))
+                    .GetValueAsync(
+                        It.IsAny<string>(),
+                        It.IsAny<string>()))
                 .ReturnsAsync(existingCartItem);
 
             // Act
-            await _shoppingCartService.DeleteItemFromListAsync(existingCartItem.GameKey);
+            await _shoppingCartService.DeleteItemFromListAsync(1, existingCartItem.GameKey);
 
             // Assert
             existingCartItem.Quantity -= 1;
-            _mockRedisProvider.Verify(x => x.DeleteItemFromListAsync("CartItems", existingCartItem.GameKey), Times.Never);
-            _mockRedisProvider.Verify(x => x.SetValueToListAsync("CartItems", existingCartItem.GameKey, existingCartItem), Times.Once);
+            _mockRedisProvider.Verify(x => x.DeleteItemFromListAsync("CartItems-1", existingCartItem.GameKey), Times.Never);
+            _mockRedisProvider.Verify(x => x.SetValueToListAsync("CartItems-1", existingCartItem.GameKey, existingCartItem), Times.Once);
             _mockLogger.Verify(x => x.LogInfo($"Item with game key {existingCartItem.GameKey} is deleted"), Times.Once);
+        }
+
+        [Fact]
+        public async Task CleatCartAsync_ShouldClearCart()
+        {
+            // Arrange
+            var redisKey = "CartItems-1";
+
+            _mockRedisProvider
+                .Setup(x => x
+                    .ClearCartAsync(It.IsAny<string>()))
+                .Verifiable();
+
+            // Act
+            await _shoppingCartService.CleatCartAsync(1);
+
+            // Assert
+            _mockRedisProvider.Verify(x => x.ClearCartAsync(redisKey), Times.Once);
+            _mockLogger.Verify(x => x.LogInfo($"Cart with key {redisKey} cleared!"), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetNumberOfGamesByGameKeyAsync_WithFilledCart_ShouldReturnLength()
+        {
+            // Arrange
+            var carItemDto = new CartItemDTO
+            {
+                Quantity = 1
+            };
+
+            _mockRedisProvider
+                .Setup(x => x
+                    .GetValueAsync(
+                        It.IsAny<string>(),
+                        It.IsAny<string>()))
+                .ReturnsAsync(carItemDto);
+
+            // Act
+            var result = await _shoppingCartService.GetNumberOfGamesByGameKeyAsync(1, "CartItems");
+
+            // Assert
+            Assert.Equal(1, result);
+        }
+
+        [Fact]
+        public async Task GetNumberOfGamesByGameKeyAsync_WithEmptyCart_ShouldReturnLength()
+        {
+            // Arrange
+            CartItemDTO carItemDto = null;
+
+            _mockRedisProvider
+                .Setup(x => x
+                    .GetValueAsync(
+                        It.IsAny<string>(),
+                        It.IsAny<string>()))
+                .ReturnsAsync(carItemDto);
+
+            // Act
+            var result = await _shoppingCartService.GetNumberOfGamesByGameKeyAsync(1, "CartItems");
+
+            // Assert
+            Assert.Equal(0, result);
         }
 
         protected virtual void Dispose(bool disposing)

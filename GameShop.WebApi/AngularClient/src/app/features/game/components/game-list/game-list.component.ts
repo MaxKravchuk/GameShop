@@ -1,11 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Game } from "../../../../core/models/Game";
 import { GameService } from "../../../../core/services/gameService/game.service";
 import { PagedList } from "../../../../core/models/PagedList";
-import { Subscription } from "rxjs";
+import { Observable, Subscription, switchMap } from "rxjs";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
 import { Router } from "@angular/router";
 import { FilterModel } from "../../../../core/models/FilterModel";
+import { MatDialog } from "@angular/material/dialog";
+import { GameCrudComponent } from "../../../manager/components/dialogs/game-crud/game-crud.component";
 
 @Component({
     selector: 'app-game-list',
@@ -14,26 +16,33 @@ import { FilterModel } from "../../../../core/models/FilterModel";
 })
 export class GameListComponent implements OnInit, OnDestroy {
 
+    @Input() IsManager?: boolean;
+
+    @Input() reloadGames!: Observable<boolean>;
+
     games?: Game[] = [];
 
-    pageSize: number = 10;
+    pageSize!: number;
 
-    pageIndex: number = 1;
+    pageIndex!: number;
 
-    pageSizeOptions: string[] = ['1', '10', '20', '50', '100', 'All'];
+    HasNext!: boolean;
 
-    HasNext?: boolean;
+    HasPrevious!: boolean;
 
-    HasPrevious?: boolean;
+    MaxPageSize!: number;
 
     resultSub: Subscription = new Subscription();
+
+    reloadGameSub: Subscription = new Subscription();
 
     receivedData: FilterModel = { gameFiltersDTO : {} };
 
     constructor(
         private gameService: GameService,
         private sharedService: SharedService<FilterModel>,
-        private router: Router
+        private router: Router,
+        private dialog: MatDialog
     ) {}
 
     ngOnInit(): void {
@@ -43,26 +52,48 @@ export class GameListComponent implements OnInit, OnDestroy {
             this.pageIndex = 1;
             this.updateGames(data);
         });
+        if (this.reloadGames !== undefined) {
+            this.reloadGameSub = this.reloadGames.subscribe((reload: boolean): void => {
+                if (reload) {
+                    this.updateGames(this.receivedData!);
+                }
+            });
+        }
     }
 
     ngOnDestroy(): void {
         this.resultSub.unsubscribe();
+        this.reloadGameSub.unsubscribe();
     }
 
-    pageSizeChange(value: any): void {
-        this.pageSize = Number(value.target.value);
+    pageSizeChange(value: number): void {
+        this.pageSize = value;
         this.pageIndex = 1;
         this.updateGames(this.receivedData!);
     }
 
-    previousPage(): void {
-        this.pageIndex--;
+    pageIndexChanged(value: number): void {
+        this.pageIndex = value;
         this.updateGames(this.receivedData!);
     }
 
-    nextPage(): void {
-        this.pageIndex++;
-        this.updateGames(this.receivedData!);
+    editDeleteGame(gameKey: string): void {
+        this.gameService.getGameDetailsByKey(gameKey).pipe(
+            switchMap((gameData: Game) => {
+                const dialogRef = this.dialog.open(GameCrudComponent, {
+                    autoFocus: false,
+                    data: {
+                        game: gameData,
+                    }
+                });
+
+                return dialogRef.afterClosed();
+            })
+        ).subscribe((requireReload: boolean): void => {
+            if (requireReload) {
+                this.ngOnInit();
+            }
+        });
     }
 
     private updateGames(filterParams: FilterModel): void {
@@ -74,6 +105,7 @@ export class GameListComponent implements OnInit, OnDestroy {
                 this.games = pagedList.Entities;
                 this.HasNext = pagedList.HasNext;
                 this.HasPrevious = pagedList.HasPrevious;
+                this.MaxPageSize = pagedList.TotalCount;
             }
         );
          this.setUrl();

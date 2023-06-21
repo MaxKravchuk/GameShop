@@ -13,14 +13,6 @@ namespace GameShop.DAL.Context
     {
         protected override void Seed(GameShopContext context)
         {
-            List<Comment> dComments = new List<Comment>
-            {
-                new Comment { Id = 1, Name = "Admin", Body = "First comment", GameId = 1 },
-                new Comment { Id = 2, Name = "Bob", Body = "[Admin]Reply to admin", GameId = 1, ParentId = 1 },
-                new Comment { Id = 3, Name = "Bob", Body = "BlaBLa", GameId = 2 },
-                new Comment { Id = 3, Name = "Admin", Body = "[Bob]Hello", GameId = 2, ParentId = 2 }
-            };
-
             List<Genre> dGenres = new List<Genre>
             {
                 new Genre
@@ -157,11 +149,73 @@ namespace GameShop.DAL.Context
                 CreatedAt = new System.DateTime(2011, 11, 18)
             });
 
-            context.Comments.AddRange(dComments);
+            var roles = new List<Role>
+            {
+                new Role
+                {
+                    Id = 1,
+                    Name = "Administrator"
+                },
+                new Role
+                {
+                    Id = 2,
+                    Name = "Manager"
+                },
+                new Role
+                {
+                    Id = 3,
+                    Name = "Moderator"
+                },
+                new Role
+                {
+                    Id = 4,
+                    Name = "User"
+                },
+                new Role
+                {
+                    Id = 5,
+                    Name = "Publisher"
+                }
+            };
+
+            var users = new List<User>
+            {
+                new User
+                {
+                    Id = 1,
+                    NickName = "Admin",
+                    PasswordHash = "tPJ2961axLgS0j72JD3YXA==:sM3IkDn7jMgApmhGNDN/qhPbyek3StQcdPaucKyMOhM=",
+                    UserRole = roles.Single(r => r.Name == "Administrator")
+                },
+                new User
+                {
+                    Id = 2,
+                    NickName = "Manager",
+                    PasswordHash = "I5/44bczTGdQIsp0//oqGg==:cPwe+gvQuAZS36MMmwp9cQcgMc/aCRCuw+kd+8udasg=",
+                    UserRole = roles.Single(r => r.Name == "Manager")
+                },
+                new User
+                {
+                    Id = 3,
+                    NickName = "Moderator",
+                    PasswordHash = "uovCGb+KE+S+3hUki/LkAw==:3Ric1fAVAojiRiruTZ/zkBO3Qi18PSiCKfgF1WqWVcs=",
+                    UserRole = roles.Single(r => r.Name == "Moderator")
+                },
+                new User
+                {
+                    Id = 4,
+                    NickName = "User",
+                    PasswordHash = "TTxTccL/Xi9IMO8/SGndIw==:QrhN4yc0Pl3IrPYtSYaHkQMt9FmW7N4wkzGCnzYusSs=",
+                    UserRole = roles.Single(r => r.Name == "User")
+                }
+            };
+
             context.Genres.AddRange(dGenres);
             context.PlatformTypes.AddRange(dPt);
             context.Games.AddRange(games);
             context.Publishers.AddRange(publishers);
+            context.Roles.AddRange(roles);
+            context.Users.AddRange(users);
             context.SaveChanges();
             base.Seed(context);
         }

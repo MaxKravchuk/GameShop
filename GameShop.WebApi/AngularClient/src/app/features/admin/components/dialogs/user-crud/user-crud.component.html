@@ -1,0 +1,72 @@
+<h1 *ngIf="isAdding" mat-dialog-title>Create user</h1>
+<h1 *ngIf="!isAdding" mat-dialog-title>Edit user</h1>
+<div mat-dialog-content>
+    <div [formGroup]="form" class="create-form">
+        <div *ngIf="isAdding" class="mat-title">You are creating new user</div>
+        <div *ngIf="!isAdding" class="mat-title">
+            You are editing user {{user.NickName}} with role {{user.Role}}
+        </div>
+        <p>
+            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-label>User nickname</mat-label>
+                <input
+                    matInput
+                    formControlName="NickName"
+                    type="string"
+                    minlength="1"
+                    placeholder="Nick name">
+                <mat-hint>Length must be greater than 1</mat-hint>
+                <mat-error *ngIf="form.controls['NickName'].invalid">Length must be greater than 1</mat-error>
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-label>User password</mat-label>
+                <input
+                    matInput
+                    formControlName="Password"
+                    type="string"
+                    minlength="1"
+                    placeholder="Password">
+                <mat-hint>Length must be greater than 1</mat-hint>
+                <mat-error *ngIf="form.controls['Password'].invalid">Length must be greater than 1</mat-error>
+            </mat-form-field>
+        </p>
+        <div>
+            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-label>Role</mat-label>
+                <mat-select formControlName="RoleId" (selectionChange)="onRoleSelected()">
+                    <mat-option *ngFor="let role of roles" [value]="role.Id">
+                        {{role.Name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.controls['RoleId'].invalid">Role must be specified</mat-error>
+            </mat-form-field>
+        </div>
+        <div *ngIf="isAddingPublisher">
+            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-label>Publisher</mat-label>
+                <mat-select formControlName="PublisherId">
+                    <mat-option *ngFor="let publisher of publishers" [value]="publisher.Id">
+                        {{publisher.CompanyName}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.controls['PublisherId'].invalid">Publisher must be specified</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-stroked-button (click)="onNoClick()">Discard</button>
+    <button *ngIf="isAdding"
+            [disabled]="!form.valid"
+            mat-raised-button color="primary" (click)="onSaveClick()">
+        Save
+    </button>
+    <button *ngIf="!isAdding" mat-raised-button color="warn" (click)="onEditClick()">
+        Edit
+    </button>
+    <button *ngIf="!isAdding" mat-raised-button color="warn" (click)="onDeleteClick()">
+        Delete
+    </button>
+</div>

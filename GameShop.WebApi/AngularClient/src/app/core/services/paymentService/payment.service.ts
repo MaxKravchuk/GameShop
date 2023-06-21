@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { UtilsService } from "../helpers/utilsService/utils-service";
 import { catchError, Observable } from "rxjs";
-import { CreateOrderModel } from "../../models/CreateOrderModel";
 import { PaymentCreateDTO } from "../../models/PaymentCreateDTO";
 
 @Injectable({

@@ -2,6 +2,8 @@
 {
     public class CartItemDTO
     {
+        public int CustomerId { get; set; }
+
         public string GameKey { get; set; }
 
         public string GameName { get; set; }

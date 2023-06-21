@@ -5,9 +5,13 @@ using AutoMapper;
 using FluentValidation;
 using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.DTO.GameDTOs;
+using GameShop.BLL.DTO.GenreDTOs;
 using GameShop.BLL.DTO.OrderDTOs;
+using GameShop.BLL.DTO.PlatformTypeDTOs;
 using GameShop.BLL.DTO.PublisherDTOs;
 using GameShop.BLL.DTO.RedisDTOs;
+using GameShop.BLL.DTO.RoleDTOs;
+using GameShop.BLL.DTO.UserDTOs;
 using GameShop.BLL.Enums;
 using GameShop.BLL.Filters;
 using GameShop.BLL.Filters.Interfaces;
@@ -16,6 +20,7 @@ using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.BLL.Services.Utils;
 using GameShop.BLL.Services.Utils.Validators;
+using GameShop.BLL.Strategies.BanStrategies;
 using GameShop.BLL.Strategies.Factories;
 using GameShop.BLL.Strategies.Interfaces.Factories;
 using GameShop.BLL.Strategies.Interfaces.Strategies;
@@ -53,7 +58,10 @@ namespace GameShop.WebApi
             container.RegisterType<IRepository<PlatformType>, Repository<PlatformType>>();
             container.RegisterType<IRepository<Publisher>, Repository<Publisher>>();
             container.RegisterType<IRepository<DAL.Entities.Order>, Repository<DAL.Entities.Order>>();
-            container.RegisterType<IRepository<OrderDetails>, Repository<OrderDetails>>();
+            container.RegisterType<IRepository<OrderDetail>, Repository<OrderDetail>>();
+            container.RegisterType<IRepository<User>, Repository<User>>();
+            container.RegisterType<IRepository<UserTokens>, Repository<UserTokens>>();
+            container.RegisterType<IRepository<DAL.Entities.Role>, Repository<DAL.Entities.Role>>();
 
             container.RegisterType<IUnitOfWork, UnitOfWork>();
 
@@ -71,7 +79,11 @@ namespace GameShop.WebApi
             container.RegisterType<IShoppingCartService, ShoppingCartService>();
             container.RegisterType<IOrderService, OrderService>();
             container.RegisterType<IPaymentService, PaymentService>();
-            container.RegisterType<ICommentBanService, CommentBanService>();
+            container.RegisterType<IUserService, UserService>();
+            container.RegisterType<IUsersTokenService, UsersTokenService>();
+            container.RegisterType<IRoleService, RoleService>();
+            container.RegisterType<IPasswordProvider, PasswordProvider>();
+            container.RegisterType<IJwtTokenProvider, JwtTokenProvider>();
 
             var log = LogManager.GetLogger(typeof(LoggerManager));
             container.RegisterInstance(typeof(ILog), log);
@@ -94,6 +106,14 @@ namespace GameShop.WebApi
                 (new ContainerControlledLifetimeManager());
             container.RegisterType<IValidator<OrderCreateDTO>, OrderCreateDtoValidator>
                 (new ContainerControlledLifetimeManager());
+            container.RegisterType<IValidator<UserCreateDTO>, UserCreateDtoValidator>
+                (new ContainerControlledLifetimeManager());
+            container.RegisterType<IValidator<GenreCreateDTO>, GenreCreateDtoValidator>
+                (new ContainerControlledLifetimeManager());
+            container.RegisterType<IValidator<PlatformTypeCreateDTO>, PlatformTypeCreateDtoValidator>
+                (new ContainerControlledLifetimeManager());
+            container.RegisterType<IValidator<RoleCreateDTO>, RoleCreateDtoValidator>
+                (new ContainerControlledLifetimeManager());
 
             container.RegisterType<IPaymentStrategyFactory, PaymentStrategyFactory>();
             container.RegisterType<IPaymentStrategy, BankStrategy>(PaymentTypes.Bank.ToString());
@@ -114,6 +134,13 @@ namespace GameShop.WebApi
             container.RegisterType<IGamesSortingStrategy, DescPriceStrategy>();
             container.RegisterType<IGamesSortingStrategy, MostCommentedStrategy>();
             container.RegisterType<IGamesSortingStrategy, MostPopularStrategy>();
+
+            container.RegisterType<IBanFactory, BanFactory>();
+            container.RegisterType<IBanStrategy, HourBanStrategy>();
+            container.RegisterType<IBanStrategy, DayBanStrategy>();
+            container.RegisterType<IBanStrategy, MonthBanStrategy>();
+            container.RegisterType<IBanStrategy, PermanentBanStrategy>();
+            container.RegisterType<IBanStrategy, WeekBanStrategy>();
 
 
             httpConfiguration.DependencyResolver = new UnityDependencyResolver(container);

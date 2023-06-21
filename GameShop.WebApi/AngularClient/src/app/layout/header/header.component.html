@@ -1,9 +1,52 @@
 <mat-toolbar color="primary" class="header-container">
-    <div class="header-buttons">
+    <div class="left-header">
+        <div>
+            <p>Number of games: {{numberOfGames}}</p>
+        </div>
         <a mat-button routerLink="/" routerLinkActive="active">Game Store</a>
-        <a mat-button routerLink="/cart/viewcart" routerLinkActive="active">Shopping Cart</a>
+        <a
+           *ngIf="isAuthorized$ | async"
+           mat-button
+           routerLink="/cart/viewcart"
+           routerLinkActive="active"
+        >Shopping Cart</a>
+        <a
+            *appIsInRole="'Administrator'"
+            mat-button
+            routerLink="/admin/main"
+            routerLinkActive="active">
+            Admin panel
+        </a>
+        <a
+            *appIsInRole="'Manager'"
+            mat-button
+            routerLink="/manager/managerPanel"
+            routerLinkActive="active">
+            Manager panel
+        </a>
+        <a
+            *appIsInRole="'Manager'"
+            mat-button
+            routerLink="/manager/orders"
+            routerLinkActive="active">
+            Orders
+        </a>
+        <a
+            *appIsInRole="'Publisher'"
+            mat-button
+            routerLink="/publishers/main"
+            routerLinkActive="active">
+            Publisher panel
+        </a>
     </div>
-    <div>
-        <p>Number of games: {{numberOfGames}}</p>
+    <div class="right-header">
+        <a
+            *ngIf="!(isAuthorized$ | async)"
+            mat-button
+            routerLink="/auth/login">Log in</a>
+        <a
+            *ngIf="isAuthorized$ | async"
+            mat-button
+            (click)="logOut()">Log out</a>
     </div>
 </mat-toolbar>

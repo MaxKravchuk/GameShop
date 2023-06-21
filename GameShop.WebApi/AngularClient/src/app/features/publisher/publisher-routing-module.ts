@@ -1,16 +1,21 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from '@angular/router';
 import { PublisherDetailsComponent } from "./components/publisher-details/publisher-details.component";
-import { PublisherCreateComponent } from "./components/publisher-create/publisher-create.component";
+import { PublisherMainComponent } from "./components/publisher-main/publisher-main.component";
+import { RoleGuard } from "../../core/guards/role/role.guard";
 
 const routes: Routes = [
     {
         path: 'details/:CompanyName',
-        component: PublisherDetailsComponent
+        component: PublisherDetailsComponent,
     },
     {
-        path: 'create',
-        component: PublisherCreateComponent
+        path: 'main',
+        component: PublisherMainComponent,
+        canActivate: [RoleGuard],
+        data: {
+            allowedRoles: ['Publisher']
+        }
     }
 ];
 

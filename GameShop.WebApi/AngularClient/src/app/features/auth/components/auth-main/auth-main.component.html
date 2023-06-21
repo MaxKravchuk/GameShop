@@ -1,0 +1,36 @@
+<div [formGroup]="form" class="create-form">
+    <div class="mat-title">Log in or register</div>
+    <p>
+        <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+            <mat-label>Nick name</mat-label>
+            <input
+                matInput
+                formControlName="NickName"
+                type="string"
+                minlength="1"
+                placeholder="NickName">
+            <mat-hint>Length must be greater than 1</mat-hint>
+            <mat-error *ngIf="form.controls['NickName'].invalid">Length must be greater than 1</mat-error>
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+            <mat-label>Password</mat-label>
+            <input
+                matInput
+                formControlName="Password"
+                type="string"
+                minlength="1"
+                placeholder="Password">
+            <mat-hint>Length must be greater than 1</mat-hint>
+            <mat-error *ngIf="form.controls['Password'].invalid">Length must be greater than 1</mat-error>
+        </mat-form-field>
+    </p>
+</div>
+<div class="buttons-div">
+    <button mat-flat-button (click)="onNoClick()">Discard</button>
+    <button mat-raised-button type="submit" color="primary" [disabled]="!form.valid" (click)="onLogIn()">Log in
+    </button>
+    <button mat-raised-button type="submit" color="primary" [disabled]="!form.valid" (click)="onRegister()">Register
+    </button>
+</div>

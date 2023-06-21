@@ -102,16 +102,20 @@
     <Compile Include="Configurations\GameConfiguration.cs" />
     <Compile Include="Configurations\CommentConfiguration.cs" />
     <Compile Include="Configurations\PublisherConfiguration.cs" />
+    <Compile Include="Configurations\UserConfiguration.cs" />
     <Compile Include="Context\GameShopContext.cs" />
     <Compile Include="Context\GameShopInitializer.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\Game.cs" />
     <Compile Include="Entities\Order.cs" />
-    <Compile Include="Entities\OrderDetails.cs" />
+    <Compile Include="Entities\OrderDetail.cs" />
     <Compile Include="Entities\PlatformType.cs" />
     <Compile Include="Entities\Genre.cs" />
     <Compile Include="Entities\Publisher.cs" />
+    <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\UserTokens.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Migrations\202304051514505_init.cs" />
     <Compile Include="Migrations\202304051514505_init.designer.cs">
@@ -156,6 +160,50 @@
     <Compile Include="Migrations\202305251709001_AddIsPaidToOrder.cs" />
     <Compile Include="Migrations\202305251709001_AddIsPaidToOrder.designer.cs">
       <DependentUpon>202305251709001_AddIsPaidToOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305291608229_AddUser.cs" />
+    <Compile Include="Migrations\202305291608229_AddUser.Designer.cs">
+      <DependentUpon>202305291608229_AddUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305300746468_AddRoles.cs" />
+    <Compile Include="Migrations\202305300746468_AddRoles.designer.cs">
+      <DependentUpon>202305300746468_AddRoles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305301536522_AddUserTokens.cs" />
+    <Compile Include="Migrations\202305301536522_AddUserTokens.designer.cs">
+      <DependentUpon>202305301536522_AddUserTokens.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202305301615328_UpdatedUserTokens.cs" />
+    <Compile Include="Migrations\202305301615328_UpdatedUserTokens.designer.cs">
+      <DependentUpon>202305301615328_UpdatedUserTokens.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306010908100_OptionalUserRolechange.cs" />
+    <Compile Include="Migrations\202306010908100_OptionalUserRolechange.designer.cs">
+      <DependentUpon>202306010908100_OptionalUserRolechange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306021319079_OptionalPublisherForGame.cs" />
+    <Compile Include="Migrations\202306021319079_OptionalPublisherForGame.designer.cs">
+      <DependentUpon>202306021319079_OptionalPublisherForGame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306061050357_ChangedOrder.cs" />
+    <Compile Include="Migrations\202306061050357_ChangedOrder.designer.cs">
+      <DependentUpon>202306061050357_ChangedOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306071836306_UserPublisherRelationship.cs" />
+    <Compile Include="Migrations\202306071836306_UserPublisherRelationship.designer.cs">
+      <DependentUpon>202306071836306_UserPublisherRelationship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306081508141_AddBannedTime.cs" />
+    <Compile Include="Migrations\202306081508141_AddBannedTime.designer.cs">
+      <DependentUpon>202306081508141_AddBannedTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306081518478_NullableDateTimeForUser.cs" />
+    <Compile Include="Migrations\202306081518478_NullableDateTimeForUser.designer.cs">
+      <DependentUpon>202306081518478_NullableDateTimeForUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306081541248_UserCommentRelationship.cs" />
+    <Compile Include="Migrations\202306081541248_UserCommentRelationship.designer.cs">
+      <DependentUpon>202306081541248_UserCommentRelationship.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -203,6 +251,39 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202305251709001_AddIsPaidToOrder.resx">
       <DependentUpon>202305251709001_AddIsPaidToOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305291608229_AddUser.resx">
+      <DependentUpon>202305291608229_AddUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305300746468_AddRoles.resx">
+      <DependentUpon>202305300746468_AddRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305301536522_AddUserTokens.resx">
+      <DependentUpon>202305301536522_AddUserTokens.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305301615328_UpdatedUserTokens.resx">
+      <DependentUpon>202305301615328_UpdatedUserTokens.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306010908100_OptionalUserRolechange.resx">
+      <DependentUpon>202306010908100_OptionalUserRolechange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306021319079_OptionalPublisherForGame.resx">
+      <DependentUpon>202306021319079_OptionalPublisherForGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306061050357_ChangedOrder.resx">
+      <DependentUpon>202306061050357_ChangedOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306071836306_UserPublisherRelationship.resx">
+      <DependentUpon>202306071836306_UserPublisherRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306081508141_AddBannedTime.resx">
+      <DependentUpon>202306081508141_AddBannedTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306081518478_NullableDateTimeForUser.resx">
+      <DependentUpon>202306081518478_NullableDateTimeForUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306081541248_UserCommentRelationship.resx">
+      <DependentUpon>202306081541248_UserCommentRelationship.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -8,8 +8,13 @@ p {
     margin: 0;
 }
 
-.header-buttons {
+.left-header {
     display: flex;
     margin-left: 12.5%;
+}
+
+.right-header{
+    display: flex;
+    align-items: center;
 }
 

@@ -26,8 +26,8 @@ export class CartService {
             );
     }
 
-    getCartItems(): Observable<CartItem[]> {
-        return this.http.get<CartItem[]>(`${this.apiUrl}getAll`)
+    getCartItems(customerId: number): Observable<CartItem[]> {
+        return this.http.get<CartItem[]>(`${this.apiUrl}getAll/${customerId}`)
             .pipe(
                 catchError(err => {
                     this.utilsService.handleError(err);
@@ -36,8 +36,8 @@ export class CartService {
             );
     }
 
-    deleteItemFromCart(key: string): Observable<any> {
-        return this.http.delete(`${this.apiUrl}delete/${key}`)
+    deleteItemFromCart(customerId: number ,key: string): Observable<any> {
+        return this.http.delete(`${this.apiUrl}delete/${customerId}-${key}`)
             .pipe(
                 catchError(err => {
                     this.utilsService.handleError(err);
@@ -46,8 +46,8 @@ export class CartService {
             );
     }
 
-    getNumberOfGamesInCart(key: string): Observable<number> {
-        return this.http.get<number>(`${this.apiUrl}numberOfGames/${key}`)
+    getNumberOfGamesInCart(customerId: number ,key: string): Observable<number> {
+        return this.http.get<number>(`${this.apiUrl}numberOfGames/${customerId}-${key}`)
             .pipe(
                 catchError(err => {
                     this.utilsService.handleError(err);

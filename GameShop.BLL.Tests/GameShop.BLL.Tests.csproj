@@ -99,13 +99,15 @@
     <Compile Include="DbAsyncTests\TestDbAsyncEnumerable.cs" />
     <Compile Include="DbAsyncTests\TestDbAsyncEnumerator.cs" />
     <Compile Include="DbAsyncTests\TestDbAsyncQueryProvider.cs" />
-    <Compile Include="ServiceTests\CommentBanServiceTests.cs" />
     <Compile Include="ServiceTests\CommentServiceTests.cs" />
     <Compile Include="ServiceTests\GameServiceTests.cs" />
     <Compile Include="ServiceTests\OrderServiceTests.cs" />
     <Compile Include="ServiceTests\PaymentServiceTests.cs" />
     <Compile Include="ServiceTests\PublisherServiceTests.cs" />
+    <Compile Include="ServiceTests\RoleServiceTests.cs" />
     <Compile Include="ServiceTests\ShoppingCartServiceTests.cs" />
+    <Compile Include="ServiceTests\UserServiceTests.cs" />
+    <Compile Include="ServiceTests\UsersTokenServiceTests.cs" />
     <Compile Include="UtilTests\MappingTests.cs" />
     <Compile Include="ServiceTests\PlatformTypeServiceTests.cs" />
     <Compile Include="ServiceTests\GenreServiceTests.cs" />
@@ -113,8 +115,12 @@
     <Compile Include="UtilTests\ValidatorTests\CartItemValidatorTests.cs" />
     <Compile Include="UtilTests\ValidatorTests\CommentValidatorTests.cs" />
     <Compile Include="UtilTests\ValidatorTests\GameValidatorTests.cs" />
+    <Compile Include="UtilTests\ValidatorTests\GenreValidatorTests.cs" />
     <Compile Include="UtilTests\ValidatorTests\OrderValidatorTests.cs" />
+    <Compile Include="UtilTests\ValidatorTests\PlatformTypeValidatorTests.cs" />
     <Compile Include="UtilTests\ValidatorTests\PublisherValidatorTests.cs" />
+    <Compile Include="UtilTests\ValidatorTests\RoleValidatorTests.cs" />
+    <Compile Include="UtilTests\ValidatorTests\UserValidatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

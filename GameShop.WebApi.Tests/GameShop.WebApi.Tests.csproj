@@ -113,6 +113,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControllerTests\AuthControllerTests.cs" />
     <Compile Include="ControllerTests\CommentControllerTests.cs" />
     <Compile Include="ControllerTests\GameControllerTests.cs" />
     <Compile Include="ControllerTests\GenreControllerTests.cs" />

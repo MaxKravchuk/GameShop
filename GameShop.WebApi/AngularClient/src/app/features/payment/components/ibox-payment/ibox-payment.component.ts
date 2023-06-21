@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { PaymentService } from "../../../../core/services/paymentService/payment.service";
-import { CreateOrderModel } from "../../../../core/models/CreateOrderModel";
 import { Router } from "@angular/router";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
 import { PaymentCreateDTO } from "../../../../core/models/PaymentCreateDTO";

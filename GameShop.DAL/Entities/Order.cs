@@ -7,10 +7,16 @@ namespace GameShop.DAL.Entities
     {
         public int CustomerId { get; set; }
 
+        public User Customer { get; set; }
+
+        public string Status { get; set; }
+
         public DateTime OrderedAt { get; set; }
+
+        public DateTime? ShippedDate { get; set; }
 
         public bool IsPaid { get; set; }
 
-        public ICollection<OrderDetails> ListOfOrderDetails { get; set; } = new List<OrderDetails>();
+        public ICollection<OrderDetail> ListOfOrderDetails { get; set; } = new List<OrderDetail>();
     }
 }

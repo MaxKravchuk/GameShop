@@ -4,6 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
+using BLL.Test.DbAsyncTests;
+using FluentValidation;
 using GameShop.BLL.DTO.GenreDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services;
@@ -21,6 +23,7 @@ namespace GameShop.BLL.Tests.ServiceTests
         private readonly GenreService _genreService;
         private readonly Mock<IMapper> _mockMapper;
         private readonly Mock<ILoggerManager> _mockLogger;
+        private readonly Mock<IValidator<GenreCreateDTO>> _mockValidator;
 
         private bool _disposed;
 
@@ -29,11 +32,13 @@ namespace GameShop.BLL.Tests.ServiceTests
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _mockMapper = new Mock<IMapper>();
             _mockLogger = new Mock<ILoggerManager>();
+            _mockValidator = new Mock<IValidator<GenreCreateDTO>>();
 
             _genreService = new GenreService(
                 _mockUnitOfWork.Object,
                 _mockMapper.Object,
-                _mockLogger.Object);
+                _mockLogger.Object,
+                _mockValidator.Object);
         }
 
         public void Dispose()
@@ -72,17 +77,33 @@ namespace GameShop.BLL.Tests.ServiceTests
             // Arrange
             var id = 1;
             var genreToDelete = new Genre { Id = 1 };
+            var gameListWithGenre = new List<Game>
+            {
+                new Game
+                {
+                    GameGenres = new List<Genre> { genreToDelete }
+                }
+            };
 
             _mockUnitOfWork
                 .Setup(u => u.GenreRepository
                     .GetByIdAsync(
-                    It.IsAny<int>(),
-                    It.IsAny<string>()))
+                        It.IsAny<int>(),
+                        It.IsAny<string>()))
                 .ReturnsAsync(genreToDelete);
 
             _mockUnitOfWork
+                .Setup(u => u.GameRepository
+                    .GetAsync(
+                        It.IsAny<Expression<Func<Game, bool>>>(),
+                        It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
+                        It.IsAny<string>(),
+                        It.IsAny<bool>()))
+                .ReturnsAsync(gameListWithGenre);
+
+            _mockUnitOfWork
                 .Setup(u => u.GenreRepository
-                    .Delete(genreToDelete))
+                    .Delete(It.IsAny<Genre>()))
                 .Verifiable();
 
             // Act
@@ -105,8 +126,8 @@ namespace GameShop.BLL.Tests.ServiceTests
             _mockUnitOfWork
                 .Setup(u => u.GenreRepository
                     .GetByIdAsync(
-                    It.IsAny<int>(),
-                    It.IsAny<string>()))
+                        It.IsAny<int>(),
+                        It.IsAny<string>()))
                 .ReturnsAsync(genreToDelete);
 
             // Act
@@ -172,51 +193,6 @@ namespace GameShop.BLL.Tests.ServiceTests
                 l => l.LogInfo($"Genres were returned successfully in array size of {genreListDTO.Count()}"), Times.Once);
             Assert.IsAssignableFrom<IEnumerable<GenreReadListDTO>>(result);
             Assert.False(result.Any());
-        }
-
-        [Fact]
-        public async Task GetGenreById_WithCorrectId_ShouldReturnGenreAndLog()
-        {
-            // Arrange
-            var id = 1;
-            var genre = new Genre { Id = id };
-            var genreDTO = new GenreReadDTO { Id = id };
-
-            _mockUnitOfWork
-                .Setup(u => u.GenreRepository
-                    .GetByIdAsync(It.IsAny<int>(), It.IsAny<string>()))
-                .ReturnsAsync(genre);
-
-            _mockMapper
-                .Setup(m => m.Map<GenreReadDTO>(genre)).Returns(genreDTO);
-
-            // Act
-            var result = await _genreService.GetByIdAsync(id);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<GenreReadDTO>(result);
-            _mockLogger.Verify(
-                l => l.LogInfo($"Genre with id {id} successfully returned"), Times.Once);
-        }
-
-        [Fact]
-        public async Task GetGenreById_WithWrongId_ShouldThrowNotFoundAsync()
-        {
-            // Arrange
-            var id = 0;
-            Genre genre = null;
-
-            _mockUnitOfWork
-                .Setup(u => u.GenreRepository
-                    .GetByIdAsync(It.IsAny<int>(), It.IsAny<string>()))
-                .ReturnsAsync(genre);
-
-            // Act
-            var result = _genreService.GetByIdAsync(id);
-
-            // Assert
-            await Assert.ThrowsAsync<NotFoundException>(() => result);
         }
 
         [Fact]

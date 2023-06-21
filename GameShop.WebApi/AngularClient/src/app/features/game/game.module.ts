@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameDetailsComponent } from "./components/game-details/game-details.component";
 import { GameRoutingModule } from "./game-routing.module";
-import { GameCreateComponent } from './components/game-create/game-create.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialogModule } from "@angular/material/dialog";
@@ -18,18 +17,18 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatSliderModule } from "@angular/material/slider";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatPaginatorModule } from "@angular/material/paginator";
+import { NgSelectModule } from "@ng-select/ng-select";
+import { SharedModule } from "../shared/shared.module";
 
 @NgModule({
     declarations: [
         GameDetailsComponent,
-        GameCreateComponent,
         GameListComponent,
         GameFiltersComponent,
     ],
     exports: [
         GameListComponent,
         GameFiltersComponent,
-        GameCreateComponent,
     ],
     imports: [
         CommonModule,
@@ -47,7 +46,9 @@ import { MatPaginatorModule } from "@angular/material/paginator";
         MatCheckboxModule,
         MatSliderModule,
         MatRadioModule,
-        MatPaginatorModule
+        MatPaginatorModule,
+        NgSelectModule,
+        SharedModule
     ]
 })
 export class GameModule {

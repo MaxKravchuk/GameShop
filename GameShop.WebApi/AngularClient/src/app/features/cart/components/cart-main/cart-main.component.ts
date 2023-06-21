@@ -4,6 +4,7 @@ import { CartService } from "../../../../core/services/cartService/cart.service"
 import { OrderService } from "../../../../core/services/orderService/order.service";
 import { CreateOrderModel } from "../../../../core/models/CreateOrderModel";
 import { NavigationExtras, Router } from "@angular/router";
+import { AuthService } from "../../../../core/services/authService/auth.service";
 
 @Component({
     selector: 'app-cart-main',
@@ -16,12 +17,16 @@ export class CartMainComponent implements OnInit {
 
     totalPrice: number = 0;
 
+    customerId!: number;
+
     constructor(
         private shoppingCartService: CartService,
         private orderService: OrderService,
-        private router: Router) {}
+        private router: Router,
+        private authService: AuthService) {}
 
     ngOnInit(): void {
+        this.customerId = this.authService.getUserId();
         this.fetchCart();
     }
 
@@ -34,7 +39,7 @@ export class CartMainComponent implements OnInit {
     }
 
     removeFromCart(gameKey: string): void {
-        this.shoppingCartService.deleteItemFromCart(gameKey).subscribe({
+        this.shoppingCartService.deleteItemFromCart(this.customerId, gameKey).subscribe({
             next: (): void => {
                 this.fetchCart();
             }
@@ -43,20 +48,20 @@ export class CartMainComponent implements OnInit {
 
     createOrder(): void {
         const data : CreateOrderModel = {
-            CustomerId: 1,
+            CustomerId: this.customerId,
             OrderedAt: new Date().toISOString(),
         };
 
         this.orderService.createOrder(data).subscribe({
             next: (data: number): void => {
-                const navExtras: NavigationExtras = { state: { customerId: 1, orderId: data } };
+                const navExtras: NavigationExtras = { state: { customerId: this.customerId, orderId: data } };
                 this.router.navigateByUrl('/order', navExtras);
             }
         });
     }
 
     private fetchCart(): void {
-        this.shoppingCartService.getCartItems().subscribe(
+        this.shoppingCartService.getCartItems(this.customerId).subscribe(
             (cartItems: CartItem[]): void => {
                 this.cartItems = cartItems;
                 this.getTotalPrice();

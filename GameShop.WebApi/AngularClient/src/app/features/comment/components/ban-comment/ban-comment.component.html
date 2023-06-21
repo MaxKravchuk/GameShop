@@ -1,13 +1,25 @@
-<div>
-    <mat-radio-group
-        aria-label="Select a ban duration"
-        color="primary"
-        (change)="handleClick($event)">
-        <mat-radio-button value="1hour">1 hour</mat-radio-button>
-        <mat-radio-button value="1day">1 day</mat-radio-button>
-        <mat-radio-button value="1week">1 week</mat-radio-button>
-        <mat-radio-button value="1month">1 month</mat-radio-button>
-        <mat-radio-button value="Permanent">Permanent</mat-radio-button>
-    </mat-radio-group>
+<h1 mat-dialog-title>Ban user {{nickName}}</h1>
+<div mat-dialog-content>
+    <div [formGroup]="form" class="create-form">
+        <div>
+            <mat-radio-group
+                aria-label="Select a ban duration"
+                color="primary"
+                formControlName="BanDuration">
+                <mat-radio-button value="Hour">1 hour</mat-radio-button>
+                <mat-radio-button value="Day">1 day</mat-radio-button>
+                <mat-radio-button value="Week">1 week</mat-radio-button>
+                <mat-radio-button value="Month">1 month</mat-radio-button>
+                <mat-radio-button value="Permanent">Permanent</mat-radio-button>
+            </mat-radio-group>
+        </div>
+    </div>
 </div>
-<a mat-button (click)="goBack()">Back</a>
+<div mat-dialog-actions>
+    <button
+            [disabled]="form.invalid"
+            mat-raised-button
+            color="warn"
+            (click)="onBanClick()">Ban</button>
+    <button mat-stroked-button (click)="goBack()">Back</button>
+</div>

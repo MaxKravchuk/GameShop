@@ -1,0 +1,10 @@
+.main{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.create-form{
+    margin-top: 20px;
+    margin-left: 10px;
+}

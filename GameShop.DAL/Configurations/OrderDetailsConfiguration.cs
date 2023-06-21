@@ -3,7 +3,7 @@ using GameShop.DAL.Entities;
 
 namespace GameShop.DAL.Configurations
 {
-    public class OrderDetailsConfiguration : EntityTypeConfiguration<OrderDetails>
+    public class OrderDetailsConfiguration : EntityTypeConfiguration<OrderDetail>
     {
         public OrderDetailsConfiguration()
         {

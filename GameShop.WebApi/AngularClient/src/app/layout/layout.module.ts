@@ -7,13 +7,14 @@ import { RouterModule } from "@angular/router";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
 import { GameModule } from "../features/game/game.module";
+import { SharedModule } from "../features/shared/shared.module";
 
 
 @NgModule({
     declarations: [
         HeaderComponent,
         FooterComponent,
-        MainComponent
+        MainComponent,
     ],
     exports: [
         HeaderComponent,
@@ -26,6 +27,7 @@ import { GameModule } from "../features/game/game.module";
         MatToolbarModule,
         MatButtonModule,
         GameModule,
+        SharedModule,
     ]
 })
 export class LayoutModule {

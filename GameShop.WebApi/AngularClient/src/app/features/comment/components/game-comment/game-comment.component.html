@@ -29,14 +29,16 @@
             </div>
             <div class="right-buttons">
                 <a
+                    *ngIf="isModerator"
                     mat-raised-button
                     color="warn"
                     (click)="deleteComment()"
                 >Delete</a>
                 <a
+                    *ngIf="isModerator"
                     mat-raised-button
                     color="warn"
-                    routerLink="/comment/ban"
+                    (click)="onBanClick(comment.Name!)"
                 >Ban</a>
             </div>
         </div>
@@ -46,7 +48,7 @@
                 [comment]="reply"
                 [replies]="comments | repliesPipe:reply.Id!"
                 [parentComment]="comment"
-                [gameKey]="gameKey"
+                [gameKey]="gameKey!"
             ></app-game-comment>
         </div>
     </div>

@@ -30,51 +30,61 @@ namespace GameShop.BLL.Services
         {
             await _validator.ValidateAndThrowAsync(cartItem);
 
-            var existingCartItem = await _redisProvider.GetValueAsync(RedisKey, cartItem.GameKey);
+            var redisKey = $"{RedisKey}-{cartItem.CustomerId}";
+
+            var existingCartItem = await _redisProvider.GetValueAsync(redisKey, cartItem.GameKey);
             if (existingCartItem != null)
             {
                 existingCartItem.Quantity += 1;
-                await _redisProvider.SetValueToListAsync("CartItems", cartItem.GameKey, existingCartItem);
+                await _redisProvider.SetValueToListAsync(redisKey, cartItem.GameKey, existingCartItem);
                 _loggerManager.LogInfo($"Item with key {cartItem.GameKey} updated");
             }
             else
             {
-                await _redisProvider.SetValueToListAsync("CartItems", cartItem.GameKey, cartItem);
+                await _redisProvider.SetValueToListAsync(redisKey, cartItem.GameKey, cartItem);
                 _loggerManager.LogInfo($"New item with key {cartItem.GameKey} added to cart");
             }
         }
 
-        public async Task<IEnumerable<CartItemDTO>> GetCartItemsAsync()
+        public async Task<IEnumerable<CartItemDTO>> GetCartItemsAsync(int customerId)
         {
-            var item = await _redisProvider.GetValuesAsync(RedisKey);
+            var redisKey = $"{RedisKey}-{customerId}";
+
+            var item = await _redisProvider.GetValuesAsync(redisKey);
             _loggerManager.LogInfo($"List of items returned with array length of {item.Count()}");
             return item;
         }
 
-        public async Task DeleteItemFromListAsync(string gameKey)
+        public async Task DeleteItemFromListAsync(int customerId, string gameKey)
         {
-            var existingCartItem = await _redisProvider.GetValueAsync(RedisKey, gameKey);
+            var redisKey = $"{RedisKey}-{customerId}";
+
+            var existingCartItem = await _redisProvider.GetValueAsync(redisKey, gameKey);
             if (existingCartItem.Quantity == 1)
             {
-                await _redisProvider.DeleteItemFromListAsync(RedisKey, gameKey);
+                await _redisProvider.DeleteItemFromListAsync(redisKey, gameKey);
             }
             else
             {
                 existingCartItem.Quantity -= 1;
-                await _redisProvider.SetValueToListAsync("CartItems", gameKey, existingCartItem);
+                await _redisProvider.SetValueToListAsync(redisKey, gameKey, existingCartItem);
             }
 
             _loggerManager.LogInfo($"Item with game key {gameKey} is deleted");
         }
 
-        public async Task CleatCartAsync()
+        public async Task CleatCartAsync(int customerId)
         {
-            await _redisProvider.ClearCartAsync(RedisKey);
-            _loggerManager.LogInfo($"Cart with key {RedisKey} cleared!");
+            var redisKey = $"{RedisKey}-{customerId}";
+
+            await _redisProvider.ClearCartAsync(redisKey);
+            _loggerManager.LogInfo($"Cart with key {redisKey} cleared!");
         }
 
-        public async Task<int> GetNumberOfGamesByGameKeyAsync(string gameKey)
+        public async Task<int> GetNumberOfGamesByGameKeyAsync(int customerId, string gameKey)
         {
+            var redisKey = $"{RedisKey}-{customerId}";
+
             var existingCartItem = await _redisProvider.GetValueAsync(RedisKey, gameKey);
             if (existingCartItem == null)
             {

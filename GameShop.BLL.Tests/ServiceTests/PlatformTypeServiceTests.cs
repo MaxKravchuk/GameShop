@@ -4,6 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
+using BLL.Test.DbAsyncTests;
+using FluentValidation;
 using GameShop.BLL.DTO.PlatformTypeDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services;
@@ -21,6 +23,7 @@ namespace GameShop.BLL.Tests.ServiceTests
         private readonly PlatformTypeService _platformTypeService;
         private readonly Mock<IMapper> _mockMapper;
         private readonly Mock<ILoggerManager> _mockLogger;
+        private readonly Mock<IValidator<PlatformTypeCreateDTO>> _mockValidator;
 
         private bool _disposed;
 
@@ -29,11 +32,13 @@ namespace GameShop.BLL.Tests.ServiceTests
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _mockMapper = new Mock<IMapper>();
             _mockLogger = new Mock<ILoggerManager>();
+            _mockValidator = new Mock<IValidator<PlatformTypeCreateDTO>>();
 
             _platformTypeService = new PlatformTypeService(
                 _mockUnitOfWork.Object,
                 _mockMapper.Object,
-                _mockLogger.Object);
+                _mockLogger.Object,
+                _mockValidator.Object);
         }
 
         public void Dispose()
@@ -50,11 +55,14 @@ namespace GameShop.BLL.Tests.ServiceTests
             var platformToAdd = new PlatformType();
 
             _mockMapper
-                .Setup(m => m.Map<PlatformType>(platformTypeToAddDTO)).Returns(platformToAdd);
+                .Setup(m => m
+                    .Map<PlatformType>(It.IsAny<PlatformTypeCreateDTO>()))
+                .Returns(platformToAdd);
 
             _mockUnitOfWork
                 .Setup(u => u.PlatformTypeRepository
-                    .Insert(platformToAdd)).Verifiable();
+                    .Insert(It.IsAny<PlatformType>()))
+                .Verifiable();
 
             // Act
             await _platformTypeService.CreateAsync(platformTypeToAddDTO);
@@ -81,8 +89,16 @@ namespace GameShop.BLL.Tests.ServiceTests
                 .ReturnsAsync(platformTypeToDelete);
 
             _mockUnitOfWork
+                .Setup(u => u.GameRepository
+                    .GetQuery(
+                        It.IsAny<Expression<Func<Game, bool>>>(),
+                        It.IsAny<Func<IQueryable<Game>, IOrderedQueryable<Game>>>(),
+                        It.IsAny<string>()))
+                .Returns(new TestDbAsyncEnumerable<Game>(new List<Game>()));
+
+            _mockUnitOfWork
                 .Setup(u => u.PlatformTypeRepository
-                    .Delete(platformTypeToDelete))
+                    .Delete(It.IsAny<PlatformType>()))
                 .Verifiable();
 
             // Act
@@ -105,8 +121,8 @@ namespace GameShop.BLL.Tests.ServiceTests
             _mockUnitOfWork
                 .Setup(u => u.PlatformTypeRepository
                     .GetByIdAsync(
-                    It.IsAny<int>(),
-                    It.IsAny<string>()))
+                        It.IsAny<int>(),
+                        It.IsAny<string>()))
                 .ReturnsAsync(platformTypeToDelete);
 
             // Act
@@ -133,7 +149,7 @@ namespace GameShop.BLL.Tests.ServiceTests
                 .ReturnsAsync(platformTypeList);
 
             _mockMapper
-                .Setup(m => m.Map<IEnumerable<PlatformTypeReadListDTO>>(platformTypeList))
+                .Setup(m => m.Map<IEnumerable<PlatformTypeReadListDTO>>(It.IsAny<IEnumerable<PlatformType>>()))
                 .Returns(platformTypeListDTO);
 
             // Act
@@ -164,7 +180,7 @@ namespace GameShop.BLL.Tests.ServiceTests
                 .ReturnsAsync(platformTypeList);
 
             _mockMapper
-                .Setup(m => m.Map<IEnumerable<PlatformTypeReadListDTO>>(platformTypeList))
+                .Setup(m => m.Map<IEnumerable<PlatformTypeReadListDTO>>(It.IsAny<IEnumerable<PlatformType>>()))
                 .Returns(platformTypeListDTO);
 
             // Act
@@ -179,52 +195,6 @@ namespace GameShop.BLL.Tests.ServiceTests
         }
 
         [Fact]
-        public async Task GetPlatformTypeById_WithCorrectId_ShouldReturnPlatformAndLog()
-        {
-            // Arrange
-            var id = 1;
-            var platformType = new PlatformType { Id = id };
-            var platfromTypeDTO = new PlatformTypeReadDTO { Id = id };
-
-            _mockUnitOfWork
-                .Setup(u => u.PlatformTypeRepository
-                    .GetByIdAsync(It.IsAny<int>(), It.IsAny<string>()))
-                .ReturnsAsync(platformType);
-
-            _mockMapper
-                .Setup(m => m.Map<PlatformTypeReadDTO>(platformType))
-                .Returns(platfromTypeDTO);
-
-            // Act
-            var result = await _platformTypeService.GetByIdAsync(id);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<PlatformTypeReadDTO>(result);
-            _mockLogger.Verify(
-                l => l.LogInfo($"Platform type with id {id} successfully returned"), Times.Once);
-        }
-
-        [Fact]
-        public async Task GetPlatformTypeById_WithWrongId_ShouldThrowNotFoundAsync()
-        {
-            // Arrange
-            var id = 0;
-            PlatformType genre = null;
-
-            _mockUnitOfWork
-                .Setup(u => u.PlatformTypeRepository
-                    .GetByIdAsync(It.IsAny<int>(), It.IsAny<string>()))
-                .ReturnsAsync(genre);
-
-            // Act
-            var result = _platformTypeService.GetByIdAsync(id);
-
-            // Assert
-            await Assert.ThrowsAsync<NotFoundException>(() => result);
-        }
-
-        [Fact]
         public async Task UpdatePlatformTypeAsync_WithCorrectModel_ShouldUpdateAndLog()
         {
             // Arrange
@@ -233,15 +203,17 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             _mockUnitOfWork
                 .Setup(u => u.PlatformTypeRepository
-                    .GetAsync(
-                        It.IsAny<Expression<Func<PlatformType, bool>>>(),
-                        It.IsAny<Func<IQueryable<PlatformType>, IOrderedQueryable<PlatformType>>>(),
-                        It.IsAny<string>(),
-                        It.IsAny<bool>()))
-                .ReturnsAsync(new List<PlatformType> { platformTypeToUpdate });
+                    .GetByIdAsync(
+                        It.IsAny<int>(),
+                        It.IsAny<string>()))
+                .ReturnsAsync(platformTypeToUpdate);
 
             _mockMapper
-                .Setup(m => m.Map(platformTypeToUpdateDTO, platformTypeToUpdate)).Verifiable();
+                .Setup(m => m
+                    .Map(
+                        It.IsAny<PlatformTypeUpdateDTO>(),
+                        It.IsAny<PlatformType>()))
+                .Verifiable();
 
             // Act
             await _platformTypeService.UpdateAsync(platformTypeToUpdateDTO);

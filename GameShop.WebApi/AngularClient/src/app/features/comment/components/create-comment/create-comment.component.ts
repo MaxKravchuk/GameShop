@@ -5,6 +5,10 @@ import { Comment } from "../../../../core/models/Comment";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
 import { Subscription } from "rxjs";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
+import { Game } from "../../../../core/models/Game";
+import { AuthService } from "../../../../core/services/authService/auth.service";
+import { User } from "../../../../core/models/User";
+import { UserService } from "../../../../core/services/userService/user.service";
 
 @Component({
     selector: 'app-create-comment',
@@ -13,7 +17,7 @@ import { UtilsService } from "../../../../core/services/helpers/utilsService/uti
 })
 export class CreateCommentComponent implements OnInit, OnDestroy {
 
-    @Input() gameKey?: string;
+    @Input() game!: Game;
 
     parentComment?: Comment = undefined;
 
@@ -23,18 +27,51 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
 
     getCommentActionSubscription: Subscription = new Subscription();
 
+    IsCommentable: boolean = true;
+
+    user: User = {};
+
+    isBanned?: boolean;
+
     constructor(
         private formBuilder: FormBuilder,
         private commentService: CommentService,
         private sharedService: SharedService<{ action: string, parentComment: Comment }>,
-        private utilsService: UtilsService
+        private utilsService: UtilsService,
+        private authService: AuthService,
+        private userService: UserService
     ) {}
 
     ngOnInit(): void {
+
         this.form = this.formBuilder.group({
-            Name: ['', Validators.required],
+            Name: [{value: this.user.NickName, disabled: true}, Validators.required],
             Body: ['', Validators.required]
         });
+
+        this.user.Id = this.authService.getUserId();
+        this.user.NickName = this.authService.getUserName();
+
+        if (this.authService.isAuthorized() && !this.eligibleToComment()) {
+            this.userService.IsAnExistingUserBannedAsync(this.user.NickName!).subscribe(
+                (data: boolean): void => {
+                    this.isBanned = data;
+                    if (data) {
+                        this.form.controls['Body'].disable();
+                        this.form.controls['Body'].setValue('You are banned from commenting');
+                    }
+                }
+            );
+        }
+        else {
+            this.form.controls['Body'].disable();
+            this.form.controls['Body'].setValue('You are not eligible to comment');
+            this.IsCommentable = false;
+        }
+
+        if (this.authService.isInRole('User') && this.game.IsDeleted!) {
+            this.IsCommentable = false;
+        }
 
         this.getCommentActionSubscription = this.sharedService.getData$().subscribe({
             next: (data: { action: string, parentComment: Comment }): void => {
@@ -59,8 +96,9 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
         }
 
         const data: Comment = {
-            ...this.form.value,
-            GameKey: this.gameKey,
+            Name: this.user.NickName,
+            Body: this.form.controls['Body'].value,
+            GameKey: this.game.Key!,
             ParentId: this.parentComment?.Id,
             HasQuotation: this.action === 'quote'
         } as Comment;
@@ -74,5 +112,11 @@ export class CreateCommentComponent implements OnInit, OnDestroy {
 
         this.action = 'new';
         this.parentComment = undefined;
+    }
+
+    private eligibleToComment(): boolean {
+        return !this.authService.isInRole('User')
+            && !this.authService.isInRole('Moderator')
+            && !this.authService.isInRole('Publisher');
     }
 }

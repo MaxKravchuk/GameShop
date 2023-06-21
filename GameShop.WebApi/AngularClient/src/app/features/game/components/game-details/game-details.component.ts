@@ -10,6 +10,7 @@ import { CartService } from "../../../../core/services/cartService/cart.service"
 import { CartItem } from "../../../../core/models/CartItem";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
 import { concatMap, forkJoin, Observable } from "rxjs";
+import { AuthService } from "../../../../core/services/authService/auth.service";
 
 @Component({
     selector: 'app-game-details',
@@ -20,11 +21,13 @@ export class GameDetailsComponent implements OnInit {
 
     game!: Game;
 
+    IsDeleted!: boolean;
+
     genres?: Genre[] = [];
 
     platformTypes?: PlatformType[] = [];
 
-    publisher?: Publisher;
+    publisher?: Publisher | null;
 
     gameKey?: string | null;
 
@@ -32,14 +35,19 @@ export class GameDetailsComponent implements OnInit {
 
     gamesInCart?: number;
 
+    customerId!: number;
+
     constructor(
         private gameService: GameService,
         private shoppingCartService: CartService,
         private utilsService: UtilsService,
-        private activeRoute: ActivatedRoute
+        private activeRoute: ActivatedRoute,
+        private authService: AuthService
     ) {}
 
     ngOnInit(): void {
+        this.customerId = this.authService.getUserId();
+
         this.gameKey = this.activeRoute.snapshot.paramMap.get('Key');
 
         if (this.gameKey != null) {
@@ -60,6 +68,7 @@ export class GameDetailsComponent implements OnInit {
         this.isAvailable = false;
 
         let cartItem: CartItem = {
+            CustomerId: this.customerId,
             GameKey: this.game.Key!,
             GameName: this.game.Name!,
             GamePrice: this.game.Price!,
@@ -67,7 +76,8 @@ export class GameDetailsComponent implements OnInit {
 
         this.shoppingCartService.addToCart(cartItem)
             .pipe(
-                concatMap(() => this.shoppingCartService.getNumberOfGamesInCart(this.gameKey!))
+                concatMap(() => this.shoppingCartService
+                    .getNumberOfGamesInCart(this.customerId, this.gameKey!))
             ).subscribe({
             next: (data: number): void => {
                 this.gamesInCart = data;
@@ -85,7 +95,20 @@ export class GameDetailsComponent implements OnInit {
 
     private getGameDetailsByKey(Key: string): void {
         const gameDetails$: Observable<Game> = this.gameService.getGameDetailsByKey(Key);
-        const numberOfGames$: Observable<number> = this.shoppingCartService.getNumberOfGamesInCart(this.gameKey!);
+        if (this.customerId === undefined) {
+            gameDetails$.subscribe({
+                next: (gameDetails: Game): void => {
+                    this.game = gameDetails;
+                    this.genres = gameDetails.Genres;
+                    this.platformTypes = gameDetails.PlatformTypes;
+                    this.publisher = gameDetails.PublisherReadDTO;
+                }
+            });
+            return;
+        }
+
+        const numberOfGames$: Observable<number> = this.shoppingCartService
+            .getNumberOfGamesInCart(this.customerId, this.gameKey!);
 
         forkJoin([gameDetails$, numberOfGames$]).subscribe(
             ([gameDetails, numberOfGames]: [Game, number]) => {
@@ -93,16 +116,12 @@ export class GameDetailsComponent implements OnInit {
                 this.genres = gameDetails.Genres;
                 this.platformTypes = gameDetails.PlatformTypes;
                 this.publisher = gameDetails.PublisherReadDTO;
-                this.isAvailable = gameDetails.UnitsInStock! > 0;
-                this.isAvailable = numberOfGames < gameDetails.UnitsInStock!;
+                this.isAvailable = numberOfGames < gameDetails.UnitsInStock! && gameDetails.UnitsInStock! > 0;
+                this.IsDeleted = gameDetails.IsDeleted!;
+                if (this.authService.isInRole('User') && gameDetails.IsDeleted) {
+                    this.isAvailable = false;
+                }
             }
         );
-        // this.gameService.getGameDetailsByKey(Key).subscribe((data: Game): void => {
-        //     this.game = data;
-        //     this.genres = data.Genres;
-        //     this.platformTypes = data.PlatformTypes;
-        //     this.publisher = data.PublisherReadDTO;
-        //     this.isAvailable = data.UnitsInStock! > 0;
-        // });
     }
 }

@@ -9,6 +9,8 @@ export interface Game extends BaseModel {
 
     Name?: string;
 
+    IsDeleted?: boolean;
+
     Description?: string;
 
     Price?: number;

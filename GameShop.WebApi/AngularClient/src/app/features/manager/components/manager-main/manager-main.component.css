@@ -1,0 +1,11 @@
+p{
+    margin: 0 !important;
+}
+.main {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.main div {
+    margin-left: 10px;
+}

@@ -1,0 +1,62 @@
+<div class="main">
+    <div class="left">
+        <div [formGroup]="form" class="create-form">
+            <p>
+                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                    <mat-label>Company name</mat-label>
+                    <input
+                        matInput
+                        formControlName="CompanyName"
+                        type="string"
+                        minlength="1"
+                        placeholder="Company name">
+                    <mat-hint>Length must be greater than 1</mat-hint>
+                    <mat-error *ngIf="form.controls['CompanyName'].invalid">Length must be greater than 1</mat-error>
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <textarea
+                        rows="10"
+                        matInput
+                        formControlName="Description"
+                        type="string"
+                        minlength="1"
+                        placeholder="Description">
+            </textarea>
+                    <mat-hint>Length must be greater than 1</mat-hint>
+                    <mat-error *ngIf="form.controls['Description'].invalid">Length must be greater than 1</mat-error>
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                    <mat-label>Home page</mat-label>
+                    <input
+                        matInput
+                        formControlName="HomePage"
+                        type="string"
+                        minlength="1"
+                        placeholder="Home page">
+                    <mat-hint>Length must be greater than 1</mat-hint>
+                    <mat-error *ngIf="form.controls['HomePage'].invalid">This is not URL</mat-error>
+                </mat-form-field>
+            </p>
+        </div>
+        <div class="button-container">
+            <button *ngIf="!isEditing"
+                    mat-raised-button color="primary" (click)="onEdit()">Edit</button>
+            <button *ngIf="isEditing"
+                    mat-raised-button color="primary" (click)="onSave()">Save</button>
+            <button *ngIf="isEditing"
+                    mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
+        </div>
+    </div>
+    <div class="right">
+        <div *ngFor="let game of games">
+            <p>{{ game.Name }}</p>
+            <button mat-raised-button color="primary" (click)="onGameEdit(game)">Edit</button>
+        </div>
+    </div>
+</div>
+

@@ -2,10 +2,8 @@
 
 namespace GameShop.BLL.DTO.PlatformTypeDTOs
 {
-    public class PlatformTypeUpdateDTO
+    public class PlatformTypeUpdateDTO : PlatformTypeCreateDTO
     {
-        public string Type { get; set; }
-
-        public IEnumerable<string> GameKeys { get; set; } = new List<string>();
+        public int Id { get; set; }
     }
 }
