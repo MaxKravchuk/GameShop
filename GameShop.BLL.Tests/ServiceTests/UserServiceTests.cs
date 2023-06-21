@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using BLL.Test.DbAsyncTests;
 using FluentValidation;
 using GameShop.BLL.DTO.UserDTOs;
 using GameShop.BLL.Enums;
@@ -65,12 +66,11 @@ namespace GameShop.BLL.Tests.ServiceTests
 
             _mockUnitOfWork
                 .Setup(u => u.UserRepository
-                    .GetAsync(
+                    .GetQuery(
                         It.IsAny<Expression<Func<User, bool>>>(),
                         It.IsAny<Func<IQueryable<User>, IOrderedQueryable<User>>>(),
-                        It.IsAny<string>(),
-                        It.IsAny<bool>()))
-                .ReturnsAsync(new List<User> { existingUser });
+                        It.IsAny<string>()))
+                .Returns(new TestDbAsyncEnumerable<User>(new List<User> { existingUser }));
 
             // Act
             var result = await _userService.IsAnExistingUserAsync(nickName);
@@ -83,19 +83,18 @@ namespace GameShop.BLL.Tests.ServiceTests
         public async Task IsAnExistingUserAsync_ReturnsFalseIfUserDoesNotExist()
         {
             // Arrange
-            var nickName = "jane.doe";
+            var users = new List<User>();
 
             _mockUnitOfWork
                 .Setup(u => u.UserRepository
-                    .GetAsync(
+                    .GetQuery(
                         It.IsAny<Expression<Func<User, bool>>>(),
                         It.IsAny<Func<IQueryable<User>, IOrderedQueryable<User>>>(),
-                        It.IsAny<string>(),
-                        It.IsAny<bool>()))
-                .ReturnsAsync(Enumerable.Empty<User>());
+                        It.IsAny<string>()))
+                .Returns(new TestDbAsyncEnumerable<User>(users));
 
             // Act
-            var result = await _userService.IsAnExistingUserAsync(nickName);
+            var result = await _userService.IsAnExistingUserAsync("2");
 
             // Assert
             Assert.False(result);

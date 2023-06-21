@@ -75,9 +75,8 @@ namespace GameShop.WebApi.Tests.ControllerTests
             _mockUserTokenService
                 .Setup(us => us
                     .AddUserTokenAsync(
-                        It.IsAny<string>(),
-                        It.IsAny<string>()))
-                .Returns(Task.CompletedTask);
+                        It.IsAny<UserCreateDTO>()))
+                .ReturnsAsync(new AuthenticatedResponse());
 
             // Act
             var result = await _authController.LoginAsync(userCreateDTO);

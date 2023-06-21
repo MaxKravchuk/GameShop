@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using GameShop.BLL.DTO.AuthDTOs;
+using GameShop.BLL.DTO.UserDTOs;
 using GameShop.BLL.Exceptions;
 using GameShop.BLL.Services;
 using GameShop.BLL.Services.Interfaces.Utils;
@@ -44,17 +45,24 @@ namespace GameShop.BLL.Tests.ServiceTests
         {
             // Arrange
             var nickName = "john";
-            var refreshToken = "refreshToken";
-            var user = new User { Id = 1, NickName = "john" };
-
-            _mockUnitOfWork
-                .Setup(u => u.UserTokensRepository
-                    .GetAsync(
-                       It.IsAny<Expression<Func<UserTokens, bool>>>(),
-                       It.IsAny<Func<IQueryable<UserTokens>, IOrderedQueryable<UserTokens>>>(),
-                       It.IsAny<string>(),
-                       It.IsAny<bool>()))
-                .ReturnsAsync(Enumerable.Empty<UserTokens>());
+            var userDto = new UserCreateDTO
+            {
+                NickName = nickName,
+                Password = "test"
+            };
+            var user = new User
+            {
+                Id = 1,
+                NickName = nickName,
+                UserRole = new Role { Name = "test" }
+            };
+            var token = new UserTokens
+            {
+                User = user,
+                UserId = user.Id,
+                RefreshToken = "test",
+                RefreshTokenExpiryTime = DateTime.Now.AddDays(7)
+            };
 
             _mockUnitOfWork
                 .Setup(u => u.UserRepository
@@ -65,8 +73,21 @@ namespace GameShop.BLL.Tests.ServiceTests
                        It.IsAny<bool>()))
                 .ReturnsAsync(new List<User> { user });
 
+            _mockJwtProvider
+                .Setup(jwt => jwt
+                    .GetAuthenticatedResponse(
+                        It.IsAny<int>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()))
+                .Returns(new AuthenticatedResponse());
+
+            _mockUnitOfWork
+                .Setup(u => u.UserTokensRepository
+                    .Insert(It.IsAny<UserTokens>()))
+                .Verifiable();
+
             // Act
-            await _usersTokenService.AddUserTokenAsync(nickName, refreshToken);
+            await _usersTokenService.AddUserTokenAsync(userDto);
 
             // Assert
             _mockUnitOfWork.Verify(u => u.UserTokensRepository.Insert(It.IsAny<UserTokens>()), Times.Once);
@@ -78,17 +99,8 @@ namespace GameShop.BLL.Tests.ServiceTests
         {
             // Arrange
             var nickName = "john";
-            var user = new User { Id = 1, NickName = nickName };
-            var userToken = new UserTokens { UserId = user.Id, RefreshToken = "refreshToken" };
-
-            _mockUnitOfWork
-                .Setup(u => u.UserTokensRepository
-                    .GetAsync(
-                       It.IsAny<Expression<Func<UserTokens, bool>>>(),
-                       It.IsAny<Func<IQueryable<UserTokens>, IOrderedQueryable<UserTokens>>>(),
-                       It.IsAny<string>(),
-                       It.IsAny<bool>()))
-                .ReturnsAsync(new List<UserTokens> { userToken });
+            var userToken = new UserTokens { UserId = 1, RefreshToken = "refreshToken" };
+            var user = new User { Id = 1, NickName = nickName, RefreshToken = userToken };
 
             _mockUnitOfWork
                 .Setup(u => u.UserRepository
@@ -98,6 +110,11 @@ namespace GameShop.BLL.Tests.ServiceTests
                        It.IsAny<string>(),
                        It.IsAny<bool>()))
                 .ReturnsAsync(new List<User> { user });
+
+            _mockUnitOfWork
+                .Setup(u => u.UserTokensRepository
+                    .Update(It.IsAny<UserTokens>()))
+                .Verifiable();
 
             // Act
             await _usersTokenService.DeleteUserTokenAsync(nickName);
