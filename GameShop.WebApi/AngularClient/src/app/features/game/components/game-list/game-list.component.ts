@@ -12,7 +12,7 @@ import { GameCrudComponent } from "../../../manager/components/dialogs/game-crud
 @Component({
     selector: 'app-game-list',
     templateUrl: './game-list.component.html',
-    styleUrls: ['./game-list.component.css']
+    styleUrls: ['./game-list.component.scss']
 })
 export class GameListComponent implements OnInit, OnDestroy {
 

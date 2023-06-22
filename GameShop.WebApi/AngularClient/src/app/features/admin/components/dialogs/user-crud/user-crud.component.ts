@@ -14,7 +14,7 @@ import { forkJoin } from "rxjs";
 @Component({
   selector: 'app-user-crud',
   templateUrl: './user-crud.component.html',
-  styleUrls: ['./user-crud.component.css']
+  styleUrls: ['./user-crud.component.scss']
 })
 export class UserCrudComponent implements OnInit {
 

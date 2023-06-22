@@ -8,7 +8,7 @@ import { PaymentCreateDTO } from "../../../../core/models/PaymentCreateDTO";
 @Component({
   selector: 'app-visa-payment',
   templateUrl: './visa-payment.component.html',
-  styleUrls: ['./visa-payment.component.css']
+  styleUrls: ['./visa-payment.component.scss']
 })
 export class VisaPaymentComponent implements OnInit{
 

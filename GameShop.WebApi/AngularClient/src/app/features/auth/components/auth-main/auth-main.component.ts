@@ -9,7 +9,7 @@ import { RegistrationModel } from "../../../../core/models/AuthModels/Registrati
 @Component({
   selector: 'app-auth-main',
   templateUrl: './auth-main.component.html',
-  styleUrls: ['./auth-main.component.css']
+  styleUrls: ['./auth-main.component.scss']
 })
 export class AuthMainComponent implements OnInit {
 

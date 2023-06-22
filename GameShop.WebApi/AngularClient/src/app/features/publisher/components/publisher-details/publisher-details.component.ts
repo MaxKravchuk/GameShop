@@ -8,7 +8,7 @@ import { UtilsService } from "../../../../core/services/helpers/utilsService/uti
 @Component({
     selector: 'app-publisher-details',
     templateUrl: './publisher-details.component.html',
-    styleUrls: ['./publisher-details.component.css']
+    styleUrls: ['./publisher-details.component.scss']
 })
 export class PublisherDetailsComponent implements OnInit {
 

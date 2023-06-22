@@ -9,7 +9,7 @@ import { UtilsService } from "../../../../../core/services/helpers/utilsService/
 @Component({
   selector: 'app-platform-type-crud',
   templateUrl: './platform-type-crud.component.html',
-  styleUrls: ['./platform-type-crud.component.css']
+  styleUrls: ['./platform-type-crud.component.scss']
 })
 export class PlatformTypeCrudComponent implements OnInit {
 

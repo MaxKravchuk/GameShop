@@ -17,7 +17,7 @@ import { Game } from "../../../../../core/models/Game";
 @Component({
   selector: 'app-game-crud',
   templateUrl: './game-crud.component.html',
-  styleUrls: ['./game-crud.component.css']
+  styleUrls: ['./game-crud.component.scss']
 })
 export class GameCrudComponent implements OnInit {
 

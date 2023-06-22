@@ -9,7 +9,7 @@ import { AuthService } from "../../../../core/services/authService/auth.service"
 @Component({
     selector: 'app-cart-main',
     templateUrl: './cart-main.component.html',
-    styleUrls: ['./cart-main.component.css']
+    styleUrls: ['./cart-main.component.scss']
 })
 export class CartMainComponent implements OnInit {
 

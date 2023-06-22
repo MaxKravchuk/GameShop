@@ -16,7 +16,7 @@ import { PagedList } from "../../../../core/models/PagedList";
 @Component({
   selector: 'app-manager-main',
   templateUrl: './manager-main.component.html',
-  styleUrls: ['./manager-main.component.css']
+  styleUrls: ['./manager-main.component.scss']
 })
 export class ManagerMainComponent implements OnInit {
 

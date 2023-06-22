@@ -9,7 +9,7 @@ import { AuthService } from "../../../../core/services/authService/auth.service"
 @Component({
   selector: 'app-orders-main',
   templateUrl: './orders-main.component.html',
-  styleUrls: ['./orders-main.component.css']
+  styleUrls: ['./orders-main.component.scss']
 })
 export class OrdersMainComponent implements OnInit {
 

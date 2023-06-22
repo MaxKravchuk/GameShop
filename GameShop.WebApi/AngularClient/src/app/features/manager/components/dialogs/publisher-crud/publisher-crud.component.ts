@@ -9,7 +9,7 @@ import { PublisherService } from "../../../../../core/services/publisherService/
 @Component({
   selector: 'app-publisher-crud',
   templateUrl: './publisher-crud.component.html',
-  styleUrls: ['./publisher-crud.component.css']
+  styleUrls: ['./publisher-crud.component.scss']
 })
 export class PublisherCrudComponent implements OnInit {
 

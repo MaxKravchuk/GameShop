@@ -8,7 +8,7 @@ import { Game } from "../../../../core/models/Game";
 @Component({
     selector: 'app-comments-list',
     templateUrl: './comments-list.component.html',
-    styleUrls: ['./comments-list.component.css']
+    styleUrls: ['./comments-list.component.scss']
 })
 export class CommentsListComponent implements OnInit, OnDestroy {
 

@@ -9,7 +9,7 @@ import { UtilsService } from "../../../../../core/services/helpers/utilsService/
 @Component({
   selector: 'app-role-crud',
   templateUrl: './role-crud.component.html',
-  styleUrls: ['./role-crud.component.css']
+  styleUrls: ['./role-crud.component.scss']
 })
 export class RoleCrudComponent implements OnInit {
 

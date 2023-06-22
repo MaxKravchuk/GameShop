@@ -13,7 +13,7 @@ import { forkJoin } from "rxjs";
 @Component({
   selector: 'app-game-filters',
   templateUrl: './game-filters.component.html',
-  styleUrls: ['./game-filters.component.css']
+  styleUrls: ['./game-filters.component.scss']
 })
 export class GameFiltersComponent implements OnInit {
 
