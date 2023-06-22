@@ -8,6 +8,8 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
 import { GameModule } from "../features/game/game.module";
 import { SharedModule } from "../features/shared/shared.module";
+import { MenuComponent } from './menu/menu.component';
+import { MatIconModule } from "@angular/material/icon";
 
 
 @NgModule({
@@ -15,11 +17,13 @@ import { SharedModule } from "../features/shared/shared.module";
         HeaderComponent,
         FooterComponent,
         MainComponent,
+        MenuComponent,
     ],
     exports: [
         HeaderComponent,
         FooterComponent,
-        MainComponent
+        MainComponent,
+        MenuComponent
     ],
     imports: [
         CommonModule,
@@ -28,6 +32,7 @@ import { SharedModule } from "../features/shared/shared.module";
         MatButtonModule,
         GameModule,
         SharedModule,
+        MatIconModule,
     ]
 })
 export class LayoutModule {

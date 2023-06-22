@@ -1,0 +1,67 @@
+<div class="main">
+    <div class="upper">
+        <div class="row upper-row">
+            <div class="col-6 upper-logo">
+                <a id="logo" routerLink="/" routerLinkActive="active">Game Store</a>
+            </div>
+            <div class="col-6 upper-btns">
+                <button
+                    class="btn btn-success"
+                    *ngIf="!(isAuthorized$ | async)"
+                    routerLink="/auth/login">Log in</button>
+                <button
+                    class="btn btn-success"
+                    *ngIf="isAuthorized$ | async"
+                    (click)="logOut()">Log out</button>
+            </div>
+        </div>
+    </div>
+    <div class="lower">
+        <div class="nav-main">
+            <div class="btn-group nav-main-btns">
+                <a
+                    class="btn"
+                    *ngIf="isAuthorized$ | async"
+                    mat-button
+                    routerLink="/cart/viewcart"
+                    routerLinkActive="active"
+                >Shopping Cart</a>
+                <a
+                    class="btn"
+                    *appIsInRole="'Administrator'"
+                    mat-button
+                    routerLink="/admin/main"
+                    routerLinkActive="active">
+                    Admin panel
+                </a>
+                <a
+                    class="btn"
+                    *appIsInRole="'Manager'"
+                    mat-button
+                    routerLink="/manager/managerPanel"
+                    routerLinkActive="active">
+                    Manager panel
+                </a>
+                <a
+                    class="btn"
+                    *appIsInRole="'Manager'"
+                    mat-button
+                    routerLink="/manager/orders"
+                    routerLinkActive="active">
+                    Orders
+                </a>
+                <a
+                    class="btn"
+                    *appIsInRole="'Publisher'"
+                    mat-button
+                    routerLink="/publishers/main"
+                    routerLinkActive="active">
+                    Publisher panel
+                </a>
+            </div>
+        </div>
+        <div class="lower-body">
+            <div id="blue"></div>
+        </div>
+    </div>
+</div>

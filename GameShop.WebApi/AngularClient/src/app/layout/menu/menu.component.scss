@@ -1,0 +1,44 @@
+.main{
+    display: flex;
+    flex-direction: column;
+}
+.upper{
+    height: 8vw;
+}
+.lower{
+    position: relative;
+}
+#blue{
+    height: 225px;
+    width: 100%;
+    margin: auto;
+    background-color: blue;
+    border-radius: 10px 10px 10px 10px;
+}
+.nav-main-btns{
+    a {
+        border: 0.5px solid black;
+        background-color: antiquewhite;
+    }
+}
+
+.nav-main{
+    position: absolute;
+    top: -15px;
+    left: 685px;
+}
+#logo{
+    font-size: 60px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+.upper-btns{
+    display: flex;
+    justify-content: flex-end;
+}
+.upper-row{
+    height: 100% !important;
+    align-items: center;
+}
+

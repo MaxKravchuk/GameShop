@@ -1,9 +1,6 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-#footer {
-    margin-top: auto;
+.main{
+    width: 95%;
+    margin: 10px auto;
+    background-color: white;
+    border-radius: 10px 10px 10px 10px;
 }

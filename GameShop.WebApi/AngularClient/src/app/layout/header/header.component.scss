@@ -1,20 +1,38 @@
-.header-container {
-    display: flex;
-    justify-content: space-between;
+header{
+    border-bottom: 0.3vh solid gray;
 }
 
-p {
-    font-size: 1rem;
-    margin: 0;
+.left-nav{
+    a {
+       color: black;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: bold;
+    }
 }
 
-.left-header {
-    display: flex;
-    margin-left: 12.5%;
+.left-nav, .right-nav {
+    ul.nav {
+        li.nav-item:not(li.nav-item:last-child) {
+            display: flex;
+            align-items: center;
+            &::after {
+                content: "|";
+                padding: 0 1px;
+            }
+        }
+    }
 }
 
-.right-header{
-    display: flex;
-    align-items: center;
+.right-nav{
+    a {
+        color: gray;
+        text-decoration: none;
+        font-size: 12px;
+    }
+}
+
+.nav-header{
+    justify-content: center !important;
 }
 

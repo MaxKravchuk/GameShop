@@ -45,17 +45,21 @@ export class RoleCrudComponent implements OnInit {
     }
 
     onDeleteClick(): void {
-        this.roleService.deleteRole(this.role.Id!).subscribe((role: Role): void => {
-            this.utilsService.openWithMessage("Role deleted successfully!");
-            this.dialogRef.close(true);
+        this.roleService.deleteRole(this.role.Id!).subscribe({
+            next: (): void => {
+                this.utilsService.openWithMessage("Role deleted successfully!");
+                this.dialogRef.close(true);
+            },
         });
     }
 
     onSaveClick(): void {
         const newRole: Role = this.form.value as Role;
-        this.roleService.createRole(newRole).subscribe((role: Role): void => {
-            this.utilsService.openWithMessage("Role created successfully!");
-            this.dialogRef.close(true);
+        this.roleService.createRole(newRole).subscribe({
+            next: (): void => {
+                this.utilsService.openWithMessage("Role created successfully!");
+                this.dialogRef.close(true);
+            }
         });
     }
 }

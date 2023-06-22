@@ -73,24 +73,31 @@ export class UserCrudComponent implements OnInit {
     onEditClick(): void {
         const newUser: User = this.form.value as User;
         newUser.Id = this.user.Id;
-         this.userService.updateUser(newUser).subscribe((user: User): void => {
-             this.utilsService.openWithMessage("User updated successfully!");
-             this.dialogRef.close(true);
+         this.userService.updateUser(newUser).subscribe({
+                next: (): void => {
+                    this.utilsService.openWithMessage("User updated successfully!");
+                    this.dialogRef.close(true);
+                }
          });
     }
 
     onDeleteClick(): void {
-        this.userService.deleteUser(this.user.Id!).subscribe((user: User): void => {
-            this.utilsService.openWithMessage("User deleted successfully!");
-            this.dialogRef.close(true);
+        this.userService.deleteUser(this.user.Id!).subscribe({
+            next: (): void => {
+                this.utilsService.openWithMessage("User deleted successfully!");
+                this.dialogRef.close(true);
+            }
         });
     }
 
     onSaveClick(): void {
         const newUser: User = this.form.value as User;
-        this.userService.createUserWithRole(newUser).subscribe((user: User): void => {
-           this.utilsService.openWithMessage("User created successfully!");
-           this.dialogRef.close(true);
+        this.userService.createUserWithRole(newUser).subscribe({
+            next: (): void =>
+            {
+                this.utilsService.openWithMessage("User created successfully!");
+                this.dialogRef.close(true);
+            }
         });
     }
 

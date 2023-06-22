@@ -1,52 +1,36 @@
-<mat-toolbar color="primary" class="header-container">
-    <div class="left-header">
-        <div>
-            <p>Number of games: {{numberOfGames}}</p>
+<header>
+    <div class="row">
+        <div class="col-6 left-nav">
+            <ul class="nav nav-header">
+                <li class="nav-item">
+                    <a class="nav-link">Boosed Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">About Boosed</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">Careers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">Newsroom</a>
+                </li>
+            </ul>
         </div>
-        <a mat-button routerLink="/" routerLinkActive="active">Game Store</a>
-        <a
-           *ngIf="isAuthorized$ | async"
-           mat-button
-           routerLink="/cart/viewcart"
-           routerLinkActive="active"
-        >Shopping Cart</a>
-        <a
-            *appIsInRole="'Administrator'"
-            mat-button
-            routerLink="/admin/main"
-            routerLinkActive="active">
-            Admin panel
-        </a>
-        <a
-            *appIsInRole="'Manager'"
-            mat-button
-            routerLink="/manager/managerPanel"
-            routerLinkActive="active">
-            Manager panel
-        </a>
-        <a
-            *appIsInRole="'Manager'"
-            mat-button
-            routerLink="/manager/orders"
-            routerLinkActive="active">
-            Orders
-        </a>
-        <a
-            *appIsInRole="'Publisher'"
-            mat-button
-            routerLink="/publishers/main"
-            routerLinkActive="active">
-            Publisher panel
-        </a>
+        <div class="col-6 right-nav">
+            <ul class="nav nav-header">
+                <li class="nav-item">
+                    <a class="nav-link">Support</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">Contact us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">Online support</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">Security information</a>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div class="right-header">
-        <a
-            *ngIf="!(isAuthorized$ | async)"
-            mat-button
-            routerLink="/auth/login">Log in</a>
-        <a
-            *ngIf="isAuthorized$ | async"
-            mat-button
-            (click)="logOut()">Log out</a>
-    </div>
-</mat-toolbar>
+</header>

@@ -82,7 +82,7 @@ export class GameFiltersComponent implements OnInit {
         this.setFilters();
     }
 
-    handleChanges($event: any): void {
+    handleChanges(): void {
         if(!this.isChanged) {
             this.isChanged = true;
         }

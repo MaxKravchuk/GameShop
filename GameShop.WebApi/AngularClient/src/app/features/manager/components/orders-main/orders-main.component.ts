@@ -17,8 +17,7 @@ export class OrdersMainComponent implements OnInit {
 
     constructor(
         private orderService: OrderService,
-        private dialog: MatDialog,
-        private authService: AuthService
+        private dialog: MatDialog
     ) { }
 
     ngOnInit(): void {
