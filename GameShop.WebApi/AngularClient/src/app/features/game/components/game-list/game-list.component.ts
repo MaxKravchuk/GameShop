@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { Game } from "../../../../core/models/Game";
 import { GameService } from "../../../../core/services/gameService/game.service";
 import { PagedList } from "../../../../core/models/PagedList";
-import { BehaviorSubject, Observable, Subscription, switchMap } from "rxjs";
+import { Observable, Subscription, switchMap } from "rxjs";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
 import { Router } from "@angular/router";
 import { FilterModel } from "../../../../core/models/FilterModel";

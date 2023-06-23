@@ -10,6 +10,7 @@ import { GameModule } from "../features/game/game.module";
 import { SharedModule } from "../features/shared/shared.module";
 import { MenuComponent } from './menu/menu.component';
 import { MatIconModule } from "@angular/material/icon";
+import { NewsSectionComponent } from './news-section/news-section.component';
 
 
 @NgModule({
@@ -18,12 +19,14 @@ import { MatIconModule } from "@angular/material/icon";
         FooterComponent,
         MainComponent,
         MenuComponent,
+        NewsSectionComponent,
     ],
     exports: [
         HeaderComponent,
         FooterComponent,
         MainComponent,
-        MenuComponent
+        MenuComponent,
+        NewsSectionComponent
     ],
     imports: [
         CommonModule,
