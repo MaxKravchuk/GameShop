@@ -19,6 +19,7 @@
     <div class="lower">
         <div class="nav-main">
             <div class="btn-group nav-main-btns">
+
                 <a
                     class="btn"
                     *ngIf="isAuthorized$ | async"
@@ -61,7 +62,17 @@
             </div>
         </div>
         <div class="lower-body">
-            <div id="blue"></div>
+            <div id="blue">
+                <p id="what-can-make">
+                    What can make your life easier?
+                </p>
+                <p id="game-store">
+                    Our game store!
+                </p>
+                <div id="blue-img">
+                    <img src="assets/imgs/computer.svg" label="pc">
+                </div>
+            </div>
         </div>
     </div>
 </div>

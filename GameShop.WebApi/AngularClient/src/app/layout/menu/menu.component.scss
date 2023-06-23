@@ -4,6 +4,9 @@
 }
 .upper{
     height: 8vw;
+    .upper-logo{
+        padding-top: 17px;
+    }
 }
 .lower{
     position: relative;
@@ -14,6 +17,23 @@
     margin: auto;
     background-color: blue;
     border-radius: 10px 10px 10px 10px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    position: relative;
+    z-index: 0;
+}
+#what-can-make{
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    padding: 75px 0;
+}
+#game-store{
+    font-size: 45px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
 }
 .nav-main-btns{
     a {
@@ -24,21 +44,33 @@
 
 .nav-main{
     position: absolute;
-    top: -15px;
-    left: 685px;
+    transform: translateY(-50%);
+    right: 0;
+    padding-right: 10px;
+    z-index: 1;
 }
 #logo{
     font-size: 60px;
     text-decoration: none;
     color: black;
     font-weight: bold;
+    padding-top: 10px;
 }
 .upper-btns{
     display: flex;
     justify-content: flex-end;
+    padding-bottom: 16px;
 }
 .upper-row{
     height: 100% !important;
     align-items: center;
 }
-
+#blue-img{
+    position: absolute;
+    top: -5px;
+    right: 0;
+    margin-right: 10px;
+    img{
+        width: 287px;
+    }
+}
