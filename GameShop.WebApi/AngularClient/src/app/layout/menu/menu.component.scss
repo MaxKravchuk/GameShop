@@ -1,6 +1,8 @@
 .main{
     display: flex;
     flex-direction: column;
+    position: static;
+    margin-bottom: 25px;
 }
 .upper{
     height: 8vw;
@@ -69,7 +71,7 @@
     position: absolute;
     top: -5px;
     right: 0;
-    margin-right: 10px;
+    margin-right: 20px;
     img{
         width: 287px;
     }

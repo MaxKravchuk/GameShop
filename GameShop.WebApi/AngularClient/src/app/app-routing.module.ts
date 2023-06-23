@@ -5,7 +5,7 @@ import { MainComponent } from "./layout/main/main.component";
 const routes: Routes = [
     {
         path: '',
-        component: MainComponent
+        component: MainComponent,
     },
     {
         path: 'games',

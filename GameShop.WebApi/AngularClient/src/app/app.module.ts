@@ -7,6 +7,8 @@ import { LayoutModule } from "./layout/layout.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { SharedService } from "./core/services/helpers/sharedService/shared.service";
 import { AuthInterceptor } from "./core/interceptors/auth.interceptor";
+import { GameModule } from "./features/game/game.module";
+import { NgOptimizedImage } from "@angular/common";
 
 @NgModule({
     declarations: [
@@ -18,6 +20,8 @@ import { AuthInterceptor } from "./core/interceptors/auth.interceptor";
         HttpClientModule,
         BrowserAnimationsModule,
         LayoutModule,
+        GameModule,
+        NgOptimizedImage,
     ],
     providers: [
         SharedService,

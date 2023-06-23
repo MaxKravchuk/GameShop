@@ -1,8 +1,8 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Game } from "../../../../core/models/Game";
 import { GameService } from "../../../../core/services/gameService/game.service";
 import { PagedList } from "../../../../core/models/PagedList";
-import { Observable, Subscription, switchMap } from "rxjs";
+import { BehaviorSubject, Observable, Subscription, switchMap } from "rxjs";
 import { SharedService } from "../../../../core/services/helpers/sharedService/shared.service";
 import { Router } from "@angular/router";
 import { FilterModel } from "../../../../core/models/FilterModel";
@@ -19,6 +19,8 @@ export class GameListComponent implements OnInit, OnDestroy {
     @Input() IsManager?: boolean;
 
     @Input() reloadGames!: Observable<boolean>;
+
+    @Output() gameListStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     games?: Game[] = [];
 
@@ -59,11 +61,13 @@ export class GameListComponent implements OnInit, OnDestroy {
                 }
             });
         }
+        this.gameListStatus.emit(true);
     }
 
     ngOnDestroy(): void {
         this.resultSub.unsubscribe();
         this.reloadGameSub.unsubscribe();
+        this.gameListStatus.emit(false);
     }
 
     pageSizeChange(value: number): void {
