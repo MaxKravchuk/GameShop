@@ -1,8 +1,9 @@
 .main{
-    width: 95%;
-    margin: 20px auto;
+    max-width: 80%;
+    min-height: 100%;
+    margin: 20px auto 10px auto;
     background-color: white;
-    border-radius: 10px 10px 10px 10px;
+    border-radius: 10px;
 }
 .main-content{
     width: 100%;
@@ -33,5 +34,8 @@
     img{
         width: 250px;
     }
+}
+#hidden{
+    height: 10px;
 }
 
