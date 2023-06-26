@@ -6,9 +6,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from "./layout/layout.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { SharedService } from "./core/services/helpers/sharedService/shared.service";
-import { AuthInterceptor } from "./core/interceptors/auth.interceptor";
+import { AuthInterceptor } from "./core/interceptors/auth/auth.interceptor";
 import { GameModule } from "./features/game/game.module";
 import { NgOptimizedImage } from "@angular/common";
+import { LoadingInterceptor } from "./core/interceptors/loading/loading.interceptor";
 
 @NgModule({
     declarations: [
@@ -28,6 +29,11 @@ import { NgOptimizedImage } from "@angular/common";
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,
+            multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: LoadingInterceptor,
             multi: true
         }
     ],

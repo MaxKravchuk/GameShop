@@ -3,8 +3,8 @@ footer{
     flex-direction: row;
     justify-content: space-evenly;
     border-top: 0.3vh solid gray;
-    padding-top: 15px;
-    padding-bottom: 100px;
+    padding-top: 1.5vh;
+    padding-bottom: 20vh;
 }
 ul{
     padding: 0;
@@ -13,17 +13,25 @@ ul{
 li{
     list-style-type: none;
     color: gray;
-    font-size: 12px;
+    font-size: 1.7vh;
     padding: 0;
     margin: 0;
 }
 .rights{
     max-width: 40%;
+
+    p{
+        font-size: 1.7vh;
+    }
+
+    & p:first-child{
+        margin-bottom: 1.5vh;
+    }
 }
 .p-header{
-    font-size: 12px;
+    font-size: 1.7vh;
     color: #656565;
     font-weight: bold;
     margin: 0;
-    padding-bottom: 15px;
+    padding-bottom: 1.5vh;
 }

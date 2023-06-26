@@ -5,9 +5,9 @@ import {
     HttpEvent,
     HttpInterceptor } from '@angular/common/http';
 import { BehaviorSubject, catchError, filter, Observable, switchMap, take, throwError } from 'rxjs';
-import { AuthService } from "../services/authService/auth.service";
-import { TokenApiModel } from "../models/AuthModels/TokenApiModel";
-import { AuthenticatedResponseModel } from "../models/AuthModels/AuthenticatedResponseModel";
+import { AuthService } from "../../services/authService/auth.service";
+import { TokenApiModel } from "../../models/AuthModels/TokenApiModel";
+import { AuthenticatedResponseModel } from "../../models/AuthModels/AuthenticatedResponseModel";
 import { Router } from "@angular/router";
 
 @Injectable()

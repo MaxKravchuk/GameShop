@@ -4,17 +4,20 @@ import { PaginationComponent } from './components/pagination/pagination.componen
 import { MatButtonModule } from "@angular/material/button";
 import { ReactiveFormsModule } from "@angular/forms";
 import { IsInRoleDirective } from './directives/isInRole/is-in-role.directive';
+import { LoaderComponent } from './components/loader/loader.component';
 
 
 
 @NgModule({
     declarations: [
         PaginationComponent,
-        IsInRoleDirective
+        IsInRoleDirective,
+        LoaderComponent
     ],
     exports: [
         PaginationComponent,
-        IsInRoleDirective
+        IsInRoleDirective,
+        LoaderComponent
     ],
     imports: [
         CommonModule,
