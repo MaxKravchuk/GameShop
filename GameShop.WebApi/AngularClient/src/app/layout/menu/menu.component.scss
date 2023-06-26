@@ -76,3 +76,12 @@
         width: 287px;
     }
 }
+
+@media (max-width: 920px){
+    #blue-img{
+        display: none;
+    }
+    #blue{
+        text-align: center;
+    }
+}

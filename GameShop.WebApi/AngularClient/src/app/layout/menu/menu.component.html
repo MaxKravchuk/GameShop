@@ -1,10 +1,10 @@
 <div class="main">
     <div class="upper">
         <div class="row upper-row">
-            <div class="col-6 upper-logo">
+            <div class="col upper-logo">
                 <a id="logo" routerLink="/" routerLinkActive="active">Game Store</a>
             </div>
-            <div class="col-6 upper-btns">
+            <div class="col upper-btns">
                 <button
                     class="btn btn-success"
                     *ngIf="!(isAuthorized$ | async)"

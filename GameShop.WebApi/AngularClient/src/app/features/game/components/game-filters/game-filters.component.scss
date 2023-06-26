@@ -34,3 +34,10 @@ mat-optgroup:hover, mat-option:hover {
     padding-left: 10px;
     border-left: 1px dashed gray;
 }
+
+@media(max-width: 920px) {
+    .filters{
+        border-left: none;
+        padding-left: 0;
+    }
+}
