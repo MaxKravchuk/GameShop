@@ -4,7 +4,7 @@ import {
     HttpHandler,
     HttpEvent,
     HttpInterceptor } from '@angular/common/http';
-import { BehaviorSubject, catchError, filter, Observable, switchMap, take, throwError } from 'rxjs';
+import { catchError, Observable, switchMap, throwError } from 'rxjs';
 import { AuthService } from "../../services/authService/auth.service";
 import { TokenApiModel } from "../../models/AuthModels/TokenApiModel";
 import { AuthenticatedResponseModel } from "../../models/AuthModels/AuthenticatedResponseModel";
@@ -18,8 +18,8 @@ export class AuthInterceptor implements HttpInterceptor {
         private router: Router) {}
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const accessToken = this.authService.getAccessToken();
-        const refreshToken = this.authService.getRefreshToken();
+        const accessToken: string | null = this.authService.getAccessToken();
+        const refreshToken: string | null = this.authService.getRefreshToken();
 
         if (accessToken) {
             request = this.addAuthorizationHeader(request, accessToken);
