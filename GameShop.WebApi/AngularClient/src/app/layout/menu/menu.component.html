@@ -19,46 +19,75 @@
     <div class="lower">
         <div class="nav-main">
             <div class="btn-group nav-main-btns">
-
+                <a
+                    class="btn"
+                    routerLink="/"
+                    routerLinkActive="active"
+                >Games</a>
                 <a
                     class="btn"
                     *ngIf="isAuthorized$ | async"
-                    mat-button
                     routerLink="/cart/viewcart"
                     routerLinkActive="active"
                 >Shopping Cart</a>
                 <a
                     class="btn"
                     *appIsInRole="'Administrator'"
-                    mat-button
                     routerLink="/admin/main"
                     routerLinkActive="active">
                     Admin panel
                 </a>
                 <a
                     class="btn"
-                    *appIsInRole="'Manager'"
-                    mat-button
-                    routerLink="/manager/managerPanel"
-                    routerLinkActive="active">
-                    Manager panel
-                </a>
-                <a
-                    class="btn"
-                    *appIsInRole="'Manager'"
-                    mat-button
-                    routerLink="/manager/orders"
-                    routerLinkActive="active">
-                    Orders
-                </a>
-                <a
-                    class="btn"
                     *appIsInRole="'Publisher'"
-                    mat-button
                     routerLink="/publishers/main"
                     routerLinkActive="active">
                     Publisher panel
                 </a>
+                <div
+                    class="dropdown"
+                    *appIsInRole="'Manager'">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Manager panel
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a
+                            class="dropdown-item"
+                            *appIsInRole="'Manager'"
+                            routerLink="/manager/managerGames"
+                            routerLinkActive="active">
+                            Games control
+                        </a></li>
+                        <li><a
+                            class="dropdown-item"
+                            *appIsInRole="'Manager'"
+                            routerLink="/manager/managerGenres"
+                            routerLinkActive="active">
+                            Genres control
+                        </a></li>
+                        <li><a
+                            class="dropdown-item"
+                            *appIsInRole="'Manager'"
+                            routerLink="/manager/managerPlatforms"
+                            routerLinkActive="active">
+                            Platforms control
+                        </a></li>
+                        <li><a
+                            class="dropdown-item"
+                            *appIsInRole="'Manager'"
+                            routerLink="/manager/managerPublishers"
+                            routerLinkActive="active">
+                            Publishers control
+                        </a></li>
+                        <li><a
+                            class="dropdown-item"
+                            *appIsInRole="'Manager'"
+                            routerLink="/manager/orders"
+                            routerLinkActive="active">
+                            Orders control
+                        </a></li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="lower-body">

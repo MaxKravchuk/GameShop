@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ManagerMainComponent } from './components/manager-main/manager-main.component';
+import { ManagerGamesComponent } from './components/manager-games/manager-games.component';
 import { MatButtonModule } from "@angular/material/button";
 import { RouterLink } from "@angular/router";
 import { GenreCrudComponent } from './components/dialogs/genre-crud/genre-crud.component';
@@ -18,18 +18,24 @@ import { GameCrudComponent } from './components/dialogs/game-crud/game-crud.comp
 import { OrdersMainComponent } from './components/orders-main/orders-main.component';
 import { OrderEditComponent } from './components/dialogs/order-edit/order-edit.component';
 import { SharedModule } from "../shared/shared.module";
+import { ManagerGenresComponent } from './components/manager-genres/manager-genres.component';
+import { ManagerPlatformTypeComponent } from './components/manager-platform-type/manager-platform-type.component';
+import { ManagerPublisherComponent } from './components/manager-publisher/manager-publisher.component';
 
 
 
 @NgModule({
     declarations: [
-        ManagerMainComponent,
+        ManagerGamesComponent,
         GenreCrudComponent,
         PlatformTypeCrudComponent,
         PublisherCrudComponent,
         GameCrudComponent,
         OrdersMainComponent,
-        OrderEditComponent
+        OrderEditComponent,
+        ManagerGenresComponent,
+        ManagerPlatformTypeComponent,
+        ManagerPublisherComponent
     ],
     imports: [
         ManagerRoutingModule,

@@ -3,23 +3,3 @@
     display: flex;
     flex-direction: row;
 }
-.game-filter{
-    width: 30%;
-    margin-right: 10px;
-}
-.game-list{
-    width: 70%;
-}
-
-@media(max-width: 920px) {
-    .main{
-        flex-direction: column;
-    }
-    .game-filter{
-        width: 100%;
-        margin-top: 10px;
-    }
-    .game-list{
-        width: 100%;
-    }
-}

@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Publisher } from "../../../../../core/models/Publisher";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { ManagerMainComponent } from "../../manager-main/manager-main.component";
+import { ManagerGamesComponent } from "../../manager-games/manager-games.component";
 import { UtilsService } from "../../../../../core/services/helpers/utilsService/utils-service";
 import { PublisherService } from "../../../../../core/services/publisherService/publisher.service";
 
@@ -24,7 +24,7 @@ export class PublisherCrudComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         @Inject(MAT_DIALOG_DATA) private data : {publisher: Publisher},
-        private dialogRef: MatDialogRef<ManagerMainComponent>,
+        private dialogRef: MatDialogRef<ManagerGamesComponent>,
         private publisherService: PublisherService,
         private utilsService: UtilsService
     ) { }

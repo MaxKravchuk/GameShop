@@ -91,4 +91,12 @@
             margin: 10px 0;
         }
     }
+    .block-item{
+        width: 75%;
+    }
+}
+@media (max-width: 1090px){
+    .item-icon{
+        display: none;
+    }
 }

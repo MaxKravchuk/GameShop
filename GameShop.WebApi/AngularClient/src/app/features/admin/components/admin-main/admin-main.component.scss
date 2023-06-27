@@ -1,5 +1,23 @@
 .main{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    justify-items: center;
+    display: flex;
+    justify-content: space-around;
+}
+.items-list{
+    margin-bottom: 20px;
+}
+.addButtons {
+    & button:first-child {
+        margin-right: 10px;
+    }
+}
+@media(max-width: 830px) {
+    .main{
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+
+        & div:nth-child(2){
+            margin: 20px 0;
+        }
+    }
 }

@@ -48,6 +48,11 @@ export class GameListComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+
+        document.getElementsByClassName('adv-banners')[0].setAttribute('style', 'display: none;');
+        document.getElementsByClassName('game-filter')[0].removeAttribute('style');
+
+
         this.updateGames(this.receivedData!);
         this.resultSub = this.sharedService.getData$().subscribe((data: FilterModel): void => {
             this.receivedData.gameFiltersDTO = data.gameFiltersDTO;
@@ -65,6 +70,8 @@ export class GameListComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        document.getElementsByClassName('game-filter')[0].setAttribute('style', 'display: none;');
+        document.getElementsByClassName('adv-banners')[0].removeAttribute('style');
         this.resultSub.unsubscribe();
         this.reloadGameSub.unsubscribe();
         this.gameListStatus.emit(false);

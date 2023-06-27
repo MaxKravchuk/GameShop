@@ -1,0 +1,4 @@
+<div class="game-crud">
+    <a mat-button color="accent" (click)="addGame()">Create game</a>
+    <app-game-list [IsManager]="true" [reloadGames]="reloadGames.asObservable()"></app-game-list>
+</div>

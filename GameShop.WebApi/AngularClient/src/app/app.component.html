@@ -3,7 +3,9 @@
     <div class="container-fluid">
         <app-menu></app-menu>
         <div class="main-content">
-            <router-outlet></router-outlet>
+            <div class="main-content-body">
+                <router-outlet></router-outlet>
+            </div>
             <div class="side-menu">
                 <div class="adv-banners text-center">
                     <p class="adv-header">We knocked em'll</p>
@@ -14,6 +16,7 @@
                         <img src="assets/imgs/red-roadster-car.svg" alt="car">
                     </div>
                 </div>
+                <app-game-filters class="game-filter" style="display:none;"></app-game-filters>
             </div>
         </div>
         <app-news-section></app-news-section>

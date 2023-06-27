@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Genre } from "../../../../core/models/Genre";
 import { PlatformType } from "../../../../core/models/PlatformType";
 import { Publisher } from "../../../../core/models/Publisher";
@@ -15,7 +15,7 @@ import { forkJoin } from "rxjs";
   templateUrl: './game-filters.component.html',
   styleUrls: ['./game-filters.component.scss']
 })
-export class GameFiltersComponent implements OnInit, OnDestroy {
+export class GameFiltersComponent implements OnInit {
 
     genres: Genre[] = [];
 
@@ -37,8 +37,6 @@ export class GameFiltersComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
-        document.getElementsByClassName('side-menu')[0].setAttribute('style', 'display: none;');
-
         this.form = this.formBuilder.group({
             SortedBy: [''],
             GameName: ['', Validators.minLength(3)],
@@ -59,10 +57,6 @@ export class GameFiltersComponent implements OnInit, OnDestroy {
             this.platforms = platformTypes;
             this.publishers = publishers;
         });
-    }
-
-    ngOnDestroy(): void {
-        document.getElementsByClassName('side-menu')[0].removeAttribute('style');
     }
 
     setFilters(): void {

@@ -38,7 +38,7 @@
     text-transform: uppercase;
 }
 .nav-main-btns{
-    a {
+    a:not(.dropdown-item){
         border: 0.5px solid black;
         background-color: antiquewhite;
     }
@@ -76,6 +76,10 @@
         width: 287px;
     }
 }
+.dropdown-toggle{
+    border-radius: 0 7px 7px 0;
+    color: black;
+}
 
 @media (max-width: 920px){
     #blue-img{
@@ -83,5 +87,37 @@
     }
     #blue{
         text-align: center;
+    }
+    #logo{
+        font-size: 30px;
+    }
+}
+@media (max-width: 700px){
+    .upper-logo{
+        display: none;
+    }
+    .nav-main{
+        left: 0;
+    }
+    .btn-group{
+        flex-direction: column;
+        top: 16px;
+        padding-left: 10px;
+    }
+    .nav-main-btns{
+        a {
+            border-radius: 0 !important;
+        }
+    }
+    #what-can-make{
+        padding-bottom: 20px;
+    }
+    #game-store{
+        font-size: 30px;
+    }
+}
+@media (max-width: 430px){
+    .upper{
+        height: 16vw;
     }
 }
