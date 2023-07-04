@@ -1,10 +1,10 @@
 <div class="main">
-    <div class="upper">
-        <div class="row upper-row">
-            <div class="col upper-logo">
+    <div class="main__upper">
+        <div class="row upper__row">
+            <div class="col upper__row--logo">
                 <a id="logo" routerLink="/" routerLinkActive="active">Game Store</a>
             </div>
-            <div class="col upper-btns">
+            <div class="col upper__row--btns">
                 <button
                     class="btn btn-success"
                     *ngIf="!(isAuthorized$ | async)"
@@ -16,7 +16,7 @@
             </div>
         </div>
     </div>
-    <div class="lower">
+    <div class="main__lower">
         <div class="nav-main">
             <div class="btn-group nav-main-btns">
                 <a
@@ -90,7 +90,7 @@
                 </div>
             </div>
         </div>
-        <div class="lower-body">
+        <div class="lower__body">
             <div id="blue">
                 <p id="what-can-make">
                     What can make your life easier?

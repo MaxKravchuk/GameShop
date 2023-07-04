@@ -1,5 +1,5 @@
-<div class="cont">
-    <div class="comment-item">
+<div class="main">
+    <div class="main__comment-body">
         <h3 id="comment-{{comment.Id}}">{{comment.Name}}</h3>
         <p>
             <a *ngIf="parentComment.Name !== comment.Name" (click)="goToParentComment(parentComment.Id!)">
@@ -8,8 +8,8 @@
             <q *ngIf="comment.HasQuotation">{{parentComment.Body}}</q>
             {{comment.Body}}
         </p>
-        <div class="comment-buttons">
-            <div class="left-buttons">
+        <div class="main__comment-actions">
+            <div class="comment-actions__general">
                 <a
                     mat-button
                     color="accent"
@@ -27,7 +27,7 @@
                     (click)="showAnswers()"
                 >Answers</a>
             </div>
-            <div class="right-buttons">
+            <div class="comment-actions__moderator">
                 <a
                     *ngIf="isModerator"
                     mat-raised-button
@@ -42,7 +42,8 @@
                 >Ban</a>
             </div>
         </div>
-        <div *ngIf="answersIsDisplayed">
+        <div class="main__comment-answers"
+             *ngIf="answersIsDisplayed">
             <app-game-comment
                 *ngFor="let reply of replies"
                 [comment]="reply"

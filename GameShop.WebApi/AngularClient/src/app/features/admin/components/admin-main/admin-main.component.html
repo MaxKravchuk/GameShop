@@ -1,12 +1,12 @@
 <div class="main">
-    <div class="addButtons">
-        <button class="btn btn-success" (click)="addUser()">Add User</button>
+    <div class="main__buttons">
+        <button class="btn btn-success main__buttons--add-user" (click)="addUser()">Add User</button>
         <button class="btn btn-success" (click)="addRole()">Add Role</button>
     </div>
-    <div class="users">
-        <div class="items-list" *ngFor="let user of users">
-            <p>{{user.NickName}}</p>
-            <div class="user-CRUD">
+    <div class="main__users">
+        <div class="main__users-item list_item" *ngFor="let user of users">
+            <p class="main__user-item--nickname">{{user.NickName}}</p>
+            <div class="main__user-item--buttons">
                 <button class="btn btn-warning" (click)="editDeleteUser(user)">Edit/Delete</button>
             </div>
         </div>
@@ -17,10 +17,10 @@
             (pageSizeEvent)="pageSizeChangeUser($event)"
             (pageIndexEvent)="pageIndexChangeUser($event)"></app-pagination>
     </div>
-    <div class="roles">
-        <div class="items-list" *ngFor="let role of roles">
-            <p>{{role.Name}}</p>
-            <div class="role-CRUD">
+    <div class="main__roles">
+        <div class="main__roles-item list_item" *ngFor="let role of roles">
+            <p class="main__roles-item--name">{{role.Name}}</p>
+            <div class="main__roles-item--buttons">
                 <button class="btn btn-warning" (click)="editDeleteRole(role)">Edit/Delete</button>
             </div>
         </div>

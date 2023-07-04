@@ -1,8 +1,8 @@
 <div class="game-list">
-    <div class="game-item"
+    <div class="game-list__item"
          *ngFor="let game of games">
         <p>{{game.Name}}</p>
-        <div class="game-item-btns">
+        <div class="item__actions">
             <a class="btn btn-info" routerLink="/games/details/{{game.Key}}" color="accent">View</a>
             <a
                class="btn btn-warning"

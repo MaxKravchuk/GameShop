@@ -1,4 +1,4 @@
-<div [formGroup]="form" class="filters">
+<div [formGroup]="form" class="filters-form">
     <mat-form-field appearance="fill">
         <mat-label>Game name</mat-label>
         <input
@@ -9,7 +9,7 @@
             (change)="handleChanges()">
         <mat-error *ngIf="form.controls['GameName'].invalid">Min length is 3</mat-error>
     </mat-form-field>
-    <div class="filter-price">
+    <div class="filters-form--price-range">
         <mat-form-field>
             <mat-label>Price from</mat-label>
             <input
@@ -118,7 +118,7 @@
             <mat-radio-button value="last3Years">3 years</mat-radio-button>
         </mat-radio-group>
     </mat-expansion-panel>
-    <div class="filter-button">
+    <div class="filters-form__actions">
         <button mat-raised-button
                 color="primary"
                 [disabled]="form.invalid"

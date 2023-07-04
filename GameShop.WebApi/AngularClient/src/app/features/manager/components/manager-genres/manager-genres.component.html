@@ -1,6 +1,6 @@
 <div class="genre-crud">
     <a mat-button color="accent" (click)="addGenre()">Create genre</a>
-    <div *ngFor="let genre of genres">
+    <div *ngFor="let genre of genres" class="genre-crud__info items-list">
         <p>{{genre.Name}}</p>
         <a mat-button (click)="editDeleteGenre(genre)">Edit/Delete</a>
     </div>

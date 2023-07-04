@@ -1,9 +1,9 @@
-.cont {
+.main {
     margin: 5px 15px;
     height: fit-content;
 }
 
-.comment-item {
+.main__comment-body {
     border-top: 1px solid black;
     border-bottom: 1px solid black;
 }
@@ -20,11 +20,11 @@ q {
     font-style: italic;
 }
 
-.comment-buttons{
+.main__comment-actions{
     display: flex;
     justify-content: space-between;
 }
 
-.comment-buttons a {
+.main__comment-actions a {
     margin: 0 5px;
 }

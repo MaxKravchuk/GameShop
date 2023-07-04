@@ -1,7 +1,8 @@
-<h1 mat-dialog-title>Ban user {{nickName}}</h1>
-<div mat-dialog-content>
-    <div [formGroup]="form" class="create-form">
-        <div>
+<h1 class="dialog-title"
+    mat-dialog-title>Ban user {{nickName}}</h1>
+<div class="dialog-content" mat-dialog-content>
+    <div [formGroup]="form" class="dialog-content__form">
+        <div class="dialog-content__form--field">
             <mat-radio-group
                 aria-label="Select a ban duration"
                 color="primary"
@@ -15,7 +16,7 @@
         </div>
     </div>
 </div>
-<div mat-dialog-actions>
+<div class="dialog-actions" mat-dialog-actions>
     <button
             [disabled]="form.invalid"
             mat-raised-button

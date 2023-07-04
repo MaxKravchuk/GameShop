@@ -1,7 +1,7 @@
 <div
     *ngIf="game !== undefined"
-    class="cont">
-    <div class="game-info">
+    class="main">
+    <div class="main__game--info">
         <h1>Name: {{game.Name}}</h1>
         <p>Description: {{game.Description}}</p>
         <p>Price: {{game.Price}}</p>
@@ -11,7 +11,7 @@
         <a *ngIf="publisher !== null"
             routerLink="/publishers/details/{{publisher!.CompanyName}}">Publisher: {{publisher!.CompanyName}}</a>
     </div>
-    <div [ngSwitch]="genres!.length">
+    <div class="main__game--genre" [ngSwitch]="genres!.length">
         <p>Genres:</p>
         <div *ngSwitchCase="0">
             <p>Other</p>
@@ -20,7 +20,7 @@
             <p *ngFor="let genre of genres">{{genre.Name}}</p>
         </div>
     </div>
-    <div [ngSwitch]="platformTypes!.length">
+    <div class="main__game--platform-type" [ngSwitch]="platformTypes!.length">
         <p>PlatformType:</p>
         <div *ngSwitchCase="0">
             <p>Other</p>

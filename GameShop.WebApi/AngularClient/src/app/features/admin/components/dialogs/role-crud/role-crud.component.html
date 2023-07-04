@@ -1,10 +1,16 @@
-<h1 *ngIf="isAdding" mat-dialog-title>Create role</h1>
-<h1 *ngIf="!isAdding" mat-dialog-title>Edit role</h1>
-<div mat-dialog-content>
-    <div [formGroup]="form" class="create-form">
-        <div *ngIf="isAdding" class="mat-title">You are creating new role</div>
-        <div *ngIf="!isAdding" class="mat-title">You are editing role {{role.Name}}</div>
-        <p>
+<h1 *ngIf="isAdding"
+    class="dialog-title"
+    mat-dialog-title>
+    Create role</h1>
+<h1 *ngIf="!isAdding"
+    class="dialog-title"
+    mat-dialog-title>
+    Edit role</h1>
+<div class="dialog-content" mat-dialog-content>
+    <div [formGroup]="form" class="dialog-content__form">
+        <div *ngIf="isAdding" class="dialog-content__form--title mat-title">You are creating new role</div>
+        <div *ngIf="!isAdding" class="dialog-content__form--title mat-title">You are editing role {{role.Name}}</div>
+        <div class="dialog-content__form--field">
             <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
                 <mat-label>Role name</mat-label>
                 <input
@@ -16,10 +22,10 @@
                 <mat-hint>Length must be greater than 1</mat-hint>
                 <mat-error *ngIf="form.controls['Name'].invalid">Length must be greater than 1</mat-error>
             </mat-form-field>
-        </p>
+        </div>
     </div>
 </div>
-<div mat-dialog-actions>
+<div class="dialog-actions" mat-dialog-actions>
     <button mat-stroked-button (click)="onNoClick()">Discard</button>
     <button *ngIf="isAdding" mat-raised-button color="primary" (click)="onSaveClick()">
         Save

@@ -2,22 +2,20 @@
     display: flex;
     justify-content: space-around;
 }
-.items-list{
+.list_item{
     margin-bottom: 20px;
 }
-.addButtons {
-    & button:first-child {
-        margin-right: 10px;
-    }
+.main__buttons--add-user {
+    margin-right: 10px;
 }
+
 @media(max-width: 830px) {
-    .main{
+    .main {
         flex-direction: column;
         align-items: center;
         margin-bottom: 10px;
-
-        & div:nth-child(2){
+    }
+    .main__roles{
             margin: 20px 0;
-        }
     }
 }

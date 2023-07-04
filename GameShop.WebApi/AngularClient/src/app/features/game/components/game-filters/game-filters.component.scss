@@ -1,25 +1,19 @@
-.price-text {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-}
-
-.filters > * {
+.filters-form > * {
     margin: 5px 0;
     width: 100%;
 }
 
-.filter-button {
+.filters-form__actions {
     margin-top: 30px!important;
 }
 
-.filter-price {
+.filters-form--price-range {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 5px;
 }
 
-.filter-button{
+.filters-form__actions{
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 5px;
@@ -30,13 +24,13 @@ mat-optgroup:hover, mat-option:hover {
     cursor: pointer;
 }
 
-.filters{
+.filters-form{
     padding-left: 10px;
     border-left: 1px dashed gray;
 }
 
 @media(max-width: 920px) {
-    .filters{
+    .filters-form{
         border-left: none;
         padding-left: 0;
     }
