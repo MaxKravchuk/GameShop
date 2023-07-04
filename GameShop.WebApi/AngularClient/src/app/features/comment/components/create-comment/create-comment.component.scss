@@ -11,3 +11,18 @@
     justify-content: center;
 }
 
+mat-form-field{
+    max-width: 320px;
+    width: 50%;
+}
+
+@media (max-width: 600px) {
+    .comment-create-form{
+        flex-direction: column;
+        align-items: center;
+    }
+    mat-form-field{
+        width: 100%;
+    }
+}
+

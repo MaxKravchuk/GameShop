@@ -17,7 +17,7 @@
     height: 225px;
     width: 100%;
     margin: auto;
-    background-color: blue;
+    background-color: #5376A9;
     border-radius: 10px 10px 10px 10px;
     padding-left: 10px;
     padding-bottom: 10px;
@@ -40,7 +40,12 @@
 .nav-main-btns{
     a:not(.dropdown-item){
         border: 0.5px solid black;
-        background-color: antiquewhite;
+        background-color: rgba(255, 255, 255, 0.75);
+        color: #D8894A;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 12px;
+        padding: 6px 20px;
     }
 }
 

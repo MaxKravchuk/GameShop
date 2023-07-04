@@ -6,28 +6,24 @@
         <p *ngSwitchCase="'quote'">You are quoting {{parentComment.Name}}</p>
     </ng-container>
     <div [formGroup]="form" class="comment-create-form">
-        <p>
-            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
-                <mat-label>Your name</mat-label>
-                <input
-                    matInput
-                    formControlName="Name"
-                    type="string">
-            </mat-form-field>
-        </p>
-        <p>
-            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
-                <mat-label>Comment body</mat-label>
-                <input
-                    matInput
-                    formControlName="Body"
-                    type="string"
-                    minlength="1"
-                    placeholder="Comment body">
-                <mat-hint>Length must be greater than 1</mat-hint>
-                <mat-error *ngIf="form.controls['Body'].invalid">Length must be greater than 1</mat-error>
-            </mat-form-field>
-        </p>
+        <mat-form-field appearance="outline">
+            <mat-label>Your name</mat-label>
+            <input
+                matInput
+                formControlName="Name"
+                type="string">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Comment body</mat-label>
+            <input
+                matInput
+                formControlName="Body"
+                type="string"
+                minlength="1"
+                placeholder="Comment body">
+            <mat-hint>Length must be greater than 1</mat-hint>
+            <mat-error *ngIf="form.controls['Body'].invalid">Length must be greater than 1</mat-error>
+        </mat-form-field>
     </div>
     <div class="buttons-div">
         <button mat-raised-button

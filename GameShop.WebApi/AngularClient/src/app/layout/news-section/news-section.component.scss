@@ -10,16 +10,13 @@
     min-height: 350px;
 }
 .block-list div:first-child [class="item-body"]{
-    background-color: #81ffb4;
-    border: 1px solid #00ff63;
+    background-color: #E9F0D7;
 }
 .block-list div:nth-child(2) [class="item-body"]{
-    background-color: #79fffc;
-    border: 1px solid #00d9ff;
+    background-color: #DFEDF1;
 }
 .block-list div:last-child [class="item-body"]{
-    background-color: #eeffaa;
-    border: 1px solid #d9ff00;
+    background-color: #F0EDE3;
 }
 .block-item{
     width: 30%;
@@ -74,7 +71,7 @@
     button{
         width: 125px;
         border-radius: 5px;
-        background-color: orange;
+        background-color: #FCB03F;
         color: white;
         text-transform: uppercase;
         font-weight: 400;

@@ -10,6 +10,7 @@ import { AuthInterceptor } from "./core/interceptors/auth/auth.interceptor";
 import { GameModule } from "./features/game/game.module";
 import { NgOptimizedImage } from "@angular/common";
 import { LoadingInterceptor } from "./core/interceptors/loading/loading.interceptor";
+import { SharedModule } from "./features/shared/shared.module";
 
 @NgModule({
     declarations: [
@@ -23,6 +24,7 @@ import { LoadingInterceptor } from "./core/interceptors/loading/loading.intercep
         LayoutModule,
         GameModule,
         NgOptimizedImage,
+        SharedModule,
     ],
     providers: [
         SharedService,
