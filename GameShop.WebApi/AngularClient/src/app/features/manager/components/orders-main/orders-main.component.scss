@@ -1,9 +1,64 @@
-.table-buttons{
-    display: grid;
-    grid-template-areas: ". .";
-    gap: 10px;
+.table {
+    width: 100%;
+    border-collapse: collapse;
+
+    tbody {
+        display: block;
+    }
+
+    thead,
+    tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    th,
+    td {
+        display: table-cell;
+        padding: 10px;
+        text-align: left;
+        vertical-align: middle;
+        border-bottom: 1px solid #ddd;
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .table-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        button {
+            margin: 5px;
+        }
+    }
 }
 
-.table-buttons button{
-    width: fit-content;
+@media (max-width: 920px) {
+    .table {
+        thead,
+        tr {
+            display: block;
+        }
+
+        td,
+        th {
+            display: block;
+            width: 100%;
+            text-align: center;
+
+            &:first-child {
+                text-align: left;
+            }
+        }
+
+        .table-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
 }

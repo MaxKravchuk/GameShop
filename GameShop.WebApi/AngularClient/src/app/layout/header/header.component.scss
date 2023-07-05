@@ -1,7 +1,6 @@
 nav{
     border-bottom: 0.3vh solid gray;
 }
-
 .left-nav{
     a {
         color: black;
@@ -10,7 +9,6 @@ nav{
         font-weight: bold;
     }
 }
-
 .left-nav, .right-nav {
     ul {
         li:not(li.nav-item:last-child) {
@@ -23,11 +21,22 @@ nav{
         }
     }
 }
-
 .right-nav{
     a {
         color: gray;
         text-decoration: none;
         font-size: 1.7vh;
+    }
+}
+
+@media (max-width: 992px) {
+    .left-nav, .right-nav {
+        ul {
+            li:not(li.nav-item:last-child) {
+                &::after {
+                    content: "";
+                }
+            }
+        }
     }
 }

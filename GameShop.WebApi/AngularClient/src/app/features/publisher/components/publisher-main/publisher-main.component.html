@@ -53,6 +53,7 @@
         </div>
     </div>
     <div class="main__publisher-games">
+        <p class="main__publisher-games--title">Your games</p>
         <div *ngFor="let game of games">
             <p>{{ game.Name }}</p>
             <button mat-raised-button color="primary" (click)="onGameEdit(game)">Edit</button>

@@ -13,7 +13,7 @@
         <div *ngIf="!isAdding" class="dialog-content__form--title mat-title">You are editing game {{game.Name}}</div>
         <div class="form-group">
             <p class="dialog-content__form--field">
-                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-form-field appearance="outline">
                     <mat-label>Game name</mat-label>
                     <input
                         matInput
@@ -26,7 +26,7 @@
                 </mat-form-field>
             </p>
             <p class="dialog-content__form--field">
-                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-form-field appearance="outline">
                     <mat-label>Description</mat-label>
                     <input
                         matInput
@@ -39,7 +39,7 @@
                 </mat-form-field>
             </p>
             <p class="dialog-content__form--field">
-                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-form-field appearance="outline">
                     <mat-label>Game key</mat-label>
                     <input
                         matInput
@@ -52,7 +52,7 @@
                 </mat-form-field>
             </p>
             <p class="dialog-content__form--field">
-                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-form-field appearance="outline">
                     <mat-label>Game price</mat-label>
                     <input
                         matInput
@@ -65,7 +65,7 @@
                 </mat-form-field>
             </p>
             <p class="dialog-content__form--field">
-                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-form-field appearance="outline">
                     <mat-label>Game quantity</mat-label>
                     <input
                         matInput
@@ -79,7 +79,7 @@
                 </mat-form-field>
             </p>
             <div class="dialog-content__form--field">
-                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-form-field appearance="outline">
                     <mat-label >Game genres</mat-label>
                     <mat-select formControlName="GenresId" multiple>
                         <mat-option *ngFor="let gameGenre of gameGenres" [value]="gameGenre.Id">
@@ -90,7 +90,7 @@
                 </mat-form-field>
             </div>
             <div class="dialog-content__form--field">
-                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-form-field appearance="outline">
                     <mat-label>Platform type</mat-label>
                     <mat-select formControlName="PlatformTypeId" multiple>
                         <mat-option *ngFor="let PlatformType of platformTypes" [value]="PlatformType.Id">
@@ -101,7 +101,7 @@
                 </mat-form-field>
             </div>
             <div class="dialog-content__form--field">
-                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+                <mat-form-field appearance="outline">
                     <mat-label>Publisher</mat-label>
                     <mat-select formControlName="PublisherId">
                         <mat-option>None</mat-option>

@@ -8,3 +8,21 @@
     margin-top: 20px;
     margin-left: 10px;
 }
+
+.main__publisher-games--title{
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+@media (max-width: 920px) {
+    .main{
+        flex-direction: column;
+    }
+    .publisher-info__form{
+        margin-left: 0;
+    }
+    .main__publisher-games{
+        margin-top: 10px;
+    }
+}

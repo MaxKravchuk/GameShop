@@ -11,7 +11,7 @@
         <div *ngIf="isAdding" class="dialog-content__form--title mat-title">You are creating new platform type</div>
         <div *ngIf="!isAdding" class="dialog-content__form--title mat-title">You are editing platform type {{platformType.Type}}</div>
         <p class="dialog-content__form--field">
-            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+            <mat-form-field appearance="outline">
                 <mat-label>Platform type name</mat-label>
                 <input
                     matInput
