@@ -1,12 +1,19 @@
-<h1 *ngIf="isAdding" mat-dialog-title>Create game</h1>
-<h1 *ngIf="!isAdding" mat-dialog-title>Edit game</h1>
-<div mat-dialog-content>
-    <div [formGroup]="form" class="create-form">
-        <div *ngIf="isAdding" class="mat-title">You are creating new game</div>
-        <div *ngIf="!isAdding" class="mat-title">You are editing game {{game.Name}}</div>
+<h1 *ngIf="isAdding"
+    class="dialog-title"
+    mat-dialog-title>
+    Create game</h1>
+<h1 *ngIf="!isAdding"
+    class="dialog-title"
+    mat-dialog-title>
+    Edit game</h1>
+<div class="dialog-content"
+     mat-dialog-content>
+    <div [formGroup]="form" class="dialog-content__form">
+        <div *ngIf="isAdding" class="dialog-content__form--title mat-title">You are creating new game</div>
+        <div *ngIf="!isAdding" class="dialog-content__form--title mat-title">You are editing game {{game.Name}}</div>
         <div class="form-group">
-            <p>
-                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+            <p class="dialog-content__form--field">
+                <mat-form-field appearance="outline">
                     <mat-label>Game name</mat-label>
                     <input
                         matInput
@@ -18,8 +25,8 @@
                     <mat-error *ngIf="form.controls['Name'].invalid">Length must be greater than 1</mat-error>
                 </mat-form-field>
             </p>
-            <p>
-                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+            <p class="dialog-content__form--field">
+                <mat-form-field appearance="outline">
                     <mat-label>Description</mat-label>
                     <input
                         matInput
@@ -31,8 +38,8 @@
                     <mat-error *ngIf="form.controls['Description'].invalid">Length must be greater than 50</mat-error>
                 </mat-form-field>
             </p>
-            <p>
-                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+            <p class="dialog-content__form--field">
+                <mat-form-field appearance="outline">
                     <mat-label>Game key</mat-label>
                     <input
                         matInput
@@ -44,8 +51,8 @@
                     <mat-error *ngIf="form.controls['Key'].invalid">Length must be greater than 1</mat-error>
                 </mat-form-field>
             </p>
-            <p>
-                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+            <p class="dialog-content__form--field">
+                <mat-form-field appearance="outline">
                     <mat-label>Game price</mat-label>
                     <input
                         matInput
@@ -57,8 +64,8 @@
                     <mat-error *ngIf="form.controls['Price'].invalid">Price must be greater than 0</mat-error>
                 </mat-form-field>
             </p>
-            <p>
-                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+            <p class="dialog-content__form--field">
+                <mat-form-field appearance="outline">
                     <mat-label>Game quantity</mat-label>
                     <input
                         matInput
@@ -71,8 +78,8 @@
                     </mat-error>
                 </mat-form-field>
             </p>
-            <div>
-                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+            <div class="dialog-content__form--field">
+                <mat-form-field appearance="outline">
                     <mat-label >Game genres</mat-label>
                     <mat-select formControlName="GenresId" multiple>
                         <mat-option *ngFor="let gameGenre of gameGenres" [value]="gameGenre.Id">
@@ -82,8 +89,8 @@
                     <mat-error *ngIf="form.controls['GenresId'].invalid">Genres must be specified</mat-error>
                 </mat-form-field>
             </div>
-            <div>
-                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+            <div class="dialog-content__form--field">
+                <mat-form-field appearance="outline">
                     <mat-label>Platform type</mat-label>
                     <mat-select formControlName="PlatformTypeId" multiple>
                         <mat-option *ngFor="let PlatformType of platformTypes" [value]="PlatformType.Id">
@@ -93,8 +100,8 @@
                     <mat-error *ngIf="form.controls['PlatformTypeId'].invalid">Platform types must be specified</mat-error>
                 </mat-form-field>
             </div>
-            <div>
-                <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+            <div class="dialog-content__form--field">
+                <mat-form-field appearance="outline">
                     <mat-label>Publisher</mat-label>
                     <mat-select formControlName="PublisherId">
                         <mat-option>None</mat-option>
@@ -108,7 +115,7 @@
         </div>
     </div>
 </div>
-<div mat-dialog-actions>
+<div class="dialog-actions" mat-dialog-actions>
     <button mat-stroked-button (click)="onNoClick()">Discard</button>
     <button *ngIf="isAdding"
             [disabled]="!form.valid"

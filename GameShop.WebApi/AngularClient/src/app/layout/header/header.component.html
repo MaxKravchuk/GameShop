@@ -1,52 +1,41 @@
-<mat-toolbar color="primary" class="header-container">
-    <div class="left-header">
-        <div>
-            <p>Number of games: {{numberOfGames}}</p>
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+            <div class="left-nav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link">Boosed Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">About Boosed</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">Careers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">Newsroom</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="right-nav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link">Support</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">Contact us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">Online support</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link">Security information</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <a mat-button routerLink="/" routerLinkActive="active">Game Store</a>
-        <a
-           *ngIf="isAuthorized$ | async"
-           mat-button
-           routerLink="/cart/viewcart"
-           routerLinkActive="active"
-        >Shopping Cart</a>
-        <a
-            *appIsInRole="'Administrator'"
-            mat-button
-            routerLink="/admin/main"
-            routerLinkActive="active">
-            Admin panel
-        </a>
-        <a
-            *appIsInRole="'Manager'"
-            mat-button
-            routerLink="/manager/managerPanel"
-            routerLinkActive="active">
-            Manager panel
-        </a>
-        <a
-            *appIsInRole="'Manager'"
-            mat-button
-            routerLink="/manager/orders"
-            routerLinkActive="active">
-            Orders
-        </a>
-        <a
-            *appIsInRole="'Publisher'"
-            mat-button
-            routerLink="/publishers/main"
-            routerLinkActive="active">
-            Publisher panel
-        </a>
     </div>
-    <div class="right-header">
-        <a
-            *ngIf="!(isAuthorized$ | async)"
-            mat-button
-            routerLink="/auth/login">Log in</a>
-        <a
-            *ngIf="isAuthorized$ | async"
-            mat-button
-            (click)="logOut()">Log out</a>
-    </div>
-</mat-toolbar>
+</nav>

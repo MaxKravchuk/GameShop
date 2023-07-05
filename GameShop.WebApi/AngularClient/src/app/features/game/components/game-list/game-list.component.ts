@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Game } from "../../../../core/models/Game";
 import { GameService } from "../../../../core/services/gameService/game.service";
 import { PagedList } from "../../../../core/models/PagedList";
@@ -12,13 +12,15 @@ import { GameCrudComponent } from "../../../manager/components/dialogs/game-crud
 @Component({
     selector: 'app-game-list',
     templateUrl: './game-list.component.html',
-    styleUrls: ['./game-list.component.css']
+    styleUrls: ['./game-list.component.scss']
 })
 export class GameListComponent implements OnInit, OnDestroy {
 
     @Input() IsManager?: boolean;
 
     @Input() reloadGames!: Observable<boolean>;
+
+    @Output() gameListStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     games?: Game[] = [];
 
@@ -46,6 +48,11 @@ export class GameListComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+
+        document.getElementsByClassName('adv-banners')[0].setAttribute('style', 'display: none;');
+        document.getElementsByClassName('game-filter')[0].removeAttribute('style');
+
+
         this.updateGames(this.receivedData!);
         this.resultSub = this.sharedService.getData$().subscribe((data: FilterModel): void => {
             this.receivedData.gameFiltersDTO = data.gameFiltersDTO;
@@ -59,11 +66,15 @@ export class GameListComponent implements OnInit, OnDestroy {
                 }
             });
         }
+        this.gameListStatus.emit(true);
     }
 
     ngOnDestroy(): void {
+        document.getElementsByClassName('game-filter')[0].setAttribute('style', 'display: none;');
+        document.getElementsByClassName('adv-banners')[0].removeAttribute('style');
         this.resultSub.unsubscribe();
         this.reloadGameSub.unsubscribe();
+        this.gameListStatus.emit(false);
     }
 
     pageSizeChange(value: number): void {

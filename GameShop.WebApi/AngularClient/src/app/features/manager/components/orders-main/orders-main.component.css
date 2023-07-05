@@ -1,9 +1,0 @@
-.table-buttons{
-    display: grid;
-    grid-template-areas: ". .";
-    gap: 10px;
-}
-
-.table-buttons button{
-    width: fit-content;
-}

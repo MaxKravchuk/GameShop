@@ -1,4 +1,4 @@
-<table class="table">
+<table class="cart__table">
     <thead>
     <tr>
         <th>Game Name</th>
@@ -20,11 +20,12 @@
     </tr>
     </tbody>
 </table>
-<h3>Checkout</h3>
-<p>Total Price: {{ totalPrice }}</p>
+<h3 class="cart__info--header">Checkout</h3>
+<p class="cart__info--text">Total Price: {{ totalPrice }}</p>
 <button
-    [disabled]="cartItems.length == 0"
+    class="cart__actions"
     mat-raised-button
+    [disabled]="cartItems.length == 0"
     (click)="createOrder()"
     >Make order
 </button>

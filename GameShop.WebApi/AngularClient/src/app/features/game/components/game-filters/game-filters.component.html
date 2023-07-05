@@ -1,4 +1,4 @@
-<div [formGroup]="form" class="filters">
+<div [formGroup]="form" class="filters-form">
     <mat-form-field appearance="fill">
         <mat-label>Game name</mat-label>
         <input
@@ -6,23 +6,23 @@
             type="string"
             placeholder="Enter game name"
             formControlName="GameName"
-            (change)="handleChanges($event)">
+            (change)="handleChanges()">
         <mat-error *ngIf="form.controls['GameName'].invalid">Min length is 3</mat-error>
     </mat-form-field>
-    <div class="filter-price">
+    <div class="filters-form--price-range">
         <mat-form-field>
             <mat-label>Price from</mat-label>
             <input
                 matInput
                 formControlName="PriceFrom"
-                (change)="handleChanges($event)">
+                (change)="handleChanges()">
         </mat-form-field>
         <mat-form-field>
             <mat-label>Price to</mat-label>
             <input
                 matInput
                 formControlName="PriceTo"
-                (change)="handleChanges($event)">
+                (change)="handleChanges()">
         </mat-form-field>
     </div>
     <mat-expansion-panel>
@@ -35,7 +35,7 @@
             aria-label="Select an sorting option"
             color="primary"
             formControlName="SortedBy"
-            (change)="handleChanges($event)">
+            (change)="handleChanges()">
             <mat-radio-button value="MostPopular">Most popular</mat-radio-button>
             <mat-radio-button value="MostCommented">Most commented</mat-radio-button>
             <mat-radio-button value="AscPrice">By price asc</mat-radio-button>
@@ -56,7 +56,7 @@
                 <mat-option
                     *ngFor="let genre of genres"
                     [value]="genre.Id"
-                    (click)="handleChanges($event)">
+                    (click)="handleChanges()">
                     {{genre.Name}}
                 </mat-option>
             </mat-select>
@@ -75,7 +75,7 @@
                 <mat-option
                     *ngFor="let platform of platforms"
                     [value]="platform.Id"
-                    (click)="handleChanges($event)">
+                    (click)="handleChanges()">
                     {{platform.Type}}
                 </mat-option>
             </mat-select>
@@ -94,7 +94,7 @@
                 <mat-option
                     *ngFor="let publisher of publishers"
                     [value]="publisher.Id"
-                    (click)="handleChanges($event)">
+                    (click)="handleChanges()">
                     {{publisher.CompanyName}}
                 </mat-option>
             </mat-select>
@@ -110,7 +110,7 @@
             aria-label="Select an date filter"
             color="primary"
             formControlName="DateFilter"
-            (change)="handleChanges($event)">
+            (change)="handleChanges()">
             <mat-radio-button value="lastWeek">Last week</mat-radio-button>
             <mat-radio-button value="lastMonth">Last month</mat-radio-button>
             <mat-radio-button value="lastYear">Last year</mat-radio-button>
@@ -118,7 +118,7 @@
             <mat-radio-button value="last3Years">3 years</mat-radio-button>
         </mat-radio-group>
     </mat-expansion-panel>
-    <div class="filter-button">
+    <div class="filters-form__actions">
         <button mat-raised-button
                 color="primary"
                 [disabled]="form.invalid"

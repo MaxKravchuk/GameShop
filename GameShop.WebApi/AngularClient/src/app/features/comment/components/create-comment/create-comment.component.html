@@ -1,35 +1,34 @@
-<div class="cont">
-    <div class="mat-title">New comment</div>
-    <p *ngIf="parentComment === undefined">This is a form for a new comment</p>
+<div class="main">
+    <div class="main-title">New comment</div>
+    <p class="main-info"
+       *ngIf="parentComment === undefined">This is a form for a new comment</p>
     <ng-container [ngSwitch]="action" *ngIf="parentComment">
-        <p *ngSwitchCase="'answer'">You are answering to {{parentComment.Name}}</p>
-        <p *ngSwitchCase="'quote'">You are quoting {{parentComment.Name}}</p>
+        <p class="main-info"
+           *ngSwitchCase="'answer'">You are answering to {{parentComment.Name}}</p>
+        <p class="main-info"
+           *ngSwitchCase="'quote'">You are quoting {{parentComment.Name}}</p>
     </ng-container>
-    <div [formGroup]="form" class="comment-create-form">
-        <p>
-            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
-                <mat-label>Your name</mat-label>
-                <input
-                    matInput
-                    formControlName="Name"
-                    type="string">
-            </mat-form-field>
-        </p>
-        <p>
-            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
-                <mat-label>Comment body</mat-label>
-                <input
-                    matInput
-                    formControlName="Body"
-                    type="string"
-                    minlength="1"
-                    placeholder="Comment body">
-                <mat-hint>Length must be greater than 1</mat-hint>
-                <mat-error *ngIf="form.controls['Body'].invalid">Length must be greater than 1</mat-error>
-            </mat-form-field>
-        </p>
+    <div [formGroup]="form" class="main__form">
+        <mat-form-field appearance="outline">
+            <mat-label>Your name</mat-label>
+            <input
+                matInput
+                formControlName="Name"
+                type="string">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Comment body</mat-label>
+            <input
+                matInput
+                formControlName="Body"
+                type="string"
+                minlength="1"
+                placeholder="Comment body">
+            <mat-hint>Length must be greater than 1</mat-hint>
+            <mat-error *ngIf="form.controls['Body'].invalid">Length must be greater than 1</mat-error>
+        </mat-form-field>
     </div>
-    <div class="buttons-div">
+    <div class="main-actions">
         <button mat-raised-button
                 type="submit"
                 color="primary"

@@ -1,0 +1,29 @@
+.game-list{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.game-list__item{
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    border: 1px solid black;
+    border-radius: 10px 10px;
+    margin: 5px;
+
+    p{
+        margin: 0;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        padding-bottom: 10px;
+    }
+}
+
+.item__actions{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding-bottom: 10px;
+}

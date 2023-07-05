@@ -7,7 +7,7 @@ import { PaymentCreateDTO } from "../../../../core/models/PaymentCreateDTO";
 @Component({
   selector: 'app-ibox-payment',
   templateUrl: './ibox-payment.component.html',
-  styleUrls: ['./ibox-payment.component.css']
+  styleUrls: ['./ibox-payment.component.scss']
 })
 export class IboxPaymentComponent implements OnInit {
 

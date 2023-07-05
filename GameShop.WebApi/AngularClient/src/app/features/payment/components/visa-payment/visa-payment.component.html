@@ -1,6 +1,6 @@
 <div class="visa-form" [formGroup]="form">
-    <div class="mat-title" style="margin-bottom: 15px">Card info</div>
-    <p>
+    <div class="visa-form--title mat-title" style="margin-bottom: 15px">Card info</div>
+    <p class="visa-form--field">
         <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
             <mat-label>Cart holder’s name</mat-label>
             <input
@@ -13,7 +13,7 @@
             <mat-error *ngIf="form.controls['CartHolderName'].invalid">Length must be greater than 1</mat-error>
         </mat-form-field>
     </p>
-    <p>
+    <p class="visa-form--field">
         <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
             <input
                 matInput
@@ -25,7 +25,7 @@
             <mat-error *ngIf="form.controls['CardNumber'].invalid">Length must be 16</mat-error>
         </mat-form-field>
     </p>
-    <p>
+    <p class="visa-form--field">
         <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
             <input
                 matInput
@@ -36,7 +36,7 @@
             <mat-error *ngIf="form.controls['DateOfExpiry'].invalid">Year and month cannot be empty</mat-error>
         </mat-form-field>
     </p>
-    <p>
+    <p class="visa-form--field">
         <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
             <input
                 matInput

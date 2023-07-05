@@ -10,7 +10,7 @@ import { BanCommentComponent } from "../ban-comment/ban-comment.component";
 @Component({
     selector: 'app-game-comment',
     templateUrl: './game-comment.component.html',
-    styleUrls: ['./game-comment.component.css']
+    styleUrls: ['./game-comment.component.scss']
 })
 export class GameCommentComponent implements OnInit {
 

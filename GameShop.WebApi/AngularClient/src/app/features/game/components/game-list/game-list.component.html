@@ -1,9 +1,15 @@
-<div *ngFor="let game of games">
-    <p>{{game.Name}}</p>
-    <a mat-button routerLink="/games/details/{{game.Key}}" color="accent">View</a>
-    <a *ngIf="IsManager && game!.IsDeleted == false"
-       mat-button
-       (click)="editDeleteGame(game.Key!)">Edit/Delete</a>
+<div class="game-list">
+    <div class="game-list__item"
+         *ngFor="let game of games">
+        <p>{{game.Name}}</p>
+        <div class="item__actions">
+            <a class="btn btn-info" routerLink="/games/details/{{game.Key}}" color="accent">View</a>
+            <a
+               class="btn btn-warning"
+               *ngIf="IsManager && game!.IsDeleted == false"
+               (click)="editDeleteGame(game.Key!)">Edit/Delete</a>
+        </div>
+    </div>
 </div>
 <app-pagination
     [HasNext] = "HasNext"

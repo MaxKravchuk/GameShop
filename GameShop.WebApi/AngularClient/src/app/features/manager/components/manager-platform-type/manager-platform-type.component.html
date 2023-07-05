@@ -1,0 +1,13 @@
+<div class="platformType-crud">
+    <a mat-button color="accent" (click)="addPlatformType()">Create platform type</a>
+    <div *ngFor="let platformType of platformTypes" class="platformType-crud__info items-list">
+        <p>{{platformType.Type}}</p>
+        <a mat-button (click)="editDeletePlatformType(platformType)">Edit/Delete</a>
+    </div>
+    <app-pagination
+        [HasNext]="HasNextPlt"
+        [HasPrevious]="HasPreviousPlt"
+        [maxPageSize]="totalCountPlt"
+        (pageIndexEvent)="pageIndexChangePlt($event)"
+        (pageSizeEvent)="pageSizeChangePlt($event)"></app-pagination>
+</div>

@@ -1,0 +1,107 @@
+<div class="main">
+    <div class="main__upper">
+        <div class="row upper__row">
+            <div class="col upper__row--logo">
+                <a id="logo" routerLink="/" routerLinkActive="active">Game Store</a>
+            </div>
+            <div class="col upper__row--btns">
+                <button
+                    class="btn btn-success"
+                    *ngIf="!(isAuthorized$ | async)"
+                    routerLink="/auth/login">Log in</button>
+                <button
+                    class="btn btn-success"
+                    *ngIf="isAuthorized$ | async"
+                    (click)="logOut()">Log out</button>
+            </div>
+        </div>
+    </div>
+    <div class="main__lower">
+        <div class="nav-main">
+            <div class="btn-group nav-main-btns">
+                <a
+                    class="btn"
+                    routerLink="/"
+                    routerLinkActive="active"
+                >Games</a>
+                <a
+                    class="btn"
+                    *ngIf="isAuthorized$ | async"
+                    routerLink="/cart/viewcart"
+                    routerLinkActive="active"
+                >Shopping Cart</a>
+                <a
+                    class="btn"
+                    *appIsInRole="'Administrator'"
+                    routerLink="/admin/main"
+                    routerLinkActive="active">
+                    Admin panel
+                </a>
+                <a
+                    class="btn"
+                    *appIsInRole="'Publisher'"
+                    routerLink="/publishers/main"
+                    routerLinkActive="active">
+                    Publisher panel
+                </a>
+                <div
+                    class="dropdown"
+                    *appIsInRole="'Manager'">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Manager panel
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a
+                            class="dropdown-item"
+                            *appIsInRole="'Manager'"
+                            routerLink="/manager/managerGames"
+                            routerLinkActive="active">
+                            Games control
+                        </a></li>
+                        <li><a
+                            class="dropdown-item"
+                            *appIsInRole="'Manager'"
+                            routerLink="/manager/managerGenres"
+                            routerLinkActive="active">
+                            Genres control
+                        </a></li>
+                        <li><a
+                            class="dropdown-item"
+                            *appIsInRole="'Manager'"
+                            routerLink="/manager/managerPlatforms"
+                            routerLinkActive="active">
+                            Platforms control
+                        </a></li>
+                        <li><a
+                            class="dropdown-item"
+                            *appIsInRole="'Manager'"
+                            routerLink="/manager/managerPublishers"
+                            routerLinkActive="active">
+                            Publishers control
+                        </a></li>
+                        <li><a
+                            class="dropdown-item"
+                            *appIsInRole="'Manager'"
+                            routerLink="/manager/orders"
+                            routerLinkActive="active">
+                            Orders control
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="lower__body">
+            <div id="blue">
+                <p id="what-can-make">
+                    What can make your life easier?
+                </p>
+                <p id="game-store">
+                    Our game store!
+                </p>
+                <div id="blue-img">
+                    <img src="assets/imgs/computer.svg" alt="pc">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

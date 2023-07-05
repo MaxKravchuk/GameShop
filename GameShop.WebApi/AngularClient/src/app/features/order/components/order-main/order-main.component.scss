@@ -1,0 +1,18 @@
+.main{
+    display: grid;
+    grid-template-areas:
+        "."
+        ".";
+    justify-items: center;
+    justify-content: space-around;
+    gap: 30px;
+    margin-top: 15px;
+}
+
+p{
+    margin: 0;
+}
+
+img{
+    height: 30px;
+}

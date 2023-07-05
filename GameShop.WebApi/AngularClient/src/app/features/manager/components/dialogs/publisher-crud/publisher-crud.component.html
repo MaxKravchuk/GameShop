@@ -1,11 +1,17 @@
-<h1 *ngIf="isAdding" mat-dialog-title>Create publisher</h1>
-<h1 *ngIf="!isAdding" mat-dialog-title>Edit publisher</h1>
-<div mat-dialog-content>
-    <div [formGroup]="form" class="create-form">
-        <div *ngIf="isAdding" class="mat-title">You are creating new publisher</div>
-        <div *ngIf="!isAdding" class="mat-title">You are editing publisher {{publisher.CompanyName}}</div>
-        <p>
-            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+<h1 *ngIf="isAdding"
+    class="dialog-title"
+    mat-dialog-title>
+    Create publisher</h1>
+<h1 *ngIf="!isAdding"
+    class="dialog-title"
+    mat-dialog-title>
+    Edit publisher</h1>
+<div class="dialog-content" mat-dialog-content>
+    <div [formGroup]="form" class="dialog-content__form">
+        <div *ngIf="isAdding" class="dialog-content__form--title mat-title">You are creating new publisher</div>
+        <div *ngIf="!isAdding" class="dialog-content__form--title mat-title">You are editing publisher {{publisher.CompanyName}}</div>
+        <p class="dialog-content__form--field">
+            <mat-form-field appearance="outline">
                 <mat-label>Company name</mat-label>
                 <input
                     matInput
@@ -17,8 +23,8 @@
                 <mat-error *ngIf="form.controls['CompanyName'].invalid">Length must be greater than 1</mat-error>
             </mat-form-field>
         </p>
-        <p>
-            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+        <p class="dialog-content__form--field">
+            <mat-form-field appearance="outline">
                 <mat-label>Description</mat-label>
                 <input
                     matInput
@@ -30,8 +36,8 @@
                 <mat-error *ngIf="form.controls['Description'].invalid">Length must be greater than 1</mat-error>
             </mat-form-field>
         </p>
-        <p>
-            <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
+        <p class="dialog-content__form--field">
+            <mat-form-field appearance="outline">
                 <mat-label>Home page</mat-label>
                 <input
                     matInput
@@ -45,7 +51,7 @@
         </p>
     </div>
 </div>
-<div mat-dialog-actions>
+<div class="dialog-actions" mat-dialog-actions>
     <button mat-stroked-button (click)="onNoClick()">Discard</button>
     <button *ngIf="isAdding"
             [disabled]="!form.valid"

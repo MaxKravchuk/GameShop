@@ -13,7 +13,7 @@ import { UserService } from "../../../../core/services/userService/user.service"
 @Component({
     selector: 'app-create-comment',
     templateUrl: './create-comment.component.html',
-    styleUrls: ['./create-comment.component.css']
+    styleUrls: ['./create-comment.component.scss']
 })
 export class CreateCommentComponent implements OnInit, OnDestroy {
 

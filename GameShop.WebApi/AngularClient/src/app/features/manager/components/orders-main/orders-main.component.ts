@@ -9,7 +9,7 @@ import { AuthService } from "../../../../core/services/authService/auth.service"
 @Component({
   selector: 'app-orders-main',
   templateUrl: './orders-main.component.html',
-  styleUrls: ['./orders-main.component.css']
+  styleUrls: ['./orders-main.component.scss']
 })
 export class OrdersMainComponent implements OnInit {
 
@@ -17,8 +17,7 @@ export class OrdersMainComponent implements OnInit {
 
     constructor(
         private orderService: OrderService,
-        private dialog: MatDialog,
-        private authService: AuthService
+        private dialog: MatDialog
     ) { }
 
     ngOnInit(): void {

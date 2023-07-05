@@ -1,12 +1,12 @@
-<h1 mat-dialog-title>Edit order</h1>
-<div mat-dialog-content>
-    <div class="order-info">
+<h1 class="dialog-title" mat-dialog-title>Edit order</h1>
+<div class="dialog-content" mat-dialog-content>
+    <div class="dialog-content__order-info">
         <p>Customer nick name: {{ order.CustomerNickName }}</p>
         <p>OrderedAt: {{ order.OrderedAt | date }}</p>
     </div>
-    <div [formGroup]="form" class="create-form">
+    <div [formGroup]="form" class="dialog-content__form">
         <div class="mat-title">You are editing order {{order.Id}}</div>
-        <div *ngIf="isUpdatingStatus">
+        <div *ngIf="isUpdatingStatus" class="dialog-content__form--filed">
             <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
                 <mat-label>Order status</mat-label>
                 <mat-select formControlName="Status">
@@ -17,10 +17,11 @@
             </mat-form-field>
         </div>
         <div *ngIf="!isUpdatingStatus"
-            class="order-details" formArrayName="OrderDetails">
-            <div *ngFor="let orderDetail of orderDetails.controls; let i = index" [formGroupName]="i" class="order-detail">
+            class="dialog-content__order-details" formArrayName="OrderDetails">
+            <div *ngFor="let orderDetail of orderDetails.controls; let i = index" [formGroupName]="i"
+                 class="order-details__item">
                 <p>{{orderDetail.get('GameKey')?.value}}</p>
-                <div>
+                <div class="order-details__item--field">
                     <mat-form-field [ngStyle]="{'width':'225px'}" appearance="outline">
                         <mat-label>Quantity</mat-label>
                         <input
@@ -31,7 +32,7 @@
                         <mat-error *ngIf="orderDetail.get('Quantity')?.invalid">Number must be greater than 1</mat-error>
                     </mat-form-field>
                 </div>
-                <div>
+                <div class="order-details__item--field">
                     <mat-form-field [ngStyle]="{'width':'225px'}" appearance="outline">
                         <mat-label>Discount</mat-label>
                         <input
@@ -46,7 +47,7 @@
         </div>
     </div>
 </div>
-<div mat-dialog-actions>
+<div class="dialog-actions" mat-dialog-actions>
     <button mat-stroked-button (click)="onNoClick()">Discard</button>
     <button
         *ngIf="isUpdatingStatus"

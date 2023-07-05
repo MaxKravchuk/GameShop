@@ -1,0 +1,129 @@
+.main{
+    display: flex;
+    flex-direction: column;
+    position: static;
+    margin-bottom: 25px;
+}
+.main__upper{
+    height: 8vw;
+    .upper__row--logo{
+        padding-top: 17px;
+    }
+}
+.main__lower{
+    position: relative;
+}
+#blue{
+    height: 225px;
+    width: 100%;
+    margin: auto;
+    background-color: #5376A9;
+    border-radius: 10px 10px 10px 10px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    position: relative;
+    z-index: 0;
+}
+#what-can-make{
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    padding: 75px 0;
+}
+#game-store{
+    font-size: 45px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+}
+.nav-main-btns{
+    a:not(.dropdown-item){
+        border: 0.5px solid black;
+        background-color: rgba(255, 255, 255, 0.75);
+        color: #D8894A;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 12px;
+        padding: 6px 20px;
+    }
+}
+
+.nav-main{
+    position: absolute;
+    transform: translateY(-50%);
+    right: 0;
+    padding-right: 10px;
+    z-index: 1;
+}
+#logo{
+    font-size: 60px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    padding-top: 10px;
+}
+.upper__row--btns{
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 16px;
+}
+.upper__row{
+    height: 100% !important;
+    align-items: center;
+}
+#blue-img{
+    position: absolute;
+    top: -5px;
+    right: 0;
+    margin-right: 20px;
+    img{
+        width: 287px;
+    }
+}
+.dropdown-toggle{
+    border-radius: 0 7px 7px 0;
+    color: black;
+}
+
+@media (max-width: 920px){
+    #blue-img{
+        display: none;
+    }
+    #blue{
+        text-align: center;
+    }
+    #logo{
+        font-size: 30px;
+    }
+}
+@media (max-width: 700px){
+    .upper__row--logo{
+        display: none;
+    }
+    .nav-main{
+        left: 0;
+        width: fit-content;
+    }
+    .btn-group{
+        flex-direction: column;
+        top: 16px;
+        padding-left: 10px;
+    }
+    .nav-main-btns{
+        a {
+            border-radius: 0 !important;
+        }
+    }
+    #what-can-make{
+        padding-bottom: 20px;
+    }
+    #game-store{
+        font-size: 30px;
+    }
+}
+@media (max-width: 430px){
+    .main__upper{
+        height: 16vw;
+    }
+}

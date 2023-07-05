@@ -1,0 +1,13 @@
+<div class="genre-crud">
+    <a mat-button color="accent" (click)="addGenre()">Create genre</a>
+    <div *ngFor="let genre of genres" class="genre-crud__info items-list">
+        <p>{{genre.Name}}</p>
+        <a mat-button (click)="editDeleteGenre(genre)">Edit/Delete</a>
+    </div>
+    <app-pagination
+        [HasNext]="HasNextGenre"
+        [HasPrevious]="HasPreviousGenre"
+        [maxPageSize]="totalCountGenre"
+        (pageIndexEvent)="pageIndexChangeGenre($event)"
+        (pageSizeEvent)="pageSizeChangeGenre($event)"></app-pagination>
+</div>

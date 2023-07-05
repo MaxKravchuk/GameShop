@@ -5,7 +5,7 @@ import { PlatformType } from "../../../../../core/models/PlatformType";
 import { Publisher } from "../../../../../core/models/Publisher";
 import { GameService } from "../../../../../core/services/gameService/game.service";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { ManagerMainComponent } from "../../manager-main/manager-main.component";
+import { ManagerGamesComponent } from "../../manager-games/manager-games.component";
 import { UtilsService } from "../../../../../core/services/helpers/utilsService/utils-service";
 import { GenreService } from "../../../../../core/services/genreService/genre.service";
 import { PlatformTypeService } from "../../../../../core/services/platformTypeService/platform-type.service";
@@ -17,7 +17,7 @@ import { Game } from "../../../../../core/models/Game";
 @Component({
   selector: 'app-game-crud',
   templateUrl: './game-crud.component.html',
-  styleUrls: ['./game-crud.component.css']
+  styleUrls: ['./game-crud.component.scss']
 })
 export class GameCrudComponent implements OnInit {
 
@@ -35,7 +35,7 @@ export class GameCrudComponent implements OnInit {
 
     constructor(
         @Inject(MAT_DIALOG_DATA) private data : {game: Game},
-        private dialogRef: MatDialogRef<ManagerMainComponent>,
+        private dialogRef: MatDialogRef<ManagerGamesComponent>,
         private formBuilder: FormBuilder,
         private gameService: GameService,
         private genreService: GenreService,

@@ -1,0 +1,18 @@
+.form-group{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+mat-form-field{
+    width: 320px;
+}
+@media (max-width: 920px) {
+    .form-group{
+        grid-template-columns: 1fr;
+    }
+    .dialog-content__form--field{
+        width: 100%;
+    }
+    mat-form-field{
+        width: 100%;
+    }
+}

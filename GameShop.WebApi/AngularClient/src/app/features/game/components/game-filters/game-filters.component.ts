@@ -13,7 +13,7 @@ import { forkJoin } from "rxjs";
 @Component({
   selector: 'app-game-filters',
   templateUrl: './game-filters.component.html',
-  styleUrls: ['./game-filters.component.css']
+  styleUrls: ['./game-filters.component.scss']
 })
 export class GameFiltersComponent implements OnInit {
 
@@ -36,6 +36,7 @@ export class GameFiltersComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
+
         this.form = this.formBuilder.group({
             SortedBy: [''],
             GameName: ['', Validators.minLength(3)],
@@ -82,7 +83,7 @@ export class GameFiltersComponent implements OnInit {
         this.setFilters();
     }
 
-    handleChanges($event: any): void {
+    handleChanges(): void {
         if(!this.isChanged) {
             this.isChanged = true;
         }

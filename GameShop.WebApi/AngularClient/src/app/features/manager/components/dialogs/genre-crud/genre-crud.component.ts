@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { ManagerMainComponent } from "../../manager-main/manager-main.component";
+import { ManagerGamesComponent } from "../../manager-games/manager-games.component";
 import { Genre } from "../../../../../core/models/Genre";
 import { GenreService } from "../../../../../core/services/genreService/genre.service";
 import { UtilsService } from "../../../../../core/services/helpers/utilsService/utils-service";
@@ -9,7 +9,7 @@ import { UtilsService } from "../../../../../core/services/helpers/utilsService/
 @Component({
   selector: 'app-genre-crud',
   templateUrl: './genre-crud.component.html',
-  styleUrls: ['./genre-crud.component.css']
+  styleUrls: ['./genre-crud.component.scss']
 })
 export class GenreCrudComponent implements OnInit {
 
@@ -24,7 +24,7 @@ export class GenreCrudComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         @Inject(MAT_DIALOG_DATA) private data : {genre: Genre, genres: Genre[]},
-        private dialogRef: MatDialogRef<ManagerMainComponent>,
+        private dialogRef: MatDialogRef<ManagerGamesComponent>,
         private genreService: GenreService,
         private utilsService: UtilsService
     ) { }

@@ -1,7 +1,7 @@
 <div class="main">
-    <div class="left">
-        <div [formGroup]="form" class="create-form">
-            <p>
+    <div class="main__publisher-info">
+        <div [formGroup]="form" class="publisher-info__form">
+            <p class="publisher-info__field">
                 <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
                     <mat-label>Company name</mat-label>
                     <input
@@ -14,7 +14,7 @@
                     <mat-error *ngIf="form.controls['CompanyName'].invalid">Length must be greater than 1</mat-error>
                 </mat-form-field>
             </p>
-            <p>
+            <p class="publisher-info__field">
                 <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
                     <mat-label>Description</mat-label>
                     <textarea
@@ -29,7 +29,7 @@
                     <mat-error *ngIf="form.controls['Description'].invalid">Length must be greater than 1</mat-error>
                 </mat-form-field>
             </p>
-            <p>
+            <p class="publisher-info__field">
                 <mat-form-field [ngStyle]="{'width':'320px'}" appearance="outline">
                     <mat-label>Home page</mat-label>
                     <input
@@ -43,7 +43,7 @@
                 </mat-form-field>
             </p>
         </div>
-        <div class="button-container">
+        <div class="publisher-info__actions">
             <button *ngIf="!isEditing"
                     mat-raised-button color="primary" (click)="onEdit()">Edit</button>
             <button *ngIf="isEditing"
@@ -52,7 +52,8 @@
                     mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
         </div>
     </div>
-    <div class="right">
+    <div class="main__publisher-games">
+        <p class="main__publisher-games--title">Your games</p>
         <div *ngFor="let game of games">
             <p>{{ game.Name }}</p>
             <button mat-raised-button color="primary" (click)="onGameEdit(game)">Edit</button>

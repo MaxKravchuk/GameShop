@@ -1,0 +1,13 @@
+<div class="publisher-crud">
+    <a mat-button color="accent" (click)="addPublisher()">Create publisher</a>
+    <div *ngFor="let publisher of publishers" class="publisher-crud__info items-list">
+        <p>{{publisher.CompanyName}}</p>
+        <a mat-button (click)="editDeletePublisher(publisher)">Edit/Delete</a>
+    </div>
+    <app-pagination
+        [HasNext]="HasNextPub"
+        [HasPrevious]="HasPreviousPub"
+        [maxPageSize]="totalCountPub"
+        (pageIndexEvent)="pageIndexChangePub($event)"
+        (pageSizeEvent)="pageSizeChangePub($event)"></app-pagination>
+</div>

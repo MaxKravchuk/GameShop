@@ -2,14 +2,14 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { PlatformType } from "../../../../../core/models/PlatformType";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { ManagerMainComponent } from "../../manager-main/manager-main.component";
+import { ManagerGamesComponent } from "../../manager-games/manager-games.component";
 import { PlatformTypeService } from "../../../../../core/services/platformTypeService/platform-type.service";
 import { UtilsService } from "../../../../../core/services/helpers/utilsService/utils-service";
 
 @Component({
   selector: 'app-platform-type-crud',
   templateUrl: './platform-type-crud.component.html',
-  styleUrls: ['./platform-type-crud.component.css']
+  styleUrls: ['./platform-type-crud.component.scss']
 })
 export class PlatformTypeCrudComponent implements OnInit {
 
@@ -22,7 +22,7 @@ export class PlatformTypeCrudComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         @Inject(MAT_DIALOG_DATA) private data : {platformType: PlatformType},
-        private dialogRef: MatDialogRef<ManagerMainComponent>,
+        private dialogRef: MatDialogRef<ManagerGamesComponent>,
         private platformTypeService: PlatformTypeService,
         private utilsService: UtilsService
     ) { }

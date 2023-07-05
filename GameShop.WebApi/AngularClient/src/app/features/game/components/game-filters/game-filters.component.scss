@@ -1,0 +1,37 @@
+.filters-form > * {
+    margin: 5px 0;
+    width: 100%;
+}
+
+.filters-form__actions {
+    margin-top: 30px!important;
+}
+
+.filters-form--price-range {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 5px;
+}
+
+.filters-form__actions{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 5px;
+}
+
+mat-optgroup:hover, mat-option:hover {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.filters-form{
+    padding-left: 10px;
+    border-left: 1px dashed gray;
+}
+
+@media(max-width: 920px) {
+    .filters-form{
+        border-left: none;
+        padding-left: 0;
+    }
+}

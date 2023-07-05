@@ -12,7 +12,7 @@ import { MatDialog } from "@angular/material/dialog";
 @Component({
   selector: 'app-publisher-main',
   templateUrl: './publisher-main.component.html',
-  styleUrls: ['./publisher-main.component.css']
+  styleUrls: ['./publisher-main.component.scss']
 })
 export class PublisherMainComponent implements OnInit {
 
