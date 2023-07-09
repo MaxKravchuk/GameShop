@@ -28,6 +28,7 @@ namespace GameShop.BLL.Services
         private readonly ILoggerManager _loggerManager;
         private readonly IValidator<UserCreateDTO> _validator;
         private readonly IBanFactory _banFactory;
+        private readonly IServiceBusProvider _serviceBusProvider;
 
         public UserService(
             IPasswordProvider passwordProvider,
@@ -35,7 +36,8 @@ namespace GameShop.BLL.Services
             IMapper mapper,
             ILoggerManager loggerManager,
             IValidator<UserCreateDTO> validator,
-            IBanFactory banFactory)
+            IBanFactory banFactory,
+            IServiceBusProvider serviceBusProvider)
         {
             _passwordProvider = passwordProvider;
             _unitOfWork = unitOfWork;
@@ -43,6 +45,7 @@ namespace GameShop.BLL.Services
             _loggerManager = loggerManager;
             _validator = validator;
             _banFactory = banFactory;
+            _serviceBusProvider = serviceBusProvider;
         }
 
         public async Task<bool> IsAnExistingUserAsync(string nickName)
@@ -116,6 +119,9 @@ namespace GameShop.BLL.Services
 
             _unitOfWork.UserRepository.Insert(user);
             await _unitOfWork.SaveAsync();
+
+            await _serviceBusProvider.SendMessageAsync($"{user.NickName}");
+
             _loggerManager.LogInfo($"User with nickname {user.NickName} was created succesfully");
         }
 

@@ -33,6 +33,7 @@ using GameShop.DAL.Repository.Interfaces;
 using GameShop.DAL.Repository.Interfaces.Utils;
 using GameShop.WebApi.App_Start;
 using log4net;
+using Microsoft.Azure.ServiceBus;
 using StackExchange.Redis;
 using Unity;
 using Unity.Lifetime;
@@ -70,6 +71,12 @@ namespace GameShop.WebApi
             var redis = ConnectionMultiplexer.Connect(redisConnectionString);
             container.RegisterInstance(redis);
             container.RegisterType<IRedisProvider<CartItemDTO>, RedisProvider<CartItemDTO>>(new HierarchicalLifetimeManager());
+
+            var serviceBusConnectionString = ConfigurationManager.ConnectionStrings["AzureServiceBusConnectionString"].ConnectionString;
+            var serviceBusQueueName = ConfigurationManager.ConnectionStrings["AzureServiceBusQueueName"].ConnectionString;
+            var azureSBClient = new QueueClient(serviceBusConnectionString, serviceBusQueueName);
+            container.RegisterInstance(azureSBClient);
+            container.RegisterType<IServiceBusProvider, ServiceBusProvider>(new HierarchicalLifetimeManager());
 
             container.RegisterType<ICommentService, CommentService>();
             container.RegisterType<IGameService, GameService>();

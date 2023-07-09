@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameShop.BLL.Tests", "GameS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameShop.WebApi.Tests", "GameShop.WebApi.Tests\GameShop.WebApi.Tests.csproj", "{0ED1ABCE-8512-4EA2-9414-189BA74A69FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureFunctions", "AzureFunctions\AzureFunctions.csproj", "{AF8176DE-DEBB-4909-A5E5-8991DAE36384}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{0ED1ABCE-8512-4EA2-9414-189BA74A69FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0ED1ABCE-8512-4EA2-9414-189BA74A69FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0ED1ABCE-8512-4EA2-9414-189BA74A69FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF8176DE-DEBB-4909-A5E5-8991DAE36384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF8176DE-DEBB-4909-A5E5-8991DAE36384}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF8176DE-DEBB-4909-A5E5-8991DAE36384}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF8176DE-DEBB-4909-A5E5-8991DAE36384}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
