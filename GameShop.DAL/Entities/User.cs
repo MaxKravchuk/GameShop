@@ -10,6 +10,8 @@ namespace GameShop.DAL.Entities
     {
         public string NickName { get; set; }
 
+        public string Email { get; set; }
+
         public string PasswordHash { get; set; }
 
         public Role UserRole { get; set; }

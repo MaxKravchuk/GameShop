@@ -120,7 +120,7 @@ namespace GameShop.BLL.Services
             _unitOfWork.UserRepository.Insert(user);
             await _unitOfWork.SaveAsync();
 
-            await _serviceBusProvider.SendMessageAsync($"{user.NickName}");
+            await _serviceBusProvider.SendMessageAsync($"{user.Email}");
 
             _loggerManager.LogInfo($"User with nickname {user.NickName} was created succesfully");
         }

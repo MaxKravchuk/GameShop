@@ -29,6 +29,7 @@ namespace GameShop.BLL.Tests.ServiceTests
         private readonly Mock<ILoggerManager> _mockLoggerManager;
         private readonly Mock<IValidator<UserCreateDTO>> _mockValidator;
         private readonly Mock<IBanFactory> _mockBanFactory;
+        private readonly Mock<IServiceBusProvider> _mockServiceBusProvider;
         private readonly UserService _userService;
 
         private bool _disposed;
@@ -41,6 +42,7 @@ namespace GameShop.BLL.Tests.ServiceTests
             _mockLoggerManager = new Mock<ILoggerManager>();
             _mockValidator = new Mock<IValidator<UserCreateDTO>>();
             _mockBanFactory = new Mock<IBanFactory>();
+            _mockServiceBusProvider = new Mock<IServiceBusProvider>();
 
             _userService = new UserService(
                 _mockPasswordProvider.Object,
@@ -48,7 +50,8 @@ namespace GameShop.BLL.Tests.ServiceTests
                 _mockMapper.Object,
                 _mockLoggerManager.Object,
                 _mockValidator.Object,
-                _mockBanFactory.Object);
+                _mockBanFactory.Object,
+                _mockServiceBusProvider.Object);
         }
 
         public void Dispose()

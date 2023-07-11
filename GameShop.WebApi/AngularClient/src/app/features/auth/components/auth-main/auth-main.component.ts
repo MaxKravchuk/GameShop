@@ -26,7 +26,8 @@ export class AuthMainComponent implements OnInit {
     ngOnInit(): void {
         this.form = this.formBuilder.group({
             NickName: ['', Validators.minLength(1)],
-            Password: ['', Validators.minLength(1)]
+            Password: ['', Validators.minLength(1)],
+            Email: ['', Validators.minLength(1)],
         });
     }
 

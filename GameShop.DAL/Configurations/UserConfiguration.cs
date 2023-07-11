@@ -19,6 +19,9 @@ namespace GameShop.DAL.Configurations
             Property(x => x.NickName)
                 .IsRequired();
 
+            Property(x => x.Email)
+                .IsRequired();
+
             Property(x => x.PasswordHash)
                 .IsRequired();
 
