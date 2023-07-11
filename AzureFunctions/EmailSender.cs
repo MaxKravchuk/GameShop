@@ -1,9 +1,5 @@
 ﻿using System;
 using Microsoft.Azure.WebJobs;
-using GameShop.BLL.Services.Interfaces.Utils;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System.Net.Mail;
 using System.Net;

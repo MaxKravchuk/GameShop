@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Http;
 using AutoMapper;
+using Azure.Storage.Blobs;
 using FluentValidation;
 using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.DTO.GameDTOs;
@@ -77,6 +78,11 @@ namespace GameShop.WebApi
             var azureSBClient = new QueueClient(serviceBusConnectionString, serviceBusQueueName);
             container.RegisterInstance(azureSBClient);
             container.RegisterType<IServiceBusProvider, ServiceBusProvider>(new HierarchicalLifetimeManager());
+
+            var blobContainerConnectionString = ConfigurationManager.ConnectionStrings["AzureBlobContainerName"].ConnectionString;
+            var blobServiceClient = new BlobServiceClient(blobContainerConnectionString);
+            container.RegisterInstance(blobServiceClient);
+            container.RegisterType<IBlobStorageProvider, BlobStorageProvider>(new HierarchicalLifetimeManager());
 
             container.RegisterType<ICommentService, CommentService>();
             container.RegisterType<IGameService, GameService>();
