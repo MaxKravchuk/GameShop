@@ -4,7 +4,7 @@ import { AuthService } from "../../core/services/authService/auth.service";
 import { GameService } from "../../core/services/gameService/game.service";
 import { SharedService } from "../../core/services/helpers/sharedService/shared.service";
 import { Game } from "../../core/models/Game";
-import { Router } from "@angular/router";
+import { NavigationExtras, Router } from "@angular/router";
 
 @Component({
   selector: 'app-menu',
@@ -18,6 +18,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     private reloadSourceSub: Subscription = new Subscription();
 
     isAuthorized$!: Observable<boolean>;
+
 
     constructor(
         public authService: AuthService,

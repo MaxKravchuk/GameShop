@@ -10,8 +10,8 @@ namespace GameShop.BLL.Services.Interfaces.Utils
 {
     public interface IBlobStorageProvider
     {
-        Task<string> UploadAsync(Image image, string fileName, string imageFormat, BlobContainerNames enumBlobContainerName);
+        Task<string> UploadAsync(Image image, string fileName, BlobContainerItemTypes enumBlobContainerName);
 
-        Task DeleteAsync(string imageLink, BlobContainerNames enumBlobContainerName);
+        Task DeleteAsync(string imageLink, BlobContainerItemTypes enumBlobContainerName);
     }
 }

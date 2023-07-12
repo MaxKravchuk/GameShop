@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,12 +27,16 @@ namespace GameShop.BLL.Services
 {
     public class GameService : IGameService
     {
+        private readonly string _defaultPhotoPath =
+            Path.Combine(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data"), "default-image.jpg");
+
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
         private readonly IValidator<GameCreateDTO> _validator;
         private readonly IFiltersFactory<IQueryable<Game>> _filtersFactory;
         private readonly IGameSortingFactory _gameSortingFactory;
+        private readonly IBlobStorageProvider _blobStorageProvider;
 
         public GameService(
             IUnitOfWork unitOfWork,
@@ -38,7 +44,8 @@ namespace GameShop.BLL.Services
             ILoggerManager loggerManager,
             IValidator<GameCreateDTO> validator,
             IFiltersFactory<IQueryable<Game>> filtersFactory,
-            IGameSortingFactory gameSortingFactory)
+            IGameSortingFactory gameSortingFactory,
+            IBlobStorageProvider blobStorageProvider)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -46,6 +53,7 @@ namespace GameShop.BLL.Services
             _validator = validator;
             _filtersFactory = filtersFactory;
             _gameSortingFactory = gameSortingFactory;
+            _blobStorageProvider = blobStorageProvider;
         }
 
         public async Task CreateAsync(GameCreateDTO newGameDTO)
@@ -72,6 +80,19 @@ namespace GameShop.BLL.Services
             foreach (var platformType in allPlatformTypes)
             {
                 gameToAdd.GamePlatformTypes.Add(platformType);
+            }
+
+            byte[] bytes = File.ReadAllBytes(_defaultPhotoPath);
+            if (newGameDTO.PhotoUrl != "Empty")
+            {
+                bytes = Convert.FromBase64String(newGameDTO.PhotoUrl);
+            }
+
+            using (MemoryStream ms = new MemoryStream(bytes))
+            {
+                var image = Image.FromStream(ms);
+                gameToAdd.PhotoUrl =
+                    await _blobStorageProvider.UploadAsync(image, newGameDTO.Key, BlobContainerItemTypes.GamePictures);
             }
 
             _unitOfWork.GameRepository.Insert(gameToAdd);

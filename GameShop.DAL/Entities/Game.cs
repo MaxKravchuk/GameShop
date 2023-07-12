@@ -21,6 +21,8 @@ namespace GameShop.DAL.Entities
 
         public int Views { get; set; } = 0;
 
+        public string PhotoUrl { get; set; }
+
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
         public ICollection<Genre> GameGenres { get; set; } = new List<Genre>();

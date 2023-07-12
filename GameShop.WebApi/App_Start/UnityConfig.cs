@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Web.Http;
 using AutoMapper;
-using Azure.Storage.Blobs;
 using FluentValidation;
 using GameShop.BLL.DTO.CommentDTOs;
 using GameShop.BLL.DTO.GameDTOs;
@@ -35,6 +34,8 @@ using GameShop.DAL.Repository.Interfaces.Utils;
 using GameShop.WebApi.App_Start;
 using log4net;
 using Microsoft.Azure.ServiceBus;
+using Microsoft.Azure.Storage;
+using Microsoft.Azure.Storage.Blob;
 using StackExchange.Redis;
 using Unity;
 using Unity.Lifetime;
@@ -79,8 +80,9 @@ namespace GameShop.WebApi
             container.RegisterInstance(azureSBClient);
             container.RegisterType<IServiceBusProvider, ServiceBusProvider>(new HierarchicalLifetimeManager());
 
-            var blobContainerConnectionString = ConfigurationManager.ConnectionStrings["AzureBlobContainerName"].ConnectionString;
-            var blobServiceClient = new BlobServiceClient(blobContainerConnectionString);
+            var blobContainerConnectionString = ConfigurationManager.ConnectionStrings["AzureBlobConnectionString"].ConnectionString;
+            var storageAccount = CloudStorageAccount.Parse(blobContainerConnectionString);
+            var blobServiceClient = storageAccount.CreateCloudBlobClient();
             container.RegisterInstance(blobServiceClient);
             container.RegisterType<IBlobStorageProvider, BlobStorageProvider>(new HierarchicalLifetimeManager());
 

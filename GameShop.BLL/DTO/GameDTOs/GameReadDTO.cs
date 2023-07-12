@@ -19,6 +19,8 @@ namespace GameShop.BLL.DTO.GameDTOs
 
         public bool Discontinued { get; set; }
 
+        public string PhotoUrl { get; set; }
+
         public PublisherReadListDTO PublisherReadDTO { get; set; }
 
         public IEnumerable<GenreReadListDTO> Genres { get; set; }

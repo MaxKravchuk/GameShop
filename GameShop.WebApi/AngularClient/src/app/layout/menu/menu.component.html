@@ -11,6 +11,10 @@
                     routerLink="/auth/login">Log in</button>
                 <button
                     class="btn btn-success"
+                    *ngIf="!(isAuthorized$ | async)"
+                    routerLink="/auth/register">Register</button>
+                <button
+                    class="btn btn-success"
                     *ngIf="isAuthorized$ | async"
                     (click)="logOut()">Log out</button>
             </div>

@@ -33,6 +33,8 @@ export class GameCrudComponent implements OnInit {
 
     publishers: Publisher[] = [];
 
+    gamePhoto: string | null = null;
+
     constructor(
         @Inject(MAT_DIALOG_DATA) private data : {game: Game},
         private dialogRef: MatDialogRef<ManagerGamesComponent>,
@@ -88,6 +90,13 @@ export class GameCrudComponent implements OnInit {
         }
 
         const data: CreateGameModel = this.form.value as CreateGameModel;
+        if (this.gamePhoto === null) {
+            data.PhotoUrl = "Empty";
+        }
+        else{
+            data.PhotoUrl = this.gamePhoto;
+        }
+        console.log(data.PhotoUrl);
         this.gameService.createGame(data).subscribe({
             next: (): void => {
                 this.utilsService.openWithMessage('Game created successfully');
@@ -114,5 +123,21 @@ export class GameCrudComponent implements OnInit {
                 this.dialogRef.close(true);
             }
         });
+    }
+
+    handleFileChange(event: Event): void {
+        const file: File = (event.target as HTMLInputElement).files![0];
+        this.convertFileToBase64(file);
+    }
+
+    private convertFileToBase64(file: File): void {
+        const reader: FileReader = new FileReader();
+
+        reader.onload = (e: any): void => {
+            const base64 = e.target.result.split('base64,')[1];
+            this.gamePhoto = base64;
+        };
+
+        reader.readAsDataURL(file);
     }
 }

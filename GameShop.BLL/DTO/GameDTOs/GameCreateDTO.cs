@@ -14,6 +14,8 @@ namespace GameShop.BLL.DTO.GameDTOs
 
         public int? PublisherId { get; set; }
 
+        public string PhotoUrl { get; set; }
+
         public ICollection<int> GenresId { get; set; } = new List<int>();
 
         public ICollection<int> PlatformTypeId { get; set; } = new List<int>();

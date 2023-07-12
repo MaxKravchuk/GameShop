@@ -5,5 +5,7 @@
         public int Id { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public string PhotoUrl { get; set; }
     }
 }

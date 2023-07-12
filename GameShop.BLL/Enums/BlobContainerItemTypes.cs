@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameShop.BLL.Enums
 {
-    public enum BlobContainerNames
+    public enum BlobContainerItemTypes
     {
         GamePictures,
         UserPictures

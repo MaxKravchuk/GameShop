@@ -19,6 +19,8 @@ export interface Game extends BaseModel {
 
     Discontinued?: boolean;
 
+    PhotoUrl?: string | null;
+
     Genres?: Genre[];
 
     PlatformTypes?: PlatformType[];

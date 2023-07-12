@@ -1,6 +1,7 @@
 <div class="game-list">
     <div class="game-list__item"
          *ngFor="let game of games">
+        <img [src]="game.PhotoUrl!" alt="game image">
         <p>{{game.Name}}</p>
         <div class="item__actions">
             <a class="btn btn-info" routerLink="/games/details/{{game.Key}}" color="accent">View</a>

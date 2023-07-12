@@ -8,6 +8,14 @@ const routes: Routes = [
         path: 'login',
         component: AuthMainComponent,
         canActivate: [LoginGuard]
+    },
+    {
+        path: 'register',
+        component: AuthMainComponent,
+        canActivate: [LoginGuard],
+        data: {
+            action: 'register'
+        }
     }
 ];
 

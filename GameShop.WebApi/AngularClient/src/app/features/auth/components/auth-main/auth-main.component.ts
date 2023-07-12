@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { UtilsService } from "../../../../core/services/helpers/utilsService/utils-service";
 import { LoginModel } from "../../../../core/models/AuthModels/LoginModel";
 import { AuthService } from "../../../../core/services/authService/auth.service";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Data, Router } from "@angular/router";
 import { RegistrationModel } from "../../../../core/models/AuthModels/RegistrationModel";
 
 @Component({
@@ -17,18 +17,30 @@ export class AuthMainComponent implements OnInit {
 
     isLoginSucceeded: boolean = false;
 
+    action?: string;
+
     constructor(
         private formBuilder: FormBuilder,
         private utilsService: UtilsService,
         private authService: AuthService,
-        private router: Router) { }
+        private router: Router,
+        private route: ActivatedRoute) { }
 
     ngOnInit(): void {
-        this.form = this.formBuilder.group({
-            NickName: ['', Validators.minLength(1)],
-            Password: ['', Validators.minLength(1)],
-            Email: ['', Validators.minLength(1)],
+        this.route.data.subscribe((data: any): void => {
+            this.action = data.action;
         });
+
+        this.form = this.formBuilder.group({
+            NickName: ['', [Validators.required, Validators.minLength(1)]],
+            Password: ['', [Validators.required, Validators.minLength(1)]],
+            Email: [{value: '', disabled: true}],
+        });
+
+        if (this.action === 'register') {
+            this.form.controls['Email'].enable();
+            this.form.controls['Email'].setValidators([Validators.required, Validators.email]);
+        }
     }
 
     onNoClick(): void {

@@ -11,4 +11,6 @@ export interface CreateGameModel extends BaseModel {
     Key?: string;
 
     Name?: string;
+
+    PhotoUrl?: string | null;
 }

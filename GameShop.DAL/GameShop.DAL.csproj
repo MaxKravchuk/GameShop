@@ -209,6 +209,10 @@
     <Compile Include="Migrations\202307101709005_AddedEmailToUser.designer.cs">
       <DependentUpon>202307101709005_AddedEmailToUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307121257514_AddPhotoUrlToGame.cs" />
+    <Compile Include="Migrations\202307121257514_AddPhotoUrlToGame.designer.cs">
+      <DependentUpon>202307121257514_AddPhotoUrlToGame.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Interfaces\IRepository.cs" />
@@ -291,6 +295,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307101709005_AddedEmailToUser.resx">
       <DependentUpon>202307101709005_AddedEmailToUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307121257514_AddPhotoUrlToGame.resx">
+      <DependentUpon>202307121257514_AddPhotoUrlToGame.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,18 @@
+﻿namespace DAL.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class AddPhotoUrlToGame : DbMigration
+    {
+        public override void Up()
+        {
+            AddColumn("dbo.Games", "PhotoUrl", c => c.String());
+        }
+        
+        public override void Down()
+        {
+            DropColumn("dbo.Games", "PhotoUrl");
+        }
+    }
+}
