@@ -112,11 +112,12 @@
                     <mat-error *ngIf="form.controls['PublisherId'].invalid">Publishers must be specified</mat-error>
                 </mat-form-field>
             </div>
-            <div>
-                <button id="profile-pic-btn" type="button" mat-raised-button (click)="fileInput.click()">Add Game Picture</button>
-                <input id="hidden-input" hidden (change)="handleFileChange($event)" #fileInput type="file" accept="image/*">
-                <span id="profile-pic-hint" *ngIf="gamePhoto !== null">Picture has been selected</span>
-            </div>
+        </div>
+        <div>
+            <button class="game-pic-btn btn" (click)="fileInput.click()">Add Game Picture</button>
+            <button class="game-pic-btn btn" (click)="removeGamePhoto()">Remove Game Picture</button>
+            <input id="hidden-input" hidden (change)="handleFileChange($event)" #fileInput type="file" accept="image/*">
+            <span id="profile-pic-hint" *ngIf="gamePhoto !== 'Empty'">Picture has been selected</span>
         </div>
     </div>
 </div>

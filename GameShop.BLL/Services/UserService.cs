@@ -29,7 +29,6 @@ namespace GameShop.BLL.Services
         private readonly IValidator<UserCreateDTO> _validator;
         private readonly IBanFactory _banFactory;
         private readonly IServiceBusProvider _serviceBusProvider;
-        private readonly IBlobStorageProvider _blobStorageProvider;
 
         public UserService(
             IPasswordProvider passwordProvider,
@@ -38,8 +37,7 @@ namespace GameShop.BLL.Services
             ILoggerManager loggerManager,
             IValidator<UserCreateDTO> validator,
             IBanFactory banFactory,
-            IServiceBusProvider serviceBusProvider,
-            IBlobStorageProvider blobStorageProvider)
+            IServiceBusProvider serviceBusProvider)
         {
             _passwordProvider = passwordProvider;
             _unitOfWork = unitOfWork;
@@ -48,7 +46,6 @@ namespace GameShop.BLL.Services
             _validator = validator;
             _banFactory = banFactory;
             _serviceBusProvider = serviceBusProvider;
-            _blobStorageProvider = blobStorageProvider;
         }
 
         public async Task<bool> IsAnExistingUserAsync(string nickName)

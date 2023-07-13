@@ -21,7 +21,9 @@ using GameShop.BLL.Services.Interfaces;
 using GameShop.BLL.Services.Interfaces.Utils;
 using GameShop.BLL.Strategies.Interfaces.Factories;
 using GameShop.DAL.Entities;
+using GameShop.DAL.Enums;
 using GameShop.DAL.Repository.Interfaces;
+using GameShop.DAL.Repository.Interfaces.Utils;
 
 namespace GameShop.BLL.Services
 {
@@ -82,17 +84,12 @@ namespace GameShop.BLL.Services
                 gameToAdd.GamePlatformTypes.Add(platformType);
             }
 
-            byte[] bytes = File.ReadAllBytes(_defaultPhotoPath);
-            if (newGameDTO.PhotoUrl != "Empty")
-            {
-                bytes = Convert.FromBase64String(newGameDTO.PhotoUrl);
-            }
-
+            var bytes = GetImageBytes(newGameDTO.PhotoUrl);
             using (MemoryStream ms = new MemoryStream(bytes))
             {
                 var image = Image.FromStream(ms);
                 gameToAdd.PhotoUrl =
-                    await _blobStorageProvider.UploadAsync(image, newGameDTO.Key, BlobContainerItemTypes.GamePictures);
+                await _blobStorageProvider.UploadAsync(image, newGameDTO.Key, BlobContainerItemTypes.GamePictures);
             }
 
             _unitOfWork.GameRepository.Insert(gameToAdd);
@@ -111,6 +108,8 @@ namespace GameShop.BLL.Services
             {
                 throw new NotFoundException($"Game with key {gameKey} not found");
             }
+
+            await _blobStorageProvider.DeleteAsync(gameToDelete.PhotoUrl, BlobContainerItemTypes.GamePictures);
 
             _unitOfWork.GameRepository.Delete(gameToDelete);
             await _unitOfWork.SaveAsync();
@@ -208,6 +207,17 @@ namespace GameShop.BLL.Services
                 filter: game => game.Key == updatedGameDTO.Key,
                 includeProperties: "GameGenres,GamePlatformTypes")).SingleOrDefault();
 
+            if (updatedGameDTO.PhotoUrl != exGame.PhotoUrl)
+            {
+                var bytes = GetImageBytes(updatedGameDTO.PhotoUrl);
+                using (MemoryStream ms = new MemoryStream(bytes))
+                {
+                    var image = Image.FromStream(ms);
+                    updatedGameDTO.PhotoUrl = await _blobStorageProvider
+                    .UpdateAsync(image, exGame.PhotoUrl, updatedGameDTO.Name, BlobContainerItemTypes.GamePictures);
+                }
+            }
+
             _mapper.Map(updatedGameDTO, exGame);
 
             if (exGame == null)
@@ -277,6 +287,17 @@ namespace GameShop.BLL.Services
         {
             var count = await _unitOfWork.GameRepository.GetCountAsync();
             return count;
+        }
+
+        private byte[] GetImageBytes(string photoUrl)
+        {
+            byte[] bytes = File.ReadAllBytes(_defaultPhotoPath);
+            if (photoUrl != "Empty")
+            {
+                bytes = Convert.FromBase64String(photoUrl);
+            }
+
+            return bytes;
         }
     }
 }

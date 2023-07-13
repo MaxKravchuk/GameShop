@@ -31,6 +31,7 @@ using GameShop.DAL.Entities;
 using GameShop.DAL.Repository;
 using GameShop.DAL.Repository.Interfaces;
 using GameShop.DAL.Repository.Interfaces.Utils;
+using GameShop.DAL.Repository.Utils;
 using GameShop.WebApi.App_Start;
 using log4net;
 using Microsoft.Azure.ServiceBus;

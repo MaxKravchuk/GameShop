@@ -5,4 +5,8 @@
 .main__game--info {
     display: grid;
     grid-template:". .";
+
+    img{
+        width: 100px;
+    }
 }

@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using GameShop.BLL.Enums;
-using GameShop.BLL.Exceptions;
-using GameShop.BLL.Services.Interfaces.Utils;
+using GameShop.BLL.Extensions;
+using GameShop.DAL.Enums;
+using GameShop.DAL.Repository.Interfaces.Utils;
 using Microsoft.Azure.Storage.Blob;
 
-namespace GameShop.BLL.Services.Utils
+namespace GameShop.DAL.Repository.Utils
 {
     public class BlobStorageProvider : IBlobStorageProvider
     {
@@ -55,7 +53,7 @@ namespace GameShop.BLL.Services.Utils
             }
             catch (Exception ex)
             {
-                throw new BadRequestException($"An error occurred while adding a photo: {ex.Message}");
+                throw new AggregateException($"An error occurred while adding a photo: {ex.Message}");
             }
 
             fileLink = $"{_azureBlobContainerLink}/{_azureBlobContainerName}/{fileLink}";
@@ -66,16 +64,32 @@ namespace GameShop.BLL.Services.Utils
         public async Task DeleteAsync(string imageLink, BlobContainerItemTypes enumBlobContainerItemType)
         {
             var blobContainerItemType = enumBlobContainerItemType.ToString();
-            var blobContainer = _blobClient.GetContainerReference(blobContainerItemType);
+            var blobContainer = _blobClient.GetContainerReference(_azureBlobContainerName);
+            var blobFolder = blobContainer.GetDirectoryReference(blobContainerItemType);
 
             if (imageLink.Contains(blobContainerItemType))
             {
-                imageLink = imageLink.Split(blobContainerItemType.ToCharArray())[1];
+                imageLink = imageLink.SplitString(blobContainerItemType)[1].Trim('/');
             }
 
-            var blockBlob = blobContainer.GetBlockBlobReference(imageLink);
+            var blockBlob = blobFolder.GetBlockBlobReference(imageLink);
 
             await blockBlob.DeleteAsync();
+        }
+
+        public async Task<string> UpdateAsync(
+            Image updatedImage,
+            string existingImageLink,
+            string newFileName,
+            BlobContainerItemTypes enumBlobContainerItemType)
+        {
+            if (!string.IsNullOrEmpty(existingImageLink))
+            {
+                await DeleteAsync(existingImageLink, enumBlobContainerItemType);
+            }
+
+            var updatedFileLink = await UploadAsync(updatedImage, newFileName, enumBlobContainerItemType);
+            return updatedFileLink;
         }
     }
 }

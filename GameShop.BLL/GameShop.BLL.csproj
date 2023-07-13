@@ -279,9 +279,8 @@
     <Compile Include="DTO\UserDTOs\UserUpdateDTO.cs" />
     <Compile Include="DTO\UserDTOs\UserCreateWithRoleDTO.cs" />
     <Compile Include="Enums\BanOptions.cs" />
-    <Compile Include="Enums\BlobContainerItemTypes.cs" />
     <Compile Include="Enums\CreatedAtTypes.cs" />
-    <Compile Include="Enums\Extensions\ToEnumExtension.cs" />
+    <Compile Include="Extensions\ToEnumExtension.cs" />
     <Compile Include="Enums\OrderStatusTypes.cs" />
     <Compile Include="Enums\PaymentTypes.cs" />
     <Compile Include="Enums\SortingTypes.cs" />
@@ -305,7 +304,6 @@
     <Compile Include="Services\Interfaces\IOrderService.cs" />
     <Compile Include="Services\Interfaces\IRoleService.cs" />
     <Compile Include="Services\Interfaces\IUsersTokenService.cs" />
-    <Compile Include="Services\Interfaces\Utils\IBlobStorageProvider.cs" />
     <Compile Include="Services\Interfaces\Utils\IPasswordProvider.cs" />
     <Compile Include="Services\Interfaces\IPaymentService.cs" />
     <Compile Include="Services\Interfaces\IShoppingCartService.cs" />
@@ -315,7 +313,6 @@
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\RoleService.cs" />
     <Compile Include="Services\UsersTokenService.cs" />
-    <Compile Include="Services\Utils\BlobStorageProvider.cs" />
     <Compile Include="Services\Utils\PasswordProvider.cs" />
     <Compile Include="Services\PaymentService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />

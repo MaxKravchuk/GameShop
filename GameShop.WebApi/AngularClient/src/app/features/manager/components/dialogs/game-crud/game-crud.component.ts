@@ -33,7 +33,7 @@ export class GameCrudComponent implements OnInit {
 
     publishers: Publisher[] = [];
 
-    gamePhoto: string | null = null;
+    gamePhoto: string = 'Empty';
 
     constructor(
         @Inject(MAT_DIALOG_DATA) private data : {game: Game},
@@ -77,6 +77,7 @@ export class GameCrudComponent implements OnInit {
             this.form.controls['GenresId'].setValue(this.game.Genres?.map(x => x.Id));
             this.form.controls['PlatformTypeId'].setValue(this.game.PlatformTypes?.map(x => x.Id));
             this.form.controls['PublisherId'].setValue(this.game.PublisherReadDTO?.Id);
+            this.gamePhoto = this.game.PhotoUrl!;
         }
     }
 
@@ -90,13 +91,7 @@ export class GameCrudComponent implements OnInit {
         }
 
         const data: CreateGameModel = this.form.value as CreateGameModel;
-        if (this.gamePhoto === null) {
-            data.PhotoUrl = "Empty";
-        }
-        else{
-            data.PhotoUrl = this.gamePhoto;
-        }
-        console.log(data.PhotoUrl);
+        data.PhotoUrl = this.gamePhoto;
         this.gameService.createGame(data).subscribe({
             next: (): void => {
                 this.utilsService.openWithMessage('Game created successfully');
@@ -108,6 +103,7 @@ export class GameCrudComponent implements OnInit {
     onEditClick(): void {
         const data: CreateGameModel = this.form.value as CreateGameModel;
         data.Id = this.game.Id;
+        data.PhotoUrl = this.gamePhoto;
         this.gameService.updateGame(data).subscribe({
             next: (): void => {
                 this.utilsService.openWithMessage('Game updated successfully');
@@ -123,6 +119,10 @@ export class GameCrudComponent implements OnInit {
                 this.dialogRef.close(true);
             }
         });
+    }
+
+    removeGamePhoto(): void {
+        this.gamePhoto = 'Empty';
     }
 
     handleFileChange(event: Event): void {
