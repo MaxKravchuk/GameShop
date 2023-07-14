@@ -65,7 +65,7 @@ namespace GameShop.BLL.Services
 
         public async Task DeleteAsync(int id)
         {
-            var commentToDelete = await _unitOfWork.CommentRepository.GetByIdAsync(id);
+            var commentToDelete = _unitOfWork.CommentRepository.GetById_SP(id);
 
             if (commentToDelete == null)
             {

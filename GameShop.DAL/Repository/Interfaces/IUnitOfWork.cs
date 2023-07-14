@@ -5,7 +5,7 @@ namespace GameShop.DAL.Repository.Interfaces
 {
     public interface IUnitOfWork
     {
-        IRepository<Comment> CommentRepository { get; }
+        ICommentRepository CommentRepository { get; }
 
         IRepository<Game> GameRepository { get; }
 

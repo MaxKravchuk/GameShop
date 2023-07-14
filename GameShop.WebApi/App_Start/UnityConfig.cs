@@ -56,7 +56,7 @@ namespace GameShop.WebApi
             // e.g. container.RegisterType<ITestService, TestService>();
             container.RegisterType<GameShopContext>(new HierarchicalLifetimeManager());
 
-            container.RegisterType<IRepository<Comment>, Repository<Comment>>();
+            container.RegisterType<ICommentRepository,CommentRepository>();
             container.RegisterType<IRepository<Game>, Repository<Game>>();
             container.RegisterType<IRepository<Genre>, Repository<Genre>>();
             container.RegisterType<IRepository<PlatformType>, Repository<PlatformType>>();

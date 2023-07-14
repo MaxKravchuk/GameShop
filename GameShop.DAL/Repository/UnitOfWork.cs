@@ -9,7 +9,7 @@ namespace GameShop.DAL.Repository
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly GameShopContext _context;
-        private readonly Lazy<IRepository<Comment>> _commentRepository;
+        private readonly Lazy<CommentRepository> _commentRepository;
         private readonly Lazy<IRepository<Game>> _gameRepository;
         private readonly Lazy<IRepository<Genre>> _genreRepository;
         private readonly Lazy<IRepository<PlatformType>> _platformTypeRepository;
@@ -23,7 +23,7 @@ namespace GameShop.DAL.Repository
 
         public UnitOfWork(
             GameShopContext context,
-            Lazy<IRepository<Comment>> commentRepository,
+            Lazy<CommentRepository> commentRepository,
             Lazy<IRepository<Game>> gameRepository,
             Lazy<IRepository<Genre>> genreRepository,
             Lazy<IRepository<PlatformType>> platformTypeRepository,
@@ -47,7 +47,7 @@ namespace GameShop.DAL.Repository
             _roleReposiroty = roleReposiroty;
         }
 
-        public IRepository<Comment> CommentRepository => _commentRepository.Value;
+        public ICommentRepository CommentRepository => _commentRepository.Value;
 
         public IRepository<Game> GameRepository => _gameRepository.Value;
 
