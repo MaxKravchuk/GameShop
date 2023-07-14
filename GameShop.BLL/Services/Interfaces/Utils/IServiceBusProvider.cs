@@ -1,4 +1,5 @@
-﻿using System;
+﻿// The working azure service bus should exists to work with this code
+/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,4 +11,4 @@ namespace GameShop.BLL.Services.Interfaces.Utils
     {
         Task SendMessageAsync(string msg);
     }
-}
+}*/

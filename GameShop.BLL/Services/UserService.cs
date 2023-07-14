@@ -18,6 +18,7 @@ using GameShop.BLL.Strategies.Interfaces.Factories;
 using GameShop.DAL.Entities;
 using GameShop.DAL.Repository.Interfaces;
 
+// The working azure service bus should exists to work with service bus
 namespace GameShop.BLL.Services
 {
     public class UserService : IUserService
@@ -28,16 +29,16 @@ namespace GameShop.BLL.Services
         private readonly ILoggerManager _loggerManager;
         private readonly IValidator<UserCreateDTO> _validator;
         private readonly IBanFactory _banFactory;
-        private readonly IServiceBusProvider _serviceBusProvider;
 
+        // private readonly IServiceBusProvider _serviceBusProvider;
         public UserService(
             IPasswordProvider passwordProvider,
             IUnitOfWork unitOfWork,
             IMapper mapper,
             ILoggerManager loggerManager,
             IValidator<UserCreateDTO> validator,
-            IBanFactory banFactory,
-            IServiceBusProvider serviceBusProvider)
+            IBanFactory banFactory
+            /*IServiceBusProvider serviceBusProvider*/)
         {
             _passwordProvider = passwordProvider;
             _unitOfWork = unitOfWork;
@@ -45,7 +46,8 @@ namespace GameShop.BLL.Services
             _loggerManager = loggerManager;
             _validator = validator;
             _banFactory = banFactory;
-            _serviceBusProvider = serviceBusProvider;
+
+            // _serviceBusProvider = serviceBusProvider;
         }
 
         public async Task<bool> IsAnExistingUserAsync(string nickName)
@@ -120,8 +122,7 @@ namespace GameShop.BLL.Services
             _unitOfWork.UserRepository.Insert(user);
             await _unitOfWork.SaveAsync();
 
-            await _serviceBusProvider.SendMessageAsync($"{user.Email}");
-
+            // await _serviceBusProvider.SendMessageAsync($"{user.Email}");
             _loggerManager.LogInfo($"User with nickname {user.NickName} was created succesfully");
         }
 

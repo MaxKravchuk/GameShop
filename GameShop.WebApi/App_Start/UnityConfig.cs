@@ -74,12 +74,13 @@ namespace GameShop.WebApi
             var redis = ConnectionMultiplexer.Connect(redisConnectionString);
             container.RegisterInstance(redis);
             container.RegisterType<IRedisProvider<CartItemDTO>, RedisProvider<CartItemDTO>>(new HierarchicalLifetimeManager());
-
-            var serviceBusConnectionString = ConfigurationManager.ConnectionStrings["AzureServiceBusConnectionString"].ConnectionString;
+            
+            // The working azure service bus should exists to work with this code
+            /*var serviceBusConnectionString = ConfigurationManager.ConnectionStrings["AzureServiceBusConnectionString"].ConnectionString;
             var serviceBusQueueName = ConfigurationManager.ConnectionStrings["AzureServiceBusQueueName"].ConnectionString;
             var azureSBClient = new QueueClient(serviceBusConnectionString, serviceBusQueueName);
             container.RegisterInstance(azureSBClient);
-            container.RegisterType<IServiceBusProvider, ServiceBusProvider>(new HierarchicalLifetimeManager());
+            container.RegisterType<IServiceBusProvider, ServiceBusProvider>(new HierarchicalLifetimeManager());*/
 
             var blobContainerConnectionString = ConfigurationManager.ConnectionStrings["AzureBlobConnectionString"].ConnectionString;
             var storageAccount = CloudStorageAccount.Parse(blobContainerConnectionString);
