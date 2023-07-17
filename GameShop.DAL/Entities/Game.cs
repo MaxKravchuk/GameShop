@@ -27,7 +27,7 @@ namespace GameShop.DAL.Entities
 
         public ICollection<Genre> GameGenres { get; set; } = new List<Genre>();
 
-        public ICollection<PlatformType> GamePlatformTypes { get; set; } = new List<PlatformType>();
+        public virtual ICollection<PlatformType> GamePlatformTypes { get; set; } = new List<PlatformType>();
 
         public Publisher Publisher { get; set; }
 

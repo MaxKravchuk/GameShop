@@ -230,10 +230,18 @@
     <Compile Include="Migrations\202307141619267_StoredProcedureForComments.designer.cs">
       <DependentUpon>202307141619267_StoredProcedureForComments.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202307141703395_StoredProceduresForGames.cs" />
+    <Compile Include="Migrations\202307141703395_StoredProceduresForGames.designer.cs">
+      <DependentUpon>202307141703395_StoredProceduresForGames.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202307171446252_StoredProceduresForGenres.cs" />
+    <Compile Include="Migrations\202307171446252_StoredProceduresForGenres.designer.cs">
+      <DependentUpon>202307171446252_StoredProceduresForGenres.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\CommentRepository.cs" />
-    <Compile Include="Repository\Interfaces\ICommentRepository.cs" />
+    <Compile Include="Repository\Interfaces\Utils\IStoredProceduresProvider.cs" />
+    <Compile Include="Repository\Utils\StoredProceduresProvider.cs" />
     <Compile Include="Repository\Utils\BlobStorageProvider.cs" />
     <Compile Include="Repository\Interfaces\Utils\IBlobStorageProvider.cs" />
     <Compile Include="Repository\Interfaces\IRepository.cs" />
@@ -322,6 +330,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202307141619267_StoredProcedureForComments.resx">
       <DependentUpon>202307141619267_StoredProcedureForComments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307141703395_StoredProceduresForGames.resx">
+      <DependentUpon>202307141703395_StoredProceduresForGames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202307171446252_StoredProceduresForGenres.resx">
+      <DependentUpon>202307171446252_StoredProceduresForGenres.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

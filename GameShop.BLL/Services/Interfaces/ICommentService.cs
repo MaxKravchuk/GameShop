@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using GameShop.BLL.DTO.CommentDTOs;
+using GameShop.DAL.Entities;
 
 namespace GameShop.BLL.Services.Interfaces
 {
@@ -12,6 +13,6 @@ namespace GameShop.BLL.Services.Interfaces
 
         Task<IEnumerable<CommentReadDTO>> GetAllByGameKeyAsync(string gameKey);
 
-        Task<CommentReadDTO> GetByIdAsync(int commentId);
+        Task<Comment> GetById(int commentId);
     }
 }

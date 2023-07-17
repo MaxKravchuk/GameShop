@@ -33,6 +33,7 @@ namespace GameShop.BLL.Services
             Path.Combine(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data"), "default-image.jpg");
 
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IStoredProceduresProvider _storedProceduresProvider;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
         private readonly IValidator<GameCreateDTO> _validator;
@@ -42,6 +43,7 @@ namespace GameShop.BLL.Services
 
         public GameService(
             IUnitOfWork unitOfWork,
+            IStoredProceduresProvider storedProceduresProvider,
             IMapper mapper,
             ILoggerManager loggerManager,
             IValidator<GameCreateDTO> validator,
@@ -50,6 +52,7 @@ namespace GameShop.BLL.Services
             IBlobStorageProvider blobStorageProvider)
         {
             _unitOfWork = unitOfWork;
+            _storedProceduresProvider = storedProceduresProvider;
             _mapper = mapper;
             _loggerManager = loggerManager;
             _validator = validator;
@@ -99,10 +102,7 @@ namespace GameShop.BLL.Services
 
         public async Task DeleteAsync(string gameKey)
         {
-            var gamesToDelete = await _unitOfWork.GameRepository.GetAsync(
-                filter: g => g.Key == gameKey);
-
-            var gameToDelete = gamesToDelete.SingleOrDefault();
+            var gameToDelete = await _storedProceduresProvider.GetGameByKeyAsync(gameKey);
 
             if (gameToDelete == null)
             {
@@ -164,8 +164,7 @@ namespace GameShop.BLL.Services
 
         public async Task<IEnumerable<GameReadListDTO>> GetGamesByGenreAsync(int genreId)
         {
-            var games = await _unitOfWork.GameRepository.GetAsync(
-                filter: g => g.GameGenres.Any(gg => gg.Id == genreId));
+            var games = await _storedProceduresProvider.GetGameByGenreIdAsync(genreId);
 
             var models = _mapper.Map<IEnumerable<GameReadListDTO>>(games);
 
@@ -176,8 +175,7 @@ namespace GameShop.BLL.Services
 
         public async Task<IEnumerable<GameReadListDTO>> GetGamesByPlatformTypeAsync(int platformTypeId)
         {
-            var games = await _unitOfWork.GameRepository.GetAsync(filter:
-                    g => g.GamePlatformTypes.Any(gg => gg.Id == platformTypeId));
+            var games = await _storedProceduresProvider.GetGameByPlatformTypeIdAsync(platformTypeId);
 
             var models = _mapper.Map<IEnumerable<GameReadListDTO>>(games);
 
@@ -269,7 +267,7 @@ namespace GameShop.BLL.Services
 
         public async Task<MemoryStream> GenerateGameFileAsync(string key)
         {
-            var game = (await _unitOfWork.GameRepository.GetAsync(filter: g => g.Key == key)).SingleOrDefault();
+            var game = await _storedProceduresProvider.GetGameByKeyAsync(key);
 
             if (game == null)
             {

@@ -16,17 +16,20 @@ namespace GameShop.BLL.Services
     public class CommentService : ICommentService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IStoredProceduresProvider _storedProceduresProvider;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _logger;
         private readonly IValidator<CommentCreateDTO> _validator;
 
         public CommentService(
             IUnitOfWork unitOfWork,
+            IStoredProceduresProvider storedProceduresProvider,
             IMapper mapper,
             ILoggerManager logger,
             IValidator<CommentCreateDTO> validator)
         {
             _unitOfWork = unitOfWork;
+            _storedProceduresProvider = storedProceduresProvider;
             _mapper = mapper;
             _logger = logger;
             _validator = validator;
@@ -40,12 +43,7 @@ namespace GameShop.BLL.Services
 
             if (newCommentDTO.ParentId != null)
             {
-                var parentComment = await _unitOfWork.CommentRepository.GetByIdAsync((int)newCommentDTO.ParentId);
-                if (parentComment == null)
-                {
-                    throw new NotFoundException($"Parent comment with id {newCommentDTO.ParentId} was not found");
-                }
-
+                var parentComment = await GetById((int)newCommentDTO.ParentId);
                 newComment.Parent = parentComment;
             }
 
@@ -65,12 +63,7 @@ namespace GameShop.BLL.Services
 
         public async Task DeleteAsync(int id)
         {
-            var commentToDelete = _unitOfWork.CommentRepository.GetById_SP(id);
-
-            if (commentToDelete == null)
-            {
-                throw new NotFoundException($"Comment with id {id} not found");
-            }
+            var commentToDelete = await GetById(id);
 
             _unitOfWork.CommentRepository.Delete(commentToDelete);
             await _unitOfWork.SaveAsync();
@@ -87,18 +80,17 @@ namespace GameShop.BLL.Services
             return model;
         }
 
-        public async Task<CommentReadDTO> GetByIdAsync(int commentId)
+        public async Task<Comment> GetById(int commentId)
         {
-            var comment = await _unitOfWork.CommentRepository.GetByIdAsync(commentId);
+            var comment = await _storedProceduresProvider.GetCommentByIdAsync(commentId);
 
             if (comment == null)
             {
                 throw new NotFoundException($"Comment with id {commentId} not found");
             }
 
-            var model = _mapper.Map<CommentReadDTO>(comment);
             _logger.LogInfo($"Comment with id {commentId} successfully found");
-            return model;
+            return comment;
         }
 
         private async Task<int> GetGameIdByKeyAsync(string gameKey)

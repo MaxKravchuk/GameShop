@@ -18,17 +18,20 @@ namespace GameShop.BLL.Services
     public class GenreService : IGenreService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IStoredProceduresProvider _storedProceduresProvider;
         private readonly IMapper _mapper;
         private readonly ILoggerManager _loggerManager;
         private readonly IValidator<GenreCreateDTO> _validator;
 
         public GenreService(
             IUnitOfWork unitOfWork,
+            IStoredProceduresProvider storedProceduresProvider,
             IMapper mapper,
             ILoggerManager loggerManager,
             IValidator<GenreCreateDTO> validator)
         {
             _unitOfWork = unitOfWork;
+            _storedProceduresProvider = storedProceduresProvider;
             _mapper = mapper;
             _loggerManager = loggerManager;
             _validator = validator;
@@ -51,7 +54,7 @@ namespace GameShop.BLL.Services
 
         public async Task DeleteAsync(int id)
         {
-            var genreToDelete = await _unitOfWork.GenreRepository.GetByIdAsync(id);
+            var genreToDelete = await _storedProceduresProvider.GetGenreByIdAsync(id);
 
             if (genreToDelete == null)
             {
@@ -75,7 +78,7 @@ namespace GameShop.BLL.Services
 
         public async Task<IEnumerable<GenreReadListDTO>> GetAsync()
         {
-            var genres = await _unitOfWork.GenreRepository.GetAsync();
+            var genres = await _storedProceduresProvider.GetGenresAsync();
 
             var genresDTO = _mapper.Map<IEnumerable<GenreReadListDTO>>(genres);
 
@@ -86,7 +89,7 @@ namespace GameShop.BLL.Services
 
         public async Task<PagedListDTO<GenreReadListDTO>> GetPagedAsync(PaginationRequestDTO paginationRequestDTO)
         {
-            var genres = await _unitOfWork.GenreRepository.GetAsync();
+            var genres = await _storedProceduresProvider.GetGenresAsync();
 
             var pagedGenres = genres.ToPagedList(paginationRequestDTO.PageNumber, paginationRequestDTO.PageSize);
             var pagedModels = _mapper.Map<PagedListDTO<GenreReadListDTO>>(pagedGenres);
@@ -100,7 +103,7 @@ namespace GameShop.BLL.Services
         {
             await _validator.ValidateAndThrowAsync(genreToUpdateDTO);
 
-            var genreToUpdate = await _unitOfWork.GenreRepository.GetByIdAsync(genreToUpdateDTO.Id);
+            var genreToUpdate = await _storedProceduresProvider.GetGenreByIdAsync(genreToUpdateDTO.Id);
 
             if (genreToUpdate == null)
             {
